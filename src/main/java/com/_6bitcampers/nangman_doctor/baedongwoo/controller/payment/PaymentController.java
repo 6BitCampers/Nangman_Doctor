@@ -1,4 +1,4 @@
-package baedongwoo.controller.payment;
+package com._6bitcampers.nangman_doctor.baedongwoo.controller.payment;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
