@@ -17,16 +17,16 @@
 			<div class="site-navigation">
 				<div class="row">
 					<div class="col-6 col-lg-3">
-						<a th:href="@{/home.html}" class="logo m-0 float-start">낭만닥터</a>
+						<a th:href="@{/home}" class="logo m-0 float-start">낭만닥터</a>
 					</div>
 					<div class="col-lg-6 d-none d-lg-inline-block text-center nav-center-wrap">
 						<ul class="js-clone-nav  text-center site-menu p-0 m-0">
 							<li class="active"><a href="@{/home.html}">Home</a></li>
-							<li><a th:href="@{/about.html}">About us</a></li>
+							<li><a th:href="@{/about}">About us</a></li>
 							<li class="has-children">
 								<a th:href="@{/}">Dropdown</a>
 								<ul class="dropdown">
-									<li><a th:href="@{/}">Menu One</a></li>
+									<li><a th:href="@{/reviewboard}">리뷰 게시판</a></li>
 									<li class="has-children">
 										<a th:href="@{/}">Menu Two</a>
 										<ul class="dropdown">
@@ -38,13 +38,13 @@
 									<li><a th:href="@{/}">Menu Three</a></li>
 								</ul>
 							</li>
-							<li><a th:href="@{/services.html}">Services</a></li>
-							<li><a th:href="@{/blog.html}">Blog</a></li>
+							<li><a th:href="@{/services}">Services</a></li>
+							<li><a th:href="@{/blog}">Blog</a></li>
 						</ul>
 					</div>
 					<div class="col-6 col-lg-3 text-lg-end">
 						<ul class="js-clone-nav d-none d-lg-inline-block text-end site-menu ">
-							<li class="cta-button"><a th:href="@{/contact.html}">Contact Us</a></li>
+							<li class="cta-button"><a th:href="@{/contact}">Contact Us</a></li>
 						</ul>
 						<a th:href="@{/}" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
 							<span></span>

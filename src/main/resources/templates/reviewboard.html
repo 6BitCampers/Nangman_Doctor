@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<div layout:fragment="content" class="section" style="height: 800px">
+    <table >
+        <tr th:each="item,itemStat:${list}" >
+            <td th:text="${itemStat.count}"></td>
+            <td th:text="${item.title}"></td>
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.readcount}"></td>
+        </tr>
+    </table>
+    <table class="table" style="width: 70%; ">
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>조회수</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>여기 잘하네요</td>
+            <td>test_id</td>
+            <td>0</td>
+        </tr>
+    </table>
+</div>
