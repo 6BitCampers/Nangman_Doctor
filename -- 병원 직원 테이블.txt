@@ -1,0 +1,92 @@
+-- 병원 직원 테이블
+CREATE TABLE hospital_employee (
+    employee_no INT AUTO_INCREMENT PRIMARY KEY,
+    employee_pw VARCHAR(30),
+    employee_name VARCHAR(30),
+    employee_addr1 VARCHAR(100),
+    employee_addr2 VARCHAR(50),
+    employee_postal VARCHAR(10),
+    employee_email VARCHAR(30),
+    employee_role INT,
+    employee_hp VARCHAR(100),
+    employee_birth DATE,
+    employee_nickname VARCHAR(40),
+    employee_field VARCHAR(40) NOT NULL,
+    employee_likecount INT,
+    info_no INT,
+    FOREIGN KEY (info_no) REFERENCES hospital_info(info_no)
+);
+
+-- 병원 정보 테이블
+CREATE TABLE hospital_info (
+    info_no INT AUTO_INCREMENT PRIMARY KEY,
+    info_name VARCHAR(30) NOT NULL,
+    info_x INT NOT NULL,
+    info_y INT NOT NULL,
+    info_description VARCHAR(40),
+    info_photo VARCHAR(100)
+);
+
+-- 유저 테이블
+CREATE TABLE hospital_user (
+    user_no INT AUTO_INCREMENT PRIMARY KEY,
+    user_pw VARCHAR(30),
+    user_name VARCHAR(30),
+    user_addr1 VARCHAR(100),
+    user_addr2 VARCHAR(50),
+    user_postal VARCHAR(10),
+    user_email VARCHAR(30),
+    user_gender INT,
+    user_hp VARCHAR(100),
+    user_birth DATE,
+    user_nickname VARCHAR(40),
+    user_interest VARCHAR(40)
+);
+
+-- 후기 게시판 테이블
+CREATE TABLE hospital_review (
+    review_no INT AUTO_INCREMENT PRIMARY KEY,
+    review_title VARCHAR(20),
+    review_content VARCHAR(1000),
+    review_writeday DATE,
+    review_viewcount INT,
+    info_no INT,
+    user_no INT,
+FOREIGN KEY(employee_no) REFERNCES hospital_employee(employee_no),    
+    FOREIGN KEY (user_no) REFERENCES hospital_user(user_no)
+);
+
+-- 예약 테이블
+CREATE TABLE hospital_reservation (
+    reservation_no INT AUTO_INCREMENT PRIMARY KEY,
+    reservation_reason VARCHAR(40) NOT NULL,
+    reservation_date DATE,
+    reservation_role INT,
+    employee_no INT,
+    user_no INT,
+    FOREIGN KEY (employee_no) REFERENCES hospital_employee(employee_no),
+    FOREIGN KEY (user_no) REFERENCES hospital_user(user_no)
+);
+
+-- 영수증 테이블
+CREATE TABLE hospital_receipt (
+    receipt_no INT AUTO_INCREMENT PRIMARY KEY,
+    receipt_name VARCHAR(40),
+    receipt_status VARCHAR(40),
+    receipt_reason VARCHAR(40),
+receipt_paymentKey VARCHAR(50),
+    payment_no INT,
+    reservation_no INT,	
+    FOREIGN KEY (payment_no) REFERENCES hospital_payment(payment_no),
+    FOREIGN KEY (reservation_no) REFERENCES hospital_reservation(reservation_no)
+);
+
+-- 결제 테이블
+CREATE TABLE hospital_payment (
+    payment_no INT AUTO_INCREMENT PRIMARY KEY,
+    payment_method VARCHAR(40) NOT NULL,
+    payment_amount INT NOT NULL,
+    payment_date DATETIME NOT NULL,
+    user_no INT,
+    FOREIGN KEY (user_no) REFERENCES hospital_user(user_no)
+);

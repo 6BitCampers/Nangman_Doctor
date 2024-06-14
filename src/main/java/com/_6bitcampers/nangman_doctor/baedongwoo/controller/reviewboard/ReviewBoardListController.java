@@ -20,14 +20,14 @@ public class ReviewBoardListController {
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             Model model) {
         int perPage=10;
-        int startnum=(page-1)*perPage+1;
+        int startnum=(page-1)*perPage;
 
 
-//        List<ReviewDto> list= reviewService.getPagenationedReviews(startnum, perPage);
-//        model.addAttribute("list", list);
-//
-//        int totalNum=reviewService.getAllReviewsCount();
-//        model.addAttribute("totalNum", totalNum);
+        List<ReviewDto> list= reviewService.getPagenationedReviews(startnum, perPage);
+        model.addAttribute("list", list);
+
+        int totalNum=reviewService.getAllReviewsCount();
+        model.addAttribute("totalNum", totalNum);
         model.addAttribute("currentpage", page);
 
         return "reviewboard";

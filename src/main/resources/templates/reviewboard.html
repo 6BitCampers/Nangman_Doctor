@@ -11,18 +11,12 @@
             <th>작성일</th>
             <th>조회수</th>
         </tr>
-        <tr>
-            <td>1</td>
-            <td>여기 잘하네요</td>
-            <td>test_id</td>
-            <td>2024.06.13</td>
-            <td>0</td>
-        </tr>
         <tr th:each="item,itemStat:${list}" >
             <td th:text="${itemStat.count}"></td>
-            <td th:text="${item.title}"></td>
-            <td th:text="${item.name}"></td>
-            <td th:text="${item.readcount}"></td>
+            <td th:text="${item.review_title}"></td>
+            <td th:text="${item.review_no}"></td>
+            <td th:text="${item.getFormattedWriteday()}"></td>
+            <td th:text="${item.review_viewcount}"></td>
         </tr>
     </table>
 </div>

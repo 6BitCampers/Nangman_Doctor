@@ -11,13 +11,14 @@ import java.util.Map;
 
 @Service
 public class ReviewService {
+
     @Autowired
     private ReviewInter reviewInter;
 
-    public List<ReviewDto> getPagenationedReviews(int startnum, int endnum) {
+    public List<ReviewDto> getPagenationedReviews(int startnum, int perPage) {
         Map<String,Integer> pagination = new HashMap<>();
         pagination.put("startnum", startnum);
-        pagination.put("endnum", endnum);
+        pagination.put("perPage", perPage);
         return reviewInter.getPagenationedReviews(pagination);
     }
 
