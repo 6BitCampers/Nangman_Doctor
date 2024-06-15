@@ -1,4 +1,4 @@
-package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginDto;
+package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,4 +41,6 @@ public class customOAuth2User implements OAuth2User {
     public String getEmail() {
         return oAuth2Response.getEmail();
     }
+
+    public String getType() {return oAuth2Response.getProvider();}
 }

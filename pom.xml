@@ -11,7 +11,7 @@
     <groupId>com._6BItCampers</groupId>
     <artifactId>Nangman_Doctor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>Nangman Doctor</name>
     <description>Nangman Doctor</description>
     <properties>
@@ -118,6 +118,7 @@
             <artifactId>thymeleaf-layout-dialect</artifactId>
             <version>3.3.0</version>
         </dependency>
+
     </dependencies>
     <dependencyManagement>
         <dependencies>

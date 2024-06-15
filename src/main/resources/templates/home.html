@@ -8,6 +8,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/layout}">
+
 <div layout:fragment="content">
 	<div class="hero overlay">
 
@@ -17,6 +18,9 @@
 
 		<div class="container">
 			<div class="row align-items-center justify-content-start">
+				<div class="chatbotimg" onclick="location.href='/chatbot/chat'">
+					<img src="/icon/chatbotimg.png" alt="챗봇 아이콘">
+				</div>
 				<div class="col-lg-5">
 
 					<h1 class="heading" data-aos="fade-up">It's a Big World Out There, Go Explore</h1>
@@ -45,6 +49,7 @@
 	<div class="section section-2">
 		<div class="container">
 			<div class="row align-items-center justify-content-between">
+
 				<div class="col-lg-6 order-lg-2 mb-5 mb-lg-0">
 					<div class="image-stack mb-5 mb-lg-0">
 						<div class="image-stack__item image-stack__item--bottom" data-aos="fade-up">

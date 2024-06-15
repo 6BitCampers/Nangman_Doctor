@@ -6541,7 +6541,7 @@ textarea.form-control-lg {
   margin-top: 0.5rem !important; }
 
 .mt-3 {
-  margin-top: 1rem !important; }
+  margin-top: 0rem !important; }
 
 .mt-4 {
   margin-top: 1.5rem !important; }
@@ -9298,13 +9298,13 @@ textarea {
 
 .logo {
   font-size: 24px;
-  color: #fff;
+  color: #ffa500;
   font-weight: 700; }
   .logo:hover {
-    color: #fff; }
+    color: #ffa510; }
 
 .site-nav {
-  position: absolute;
+  /*position: absolute;*/
   top: 0;
   z-index: 9;
   width: 100%; }
@@ -9325,7 +9325,7 @@ textarea {
         padding: 10px 15px;
         display: inline-block;
         text-decoration: none !important;
-        color: rgba(255, 255, 255, 0.7); }
+        color: rgba(255, 165, 0, 0.7); }
         .site-nav .site-navigation .site-menu > li > a:hover {
           color: #fff; }
       .site-nav .site-navigation .site-menu > li.cta-button a {
@@ -9598,7 +9598,7 @@ textarea {
   .sticky-wrapper .site-navbar .site-menu-toggle {
     color: #000; }
   .sticky-wrapper .site-navbar .site-logo a {
-    color: #000; }
+    color: #ffa500; }
   .sticky-wrapper .site-navbar .site-menu > li > a {
     color: rgba(0, 0, 0, 0.8) !important; }
     .sticky-wrapper .site-navbar .site-menu > li > a:hover, .sticky-wrapper .site-navbar .site-menu > li > a.active {
@@ -10454,7 +10454,7 @@ textarea {
   background: #efefef;
   font-size: 14px;
   color: #888;
-  padding: 70px 0; }
+  padding: 20px 0; }
   .site-footer a {
     color: #f17945;
     position: relative;
@@ -10499,3 +10499,27 @@ textarea {
       .site-footer .social li a:hover {
         background: #f59b74;
         color: #fff; }
+
+.chatbotimg {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px; /* 아이콘의 전체 크기 */
+  height: 60px; /* 아이콘의 전체 크기 */
+  background-color: #007bff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chatbotimg img {
+  width: 50px; /* 아이콘 이미지의 크기 */
+  height: 50px; /* 아이콘 이미지의 크기 */
+
+input:invalid {
+  border-color: red;
+
+}
