@@ -42,10 +42,11 @@ public class securityConfig{
                         .failureHandler(customFailureHandler)
                         .permitAll());
 
-//        http
-//                .oauth2Login((oauth) -> oauth
-//                        .userInfoEndpoint((userInfoEndpointConfig)-> userInfoEndpointConfig
-//                                .userService(customOAuth2UserService)));
+        http
+                .oauth2Login((oauth) -> oauth
+                        .loginPage("/login")
+                        .userInfoEndpoint((userInfoEndpointConfig)-> userInfoEndpointConfig
+                                .userService(customOAuth2UserService)));
 
         http
                 .httpBasic((basic) -> basic.disable());
@@ -54,6 +55,7 @@ public class securityConfig{
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/my/**").authenticated()
+                        .requestMatchers("/addinfo","addinfo/").hasRole("LOGINONLY")
                         .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc","/loginError").permitAll()
                         .anyRequest().permitAll());
 

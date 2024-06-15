@@ -1,9 +1,6 @@
 package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginService;
 
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.OAuth2Response;
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.customOAuth2User;
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.googleResponse;
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.naverReponse;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.*;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginMapper.userEntityMapper;
 import lombok.RequiredArgsConstructor;
@@ -54,13 +51,28 @@ public class customOAuth2UserService extends DefaultOAuth2UserService {
                     .user_role(role)
                     .user_type(registrantionId)
                     .build();
+        } else if (registrantionId.equals("kakao")) {
+            oAuth2Response = new kakaoResponse(oAuth2User.getAttributes());
+
+            userEntity = new userEntity().builder()
+                    .user_email(oAuth2Response.getEmail())
+                    .user_name(oAuth2Response.getName())
+                    .user_role(role)
+                    .user_nickname(((kakaoResponse) oAuth2Response).getNickname())
+                    .user_age(((kakaoResponse) oAuth2Response).getAge())
+                    .user_gender(((kakaoResponse) oAuth2Response).getGender().equals("mele")?"M":"F")
+                    .user_hp("0"+((kakaoResponse) oAuth2Response).getPhone_number().split(" ")[1])
+                    .user_type(registrantionId)
+                    .build();
+
         } else {
             return null;
         }
 
-        boolean emailcheck = userEntityMapper.findByEmail(oAuth2Response.getEmail()) == 0;
+        boolean emailcheck = userEntityMapper.findByEmail(userEntity) == 0;
+        boolean emailcheck_em = userEntityMapper.findEmployeeByEmail(userEntity) == 0;
 
-        if (emailcheck) {
+        if (emailcheck && emailcheck_em) {
             //insert
             userEntityMapper.insertNaverUser(userEntity);
             return new customOAuth2User(oAuth2Response, role);
@@ -69,7 +81,7 @@ public class customOAuth2UserService extends DefaultOAuth2UserService {
         else {
             //update
             userEntityMapper.updateNaverUser(userEntity);
-            return new customOAuth2User(oAuth2Response,userEntityMapper.findRoleByEmail(oAuth2Response.getEmail()));
+            return new customOAuth2User(oAuth2Response,userEntityMapper.findRoleByEmail(userEntity));
         }
     }
 }

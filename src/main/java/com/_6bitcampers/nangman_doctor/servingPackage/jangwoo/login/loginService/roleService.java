@@ -7,7 +7,7 @@ public class roleService {
 
     public String checkRole(String role) {
         if (role.equalsIgnoreCase("ROLE_LOGINONLY")) {
-            return "loginonly";
+            return "redirect:/addinfo";
         }
         else {
             return "home";
