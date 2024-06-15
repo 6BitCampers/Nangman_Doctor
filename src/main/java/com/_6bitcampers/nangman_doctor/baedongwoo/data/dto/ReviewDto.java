@@ -23,6 +23,7 @@ public class ReviewDto {
     private int review_viewcount;
     private int user_no;
     private int employee_no;
+    private int review_likecount;
 
     public String getFormattedWriteday(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

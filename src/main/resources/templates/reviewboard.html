@@ -2,18 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
-<div layout:fragment="content" class="section" style="height: 800px;margin-left: 50px">
+<div layout:fragment="content" class="section section-2" style="height: 800px;margin-left: 50px">
     <table class="table" style="width: 70%; ">
         <tr>
             <th>번호</th>
             <th>제목</th>
+            <th>평점</th>
             <th>작성자</th>
             <th>작성일</th>
             <th>조회수</th>
         </tr>
         <tr th:each="item,itemStat:${list}" >
             <td th:text="${itemStat.count}"></td>
-            <td th:text="${item.review_title}"></td>
+            <td><a th:href="@{'/hospital/detail?review_no=' + ${item.review_no} +'&user_name='+ ${#authentication.name}+'&empolyee_no='+${item.employee_no}}" th:text="${item.review_title}"></a></td>
+            <td th:text="${item.review_likecount}"></td>
             <td th:text="${item.review_no}"></td>
             <td th:text="${item.getFormattedWriteday()}"></td>
             <td th:text="${item.review_viewcount}"></td>
