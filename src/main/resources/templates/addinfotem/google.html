@@ -12,12 +12,12 @@
 	<div class="flex h-screen w-full items-center justify-center bg-orange-100 dark:bg-orange-950">
 		<div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">
 			<div class="space-y-2 text-center">
-				<h1 class="text-3xl font-bold">회원가입</h1>
+				<h1 class="text-3xl font-bold">추가 정보 입력</h1>
 				<p class="text-gray-500 dark:text-gray-400">
 					필수 정보는 <span class="text-red-500">*</span> 로 표시되어 있습니다.
 				</p>
 			</div>
-			<form class="space-y-4" action="/joinProc" method="post" id="login_form">
+			<form class="space-y-4" action="/addinfoProc" method="post" id="login_form">
 				<div class="space-y-2">
 					<label
 							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -69,103 +69,25 @@
 					<div class="space-y-2">
 						<label
 								class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-								for="name"
-						>
-							이름 <span class="text-red-500">*</span>
-						</label>
-						<input
-								class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-								id="name"
-								placeholder="홍길동"
-								required=""
-								name="name"
-						/>
-					</div>
-					<div class="space-y-2">
-						<label
-								class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 								for="gender"
 						>
 							성별 <span class="text-red-500">*</span>
 						</label>
 						<div class="relative flex items-center">
-						<select
-								name="gender"
-								class="bg-white flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-								id="gender"
-								required=""
-								tabindex="1"
-								style="border: 1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; overflow-wrap: normal;"
-						>
-							<option value="female">여성</option>
-							<option value="male">남성</option>
-						</select>
+							<select
+									name="gender"
+									class="bg-white flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+									id="gender"
+									required=""
+									tabindex="1"
+									style="border: 1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; overflow-wrap: normal;"
+							>
+								<option value="F">여성</option>
+								<option value="M">남성</option>
+							</select>
 						</div>
 					</div>
 				</div>
-				<div class="space-y-2">
-					<label
-							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-							for="email"
-					>
-						이메일 <span class="text-red-500">*</span>
-					</label>
-					<div class="relative flex items-center">
-						<input
-								class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-								id="email"
-								placeholder="example@email.com"
-								type="email"
-								value=""
-								required="required"
-								name="email"
-						/>
-					</div>
-				</div>
-				<div class="space-y-2">
-					<label
-							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-							for="password"
-					>
-						비밀번호 <span class="text-red-500">*</span>
-					</label>
-					<input
-							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-							id="password"
-							required=""
-							type="password"
-					/>
-				</div>
-				<div class="space-y-2">
-					<label
-							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-							for="confirm-password"
-					>
-						비밀번호 확인 <span class="text-red-500">*</span>
-					</label>
-					<input
-							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-							id="confirm-password"
-							required="required"
-							type="password"
-							value=""
-							name="password"
-					/>
-				</div>
-				<script>
-					const passwordInput = document.getElementById('password');
-					const confirmPasswordInput = document.getElementById('confirm-password');
-
-					confirmPasswordInput.addEventListener('input', () => {
-						if (passwordInput.value !== confirmPasswordInput.value) {
-							confirmPasswordInput.setCustomValidity('비밀번호가 일치하지 않습니다.');
-							confirmPasswordInput.classList.add('is-invalid');
-						} else {
-							confirmPasswordInput.setCustomValidity('');
-							confirmPasswordInput.classList.remove('is-invalid');
-						}
-					});
-				</script>
 				<div class="space-y-2">
 					<label
 							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -183,7 +105,7 @@
 								name="addr"
 						/>
 						<button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600"
-						onclick="search_location()">
+								onclick="search_location()">
 							주소찾기
 						</button>
 					</div>
@@ -275,7 +197,7 @@
 	<script>
 		function search_location() {
 			new daum.Postcode({
-				oncomplete: function(data) {
+				oncomplete: function (data) {
 					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
 					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
@@ -283,7 +205,7 @@
 					var addr = data.sido; // 시
 					var extraAddr = data.sigungu; // 그 이하
 
-					document.getElementById("address").value=addr+"시 "+extraAddr;
+					document.getElementById("address").value = addr + "시 " + extraAddr;
 					// 커서를 상세주소 필드로 이동한다.
 					document.getElementById("address").focus();
 				}
@@ -291,37 +213,23 @@
 		}
 
 		function check() {
-			let email = $("#email").val();
 			let nickname = $("#nickname").val();
 
 			$.ajax({
-				url:"/api/v1/emailcheck",
-				type:"get",
-				data:{"email":email},
-				dataType:"json",
-				success : function (data){
-					if (data.status=='true'){
-						$.ajax({
-							url:"/api/v1/nicknamecheck",
-							type:"get",
-							data:{"nickname":nickname},
-							dataType: "json",
-							success : function (data){
-								if (data.status=='true') document.getElementById("login_form").submit();
-								else {
-									alert("이미 닉네임이 존재합니다.")
-								}
-							}
-						})
-					}
+				url: "/api/v1/nicknamecheck",
+				type: "get",
+				data: {"nickname": nickname},
+				dataType: "json",
+				success: function (data) {
+					if (data.status == 'true') document.getElementById("login_form").submit();
 					else {
-						alert("이미 이메일이 존재합니다.")
+						alert("이미 닉네임이 존재합니다.")
 					}
 				}
 			})
 		}
 
-		$("#submit_btn").on("click",function(){
+		$("#submit_btn").on("click", function () {
 			check();
 		})
 	</script>

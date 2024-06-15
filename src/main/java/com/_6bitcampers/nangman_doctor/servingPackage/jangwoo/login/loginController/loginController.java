@@ -1,6 +1,8 @@
 package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginController;
 
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.customOAuth2User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,5 +20,13 @@ public class loginController {
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
         return "login";
+    }
+
+    @GetMapping("/addinfo")
+    public String buf() {
+        customOAuth2User customOAuth2User = (customOAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+//        System.out.println(customOAuth2User.getType());
+        return "addinfotem/"+customOAuth2User.getType();
     }
 }

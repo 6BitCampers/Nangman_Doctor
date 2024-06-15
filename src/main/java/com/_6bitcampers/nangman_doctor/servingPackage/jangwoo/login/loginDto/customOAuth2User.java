@@ -41,4 +41,6 @@ public class customOAuth2User implements OAuth2User {
     public String getEmail() {
         return oAuth2Response.getEmail();
     }
+
+    public String getType() {return oAuth2Response.getProvider();}
 }
