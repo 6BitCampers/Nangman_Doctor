@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <style>
+    .chat_wrap {display:none;width: 350px;height: 500px;position: fixed;bottom: 30px;right: 95px;background: #a9bdce;}
+    .chat_content {height: 600px;width: 500px;overflow-y:scroll;padding:10px 15px;background: cornflowerblue}
+    .chat_input {padding:2px 5px;}
+    .chat_header {padding: 10px 15px;border-bottom: 1px solid #95a6b4;}
+    .chat_header .close_btn {border: none;background: none;float: right;}
+    .send_btn {border: 1px solid #666;background: #ffeb33;height: 28px;color: #0a0a0a;}
+    .msg_box:after {content: '';display: block;clear:both;}
+    .msg_box > span {padding: 3px 5px;word-break: break-all;display: block;max-width: 300px;margin-bottom: 10px;border-radius: 4px}
+    .msg_box.send > span {background:#ffeb33;float: right;}
+    .msg_box.receive > span {background:#fff;float: left;}
+  </style>
+</head>
+<body>
+<div class="chat_header">
+  <span>챗봇</span>
+  <button type="button" id="close_chat_btn" class="close_btn">X</button>
+</div>
+<div id="divbox" class="chat_content"></div>
+<form id="chatForm" style="display: inline">
+  <input type="text" name="inputText" class="chat_input" id="input1" size="74" style="display: inline; width: 460px" />
+  <input type="button" value="전송" id="btn_submit" class="send_btn" style="display: inline;width: 40px" />
+</form>
+<script>
+  $('#btn_submit').click(function () {
+    send();
+  });
+  $('#chatForm').on('submit', function(e){
+    e.preventDefault();
+    send();
+  });
+  $('#close_chat_btn').on('click', function(){
+    $('#chat_wrap').hide().empty();
+  });
+  function send(){
+    $('#divbox').append('<div class="msg_box send"><span>'+$('#input1').val()+'<span></div>');
+    $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
+    $.ajax({
+      url:  '/chatbot/chatbotSend', //챗봇 api url
+      type: 'post',
+      dataType: 'text',
+      data: {inputText: $('#input1').val()},
+      success: function(data) {
+        console.log("success");
+        $('#divbox').append('<div class="msg_box receive"><span>'+ data +'<span></div>');
+        $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
+      }
+    });
+    $('#input1').val('');
+  }
+  $(document).ready(function () {
+    // 폼 제출 이벤트 처리
+    $('#chatForm').on('submit', function (event) {
+      event.preventDefault();
+      if ($('#inputText').val() === "") {
+        alert("질문을 입력하세요");
+        return false;
+      }
+      callAjax();
+      $('#inputText').val(''); // 입력란 비우기
+    });
+
+  });
+
+</script>
+</body>
+</html>
