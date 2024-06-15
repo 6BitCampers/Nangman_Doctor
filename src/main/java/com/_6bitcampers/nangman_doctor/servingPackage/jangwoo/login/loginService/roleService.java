@@ -1,4 +1,4 @@
-package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginService;
+package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginService;
 
 import org.springframework.stereotype.Service;
 

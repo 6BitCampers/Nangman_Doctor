@@ -1,4 +1,4 @@
-package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginDto;
+package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto;
 
 import lombok.RequiredArgsConstructor;
 

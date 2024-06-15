@@ -1,11 +1,11 @@
-package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginService;
+package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginService;
 
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginDto.OAuth2Response;
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginDto.customOAuth2User;
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginDto.googleResponse;
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginDto.naverReponse;
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginEntity.userEntity;
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginMapper.userEntityMapper;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.OAuth2Response;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.customOAuth2User;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.googleResponse;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.naverReponse;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginMapper.userEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -34,23 +34,25 @@ public class customOAuth2UserService extends DefaultOAuth2UserService {
             oAuth2Response = new naverReponse(oAuth2User.getAttributes());
 
             userEntity = new userEntity().builder()
-                    .normal_user_email(oAuth2Response.getEmail())
-                    .normal_user_name(oAuth2Response.getName())
-                    .normal_user_role(role)
-                    .normal_user_gender(((naverReponse)oAuth2Response).getGender())
-                    .normal_user_hp(((naverReponse)oAuth2Response).getMobile())
-                    .normal_user_age(((naverReponse)oAuth2Response).getAge())
-                    .normal_user_nickname(((naverReponse)oAuth2Response).getNickname())
+                    .user_email(oAuth2Response.getEmail())
+                    .user_name(oAuth2Response.getName())
+                    .user_role(role)
+                    .user_gender(((naverReponse)oAuth2Response).getGender())
+                    .user_hp(((naverReponse)oAuth2Response).getMobile())
+                    .user_age(((naverReponse)oAuth2Response).getAge())
+                    .user_nickname(((naverReponse)oAuth2Response).getNickname())
+                    .user_type(registrantionId)
                     .build();
 
         } else if (registrantionId.equals("google")) { //구글
             oAuth2Response = new googleResponse(oAuth2User.getAttributes());
 
             userEntity = new userEntity().builder()
-                    .normal_user_email(oAuth2Response.getEmail())
-                    .normal_user_name(((googleResponse) oAuth2Response).getFamilyName()+((googleResponse) oAuth2Response).getGivenName())
-                    .normal_user_nickname(oAuth2User.getName())
-                    .normal_user_role(role)
+                    .user_email(oAuth2Response.getEmail())
+                    .user_name(((googleResponse) oAuth2Response).getFamilyName()+((googleResponse) oAuth2Response).getGivenName())
+                    .user_nickname(oAuth2User.getName())
+                    .user_role(role)
+                    .user_type(registrantionId)
                     .build();
         } else {
             return null;
