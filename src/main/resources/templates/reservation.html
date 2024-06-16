@@ -45,9 +45,9 @@
                     </label>
                     <select id="reservation_role" name="reservation_role" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                             required="">
-                        <option value="general">상담</option>
-                        <option value="special">수술 경과 상담</option>
-                        <option value="consultation">수술</option>
+                        <option value="1">상담</option>
+                        <option value="2">수술 경과 상담</option>
+                        <option value="3">수술</option>
                     </select>
                 </div>
                 <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
@@ -67,8 +67,10 @@
             var timeTable = document.getElementById('reservation_time');
             for (var i = 6; i < 24; i++) { // 6시부터 24시까지
                 var timeBlock = document.createElement('div');
-                timeBlock.textContent = i + ":00 - " + (i + 1) + ":00";
-                timeBlock.dataset.time = i;
+                var startTime = i < 10 ? '0' + i + ':00' : i + ':00';
+                var endTime = (i + 1) < 10 ? '0' + (i + 1) + ':00' : (i + 1) + ':00';
+                timeBlock.textContent = startTime + ' - ' + endTime;
+                timeBlock.dataset.time = startTime + ' - ' + endTime;
                 timeBlock.addEventListener('click', function() {
                     var selectedBlocks = document.querySelectorAll('.time-table div.selected');
                     selectedBlocks.forEach(function(block) {
@@ -81,22 +83,31 @@
         });
 
         function handleSubmit(event) {
-            event.preventDefault(); // 폼 제출 막기
-
             // 선택된 시간 블록 가져오기
             var selectedTimeBlock = document.querySelector('.time-table div.selected');
             if (!selectedTimeBlock) {
                 alert('예약 시간을 선택해 주세요.');
+                event.preventDefault(); // Prevent form submission if validation fails
                 return false;
             }
 
-            // 예약 확정 메시지 표시 및 확인 시 리디렉션
-            if (confirm('예약 확정이 되었습니다. 병원에 메일 보내드릴게요~')) {
-                window.location.href = '/';
+            // 예약 확정 메시지 표시
+            if (!confirm('예약 확정이 되었습니다. 병원에 메일 보내드릴게요~')) {
+                event.preventDefault(); // Prevent form submission if user cancels
+                return false;
             }
 
-            return false;
+            // Add the selected time to a hidden input before submitting
+            var timeInput = document.createElement('input');
+            timeInput.type = 'hidden';
+            timeInput.name = 'reservation_time';
+            timeInput.value = selectedTimeBlock.dataset.time;
+            document.getElementById('reservationForm').appendChild(timeInput);
+
+            // Allow the form to be submitted
+            return true;
         }
+
     </script>
     <style>
         body {

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<div layout:fragment="content">
+    <div class="flex h-screen w-full items-center justify-center bg-orange-100 dark:bg-orange-950">
+        <div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">
+            <div class="space-y-2 text-center">
+                <h1 class="text-3xl font-bold">예약 확인</h1>
+                <p>이름: <span th:text="${reservationDto.name}">홍길동</span></p>
+                <p>예약 날짜: <span th:text="${reservationDto.reservationDate}">2024-06-17</span></p>
+                <p>예약 시간: <span th:text="${reservationDto.reservationTime}">10:00 - 11:00</span></p>
+                <p>진료명: <span th:text="${reservationDto.reservationReason}">진료명</span></p>
+                <p>진료 유형: <span th:text="${reservationDto.reservationRole}">상담</span></p>
+                <p>직원 번호: <span th:text="${reservationDto.employeeNo}">3</span></p>
+                <p>유저 번호: <span th:text="${reservationDto.userNo}">7</span></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+</html>
