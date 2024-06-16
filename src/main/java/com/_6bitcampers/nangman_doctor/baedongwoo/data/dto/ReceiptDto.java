@@ -20,4 +20,5 @@ public class ReceiptDto {
     private Timestamp receipt_date;
     private int reservation_no;
     private int receipt_amount;
+    private int info_no;
 }
