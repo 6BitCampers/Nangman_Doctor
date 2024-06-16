@@ -80,8 +80,16 @@ public class customOAuth2UserService extends DefaultOAuth2UserService {
         }
         else {
             //update
-            userEntityMapper.updateNaverUser(userEntity);
-            return new customOAuth2User(oAuth2Response,userEntityMapper.findRoleByEmail(userEntity));
+            if (!emailcheck) {
+                userEntityMapper.updateNaverUser(userEntity);
+                return new customOAuth2User(oAuth2Response,userEntityMapper.findRoleByUserEmail(userEntity));
+            }
+            if (!emailcheck_em) {
+                System.out.println("login employee");
+                userEntityMapper.updateEmployeeUser(userEntity);
+                return new customOAuth2User(oAuth2Response,userEntityMapper.findRoleByEmployeeEmail(userEntity));
+            }
         }
+        return null;
     }
 }
