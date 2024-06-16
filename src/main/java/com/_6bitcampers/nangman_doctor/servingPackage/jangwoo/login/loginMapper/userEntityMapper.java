@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginMapper;
 
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.employeeEntity;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import org.apache.ibatis.annotations.*;
 
@@ -25,5 +26,5 @@ public interface userEntityMapper {
     userEntity findNormalUserByEmail(@Param("email") String email);
 
     @Select("select * from hospital_employee where employee_email=#{email} and employee_type='local'")
-    userEntity findEmployeeUserByEmail(String email);
+    employeeEntity findEmployeeUserByEmail(@Param("email") String email);
 }
