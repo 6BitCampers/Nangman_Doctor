@@ -1,4 +1,4 @@
-package com._6bitcampers.nangman_doctor.leegahyun.service;
+package com._6bitcampers.nangman_doctor.leegahyun.chatbot.chatbotService;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

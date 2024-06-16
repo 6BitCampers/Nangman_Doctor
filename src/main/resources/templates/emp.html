@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<div layout:fragment="content">
+    <div class="flex h-screen w-full items-center justify-center bg-orange-100" >
+
+        <div class="emp-box">
+        <h1>병원 평점</h1>
+        <hr>
+            <table>
+                <thead>
+                <tr>
+                    <th>No.  |</th>
+                    <th>Name  |</th>
+                    <th>LikeCount  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="employee : ${employees}">
+                    <td th:text="${employee.info_no}+'   |'"></td>
+                    <td th:text="${employee.employee_name}+'  |'"></td>
+                    <td th:text="${employee.info_likecount}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="emp-box">
+            <h2>문의게시판</h2>
+            <hr>
+        </div>
+
+        <div class="emp-box">
+            <h3>공지사항</h3>
+            <hr>
+        </div>
+        <div class="emp-box">
+            <h3>직원관리</h3>
+            <hr>
+        </div>
+        <div class="emp-box">
+            <h3>예약관리</h3>
+            <hr>
+        </div>
+
+    </div>
+</div>
+
+</html>
