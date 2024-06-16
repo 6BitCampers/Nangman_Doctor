@@ -9,11 +9,11 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/layout}">
 <div layout:fragment="content">
-	<div class="flex h-screen w-full items-center justify-center bg-orange-100 dark:bg-orange-950">
+	<div class="flex h-screen w-full items-center justify-center bg-orange-100" >
 		<div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">
 			<div class="space-y-2 text-center">
 				<h1 class="text-3xl font-bold">회원가입</h1>
-				<p class="text-gray-500 dark:text-gray-400">
+				<p class="text-gray-500">
 					필수 정보는 <span class="text-red-500">*</span> 로 표시되어 있습니다.
 				</p>
 			</div>
@@ -248,19 +248,47 @@
 				<div class="space-y-2">
 					<label
 							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-							for="interests"
+							for="interest"
 					>
 						관심분야 <span class="text-red-500">*</span>
 					</label>
-					<input
-							aria-hidden="false"
-							tabindex="-1"
-							type="checkbox"
-							value="on"
-							name="interest"
-							id="interests"
-							style="width: 16px; height: 16px;"
-					/>
+					<input type="hidden" id="interest">
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="눈" id="eye" name="interest">
+						<label class="form-check-label" for="eye">
+							눈
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="코" id="nose" name="interest">
+						<label class="form-check-label" for="nose">
+							코
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="필러" id="filler" name="interest">
+						<label class="form-check-label" for="filler">
+							필러
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="윤곽" id="outline" name="interest">
+						<label class="form-check-label" for="outline">
+							윤곽
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="리프트" id="lift" name="interest">
+						<label class="form-check-label" for="lift">
+							리프트
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="지방" id="fat" name="interest">
+						<label class="form-check-label" for="fat">
+							지방
+						</label>
+					</div>
 				</div>
 				<button
 						class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
@@ -323,6 +351,13 @@
 
 		$("#submit_btn").on("click",function(){
 			check();
+		})
+
+		$("#gender_normal").on("click",function (){
+			$("label[for='interest']").text("관심분야");
+		})
+		$("#gender_hospital").on("click",function (){
+			$("label[for='interest']").text("진료분야");
 		})
 	</script>
 </div>

@@ -22,24 +22,22 @@
 					<div class="col-lg-6 d-none d-lg-inline-block text-center nav-center-wrap">
 						<ul class="js-clone-nav  text-center site-menu p-0 m-0">
 							<li class="active"><a href="@{/home.html}">Home</a></li>
-							<li><a th:href="@{/about.html}">About us</a></li>
+							<li><a th:href="@{/about.html}">낭만닥터 소개</a></li>
 							<li class="has-children">
-								<a th:href="@{/}">Dropdown</a>
+								<a th:href="@{/}">병원 둘러보기</a>
 								<ul class="dropdown">
-									<li><a th:href="@{/}">Menu One</a></li>
-									<li class="has-children">
-										<a th:href="@{/}">Menu Two</a>
-										<ul class="dropdown">
-											<li><a th:href="@{/}">Sub Menu One</a></li>
-											<li><a th:href="@{/}">Sub Menu Two</a></li>
-											<li><a th:href="@{/}">Sub Menu Three</a></li>
-										</ul>
-									</li>
-									<li><a th:href="@{/}">Menu Three</a></li>
+									<li><a th:href="@{/}">검색</a></li>
+									<li><a th:href="@{/}">병원 소개</a></li>
 								</ul>
 							</li>
-							<li><a th:href="@{/services.html}">Services</a></li>
-							<li><a th:href="@{/blog.html}">Blog</a></li>
+							<li><a th:href="@{/services.html}">상담</a></li>
+							<li class="has-children">
+								<a th:href="@{/blog.html}">게시판</a>
+								<ul class="dropdown">
+									<li><a th:href="@{/}">Q&A</a></li>
+									<li><a th:href="@{/}">review</a></li>
+								</ul>
+							</li>
 						</ul>
 					</div>
 					<div class="col-6 col-lg-3 text-lg-end">
@@ -49,8 +47,15 @@
 								<li class="cta-button"><a th:href="@{/join}">회원가입</a></li>
 								<li class="cta-button"><a th:href="@{/login}">로그인</a></li>
 							</th:block>
-							<th:block sec:authorize="isAuthenticated()">
-								<!-- 인증 받음 -->
+							<!-- emp인 경우에 보여지도록 설정-->
+							<th:block sec:authorize="hasAuthority('ROLE_EMP')">
+								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
+								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
+							</th:block>
+
+							<!-- user인 경우에 보여지도록 설정-->
+							<th:block sec:authorize="hasAuthority('ROLE_USER')">
+								<li class="nav-item"><a th:href="@{/mypage}" class="nav-link">마이 페이지</a></li>
 								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
 						</ul>

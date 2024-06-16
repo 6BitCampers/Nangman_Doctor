@@ -26,6 +26,7 @@ public class homeController {
         Iterator<? extends GrantedAuthority> iter = authorities.iterator();
         GrantedAuthority auth = iter.next();
         String role = auth.getAuthority();
+        System.out.println(role);
 
         return roleService.checkRole(role);
     }
