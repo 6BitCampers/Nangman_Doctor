@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<div layout:fragment="content">
+    <div class="flex h-screen w-full items-center justify-center bg-orange-100 dark:bg-orange-950">
+        <div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">
+            <div class="space-y-2 text-center">
+                <h1 class="text-3xl font-bold">예약하기</h1>
+            </div>
+            <form class="space-y-4" th:action="@{/reserveProc}" method="post" id="reservationForm" onsubmit="return handleSubmit(event)">
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">
+                        이름 <span class="text-red-500">*</span>
+                    </label>
+                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           id="name" placeholder="홍길동" required="" name="name"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_date">
+                        날짜 <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" id="reservation_date" name="reservation_date" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           required=""/>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_time">
+                        예약 시간 <span class="text-red-500">*</span>
+                    </label>
+                    <div class="time-table" id="reservation_time">
+                        <!-- 시간 블록들은 JavaScript에서 생성 -->
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_reason">
+                        진료명 <span class="text-red-500">*</span>
+                    </label>
+                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                           id="reservation_reason" placeholder="진료명" required="" name="reservation_reason"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_role">
+                        진료 유형 <span class="text-red-500">*</span>
+                    </label>
+                    <select id="reservation_role" name="reservation_role" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            required="">
+                        <option value="general">상담</option>
+                        <option value="special">수술 경과 상담</option>
+                        <option value="consultation">수술</option>
+                    </select>
+                </div>
+                <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
+                        type="submit">
+                    등록
+                </button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 오늘 날짜 이후로 예약 날짜 설정
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById('reservation_date').setAttribute('min', today);
+
+            // 시간 블록 생성
+            var timeTable = document.getElementById('reservation_time');
+            for (var i = 6; i < 24; i++) { // 6시부터 24시까지
+                var timeBlock = document.createElement('div');
+                timeBlock.textContent = i + ":00 - " + (i + 1) + ":00";
+                timeBlock.dataset.time = i;
+                timeBlock.addEventListener('click', function() {
+                    var selectedBlocks = document.querySelectorAll('.time-table div.selected');
+                    selectedBlocks.forEach(function(block) {
+                        block.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                });
+                timeTable.appendChild(timeBlock);
+            }
+        });
+
+        function handleSubmit(event) {
+            event.preventDefault(); // 폼 제출 막기
+
+            // 선택된 시간 블록 가져오기
+            var selectedTimeBlock = document.querySelector('.time-table div.selected');
+            if (!selectedTimeBlock) {
+                alert('예약 시간을 선택해 주세요.');
+                return false;
+            }
+
+            // 예약 확정 메시지 표시 및 확인 시 리디렉션
+            if (confirm('예약 확정이 되었습니다. 병원에 메일 보내드릴게요~')) {
+                window.location.href = '/';
+            }
+
+            return false;
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        .time-table {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .time-table div {
+            display: inline-block;
+            width: 23%; /* 블록의 너비를 조정하여 한 행에 최대 4개가 들어가도록 설정 */
+            padding: 10px;
+            margin: 1%;
+            text-align: center;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        .time-table div.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+
+</div>
+</html>
