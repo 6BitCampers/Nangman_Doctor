@@ -54,7 +54,6 @@ public class PaymentController {
         paymentService.uploadPayment(paymentDto);
 
         int payment_no=paymentDto.getPayment_no();
-        System.out.println(payment_no);
 
         Map<String,Object> receiptMap=new HashMap<>();
 
