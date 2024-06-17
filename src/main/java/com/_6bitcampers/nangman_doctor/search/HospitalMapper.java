@@ -12,4 +12,6 @@ public interface HospitalMapper {
 
     @Select("SELECT * FROM hospital_info WHERE info_description LIKE CONCAT('%', #{keyword}, '%') ORDER BY info_likecount DESC")
     List<HospitalDto> findTopRatedByKeyword(String keyword);
+    @Select("SELECT * FROM hospital_info WHERE info_no = #{info_no}")
+    HospitalDto findById(Long info_no);
 }
