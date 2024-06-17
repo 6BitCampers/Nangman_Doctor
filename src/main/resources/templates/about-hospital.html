@@ -87,6 +87,22 @@
 			</div>
 		</div>
 	</div>
+
+	<div id="mapKaKao" style="width:500px;height:400px;"></div>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0885ec8244c26f1b7946f7fcb2b4c01c"></script>
+	<script th:inline="javascript">
+		var container = document.getElementById('mapKaKao'); //지도를 담을 영역의 DOM 레퍼런스
+		var hospitalDto=/*[[${hospital}]]*/ {};
+			console.log(hospitalDto.info_x);
+
+
+		var options = { //지도를 생성할 때 필요한 기본 옵션
+			center: new kakao.maps.LatLng(hospitalDto.info_x, hospitalDto.info_y), //지도의 중심좌표.
+			level: 3 //지도의 레벨(확대, 축소 정도)
+		};
+
+		var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+	</script>
 </div>
 
 <div class="site-footer">
@@ -157,6 +173,7 @@
 		</div>
 	</div>
 </div>
+
 
 <!-- Preloader -->
 <div id="overlayer"></div>
