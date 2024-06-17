@@ -1,5 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,34 +11,8 @@
 </head>
 <body>
 
-<nav class="site-nav mt-3">
-    <div class="container">
-        <div class="site-navigation">
-            <div class="row">
-                <div class="col-6 col-lg-3">
-                    <a href="home.html" class="logo m-0 float-start">Sterial</a>
-                </div>
-                <div class="col-lg-6 d-none d-lg-inline-block text-center nav-center-wrap">
-                    <ul class="js-clone-nav text-center site-menu p-0 m-0">
-                        <li><a href="home.html">Home</a></li>
-                        <li><a href="about.html">About us</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li class="active"><a href="blog.html">Blog</a></li>
-                    </ul>
-                </div>
-                <div class="col-6 col-lg-3 text-lg-end">
-                    <ul class="js-clone-nav d-none d-lg-inline-block text-end site-menu">
-                        <li class="cta-button"><a href="contact.html">Contact Us</a></li>
-                    </ul>
-                    <a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
-                        <span></span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
 
+<div layout:fragment="content">
 <div class="hero overlay">
     <div class="img-bg rellax">
         <img src="/images/hero_2.jpg" alt="Image" class="img-fluid">
@@ -103,6 +80,7 @@
             </tbody>
         </table>
     </div>
+</div>
 </div>
 
 <div class="site-footer">
