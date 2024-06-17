@@ -7,16 +7,18 @@
     <script src="https://js.tosspayments.com/v1/payment"></script>
     <script th:inline="javascript">
         // ------ 클라이언트 키로 객체 초기화 ------
-        var clientKey = 'test_ck_jExPeJWYVQwONKXNQEXx849R5gvN'
-        var tossPayments = TossPayments(clientKey);
 
-        var receiptDto = /*[[${receiptDto}]]*/ {};
-        var receiptDtoJson = /*[[${receiptDto}]]*/ '{}'; // JSON 형식으로 변환된 문자열
-        receiptDto = JSON.parse(receiptDtoJson);
-
-        var user_no = /*[[${user_no}]]*/ "0";
 
         function pay(method){
+            var clientKey = 'test_ck_jExPeJWYVQwONKXNQEXx849R5gvN'
+            var tossPayments = TossPayments(clientKey);
+
+            var receiptDto = /*[[${receiptDto}]]*/ {};
+            var receiptDtoJson = /*[[${receiptDto}]]*/ '{}'; // JSON 형식으로 변환된 문자열
+            receiptDto = JSON.parse(receiptDtoJson);
+
+            var user_no = /*[[${user_no}]]*/ "0";
+
             console.log("Receipt Amount: ", receiptDto.receipt_amount);
             console.log("User No: ", user_no);
             // ------ 결제창 띄우기 ------
@@ -28,7 +30,7 @@
                     // 더 많은 결제 정보 파라미터는 결제창 Javascript SDK에서 확인하세요.
                     // https://docs.tosspayments.com/reference/js-sdk
                     amount: receiptDto.receipt_amount, // 결제 금액
-                    orderId: user_nodd, // 주문번호(주문번호는 상점에서 직접 만들어주세요.)
+                    orderId: user_no, // 주문번호(주문번호는 상점에서 직접 만들어주세요.)
                     orderName: '테스트 결제', // 구매상품
                     customerName: '김토스', // 구매자 이름
                     successUrl: 'http://localhost:8080/payment/success?method='+method, // 결제 성공 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
