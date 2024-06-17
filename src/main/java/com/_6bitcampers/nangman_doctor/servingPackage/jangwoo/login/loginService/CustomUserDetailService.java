@@ -25,7 +25,6 @@ public class CustomUserDetailService implements UserDetailsService {
             return new CustomUserDetails(user);
         }
         else {
-            System.out.println(email);
             employeeEntity employeeuser = userEntityMapper.findEmployeeUserByEmail(email);
             user = new userEntity().builder()
                     .user_name(employeeuser.getEmployee_name())
