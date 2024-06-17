@@ -14,7 +14,13 @@
         </tr>
         <tr th:each="item,itemStat:${list}" >
             <td th:text="${itemStat.count}"></td>
-            <td><a th:href="@{'/hospital/detail?review_no=' + ${item.review_no} +'&user_name='+ ${#authentication.name}+'&empolyee_no='+${item.employee_no}}" th:text="${item.review_title}"></a></td>
+            <td>
+                <form th:action="@{/reviewboard/detail}" method="post">
+                    <input type="hidden" name="review_no" th:value="${item.review_no}" />
+                    <input type="hidden" name="userId" th:value="${#authentication.name}" />
+                    <button type="submit" th:text="${item.review_title}"></button>
+                </form>
+            </td>
             <td th:text="${item.review_likecount}"></td>
             <td th:text="${item.review_no}"></td>
             <td th:text="${item.getFormattedWriteday()}"></td>

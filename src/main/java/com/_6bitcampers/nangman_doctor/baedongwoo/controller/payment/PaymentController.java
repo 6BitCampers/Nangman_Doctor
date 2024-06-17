@@ -64,7 +64,7 @@ public class PaymentController {
         
         paymentService.updateReceipt(receiptMap);
 
-        return "redirect:hospitaldetail?hospitalno="+hospital_no;
+        return "redirect:mypage?user_no="+user_no;
     }
 
 

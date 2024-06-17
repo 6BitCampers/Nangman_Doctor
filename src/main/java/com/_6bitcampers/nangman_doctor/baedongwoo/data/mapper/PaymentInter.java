@@ -2,6 +2,7 @@ package com._6bitcampers.nangman_doctor.baedongwoo.data.mapper;
 
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PaymentDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Map;
@@ -15,4 +16,5 @@ public interface PaymentInter {
     public int uploadPayment(PaymentDto paymentDto);
     @Update("update hospital_receipt set receipt_payment_key=#{receipt_paymentKey},payment_no=#{payment_no},receipt_amount=#{receipt_amount} where receipt_no=#{receipt_no}")
     public void updateReceipt(Map<String, Object> receiptMap);
+    
 }
