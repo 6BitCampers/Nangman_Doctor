@@ -1,5 +1,5 @@
-package com._6bitcampers.nangman_doctor.leegahyun.controller;
-import com._6bitcampers.nangman_doctor.leegahyun.service.ChatbotService;
+package com._6bitcampers.nangman_doctor.leegahyun.chatbot.chatbotController;
+import com._6bitcampers.nangman_doctor.leegahyun.chatbot.chatbotService.ChatbotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
