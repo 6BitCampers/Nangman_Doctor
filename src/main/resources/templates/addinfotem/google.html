@@ -1,0 +1,272 @@
+<!-- /*
+* Template Name: Sterial
+* Template Author: Untree.co
+* Tempalte URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
+<div layout:fragment="content">
+	<div class="flex h-screen w-full items-center justify-center bg-orange-100 dark:bg-orange-950">
+		<div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">
+			<div class="space-y-2 text-center">
+				<h1 class="text-3xl font-bold">추가 정보 입력</h1>
+				<p class="text-gray-500 dark:text-gray-400">
+					필수 정보는 <span class="text-red-500">*</span> 로 표시되어 있습니다.
+				</p>
+			</div>
+			<form class="space-y-4" action="/addinfoProc" method="post" id="login_form">
+				<div class="space-y-2">
+					<label
+							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							for="user-type"
+					>
+						회원 유형 <span class="text-red-500">*</span>
+					</label>
+					<div
+							role="radiogroup"
+							aria-required="true"
+							dir="ltr"
+							class="flex items-center gap-2"
+							id="user-type"
+							tabindex="0"
+							style="outline: none;"
+					>
+						<input
+								id="gender_normal"
+								tabindex="-1"
+								type="radio"
+								value="general"
+								style="width: 16px; height: 16px;"
+								name="type"
+								checked="checked"
+						/>
+						<label
+								class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium"
+								for="gender_normal"
+						>
+							일반 유저
+						</label>
+						<input
+								id="gender_hospital"
+								tabindex="-1"
+								type="radio"
+								value="hospital"
+								style="width: 16px; height: 16px;"
+								name="type"
+						/>
+						<label
+								class="peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-sm font-medium"
+								for="gender_hospital"
+						>
+							병원 관계자
+						</label>
+					</div>
+				</div>
+				<div class="grid grid-cols-2 gap-4">
+					<div class="space-y-2">
+						<label
+								class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+								for="gender"
+						>
+							성별 <span class="text-red-500">*</span>
+						</label>
+						<div class="relative flex items-center">
+							<select
+									name="gender"
+									class="bg-white flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+									id="gender"
+									required=""
+									tabindex="1"
+									style="border: 1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; overflow-wrap: normal;"
+							>
+								<option value="F">여성</option>
+								<option value="M">남성</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="space-y-2">
+					<label
+							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							for="address"
+					>
+						주소 <span class="text-red-500">*</span>
+					</label>
+					<div class="relative flex items-center">
+						<input
+								class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+								id="address"
+								placeholder="서울특별시 강남구 역삼동"
+								required="required"
+								readonly
+								name="addr"
+						/>
+						<button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600"
+								onclick="search_location()">
+							주소찾기
+						</button>
+					</div>
+				</div>
+				<div class="space-y-2">
+					<label
+							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							for="phone"
+					>
+						핸드폰번호 <span class="text-red-500">*</span>
+					</label>
+					<input
+							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+							id="phone"
+							placeholder="010-1234-5678"
+							required="required"
+							name="hp"
+							type="tel"
+							pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+					/>
+				</div>
+				<div class="space-y-2">
+					<label
+							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							for="age"
+					>
+						연령대 <span class="text-red-500">*</span>
+					</label>
+					<div class="relative flex items-center">
+						<select
+								id="age"
+								class="bg-white flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+								required=""
+								tabindex="-1"
+								style="border: 1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; overflow-wrap: normal;"
+								name="age"
+						>
+							<option value="10-19">10대</option>
+							<option value="20-29">20대</option>
+							<option value="30-39">30대</option>
+							<option value="40-49">40대</option>
+							<option value="50-59">50대</option>
+							<option value="60-69">60대 이상</option>
+						</select>
+					</div>
+				</div>
+				<div class="space-y-2">
+					<label
+							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							for="nickname"
+					>
+						닉네임 <span class="text-red-500">*</span>
+					</label>
+					<input
+							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+							id="nickname"
+							placeholder="홍길동123"
+							required=""
+							name="nickname"
+					/>
+				</div>
+				<div class="space-y-2">
+					<label
+							class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+							for="interest"
+					>
+						관심분야 <span class="text-red-500">*</span>
+					</label>
+					<input type="hidden" id="interest">
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="눈" id="eye" name="interest">
+						<label class="form-check-label" for="eye">
+							눈
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="코" id="nose" name="interest">
+						<label class="form-check-label" for="nose">
+							코
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="필러" id="filler" name="interest">
+						<label class="form-check-label" for="filler">
+							필러
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="윤곽" id="outline" name="interest">
+						<label class="form-check-label" for="outline">
+							윤곽
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="리프트" id="lift" name="interest">
+						<label class="form-check-label" for="lift">
+							리프트
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="지방" id="fat" name="interest">
+						<label class="form-check-label" for="fat">
+							지방
+						</label>
+					</div>
+				</div>
+				<button
+						class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
+						type="button" id="submit_btn"
+				>
+					제출하기
+				</button>
+			</form>
+		</div>
+	</div>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+		function search_location() {
+			new daum.Postcode({
+				oncomplete: function (data) {
+					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+					// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+					var addr = data.sido; // 시
+					var extraAddr = data.sigungu; // 그 이하
+
+					document.getElementById("address").value = addr + "시 " + extraAddr;
+					// 커서를 상세주소 필드로 이동한다.
+					document.getElementById("address").focus();
+				}
+			}).open();
+		}
+
+		function check() {
+			let nickname = $("#nickname").val();
+
+			$.ajax({
+				url: "/api/v1/nicknamecheck",
+				type: "get",
+				data: {"nickname": nickname},
+				dataType: "json",
+				success: function (data) {
+					if (data.status == 'true') document.getElementById("login_form").submit();
+					else {
+						alert("이미 닉네임이 존재합니다.")
+					}
+				}
+			})
+		}
+
+		$("#submit_btn").on("click", function () {
+			check();
+		})
+
+		$("#gender_normal").on("click",function (){
+			$("label[for='interest']").text("관심분야");
+		})
+		$("#gender_hospital").on("click",function (){
+			$("label[for='interest']").text("진료분야");
+		})
+	</script>
+</div>
+</html>

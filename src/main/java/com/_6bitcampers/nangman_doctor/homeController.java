@@ -1,6 +1,6 @@
 package com._6bitcampers.nangman_doctor;
 
-import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.loginService.roleService;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginService.roleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +18,7 @@ public class homeController {
 
     @GetMapping("/")
     public String home() {
+        String id = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -25,6 +26,7 @@ public class homeController {
         Iterator<? extends GrantedAuthority> iter = authorities.iterator();
         GrantedAuthority auth = iter.next();
         String role = auth.getAuthority();
+        System.out.println(role);
 
         return "home";
     }
