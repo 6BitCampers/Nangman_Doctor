@@ -29,41 +29,39 @@ public class PaymentController {
         return "payment";
     }
 
-    @GetMapping("/payment/fail")
-    public String payFail(){
-        return "payment";
-    }
-
     @GetMapping("/payment/success")
     public String paySuccess(
             @RequestParam String orderId,
             @RequestParam String paymentKey,
             @RequestParam String method,
-            @RequestParam int receipt_no
+            @RequestParam int receipt_no,
+            @RequestParam int amount
     ){
-        if (orderId == null || orderId.isEmpty() ||
-            paymentKey == null || paymentKey.isEmpty() ||
-            method == null || method.isEmpty()) {
-            throw new IllegalArgumentException("잘못된 접근방법입니다");
-        }
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
-        int amount=receiptDto.getReceipt_amount();
+
         int hospital_no=receiptDto.getInfo_no();
+        String user_no=orderId.substring(5);
 
         PaymentDto paymentDto= new PaymentDto();
 
         paymentDto=PaymentDto.builder()
                 .payment_method(method)
                 .payment_amount(amount)
-                .user_no(Integer.parseInt(orderId))
+                .user_no(Integer.parseInt(user_no))
                 .payment_key(paymentKey)
                 .build();
+
+        paymentService.uploadPayment(paymentDto);
+
+        int payment_no=paymentDto.getPayment_no();
+        System.out.println(payment_no);
 
         Map<String,Object> receiptMap=new HashMap<>();
 
         receiptMap.put("receipt_no",receipt_no);
         receiptMap.put("receipt_paymentKey",paymentKey);
         receiptMap.put("receipt_amount",amount);
+        receiptMap.put("payment_no",payment_no);
         
         paymentService.updateReceipt(receiptMap);
 
