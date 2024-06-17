@@ -44,20 +44,115 @@
                                 onclick="history.back()">이전으로
                         </button>
                         <button type="button">
-                        <a
-                                th:href="@{/about-hospital/{hospital_no}(hospital_no=${hospital_no})}">병원 방문하기
-                        </a>
+                            <a
+                                    th:href="@{/about-hospital/{hospital_no}(hospital_no=${hospital_no})}">병원 방문하기
+                            </a>
                         </button>
                         <span th:if="${#authentication.name==userDto.getUser_email()}">
-                        <button type="button" style="color: black" class="btn">수정</button>
-                        <button type="button" style="color: black" class="btn">삭제</button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#reviewUpdateModal" style="color: black"
+                                class="btn">수정</button>
+                        <button type="button" style="color: black" class="btn" id="reviewDeleteBtn">삭제</button>
                             </span>
-
                     </td>
                 </tr>
             </table>
 
         </div>
-
     </div>
+    <div class="modal fade" id="reviewUpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <form th:action="@{/reviewboard/update}" method="post">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 수정하기</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                        <table class="table" style="width: 100%;">
+                            <tr>
+                                <th colspan="2"><label>
+                                    <input type="hidden" name="review_no" th:value="${dto.review_no}">
+                                    <input type="text" name="review_title" class="input-group"
+                                           th:value="${dto.review_title}">
+                                </label>
+                                    <br></th>
+                            </tr>
+                            <tr>
+                                <td>평점 <span id="inputRatings"></span>
+                                    <input type="hidden" name="review_likecount" id="ratingsInput" th:value="${dto.review_likecount}">
+                                </td>
+                            </tr>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    const inputRatings = document.getElementById('inputRatings');
+                                    const ratingsInput = document.getElementById('ratingsInput');
+                                    const starCount = 5;
+
+                                    // Create stars
+                                    for (let i = 1; i <= starCount; i++) {
+                                        const star = document.createElement('span');
+                                        star.classList.add('star');
+                                        star.innerHTML = '★';
+                                        star.dataset.ratingValue = i;
+                                        star.addEventListener('click', setRating);
+                                        inputRatings.appendChild(star);
+                                    }
+
+                                    function setRating(event) {
+                                        const selectedRating = event.currentTarget.dataset.ratingValue;
+                                        ratingsInput.value = selectedRating;
+                                        const stars = inputRatings.querySelectorAll('.star');
+                                        stars.forEach(star => {
+                                            if (star.dataset.ratingValue <= selectedRating) {
+                                                star.classList.add('selected');
+                                            } else {
+                                                star.classList.remove('selected');
+                                            }
+                                        });
+                                    }
+                                });
+                            </script>
+                            <tr>
+                                <td>작성자 : <span th:text="${user_name}"></span></td>
+                                <td style="text-align: right">작성일 : <span
+                                        th:text="${#dates.format(dto.review_writeday, 'yyyy-MM-dd HH:mm')}"></span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="width:100%;height: 200px">
+                                    <label>
+                                        <textarea name="review_content"
+                                                  th:text="${dto.review_content}" style="width: 100%;height: 100%" class="input-group"></textarea></label>
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">수정 완료</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $("#reviewDeleteBtn").click(function (){
+            let review_no=/*[[review_no]]*/0;
+
+            let comfirm=confirm("리뷰를 삭제하시겠습니까?");
+            if(comfirm) {
+                $.ajax({
+                    type: "get",
+                    dataType: "json",
+                    data: {"review_no": review_no},
+                    url: "/reviewboard/delete",
+                    success: function () {
+                        location.reload();
+                    }
+                })
+            }
+        });
+        /*]]>*/
+    </script>
 </div>

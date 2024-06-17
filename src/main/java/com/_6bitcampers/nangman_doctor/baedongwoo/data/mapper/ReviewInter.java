@@ -18,7 +18,7 @@ public interface ReviewInter {
     @Insert("insert into hospital_review (review_title,review_content,review_writeday,employee_no,user_no,review_likecount) values (#{review_title},#{review_content},now(),#{employee_no},#{user_no},#{review_likecount})")
     public void addReview(ReviewDto reviewDto);
     @Update("update hospital_review set review_title=#{review_title}, review_content=#{review_content},review_likecount=#{review_likecount} where review_no=#{review_no}")
-    public void updateReview(ReviewDto reviewDto);
+    public void updateReview(Map<String,Object> map);
     @Delete("delete from hospital_review where review_no=#{review_no}")
     public void deleteReview(int review_no);
     @Update("update hospital_review set review_viewcount=review_viewcount+1 where review_no=#{review_no}")

@@ -34,8 +34,8 @@ public class ReviewService {
     public void addReview(ReviewDto reviewDto){
         reviewInter.addReview(reviewDto);
     }
-    public void updateReview(ReviewDto reviewDto){
-        reviewInter.updateReview(reviewDto);
+    public void updateReview(Map<String,Object> map){
+        reviewInter.updateReview(map);
     }
     public void deleteReview(int review_no){
         reviewInter.deleteReview(review_no);

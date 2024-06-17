@@ -10535,3 +10535,11 @@ input:invalid {
   font-size: 3em; /* Adjust the size as needed */
   font-weight: bold; /* Ensures the text is bold */
 }
+ .star {
+   font-size: 2em;
+   cursor: pointer;
+   color: gray;
+ }
+.star.selected {
+  color: gold;
+}

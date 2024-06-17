@@ -9,9 +9,10 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class HospitalDetailController {
@@ -51,7 +52,34 @@ public class HospitalDetailController {
         model.addAttribute("user_name", user_name);
         model.addAttribute("userDto",userDto);
         model.addAttribute("hospital_no",hospital_no);
+        model.addAttribute("review_no",review_no);
 
         return "reviewdetail";
+    }
+
+    @PostMapping("/reviewboard/update")
+    public String updateReview(
+            @RequestParam String review_title,
+            @RequestParam int review_no,
+            @RequestParam String review_content,
+            @RequestParam int review_likecount
+    ){
+        Map<String,Object>map=new HashMap<>();
+        map.put("review_title",review_title);
+        map.put("review_no",review_no);
+        map.put("review_content",review_content);
+        map.put("review_likecount",review_likecount);
+        reviewService.updateReview(map);
+
+        return "redirect:/reviewboard/detail";
+    }
+
+    @ResponseBody
+    @GetMapping("/reviewboard/delete")
+    public String deleteReview(
+            @RequestParam int review_no
+    ){
+        reviewService.deleteReview(review_no);
+        return "{}";
     }
 }
