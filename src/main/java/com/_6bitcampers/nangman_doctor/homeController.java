@@ -28,6 +28,6 @@ public class homeController {
         String role = auth.getAuthority();
         System.out.println(role);
 
-        return roleService.checkRole(role);
+        return "home";
     }
 }
