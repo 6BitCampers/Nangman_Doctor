@@ -17,8 +17,6 @@ public class HospitalService {
     }
 
     public List<HospitalDto> searchTopRatedHospitals(String keyword) {
-        System.out.println("실행");
-        return hospitalMapper.findTopRatedByKeyword(keyword);
-
+        return hospitalMapper.findTopRatedByKeyword(keyword).stream().limit(10).toList();
     }
 }

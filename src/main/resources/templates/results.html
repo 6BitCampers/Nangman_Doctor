@@ -3,30 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Untree.co">
-    <link rel="shortcut icon" href="favicon.png">
-    <meta name="description" content="" />
-    <meta name="keywords" content="bootstrap, bootstrap5" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/tiny-slider.css">
-    <link rel="stylesheet" href="/css/aos.css">
-    <link rel="stylesheet" href="/css/flatpickr.min.css">
-    <link rel="stylesheet" href="/css/glightbox.min.css">
-    <link rel="stylesheet" href="/css/style.css">
     <title>Search Results &mdash; Sterial</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-
-<div class="site-mobile-menu site-navbar-target">
-    <div class="site-mobile-menu-header">
-        <div class="site-mobile-menu-close">
-            <span class="icofont-close js-menu-toggle"></span>
-        </div>
-    </div>
-    <div class="site-mobile-menu-body"></div>
-</div>
 
 <nav class="site-nav mt-3">
     <div class="container">
@@ -39,21 +19,6 @@
                     <ul class="js-clone-nav text-center site-menu p-0 m-0">
                         <li><a href="home.html">Home</a></li>
                         <li><a href="about.html">About us</a></li>
-                        <li class="has-children">
-                            <a href="#">Dropdown</a>
-                            <ul class="dropdown">
-                                <li><a href="search.html">Search</a></li>
-                                <li class="has-children">
-                                    <a href="#">Menu Two</a>
-                                    <ul class="dropdown">
-                                        <li><a href="#">Sub Menu One</a></li>
-                                        <li><a href="#">Sub Menu Two</a></li>
-                                        <li><a href="#">Sub Menu Three</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Menu Three</a></li>
-                            </ul>
-                        </li>
                         <li><a href="services.html">Services</a></li>
                         <li class="active"><a href="blog.html">Blog</a></li>
                     </ul>
@@ -87,36 +52,56 @@
 
 <div class="section">
     <div class="container">
-        <h2>이 병원들이 유저 평가가 높아요!</h2>
-        <div class="row">
-            <div class="col-12 col-md-6 col-lg-4 mb-4" th:each="hospital : ${topRatedHospitals}">
-                <div class="media-entry">
-                   <!-- <a href="#">
-                        <img th:src="@{${hospital.info_photo}}" alt="Image" class="img-fluid">
-                    </a>-->
-                    <div class="bg-white m-body">
-                        <h3><a th:text="${hospital.info_name}">Hospital Name</a></h3>
-                        <p>Rating: <span th:text="${hospital.info_likecount}">5.0</span></p>
-                        <p>Description: <span th:text="${hospital.info_description}">Hospital Description</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h2>이 병원들이 유저 평점이 높아요</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>주소</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="hospital : ${topRatedHospitals}">
+                <td><img th:src="@{${hospital.info_photo}}" alt="Hospital Photo" class="img-fluid" width="50" height="50"></td>
+                <td th:text="${hospital.info_name}">Hospital Name</td>
+                <td th:text="${hospital.info_description}">Description</td>
+                <td th:text="${hospital.info_addr}">주소</td>
+                <td>
+                    <button class="btn btn-primary" th:onclick="'appoint(' + ${hospital.info_no} + ')'">에약</button>
+                    <button class="btn btn-secondary" th:onclick="'moreDescription(' + ${hospital.info_no} + ')'">설명</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-        <h2>관련 병원들이에요!</h2>
-        <div class="row">
-            <div class="col-12 col-md-6 col-lg-4 mb-4" th:each="hospital : ${hospitals}">
-                <div class="media-entry">
-                    <!--<a href="#">
-                        <img th:src="@{${hospital.info_photo}}" alt="Image" class="img-fluid">
-                    </a>-->
-                    <div class="bg-white m-body">
-                        <h3><a th:text="${hospital.info_name}">Hospital Name</a></h3>
-                        <p>Description: <span th:text="${hospital.info_description}">Hospital Description</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h2>검색결과</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Likes</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="hospital : ${hospitals}">
+                <td><img th:src="@{${hospital.info_photo}}" alt="Hospital Photo" class="img-fluid" width="50" height="50"></td>
+                <td th:text="${hospital.info_name}">Hospital Name</td>
+                <td th:text="${hospital.info_description}">Description</td>
+                <td th:text="${hospital.info_addr}">주소</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" th:attr="onclick='appoint(' + ${hospital.info_no} + ')'">예약</button>
+                    <button class="btn btn-secondary btn-sm">설명</button>
+                </td>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -206,6 +191,14 @@
 <script src="/js/flatpickr.js"></script>
 <script src="/js/glightbox.min.js"></script>
 <script src="/js/custom.js"></script>
+<script>
+    function appoint(hospitalId) {
+        // Handle the appointment logic here
+    }
 
+    function moreDescription(hospitalId) {
+        // Handle the more description logic here
+    }
+</script>
 </body>
 </html>
