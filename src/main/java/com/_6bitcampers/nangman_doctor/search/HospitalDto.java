@@ -9,6 +9,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("HospitalDto")
 public class HospitalDto {
     private Long info_no;
+    private double info_likecount;
     private String info_name;
     private double info_x;
     private double info_y;

@@ -28,65 +28,97 @@
 	<div class="section">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-6"><!--
 					<div class="col-md-6">
 						<img th:if="${hospital.info_photo != null}" th:src="@{${hospital.info_photo}}" alt="Hospital Photo" class="img-fluid" width="500" height="500">
 						<img th:unless="${hospital.info_photo != null}" src="/images/img-4.jpg" alt="Default Photo" class="img-fluid" width="500" height="500">
-					</div>
+					</div>-->
+					<div id="map" style="width:90%;height:350px;margin-left: 50px; margin-bottom: 50px"></div>
+
+					<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e8446e9bb190af20372cac3728f820e3"></script>
+					<script th:inline="javascript">
+						var hospital=/*[[${hospital}]]*/ {};
+						var info_x=hospital.info_x;
+						var info_y=hospital.info_y;
+						console.log(info_x);
+						var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+								mapOption = {
+									center: new kakao.maps.LatLng(info_y,info_x), // 지도의 중심좌표
+									level: 3 // 지도의 확대 레벨
+								};
+
+						// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+						var map = new kakao.maps.Map(mapContainer, mapOption);
+						// 지도를 클릭한 위치에 표출할 마커입니다
+						var marker = new kakao.maps.Marker({
+							// 지도 중심좌표에 마커를 생성합니다
+							position: map.getCenter()
+						});
+						// 지도에 마커를 표시합니다
+						marker.setMap(map);
+
+						// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+						var mapTypeControl = new kakao.maps.MapTypeControl();
+
+						// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+						// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+						map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+						// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+						var zoomControl = new kakao.maps.ZoomControl();
+						map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+					</script>
 				</div>
 				<div class="col-md-6">
+
 					<p><b>설명: </b><span th:text="${hospital.info_description}">설명</span></p>
+					<br>
 					<p><b>주소: </b><span th:text="${hospital.info_addr}">주소</span></p>
+					<br>
 					<p><b>연락처</b><span th:text="${hospital.info_hp}">N/A</span></p>
+					<br>
 					<p><b>추가설명: </b> <span th:text="${hospital.info_plus}">N/A</span></p>
-
-
+					<br>
+					&nbsp;
+					&nbsp;
+					&nbsp;
+					<br>
+					<br>
+<br>
 					<table class="table table-striped">
 						<thead>
 						<tr>
-							<th>Day</th>
-							<th>Opening Hours</th>
+							<th>시간</th>
+							<th>월</th>
+							<th>화</th>
+							<th>수</th>
+							<th>목</th>
+							<th>금</th>
+							<th>토</th>
+							<th>일</th>
+							<th>공</th>
 						</tr>
 						</thead>
 						<tbody>
 						<tr>
-							<td>Monday</td>
+							<td>요 일</td>
 							<td th:text="${hospital.Monday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Tuesday</td>
 							<td th:text="${hospital.Tuesday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Wednesday</td>
 							<td th:text="${hospital.Wednesday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Thursday</td>
 							<td th:text="${hospital.Thursday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Friday</td>
 							<td th:text="${hospital.Friday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Saturday</td>
 							<td th:text="${hospital.Saturday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Sunday</td>
 							<td th:text="${hospital.Sunday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Holiday</td>
 							<td th:text="${hospital.Holiday}">N/A</td>
 						</tr>
 						</tbody>
 					</table>
+
 				</div>
 			</div>
 		</div>
 	</div>
+
 
 	<div id="map" style="width:90%;height:350px;margin-left: 50px; margin-bottom: 50px"></div>
 
@@ -123,6 +155,7 @@
 		var zoomControl = new kakao.maps.ZoomControl();
 		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	</script>
+
 </div>
 
 <div class="site-footer">
