@@ -2,41 +2,128 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
-<div layout:fragment="content" class="section section-2" style="height: 800px;margin-left: 50px">
-    <table class="table" style="width: 70%; ">
-        <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>평점</th>
-            <th>작성자</th>
-            <th>작성일</th>
-            <th>조회수</th>
-        </tr>
-        <tr th:each="item,itemStat:${list}" >
-            <td th:text="${itemStat.count}"></td>
-            <td>
-                <form th:action="@{/reviewboard/detail}" method="post">
-                    <input type="hidden" name="review_no" th:value="${item.review_no}" />
-                    <input type="hidden" name="userId" th:value="${#authentication.name}" />
-                    <button type="submit" th:text="${item.review_title}"></button>
-                </form>
-            </td>
-            <td><span class="reviewStarsBoard"></span>
-                <script th:inline="javascript">
-                    let s = '';
-                    let ratings =/*[[${item.review_likecount}]]*/0;
-                    console.log(ratings);
-                    for (let i = 0; i < ratings; i++) {
-                        s += `<span style="color: gold">&#9733</span>`;
-                    }
-                    for (let i = 0; i < ratings - 5; i++) {
-                        s += `<span>&#9734;</span>`;
-                    }
-                    $(".reviewStarsBoard").html(s);
-                </script></td>
-            <td th:text="${userMap[item.user_no].user_name}"></td>
-            <td th:text="${item.getFormattedWriteday()}"></td>
-            <td th:text="${item.review_viewcount}"></td>
-        </tr>
-    </table>
+<div layout:fragment="content" class="section section-1" style="height: 800px;margin-left: 50px">
+    <div class="w-full max-w-3xl mx-auto p-6 md:p-8">
+        <div class="bg-white rounded-lg shadow-md overflow-auto">
+            <div class="px-6 py-5 bg-gray-100">
+                <h1 class="text-2xl font-bold">리뷰 게시판</h1>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="space-y-4">
+                    <div th:each="item,itemStat:${list}" class="bg-gray-50 rounded-lg p-4 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
+                                    <img class="aspect-square h-full w-full" alt="User Avatar" th:src="@{/images/placeholder-user.jpg}"/>
+                                </span>
+                                <div class="font-medium"
+                                     th:with="nameLength=${userMap[item.user_no].user_name.length()}" style="font-weight: bold">
+                                    <span th:if="${nameLength == 1}">*${userMap[item.user_no].user_name.substring(1)}</span>
+                                    <span th:if="${nameLength == 2}">**${userMap[item.user_no].user_name.substring(2)}</span>
+                                    <span th:if="${nameLength > 2}">
+                                    <span th:text="${userMap[item.user_no].user_name.substring(0,1)}"></span>
+                                    <span th:each="i : ${#numbers.sequence(1, nameLength-2)}">*</span>
+                                    <span th:text="${userMap[item.user_no].user_name.substring(nameLength-1)}"></span>
+                                    </span>
+                                    &nbsp;&nbsp;
+                                    <span th:text="${hospitalDtoMap[item.user_no]}" style="font-weight: bold"></span>
+                                    &nbsp;
+                                    <span class="reviewStarsBoard"></span>
+                                    <script th:inline="javascript">
+                                        let s = '';
+                                        let ratings =/*[[${item.review_likecount}]]*/0;
+                                        console.log(ratings);
+                                        for (let i = 0; i < ratings; i++) {
+                                            s += `<span style="color: gold">&#9733</span>`;
+                                        }
+                                        for (let i = 0; i < ratings - 5; i++) {
+                                            s += `<span>&#9734;</span>`;
+                                        }
+                                        $(".reviewStarsBoard").html(s);
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="text-gray-500 text-sm" style="text-align: right">
+                                <span th:text="${item.getFormattedWriteday()}"></span>
+                                <br>&nbsp;&nbsp;&nbsp;
+                                조회수 <span th:text="${item.review_viewcount}"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <form th:action="@{/reviewboard/detail}" method="post">
+                                <h3 class="font-medium">
+                                    <input type="hidden" name="review_no" th:value="${item.review_no}"/>
+                                    <input type="hidden" name="userId" th:value="${#authentication.name}"/>
+                                    <button type="submit" th:text="${item.review_title}"></button>
+                                </h3>
+                            </form>
+                        </div>
+                        <div style="width: 100%; text-align: right">
+                        <form th:action="@{/reviewboard/detail}" method="post">
+                            <h3 class="font-small">
+                                <input type="hidden" name="review_no" th:value="${item.review_no}"/>
+                                <input type="hidden" name="userId" th:value="${#authentication.name}"/>
+                                <button type="submit" class="btn btn-dark">리뷰 보러가기</button>
+                            </h3>
+                        </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="bg-gray-100 px-6 py-4 flex justify-center">
+                <nav aria-label="pagination" class="mx-auto flex w-full justify-center" role="navigation">
+                    <ul class="flex flex-row items-center gap-1">
+                        <li class="">
+                            <a
+                                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+                                    aria-label="Go to previous page"
+                                    th:href="@{/reviewboard(page=${currentpage}-1)}"
+                            >
+                                <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        class="lucide lucide-chevron-left h-4 w-4"
+                                >
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                                <span>Previous</span>
+                            </a>
+                        </li>
+                        <li class="" th:each="num : ${#numbers.sequence(1,totalNum/perPage+1)}">
+                            <a
+                                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
+                                    th:href="@{/reviewboard(page=${num})}"
+                                    th:text="${num}"
+                            >
+                            </a>
+                        </li>
+                        <li class="">
+                            <a
+                                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+                                    aria-label="Go to previous page"
+                                    th:href="@{/reviewboard(page=${currentpage+1})}"
+                            >
+                                <span>Next</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
 </div>
