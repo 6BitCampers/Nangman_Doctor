@@ -22,7 +22,7 @@ public class CustomUserDetailService implements UserDetailsService {
         userEntity user = userEntityMapper.findNormalUserByEmail(email);
 
         if (user != null) {
-            return new CustomUserDetails(user);
+            return new CustomUserDetails(user,user.getUser_role());
         }
         else {
             employeeEntity employeeuser = userEntityMapper.findEmployeeUserByEmail(email);
@@ -40,7 +40,7 @@ public class CustomUserDetailService implements UserDetailsService {
                     .user_interest(employeeuser.getEmployee_interest())
                     .build();
             if(user != null)
-                return new CustomUserDetails(user);
+                return new CustomUserDetails(user,employeeuser.getEmployee_role());
             else
                 return new CustomUserDetails();
         }

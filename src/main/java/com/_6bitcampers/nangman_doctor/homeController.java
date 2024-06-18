@@ -18,6 +18,7 @@ public class homeController {
 
     @GetMapping("/")
     public String home() {
+        //로그인 시 이메일 출력
         String id = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
