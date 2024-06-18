@@ -49,7 +49,7 @@ public class conferenceController {
             Thread.sleep(5000); // 예: 5초 대기
 
             // 세션 데이터를 Node.js 서버로 전송
-            sendSessionDataToNodeServer(name);
+//            sendSessionDataToNodeServer(name);
 
             // 브라우저 열기
             openBrowser("https://192.168.0.18:3000");
@@ -70,21 +70,21 @@ public class conferenceController {
         }
     }
 
-    private void sendSessionDataToNodeServer(String name) {
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            String url = "http://192.168.0.18:3000/receive-session-data";
-
-            // 세션 데이터
-            Map<String, Object> sessionData = new HashMap<>();
-            sessionData.put("name", name);
-            sessionData.put("user", "exampleUser");
-            sessionData.put("role", "exampleRole");
-
-            restTemplate.postForObject(url, sessionData, String.class);
-            System.out.println("세션 데이터를 Node.js 서버로 전송했습니다.");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void sendSessionDataToNodeServer(String name) {
+//        try {
+//            RestTemplate restTemplate = new RestTemplate();
+//            String url = "http://192.168.0.18:3000/receive-session-data";
+//
+//            // 세션 데이터
+//            Map<String, Object> sessionData = new HashMap<>();
+//            sessionData.put("name", name);
+//            sessionData.put("user", "exampleUser");
+//            sessionData.put("role", "exampleRole");
+//
+//            restTemplate.postForObject(url, sessionData, String.class);
+//            System.out.println("세션 데이터를 Node.js 서버로 전송했습니다.");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

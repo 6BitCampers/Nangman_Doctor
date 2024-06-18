@@ -25,4 +25,8 @@ public class reservationServiceW {
     public int getEmployeeNo(String employee_email){
         return reservationMapper.getEmployeeNo(employee_email);
     }
+
+    public void deleteSurvey(int reservation_no){
+        reservationMapper.deleteSurvey(reservation_no);
+    }
 }

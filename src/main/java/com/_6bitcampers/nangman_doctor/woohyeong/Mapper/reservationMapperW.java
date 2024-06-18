@@ -1,10 +1,7 @@
 package com._6bitcampers.nangman_doctor.woohyeong.Mapper;
 
 import com._6bitcampers.nangman_doctor.woohyeong.dto.ReservationDTOW;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.Map;
 
@@ -26,4 +23,9 @@ public interface reservationMapperW {
     select employee_no from hospital_employee where employee_email = #{employee_email}
 """)
     int getEmployeeNo(String employee_email);
+
+    @Delete("""
+    delete from hospital_reservation where reservation_no = #{reservation_no}
+""")
+    void deleteSurvey(int reservation_no);
 }
