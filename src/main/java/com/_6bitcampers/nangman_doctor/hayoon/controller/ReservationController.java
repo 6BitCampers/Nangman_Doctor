@@ -3,7 +3,6 @@ package com._6bitcampers.nangman_doctor.hayoon.controller;
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +30,6 @@ public class ReservationController {
                               @RequestParam("reservation_reason") String reservationReason,
                               @RequestParam("reservation_role") int reservationRole,
                               Model model) {
-
-       // String ema= SecurityContextHolder.getContext().getAuthentication().getName();
-
 
         ReservationDto reservationDto = ReservationDto.builder()
                 .name(name)
