@@ -4,6 +4,7 @@ import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,13 @@ public interface ReservationMapper {
             "JOIN normal_user nu ON hr.user_no = nu.user_no WHERE hr.user_no = #{userNo}")
     List<Map<String, Object>> getUserReservations(int userNo);
 
+    @Select("SELECT reservation_status FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
+    int getStatus(int reservationNo);
 
+    @Select("SELECT employee_no FROM hospital_employee WHERE info_no = #{infoNo}")
+    int getEmployeeNoByInfoNo(int infoNo);
 
+    @Select(("SELECT user_no FROM normal_user WHERE user_email=#{id}"))
+    int getUserNo(String id);
 
 }
