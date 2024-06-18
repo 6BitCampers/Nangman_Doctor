@@ -1,0 +1,224 @@
+<!-- /*
+* Template Name: Sterial
+* Template Author: Untree.co
+* Tempalte URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  layout:decorate="~{layouts/layout}">
+<div layout:fragment="content">
+	<!--
+// v0 by Vercel.
+// https://v0.dev/t/qwyrEYRiOMS
+-->
+	<div class="w-full max-w-3xl mx-auto p-6 md:p-8">
+		<div class="bg-white rounded-lg shadow-md overflow-auto">
+			<div class="px-6 py-5 bg-gray-100">
+				<h1 class="text-2xl font-bold">Q&amp;A 게시판</h1>
+			</div>
+			<div class="p-6 space-y-6">
+				<div class="space-y-4">
+					<div th:each="board : ${boards.data}" class="bg-gray-50 rounded-lg p-4 space-y-2">
+						<div class="flex items-center justify-between">
+							<div class="flex items-center space-x-2">
+              <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
+                <img class="aspect-square h-full w-full" alt="User Avatar" th:src="@{/images/placeholder-user.jpg}"/>
+              </span>
+								<div class="font-medium" th:text="${board.getQna_username()}"></div>
+							</div>
+							<div class="text-gray-500 text-sm"
+								 th:text="${#temporals.format(board.getQna_writeday(), 'yyyy년 MM월 dd일 HH시 mm분')}"></div>
+						</div>
+						<div>
+							<h3 class="font-medium" th:text="${board.getQna_title()}"></h3>
+							<p class="text-gray-600" th:text="${board.getQna_comment()}">
+							</p>
+							<img th:if="${board.getQna_image() != null}" th:src="${board.getQna_image()}">
+							<button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-1"
+									data-id="54" th:onclick="comment_rendering(this,[[${board.getQna_no}]])">
+								<svg data-id="55" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+									 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+									 stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+									<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
+								</svg>
+								<span class="sr-only" data-id="56">1</span></button>
+							<span th:text="${board.getComment_count()}"></span>
+						</div>
+
+						<!--댓글 입력 기능-->
+						<div class="bg-gray-100 rounded-lg p-4 space-y-4" style="display: none">
+							<p id="title">댓글</p>
+							<div id="comment_area">
+								<div class="my-1 mx-1" style="display: flex; flex-flow: row">
+								              <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
+                <img class="aspect-square h-full w-full" alt="User Avatar" th:src="@{/images/placeholder-user.jpg}"/>
+              </span>
+									<div class="font-medium mx-2" sec:authentication="name"></div>
+									<div class="mx-4" style="white-space: pre">내용</div>
+								</div>
+							</div>
+							<!--답글 달기 병원 관계자만 작성가능-->
+							<th:block
+									sec:authorize="hasAnyAuthority('ROLE_EMP','ROLE_NURSE','ROLE_DOCTOR','ROLE_CHIEF')">
+								<div class="bg-gray-100 rounded-lg p-4 space-y-4">
+									<div class="flex items-center space-x-2">
+              <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
+                <img class="aspect-square h-full w-full" alt="User Avatar" th:src="@{/images/placeholder-user.jpg}"/>
+              </span>
+										<div class="font-medium" sec:authentication="name"></div>
+									</div>
+									<textarea
+											class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[50px]"
+											placeholder="Enter your comment..."
+									></textarea>
+									<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+										작성하기
+									</button>
+								</div>
+							</th:block>
+						</div>
+					</div>
+				</div>
+				<!--질문 하기 일반 유저만 가능-->
+				<th:block sec:authorize="hasAnyAuthority('ROLE_USER')">
+					<div class="grid gap-4">
+						<div class="bg-gray-50 rounded-lg p-4 space-y-4">
+							<div class="flex items-center space-x-2">
+								<label
+										class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+										for="question-username"
+								>
+									아이디
+								</label>
+								<input
+										class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+										id="question-username"
+										placeholder="Enter your username"
+										name="id"
+								/>
+							</div>
+							<div class="flex items-center space-x-2">
+								<label
+										class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+										for="question-password"
+								>
+									비밀번호
+								</label>
+								<input
+										class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+										id="question-password"
+										placeholder="Enter your password"
+										type="password"
+										name="password"
+								/>
+							</div>
+							<textarea
+									class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]"
+									id="new-question"
+									placeholder="Enter your question..."
+							></textarea>
+							<div class="flex items-center space-x-2">
+								<label
+										class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+										for="question-image"
+								>
+									Image
+								</label>
+								<input
+										class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+										id="question-image"
+										type="file"
+								/>
+							</div>
+							<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+								Ask Question
+							</button>
+						</div>
+					</div>
+				</th:block>
+			</div>
+		</div>
+		<div class="bg-gray-100 px-6 py-4 flex justify-center">
+			<nav aria-label="pagination" class="mx-auto flex w-full justify-center" role="navigation">
+				<ul class="flex flex-row items-center gap-1">
+					<li class="">
+						<a
+								class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+								aria-label="Go to previous page"
+								th:href="@{/qna(pageIndex=${startpage})}"
+						>
+							<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="24"
+									height="24"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									class="lucide lucide-chevron-left h-4 w-4"
+							>
+								<path d="m15 18-6-6 6-6"></path>
+							</svg>
+							<span>Previous</span>
+						</a>
+					</li>
+					<li class="" th:each="num : ${#numbers.sequence(startpage,endpage)}">
+						<a
+								class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
+								th:href="@{/qna(pageIndex=${num})}"
+								th:text="${num}"
+						>
+						</a>
+					</li>
+					<li class="">
+						<a
+								class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+								aria-label="Go to previous page"
+								th:href="@{/qna(pageIndex=${endpage})}"
+						>
+							<span>Next</span>
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+								 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+								 stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4">
+								<path d="m9 18 6-6-6-6"></path>
+							</svg>
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<script th:inline="javascript">
+		function comment_rendering(board, board_id) {
+				$.ajax({
+					url: "api/v1/checkcomment",
+					type: "get",
+					data: {"qna_no": board_id},
+					dataType: "json",
+					success: function (data) {
+						let comment_board = $(board).parent().next().children().eq(1).empty();
+						data.forEach(function (item,index) {
+							comment_board.append($(`<div class="my-1 mx-1" style="display: flex; flex-flow: row">
+<span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
+<img class="aspect-square h-full w-full" alt="User Avatar" src="/images/placeholder-user.jpg"/>
+</span>
+<div class="font-medium mx-2">${item.employee_name}</div>
+<div class="mx-4" style="white-space: pre">${item.comment_comment}</div>
+</div>`))
+							$(board).parent().next().slideToggle();
+						})
+					}
+				})
+		}
+
+		function insertComment(board,board_id) {
+
+		}
+	</script>
+</div>
+</html>
