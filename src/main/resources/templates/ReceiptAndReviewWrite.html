@@ -17,7 +17,7 @@
     }
     .borderedTableForReceipt{
         border-collapse: collapse;
-        width: 100%;
+        width: 700px;
     }
     .borderedTableForReceipt th{
         border: 1px solid gray;
@@ -31,14 +31,18 @@
         background-color: lightsteelblue;
     }
     #printReceipt{
+        position: absolute;
+        left:20%;
         background-color: white;
         padding: 30px;
+        width: 700px;
     }
     .receiptBtnGroup{
         margin: 0;
         position: absolute;
         top:0;
         right: 100px;
+
     }
 </style>
 <body>
@@ -46,8 +50,8 @@
     <button type="button"><img th:src="@{/images/free-icon-printing-446035.png}" style="color: black"/>인쇄하기</button>
 </div>
 <div id="printReceipt">
-<hr>
-<table style="width: 100%;border: none" >
+<hr style="width: 700px">
+<table style="width: 700px;border: none" >
     <tr>
         <td colspan="5" style="text-align: center;font-size: 40px;font-weight: bold" >처&nbsp;&nbsp;&nbsp;방&nbsp;&nbsp;&nbsp;전</td>
     </tr>
@@ -127,7 +131,7 @@
     </tr>
 </table>
 <br>
-<hr>
+<hr style="width: 700px">
 </div>
 
 </body>
