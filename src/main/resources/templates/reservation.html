@@ -4,18 +4,18 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <div layout:fragment="content">
-    <div class="flex h-screen w-full items-center justify-center bg-orange-100 dark:bg-orange-950">
+    <div class="flex h-screen w-full items-center justify-center bg-orange-100">
         <div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">
             <div class="space-y-2 text-center">
                 <h1 class="text-3xl font-bold">예약하기</h1>
             </div>
             <form class="space-y-4" th:action="@{/reserveProc}" method="post" id="reservationForm" onsubmit="return handleSubmit(event)">
                 <div class="space-y-2">
-                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_name">
                         이름 <span class="text-red-500">*</span>
                     </label>
                     <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                           id="name" placeholder="홍길동" required="" name="name"/>
+                           id="reservation_name" placeholder="홍길동" required="" name="name"/>
                 </div>
                 <div class="space-y-2">
                     <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_date">
@@ -59,13 +59,11 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 오늘 날짜 이후로 예약 날짜 설정
             var today = new Date().toISOString().split('T')[0];
             document.getElementById('reservation_date').setAttribute('min', today);
 
-            // 시간 블록 생성
             var timeTable = document.getElementById('reservation_time');
-            for (var i = 6; i < 24; i++) { // 6시부터 24시까지
+            for (var i = 6; i < 24; i++) {
                 var timeBlock = document.createElement('div');
                 var startTime = i < 10 ? '0' + i + ':00' : i + ':00';
                 var endTime = (i + 1) < 10 ? '0' + (i + 1) + ':00' : (i + 1) + ':00';
@@ -83,31 +81,26 @@
         });
 
         function handleSubmit(event) {
-            // 선택된 시간 블록 가져오기
             var selectedTimeBlock = document.querySelector('.time-table div.selected');
             if (!selectedTimeBlock) {
                 alert('예약 시간을 선택해 주세요.');
-                event.preventDefault(); // Prevent form submission if validation fails
+                event.preventDefault();
                 return false;
             }
 
-            // 예약 확정 메시지 표시
             if (!confirm('예약 확정이 되었습니다. 병원에 메일 보내드릴게요~')) {
-                event.preventDefault(); // Prevent form submission if user cancels
+                event.preventDefault();
                 return false;
             }
 
-            // Add the selected time to a hidden input before submitting
             var timeInput = document.createElement('input');
             timeInput.type = 'hidden';
             timeInput.name = 'reservation_time';
             timeInput.value = selectedTimeBlock.dataset.time;
             document.getElementById('reservationForm').appendChild(timeInput);
 
-            // Allow the form to be submitted
             return true;
         }
-
     </script>
     <style>
         body {
@@ -133,7 +126,7 @@
         }
         .time-table div {
             display: inline-block;
-            width: 23%; /* 블록의 너비를 조정하여 한 행에 최대 4개가 들어가도록 설정 */
+            width: 23%;
             padding: 10px;
             margin: 1%;
             text-align: center;
@@ -146,6 +139,5 @@
             color: white;
         }
     </style>
-
 </div>
 </html>
