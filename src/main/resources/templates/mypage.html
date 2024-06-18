@@ -11,28 +11,46 @@
             color: inherit;
         }
 
+        .container {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            background-color: orange;
+        }
+
         .section {
-            margin-left: 20px;
-            width: 700px;
+            flex: 1;
+            padding: 20px;
             background-color: whitesmoke;
-            position: relative; /* 부모 요소로 위치 지정 */
+            margin: 20px;
         }
 
         .edit-icon-container {
-            top: 10px;
-            right: 200px; /* 우측 여백 조정 */
-            padding-right: 20px;
+            display: flex;
+            justify-content: flex-end;
         }
 
         table {
-            margin-top: 30px; /* 테이블과의 상단 여백 조정 */
             width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        .right-pane {
+            flex: 1;
+            padding: 20px;
+            background-color: lightgray;
+            margin: 20px;
         }
     </style>
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="flex h-screen w-full items-center justify-center bg-orange-100">
+    <div class="container">
         <div class="section">
             <div class="edit-icon-container">
                 <a href="#" class="edit-icon">
@@ -65,6 +83,25 @@
                     <td th:text="${udto.user_interest}"></td>
                 </tr>
             </table>
+        </div>
+        <div class="right-pane">
+            <h2>예약 목록</h2>
+            <div class="col-md-8">
+                <ul class="list-unstyled">
+                    <li th:each="reservation, iterStat : ${reservationList}" th:id="'reservation-' + ${iterStat.index}" style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 0.25rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <h2 class="h5">예약 번호: <span th:text="${reservation.get('reservation_no')}">1</span></h2>
+                        <p>이름: <span th:text="${reservation.get('user_name')}">홍길동</span></p>
+                        <p>날짜: <span th:text="${reservation.get('reservation_date')}">2023-01-01</span></p>
+                        <p>시간: <span th:text="${reservation.get('reservation_time')}">10:00 - 11:00</span></p>
+                        <p>진료명: <span th:text="${reservation.get('reservation_reason')}">진료명</span></p>
+                        <p>상태:
+                            <span th:if="${reservation.get('reservation_status') == 1}" style="color: #ffc107;">예약 요청</span>
+                            <span th:if="${reservation.get('reservation_status') == 2}" style="color: #17a2b8;">예약 메일확인</span>
+                            <span th:if="${reservation.get('reservation_status') == 3}" style="color: #28a745;">예약 확정하기</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
