@@ -14,9 +14,27 @@
         </tr>
         <tr th:each="item,itemStat:${list}" >
             <td th:text="${itemStat.count}"></td>
-            <td><a th:href="@{'/hospital/detail?review_no=' + ${item.review_no} +'&user_name='+ ${#authentication.name}+'&empolyee_no='+${item.employee_no}}" th:text="${item.review_title}"></a></td>
-            <td th:text="${item.review_likecount}"></td>
-            <td th:text="${item.review_no}"></td>
+            <td>
+                <form th:action="@{/reviewboard/detail}" method="post">
+                    <input type="hidden" name="review_no" th:value="${item.review_no}" />
+                    <input type="hidden" name="userId" th:value="${#authentication.name}" />
+                    <button type="submit" th:text="${item.review_title}"></button>
+                </form>
+            </td>
+            <td><span class="reviewStarsBoard"></span>
+                <script th:inline="javascript">
+                    let s = '';
+                    let ratings =/*[[${item.review_likecount}]]*/0;
+                    console.log(ratings);
+                    for (let i = 0; i < ratings; i++) {
+                        s += `<span style="color: gold">&#9733</span>`;
+                    }
+                    for (let i = 0; i < ratings - 5; i++) {
+                        s += `<span>&#9734;</span>`;
+                    }
+                    $(".reviewStarsBoard").html(s);
+                </script></td>
+            <td th:text="${userMap[item.user_no].user_name}"></td>
             <td th:text="${item.getFormattedWriteday()}"></td>
             <td th:text="${item.review_viewcount}"></td>
         </tr>

@@ -21,7 +21,6 @@ public class customOAuth2UserService extends DefaultOAuth2UserService {
 
         String role = "ROLE_LOGINONLY";
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println(oAuth2User.getAttributes());
 
         String registrantionId = userRequest.getClientRegistration().getRegistrationId();
         OAuth2Response oAuth2Response = null;
@@ -85,7 +84,6 @@ public class customOAuth2UserService extends DefaultOAuth2UserService {
                 return new customOAuth2User(oAuth2Response,userEntityMapper.findRoleByUserEmail(userEntity));
             }
             if (!emailcheck_em) {
-                System.out.println("login employee");
                 userEntityMapper.updateEmployeeUser(userEntity);
                 return new customOAuth2User(oAuth2Response,userEntityMapper.findRoleByEmployeeEmail(userEntity));
             }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginMapper.userEntityMapper">
+    <select id="findRoleByEmployeeEmail" resultType="String">
+        select employee_role from hospital_employee where employee_email=#{user_email} and employee_type=#{user_type}
+    </select>
+</mapper>

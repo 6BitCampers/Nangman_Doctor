@@ -25,7 +25,6 @@ public interface userEntityMapper {
     @Select("select user_role from normal_user where user_email=#{user_email} and user_type=#{user_type}")
     String findRoleByUserEmail(userEntity entity);
 
-    @Select("select employee_role from hospital_employee where employee_email=#{user_email} and employee_type=#{user_type}")
     String findRoleByEmployeeEmail(userEntity entity);
 
     @Select("select * from normal_user where user_email=#{email} and user_type='local'")

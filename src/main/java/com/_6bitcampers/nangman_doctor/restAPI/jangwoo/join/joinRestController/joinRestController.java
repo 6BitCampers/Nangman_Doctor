@@ -1,7 +1,7 @@
-package com._6bitcampers.nangman_doctor.restAPI.jangwoo.joinRestController;
+package com._6bitcampers.nangman_doctor.restAPI.jangwoo.join.joinRestController;
 
 
-import com._6bitcampers.nangman_doctor.restAPI.jangwoo.joinRestMappper.joinRestMapper;
+import com._6bitcampers.nangman_doctor.restAPI.jangwoo.join.joinRestMappper.joinRestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
