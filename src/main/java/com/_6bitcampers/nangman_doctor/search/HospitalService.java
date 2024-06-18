@@ -19,4 +19,7 @@ public class HospitalService {
     public List<HospitalDto> searchTopRatedHospitals(String keyword) {
         return hospitalMapper.findTopRatedByKeyword(keyword).stream().limit(10).toList();
     }
+    public HospitalDto findHospitalById(Long hospitalId) {
+        return hospitalMapper.findById(hospitalId);
+    }
 }

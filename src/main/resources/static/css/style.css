@@ -10531,3 +10531,15 @@ input:invalid {
   margin: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+.large-heading {
+  font-size: 3em; /* Adjust the size as needed */
+  font-weight: bold; /* Ensures the text is bold */
+}
+ .star {
+   font-size: 2em;
+   cursor: pointer;
+   color: gray;
+ }
+.star.selected {
+  color: gold;
+}
