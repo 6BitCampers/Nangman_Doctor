@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface conferenceMapper {
     @Select("""
-    select user_name from normal_user where user_email = #{user_email}
+    select user_no from normal_user where user_email = #{user_email}
 """)
-    String getEmail(String user_email);
+    int getUserNo(String user_email);
 }

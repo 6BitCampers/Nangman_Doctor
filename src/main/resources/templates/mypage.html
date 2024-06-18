@@ -5,55 +5,13 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        .edit-icon {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: row;
-            height: 100vh;
-            background-color: orange;
-        }
-
-        .section {
-            flex: 1;
-            padding: 20px;
-            background-color: whitesmoke;
-            margin: 20px;
-        }
-
-        .edit-icon-container {
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        table {
-            width: 100%;
-            margin-top: 30px;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            border: 1px solid black;
-        }
-
-        .right-pane {
-            flex: 1;
-            padding: 20px;
-            background-color: lightgray;
-            margin: 20px;
-        }
-    </style>
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="container">
-        <div class="section">
-            <div class="edit-icon-container">
-                <a href="#" class="edit-icon">
+    <div th:if="${udto != null}" style="display: flex; height: 100vh; background-color: orange; padding: 20px; gap: 20px;">
+        <div style="flex: 1; padding: 20px; background-color: whitesmoke; margin: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: flex-start;">
+            <div style="display: flex; justify-content: flex-end;">
+                <a href="#" style="text-decoration: none; color: inherit;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -61,34 +19,93 @@
                 </a>
             </div>
             <h1 th:text="${udto.user_name} + '님 환영합니다!'"></h1>
-            <table>
+            <table style="width: 100%; margin-top: 30px; border-collapse: collapse;">
                 <tr>
-                    <th>이름</th>
-                    <td th:text="${udto.user_name}"></td>
+                    <th style="border: 1px solid black;">이름</th>
+                    <td style="border: 1px solid black;" th:text="${udto.user_name}"></td>
                 </tr>
                 <tr>
-                    <th>이메일</th>
-                    <td th:text="${udto.user_email}"></td>
+                    <th style="border: 1px solid black;">이메일</th>
+                    <td style="border: 1px solid black;" th:text="${udto.user_email}"></td>
                 </tr>
                 <tr>
-                    <th>전화번호</th>
-                    <td th:text="${udto.user_hp}"></td>
+                    <th style="border: 1px solid black;">전화번호</th>
+                    <td style="border: 1px solid black;" th:text="${udto.user_hp}"></td>
                 </tr>
                 <tr>
-                    <th>닉네임</th>
-                    <td th:text="${udto.user_nickname}"></td>
+                    <th style="border: 1px solid black;">닉네임</th>
+                    <td style="border: 1px solid black;" th:text="${udto.user_nickname}"></td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black;">성별</th>
+                    <td style="border: 1px solid black;" th:text="${udto.user_gender}"></td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black;">주소</th>
+                    <td style="border: 1px solid black;" th:text="${udto.user_addr1}"></td>
                 </tr>
                 <tr th:if="${udto.user_interest != null}">
-                    <th>관심분야</th>
-                    <td th:text="${udto.user_interest}"></td>
+                    <th style="border: 1px solid black;">관심분야</th>
+                    <td style="border: 1px solid black;" th:text="${udto.user_interest}"></td>
+                </tr>
+            </table>
+            <span th:if="${status == 1}">
+                <button type="button" onclick="location.href='/test'" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;">
+                    화상진료하러가기
+                </button>
+
+                        <script>
+                            document.querySelector('button').addEventListener('mouseover', function() {
+                                this.style.backgroundColor = '#0056b3';
+                            });
+                            document.querySelector('button').addEventListener('mouseout', function() {
+                                this.style.backgroundColor = '#007bff';
+                            });
+                        </script>
+            </span>
+        </div>
+
+        <div th:if="${edto != null}" style="flex: 1; padding: 20px; background-color: whitesmoke; margin: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: flex-start;">
+            <div style="display: flex; justify-content: flex-end;">
+                <a href="#" style="text-decoration: none; color: inherit;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
+                </a>
+            </div>
+            <h1 th:text="${edto.employee_name} + '님 환영합니다!'"></h1>
+            <table style="width: 100%; margin-top: 30px; border-collapse: collapse;">
+                <tr>
+                    <th style="border: 1px solid black;">이름</th>
+                    <td style="border: 1px solid black;" th:text="${edto.employee_name}"></td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black;">이메일</th>
+                    <td style="border: 1px solid black;" th:text="${edto.employee_email}"></td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black;">전화번호</th>
+                    <td style="border: 1px solid black;" th:text="${edto.employee_phone}"></td>
+                </tr>
+                <tr>
+                    <th style="border: 1px solid black;">직책</th>
+                    <td style="border: 1px solid black;" th:text="${edto.employee_position}"></td>
+                </tr>
+                <tr th:if="${edto.employee_department != null}">
+                    <th style="border: 1px solid black;">부서</th>
+                    <td style="border: 1px solid black;" th:text="${edto.employee_department}"></td>
                 </tr>
             </table>
         </div>
-        <div class="right-pane">
+
+        <!--예약목록 -->
+        <div style="flex: 1; padding: 20px; background-color: whitesmoke; margin: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: flex-start;">
             <h2>예약 목록</h2>
+            <br>
             <div class="col-md-8">
-                <ul class="list-unstyled">
-                    <li th:each="reservation, iterStat : ${reservationList}" th:id="'reservation-' + ${iterStat.index}" style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 0.25rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <ul class="list-unstyled" style="width: 100%; margin-bottom: 20px;">
+                    <li th:each="reservation, iterStat : ${reservationList}" th:id="'reservation-' + ${iterStat.index}" style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 0.25rem; padding: 1.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                         <h2 class="h5">예약 번호: <span th:text="${reservation.get('reservation_no')}">1</span></h2>
                         <p>이름: <span th:text="${reservation.get('user_name')}">홍길동</span></p>
                         <p>날짜: <span th:text="${reservation.get('reservation_date')}">2023-01-01</span></p>
@@ -100,6 +117,7 @@
                             <span th:if="${reservation.get('reservation_status') == 3}" style="color: #28a745;">예약 확정하기</span>
                         </p>
                     </li>
+                    <br>
                 </ul>
             </div>
         </div>

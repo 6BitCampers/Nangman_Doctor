@@ -14,8 +14,8 @@ public class conferenceService {
         this.conferenceMapper = conferenceMapper;
     }
 
-    public String getEmail(String user_email){
-        return conferenceMapper.getEmail(user_email);
+    public int getUserNo(String user_email){
+        return conferenceMapper.getUserNo(user_email);
     }
 
 }
