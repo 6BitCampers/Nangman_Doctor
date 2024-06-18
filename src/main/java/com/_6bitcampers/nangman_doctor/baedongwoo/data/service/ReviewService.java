@@ -2,6 +2,7 @@ package com._6bitcampers.nangman_doctor.baedongwoo.data.service;
 
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.mapper.ReviewInter;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,10 @@ public class ReviewService {
 
     public List<ReviewDto> getPagenationedReviews(int startnum, int perPage) {
         Map<String,Integer> pagination = new HashMap<>();
+
         pagination.put("startnum", startnum);
         pagination.put("perPage", perPage);
+
         return reviewInter.getPagenationedReviews(pagination);
     }
 
@@ -31,13 +34,19 @@ public class ReviewService {
     public void addReview(ReviewDto reviewDto){
         reviewInter.addReview(reviewDto);
     }
-    public void updateReview(ReviewDto reviewDto){
-        reviewInter.updateReview(reviewDto);
+    public void updateReview(Map<String,Object> map){
+        reviewInter.updateReview(map);
     }
     public void deleteReview(int review_no){
         reviewInter.deleteReview(review_no);
     }
     public void updateViewcount(int review_no){
         reviewInter.updateViewcount(review_no);
+    }
+    public userEntity getUserInfo(int user_no){
+        return reviewInter.getUserInfo(user_no);
+    }
+    public int getHospitalNo(int employee_no){
+        return reviewInter.getHospitalNo(employee_no);
     }
 }
