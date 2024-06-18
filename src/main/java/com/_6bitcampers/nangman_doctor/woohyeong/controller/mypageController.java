@@ -3,6 +3,7 @@ package com._6bitcampers.nangman_doctor.woohyeong.controller;
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
 import com._6bitcampers.nangman_doctor.woohyeong.Service.mypageService;
+import com._6bitcampers.nangman_doctor.woohyeong.Service.reservationServiceW;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.EmployeeDTO;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,19 @@ public class mypageController {
     private mypageService mypageService;
     @Autowired
     private ReservationService reservationService;
+    @Autowired
+    private reservationServiceW reservationServiceW;
 
     @GetMapping("/mypage")
     public String mypage(Model model) {
         String id = SecurityContextHolder.getContext().getAuthentication().getName();
         int userNo= reservationService.getUserNo(id);
+        int status = reservationServiceW.getReservationStatus(userNo);
         try {
             UserDTO udto = mypageService.getUser(id);
             if (udto != null) {
                 model.addAttribute("udto", udto);
+                model.addAttribute("status", status);
                 System.out.println(udto);
             }
         } catch (Exception e) {

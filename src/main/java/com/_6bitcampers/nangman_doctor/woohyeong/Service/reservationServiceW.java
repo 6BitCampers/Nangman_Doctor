@@ -29,4 +29,8 @@ public class reservationServiceW {
     public void deleteSurvey(int reservation_no){
         reservationMapper.deleteSurvey(reservation_no);
     }
+
+    public int getReservationStatus(int user_no){
+        return reservationMapper.getReservationStatus(user_no);
+    }
 }

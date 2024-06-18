@@ -1,6 +1,7 @@
 package com._6bitcampers.nangman_doctor.woohyeong.controller;
 
 import com._6bitcampers.nangman_doctor.woohyeong.Service.conferenceService;
+import com._6bitcampers.nangman_doctor.woohyeong.Service.reservationServiceW;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,17 +22,43 @@ public class conferenceController {
     @Autowired
     private conferenceService conferenceService;
 
+    @Autowired
+    private reservationServiceW reservationService;
+
     @GetMapping("/test")
     public String home(Model model) {
         String id = SecurityContextHolder.getContext().getAuthentication().getName();
-        String name = conferenceService.getEmail(id);
-        model.addAttribute("username", name);
-        System.out.println(name);
-        startNodeServer(name);
-        return "redirect:/";
+        boolean employeeNoSuccess = false;
+        boolean userNoSuccess = false;
+
+        startNodeServer();
+
+        try {
+            int employee_no = reservationService.getEmployeeNo(id);
+            employeeNoSuccess = true;
+        } catch (Exception e) {
+        }
+
+        try {
+            int user_no = conferenceService.getUserNo(id);
+            userNoSuccess = true;
+        } catch (Exception e) {
+        }
+
+        if(userNoSuccess){
+            int user_no = conferenceService.getUserNo(id);
+            return "redirect:/payment?user_no=" + user_no;
+        }
+
+        if(employeeNoSuccess){
+            return "redirect:/";
+        }
+
+        return "redirect:/errorPage";
+
     }
 
-    private void startNodeServer(String name) {
+    private void startNodeServer() {
         try {
             // npm 실행 명령어 설정 (Mac 기준)
             String command = "/usr/local/bin/npm run dev"; // npm이 있는 실제 경로를 설정해야 합니다.

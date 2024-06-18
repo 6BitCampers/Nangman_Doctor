@@ -28,4 +28,12 @@ public interface reservationMapperW {
     delete from hospital_reservation where reservation_no = #{reservation_no}
 """)
     void deleteSurvey(int reservation_no);
+
+    @Select("""
+    SELECT CASE
+    WHEN EXISTS (SELECT 1 FROM hospital_reservation WHERE reservation_status = 3 AND user_no = #{user_no}) THEN 1
+    ELSE 0
+    END AS result;                                                                     
+""")
+    int getReservationStatus(int user_no);
 }
