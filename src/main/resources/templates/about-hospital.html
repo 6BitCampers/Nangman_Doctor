@@ -70,48 +70,7 @@
 					</script>
 				</div>
 				<div class="col-md-6">
-					<table class="table table-striped" style="width:300px;">
-						<thead>
-						<tr>
-							<th>Day</th>
-							<th>Opening Hours</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr>
-							<td>Monday</td>
-							<td th:text="${hospital.Monday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Tuesday</td>
-							<td th:text="${hospital.Tuesday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Wednesday</td>
-							<td th:text="${hospital.Wednesday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Thursday</td>
-							<td th:text="${hospital.Thursday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Friday</td>
-							<td th:text="${hospital.Friday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Saturday</td>
-							<td th:text="${hospital.Saturday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Sunday</td>
-							<td th:text="${hospital.Sunday}">N/A</td>
-						</tr>
-						<tr>
-							<td>Holiday</td>
-							<td th:text="${hospital.Holiday}">N/A</td>
-						</tr>
-						</tbody>
-					</table>
+
 					<p><b>설명: </b><span th:text="${hospital.info_description}">설명</span></p>
 					<br>
 					<p><b>주소: </b><span th:text="${hospital.info_addr}">주소</span></p>
@@ -126,7 +85,34 @@
 					<br>
 					<br>
 <br>
-
+					<table class="table table-striped">
+						<thead>
+						<tr>
+							<th>시간</th>
+							<th>월</th>
+							<th>화</th>
+							<th>수</th>
+							<th>목</th>
+							<th>금</th>
+							<th>토</th>
+							<th>일</th>
+							<th>공</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td>요 일</td>
+							<td th:text="${hospital.Monday}">N/A</td>
+							<td th:text="${hospital.Tuesday}">N/A</td>
+							<td th:text="${hospital.Wednesday}">N/A</td>
+							<td th:text="${hospital.Thursday}">N/A</td>
+							<td th:text="${hospital.Friday}">N/A</td>
+							<td th:text="${hospital.Saturday}">N/A</td>
+							<td th:text="${hospital.Sunday}">N/A</td>
+							<td th:text="${hospital.Holiday}">N/A</td>
+						</tr>
+						</tbody>
+					</table>
 
 				</div>
 			</div>
