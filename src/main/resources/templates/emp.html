@@ -3,49 +3,122 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 
-<div layout:fragment="content">
-    <div class="flex h-screen w-full items-center justify-center bg-orange-100" >
+<head>
+    <style>
+        /* Add the CSS styles here */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
 
-        <div class="emp-box">
-        <h1>병원 평점</h1>
-        <hr>
+        thead tr {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 15px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="flex h-screen w-full items-center justify-center bg-orange-100 flex-wrap">
+
+        <div class="emp-box emp-box-likecount">
+            <h1>병원 평점</h1>
+            <hr>
             <table>
                 <thead>
                 <tr>
-                    <th>No.  |</th>
-                    <th>Name  |</th>
-                    <th>LikeCount  </th>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>LikeCount</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="employee : ${employees}">
-                    <td th:text="${employee.info_no}+'   |'"></td>
-                    <td th:text="${employee.employee_name}+'  |'"></td>
+                    <td th:text="${employee.info_no}"></td>
+                    <td th:text="${employee.employee_name}"></td>
                     <td th:text="${employee.info_likecount}"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="emp-box">
+        <div class="emp-box emp-box-board">
             <h2>문의게시판</h2>
             <hr>
         </div>
 
-        <div class="emp-box">
+        <div class="emp-box emp-box-announcement">
             <h3>공지사항</h3>
             <hr>
         </div>
-        <div class="emp-box">
-            <h3>직원관리</h3>
+
+        <div class="emp-box emp-box-management">
+            <form action="/registerRole" method="post">
+                <h3 style="margin-right: 10px;">직원관리</h3><br>
+                <label for="role" >병원 관계자:</label>
+                <input type="text" id="role" name="role" required>
+                <button type="submit">권한 등록</button>
+            </form>
             <hr>
+            <table>
+                <thead>
+                <tr>
+                    <th>Employee No.</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Nickname</th>
+                    <th>Like Count</th>
+                    <th>ROLE</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="employeelist : ${emplist}">
+                    <td th:text="${employeelist.employee_no}"></td>
+                    <td th:text="${employeelist.employee_name}"></td>
+                    <td th:text="${employeelist.employee_email}"></td>
+                    <td th:text="${employeelist.employee_addr1}"></td>
+                    <td th:text="${employeelist.employee_hp}"></td>
+                    <td th:text="${employeelist.employee_nickname}"></td>
+                    <td th:text="${employeelist.employee_likecount}"></td>
+                    <td th:text="${employeelist.employee_role}"></td>
+
+                </tr>
+                </tbody>
+            </table>
+
         </div>
-        <div class="emp-box">
+
+        <div class="emp-box emp-box-reservation">
             <h3>예약관리</h3>
             <hr>
         </div>
-
     </div>
 </div>
+</body>
 
 </html>
