@@ -38,7 +38,7 @@
 							</p>
 							<img th:if="${board.getQna_image() != null}" th:src="${board.getQna_image()}">
 							<button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-1"
-									data-id="54" th:onclick="comment_rendering(this,[[${board.getQna_no}]])">
+									data-id="54" th:onclick="comment_toggle(this,[[${board.getQna_no}]])">
 								<svg data-id="55" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 									 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
 									 stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
@@ -46,12 +46,15 @@
 								</svg>
 								<span class="sr-only" data-id="56">1</span></button>
 							<span th:text="${board.getComment_count()}"></span>
+
+<!--							삭제기능-->
+							<button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-9 rounded-md px-3" data-id="28" th:onclick="deleteBoard([[${board.getQna_no}]])"><svg data-id="29" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg><span class="sr-only" data-id="30">Delete</span></button>
 						</div>
 
 						<!--댓글 입력 기능-->
 						<div class="bg-gray-100 rounded-lg p-4 space-y-4" style="display: none">
 							<p id="title">댓글</p>
-							<div id="comment_area">
+							<div>
 								<div class="my-1 mx-1" style="display: flex; flex-flow: row">
 								              <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
                 <img class="aspect-square h-full w-full" alt="User Avatar" th:src="@{/images/placeholder-user.jpg}"/>
@@ -68,13 +71,14 @@
               <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
                 <img class="aspect-square h-full w-full" alt="User Avatar" th:src="@{/images/placeholder-user.jpg}"/>
               </span>
-										<div class="font-medium" sec:authentication="name"></div>
+										<div class="font-medium" th:text="${username}"></div>
 									</div>
 									<textarea
 											class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[50px]"
 											placeholder="Enter your comment..."
 									></textarea>
-									<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+									<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+											th:onclick="insertComment(this,[[${board.getQna_no}]])">
 										작성하기
 									</button>
 								</div>
@@ -82,143 +86,238 @@
 						</div>
 					</div>
 				</div>
-				<!--질문 하기 일반 유저만 가능-->
-				<th:block sec:authorize="hasAnyAuthority('ROLE_USER')">
-					<div class="grid gap-4">
-						<div class="bg-gray-50 rounded-lg p-4 space-y-4">
-							<div class="flex items-center space-x-2">
-								<label
-										class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-										for="question-username"
-								>
-									아이디
-								</label>
-								<input
-										class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-										id="question-username"
-										placeholder="Enter your username"
-										name="id"
-								/>
-							</div>
-							<div class="flex items-center space-x-2">
-								<label
-										class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-										for="question-password"
-								>
-									비밀번호
-								</label>
-								<input
-										class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-										id="question-password"
-										placeholder="Enter your password"
-										type="password"
-										name="password"
-								/>
-							</div>
-							<textarea
-									class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]"
-									id="new-question"
-									placeholder="Enter your question..."
-							></textarea>
-							<div class="flex items-center space-x-2">
-								<label
-										class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-										for="question-image"
-								>
-									Image
-								</label>
-								<input
-										class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-										id="question-image"
-										type="file"
-								/>
-							</div>
-							<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
-								Ask Question
-							</button>
-						</div>
-					</div>
-				</th:block>
 			</div>
 		</div>
-		<div class="bg-gray-100 px-6 py-4 flex justify-center">
-			<nav aria-label="pagination" class="mx-auto flex w-full justify-center" role="navigation">
-				<ul class="flex flex-row items-center gap-1">
-					<li class="">
-						<a
-								class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
-								aria-label="Go to previous page"
-								th:href="@{/qna(pageIndex=${startpage})}"
+		<!--질문 하기 일반 유저만 가능-->
+		<th:block sec:authorize="hasAnyAuthority('ROLE_USER')">
+			<div class="grid gap-4">
+				<div class="bg-gray-50 rounded-lg p-4 space-y-4">
+					<div class="flex items-center space-x-2">
+						<label
+								class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+								for="question-username"
 						>
-							<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="24"
-									height="24"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									class="lucide lucide-chevron-left h-4 w-4"
-							>
-								<path d="m15 18-6-6 6-6"></path>
-							</svg>
-							<span>Previous</span>
-						</a>
-					</li>
-					<li class="" th:each="num : ${#numbers.sequence(startpage,endpage)}">
-						<a
-								class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
-								th:href="@{/qna(pageIndex=${num})}"
-								th:text="${num}"
+							아이디
+						</label>
+						<input
+								class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+								id="question-username"
+								placeholder="Enter your username"
+								name="id"
+						/>
+					</div>
+					<div class="flex items-center space-x-2">
+						<label
+								class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+								for="question-password"
 						>
-						</a>
-					</li>
-					<li class="">
-						<a
-								class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
-								aria-label="Go to previous page"
-								th:href="@{/qna(pageIndex=${endpage})}"
+							비밀번호
+						</label>
+						<input
+								class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+								id="question-password"
+								placeholder="Enter your password"
+								type="password"
+								name="password"
+						/>
+					</div>
+					<div class="flex items-center space-x-2">
+						<label
+								class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+								for="question-password"
 						>
-							<span>Next</span>
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-								 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-								 stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4">
-								<path d="m9 18 6-6-6-6"></path>
-							</svg>
-						</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
+							제목
+						</label>
+						<input
+								class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+								id="question-title"
+								placeholder="Enter the title"
+								type="text"
+						/>
+					</div>
+					<textarea
+							class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]"
+							id="new-question"
+							placeholder="Enter your question..."
+					></textarea>
+					<div class="flex items-center space-x-2">
+						<label
+								class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+								for="question-image"
+						>
+							Image
+						</label>
+						<input
+								class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+								id="question-image"
+								type="file"
+						/>
+					</div>
+					<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+					onclick="insertBoard()">
+						질문하기
+					</button>
+				</div>
+			</div>
+		</th:block>
+	</div>
+	<div class="bg-gray-100 px-6 py-4 flex justify-center">
+		<nav aria-label="pagination" class="mx-auto flex w-full justify-center" role="navigation">
+			<ul class="flex flex-row items-center gap-1">
+				<li class="">
+					<a
+							class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+							aria-label="Go to previous page"
+							th:href="@{/qna(pageIndex=${startpage})}"
+					>
+						<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								class="lucide lucide-chevron-left h-4 w-4"
+						>
+							<path d="m15 18-6-6 6-6"></path>
+						</svg>
+						<span>Previous</span>
+					</a>
+				</li>
+				<li class="" th:each="num : ${#numbers.sequence(startpage,endpage)}">
+					<a
+							class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
+							th:href="@{/qna(pageIndex=${num})}"
+							th:text="${num}"
+					>
+					</a>
+				</li>
+				<li class="">
+					<a
+							class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+							aria-label="Go to previous page"
+							th:href="@{/qna(pageIndex=${endpage})}"
+					>
+						<span>Next</span>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+							 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+							 stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4">
+							<path d="m9 18 6-6-6-6"></path>
+						</svg>
+					</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 	<script th:inline="javascript">
+		function comment_toggle(board, board_id) {
+			comment_rendering(board, board_id);
+			$(board).parent().next().slideToggle();
+		}
+
 		function comment_rendering(board, board_id) {
-				$.ajax({
-					url: "api/v1/checkcomment",
-					type: "get",
-					data: {"qna_no": board_id},
-					dataType: "json",
-					success: function (data) {
-						let comment_board = $(board).parent().next().children().eq(1).empty();
-						data.forEach(function (item,index) {
-							comment_board.append($(`<div class="my-1 mx-1" style="display: flex; flex-flow: row">
+			$.ajax({
+				url: "api/v1/checkcomment",
+				type: "get",
+				data: {"qna_no": board_id},
+				dataType: "json",
+				success: function (data) {
+					let comment_board = $(board).parent().next().children().eq(1).empty();
+					data.forEach(function (item, index) {
+						comment_board.append($(`<div class="my-1 mx-1" style="display: flex; flex-flow: row">
 <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">
 <img class="aspect-square h-full w-full" alt="User Avatar" src="/images/placeholder-user.jpg"/>
 </span>
-<div class="font-medium mx-2">${item.employee_name}</div>
-<div class="mx-4" style="white-space: pre">${item.comment_comment}</div>
+<div class="font-medium mx-1 my-1">${item.employee_nickname}</div>
+<div class="mx-4 my-1" style="white-space: pre">${item.comment_comment}</div>
 </div>`))
-							$(board).parent().next().slideToggle();
-						})
+					})
+				}
+			})
+		}
+
+		function insertComment(board, board_id) {
+			$.ajax({
+				url: "/api/v1/insertComment",
+				dataType: "text",
+				type: "post",
+				data: {"board_no": board_id, "comment_comment": $(board).prev().val()},
+				success: function () {
+					comment_rendering($(board).parent().parent().prev().children().eq(3), board_id)
+				}
+			})
+		}
+
+		function deleteBoard(qna_no) {
+			(async () => {
+
+				const { value: formValues } = await Swal.fire({
+					title: '삭제하기',
+					html:
+							'<label for="swal-input1">ID</label><input id="swal-input1" class="swal2-input"><br>' +
+							'<label for="swal-input2">PW</label><input id="swal-input2" class="swal2-input" type="password">',
+					focusConfirm: false,
+					preConfirm: () => {
+						return [
+							document.getElementById('swal-input1').value,
+							document.getElementById('swal-input2').value
+						]
 					}
 				})
-		}
 
-		function insertComment(board,board_id) {
-
+				if (formValues) {
+					$.ajax({
+						url:"api/v1/deleteComment",
+						data:{"username":formValues[0],"password":formValues[1],"qna_no":qna_no},
+						type:"get",
+						complete: function(e, xhr, settings){
+							if(e.status === 200){
+								Swal.fire({
+									icon: 'success',
+									title: '삭제 성공',
+									text: '질문을 성공적으로 삭제 했습니다.',
+								});
+								setTimeout(function (){},2000);
+								location.reload();
+							}else{
+								Swal.fire({
+									icon: 'error',
+									title: '삭제 실패',
+									text: '질문할때 등록한 정보가 다릅니다.',
+								});
+							}
+						}
+					})
+				}
+			})()
 		}
 	</script>
+	<th:block sec:authorize="hasAnyAuthority('ROLE_USER')">
+		<script>
+			function insertBoard() {
+				let formdata = new FormData();
+				formdata.append("title",$("#question-title").val());
+				formdata.append("comment",$("#new-question").val());
+				formdata.append("username",$("#question-username").val());
+				formdata.append("password",$("#question-password").val());
+				formdata.append("image",$("#question-image")[0].files[0]);
+				$.ajax({
+					url: "/api/v1/insertBoard",
+					type: "post",
+					processData: false,
+					contentType: false,
+					data: formdata,
+					complete: function () {
+						location.reload();
+					}
+				})
+			}
+		</script>
+	</th:block>
+	<link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css}" integrity="sha256-h2Gkn+H33lnKlQTNntQyLXMWq7/9XI2rlPCsLsVcUBs=" crossorigin="anonymous">
+	<script th:src="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.all.min.js}" integrity="sha256-sxTH7wLusVF/zFlnDQEmsmwYORsWdufWfjsxdVYGRNI=" crossorigin="anonymous"></script>
 </div>
 </html>
