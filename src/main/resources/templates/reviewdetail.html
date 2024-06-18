@@ -3,60 +3,118 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <div layout:fragment="content" class="section">
-    <div>
-        <div>
-            <table class="table" style="width: 500px; margin-left: 30%">
-                <tr>
-                    <th colspan="2"><span th:text="${dto.review_title}"></span><br></th>
-                </tr>
-                <tr>
-                    <td>평점 <span id="reviewStars"></span>
-                        <script th:inline="javascript">
-                            let s = '';
-                            let ratings =/*[[${dto.review_likecount}]]*/0;
-                            console.log(ratings);
-                            for (let i = 0; i < ratings; i++) {
-                                s += `<span style="color: gold">&#9733</span>`;
-                            }
-                            for (let i = 0; i < ratings - 5; i++) {
-                                s += `<span>&#9734;</span>`;
-                            }
-                            $("#reviewStars").html(s);
-                        </script>
-                    </td>
-                    <td style="text-align: right">
-                        조회수 : <span th:text="${dto.review_viewcount}"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>작성자 : <span th:text="${user_name}"></span></td>
-                    <td style="text-align: right">작성일 : <span
-                            th:text="${#dates.format(dto.review_writeday, 'yyyy-MM-dd HH:mm')}"></span></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="height: 200px">
-                        <pre> <b th:text="${dto.review_content}"></b></pre>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button type="button" style="color: black" class="btn"
-                                onclick="history.back()">이전으로
-                        </button>
-                        <button type="button">
-                            <a
-                                    th:href="@{/about-hospital/{hospital_no}(hospital_no=${hospital_no})}">병원 방문하기
-                            </a>
-                        </button>
-                        <span th:if="${#authentication.name==userDto.getUser_email()}">
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#reviewUpdateModal" style="color: black"
-                                class="btn">수정</button>
-                        <button type="button" style="color: black" class="btn" id="reviewDeleteBtn">삭제</button>
-                            </span>
-                    </td>
-                </tr>
-            </table>
+    <!--
+// v0 by Vercel.
+// https://v0.dev/t/8eJ9Pz5VLVn
+-->
 
+    <div class="bg-white rounded-lg shadow-md p-6 md:p-8" style="width: 700px;margin-left: 20%">
+        <div class="flex items-center justify-between mb-4">
+            <h1 class="text-2xl font-bold" th:text="${dto.review_title}"></h1>
+            <div class="flex items-center space-x-2">
+                <span th:text="${hospital_name}" style="font-weight: bold"></span>
+                <br>
+                <span id="reviewStars"></span>
+                <script th:inline="javascript">
+                    let s = '';
+                    let ratings =/*[[${dto.review_likecount}]]*/0;
+                    console.log(ratings);
+                    for (let i = 0; i < ratings; i++) {
+                        s += `<span style="color: gold">&#9733</span>`;
+                    }
+                    for (let i = 0; i < 5-ratings; i++) {
+                        s += `<span style="color: gray">&#9734;</span>`;
+                    }
+                    $("#reviewStars").html(s);
+                </script>
+            </div>
+        </div>
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-2 text-gray-500 text-sm">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="w-4 h-4"
+                >
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <span><span th:text="${dto.review_viewcount}"></span> views</span>
+            </div>
+            <div class="flex items-center space-x-2 text-gray-500 text-sm">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="w-4 h-4"
+                >
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span class="font-medium" th:with="nameLength=${user_name.length()}">
+                            <span th:if="${nameLength == 1}">*${user_name.substring(1)}</span>
+                            <span th:if="${nameLength == 2}">**${user_name.substring(2)}</span>
+                            <span th:if="${nameLength > 2}">
+                                    <span th:text="${user_name.substring(0,1)}"></span>
+                                    <span th:each="i : ${#numbers.sequence(1, nameLength-2)}">*</span>
+                                    <span th:text="${user_name.substring(nameLength-1)}"></span>
+                                    </span>
+                        </span>
+            </div>
+            <div class="flex items-center space-x-2 text-gray-500 text-sm">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="w-4 h-4"
+                >
+                    <path d="M8 2v4"></path>
+                    <path d="M16 2v4"></path>
+                    <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                    <path d="M3 10h18"></path>
+                </svg>
+                <span th:text="${dto.getFormattedWriteday()}"></span>
+            </div>
+        </div>
+        <div class="mb-6">
+            <p th:text="${dto.review_content}"></p>
+        </div>
+        <div class="flex justify-between">
+            <button onclick="history.back()" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                Previous
+            </button>
+            <div class="flex space-x-4">
+                <a th:href="@{/about-hospital/{hospital_no}(hospital_no=${hospital_no})}">
+                <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                    Visit Hospital
+                </button></a>
+                <span th:if="${#authentication.name==userDto.getUser_email()}"><button type="button" data-bs-toggle="modal" data-bs-target="#reviewUpdateModal" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                    Edit
+                </button>
+                <button type="button" id="reviewDeleteBtn" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:text-accent-foreground h-10 px-4 py-2 text-red-500 hover:bg-red-100">
+                    Delete
+                </button>
+                    </span>
+            </div>
         </div>
     </div>
     <div class="modal fade" id="reviewUpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

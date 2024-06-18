@@ -46,10 +46,12 @@ public class HospitalDetailController {
         userEntity userDto = reviewService.getUserInfo(user_no);
         String user_name=userDto.getUser_name();
         int hospital_no=reviewService.getHospitalNo(employee_no);
+        String hospital_name=reviewService.getHospitalName(hospital_no);
 
 
         model.addAttribute("dto", dto);
         model.addAttribute("user_name", user_name);
+        model.addAttribute("hospital_name", hospital_name);
         model.addAttribute("userDto",userDto);
         model.addAttribute("hospital_no",hospital_no);
         model.addAttribute("review_no",review_no);
