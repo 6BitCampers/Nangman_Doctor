@@ -27,6 +27,6 @@ public class homeController {
         GrantedAuthority auth = iter.next();
         String role = auth.getAuthority();
 
-        return "home";
+        return roleService.checkRole(role);
     }
 }
