@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>처방전</title>
+</head>
+<style>
+    body{
+        background-color: black;
+        margin: 100px;
+    }
+    .boxed {
+        border: 1px solid black; /* 테두리 스타일 및 색상 지정 */
+
+        padding: 2px; /* 텍스트와 테두리 사이 간격 설정 */
+        display: inline-block; /* 요소를 인라인 블록 요소로 표시 */
+    }
+    .borderedTableForReceipt{
+        border-collapse: collapse;
+        width: 700px;
+    }
+    .borderedTableForReceipt th{
+        border: 1px solid gray;
+        border-collapse: collapse;
+    }
+    .borderedTableForReceipt td{
+         border: 1px solid gray;
+         border-collapse: collapse;
+     }
+    .receiptTdName{
+        background-color: lightsteelblue;
+    }
+    #printReceipt{
+        position: absolute;
+        left:20%;
+        background-color: white;
+        padding: 30px;
+        width: 700px;
+    }
+    .receiptBtnGroup{
+        margin: 0;
+        position: absolute;
+        top:0;
+        right: 100px;
+
+    }
+</style>
+<body>
+<div class="receiptBtnGroup">
+    <button type="button"><img th:src="@{/images/free-icon-printing-446035.png}" style="color: black"/>인쇄하기</button>
+</div>
+<div id="printReceipt">
+<hr style="width: 700px">
+<table style="width: 700px;border: none" >
+    <tr>
+        <td colspan="5" style="text-align: center;font-size: 40px;font-weight: bold" >처&nbsp;&nbsp;&nbsp;방&nbsp;&nbsp;&nbsp;전</td>
+    </tr>
+    <tr>
+        <td colspan="5"><br>&#8251; 국비진료대상자 (전액 국비부담) 보증번호 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+            <span class="boxed">1</span> 의료보험  <span class="boxed">2</span> 의료보호  <span class="boxed">3</span> 산재보험
+            <span class="boxed">4</span> 자동차보험  <span class="boxed">5</span> 기타 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)  요양기관번호:</td>
+    </tr>
+</table>
+<table class="borderedTableForReceipt">
+    <tr>
+        <th colspan="2" class="receiptTdName" style="width: 20%;">교부 연월일 및<br> 번호</th>
+        <td style="width: 30%"></td>
+        <th rowspan="3" class="receiptTdName" style="width: 5%">의료기관</th>
+        <th style="width: 10%" class="receiptTdName">명&nbsp;칭</th>
+        <td></td>
+    </tr>
+    <tr>
+        <th rowspan="2" class="receiptTdName" style="width: 5%">환 자</th>
+        <th class="receiptTdName">성명</th>
+        <td></td>
+        <th class="receiptTdName">전화번호</th>
+        <td></td>
+    </tr>
+    <tr>
+        <th class="receiptTdName">주민등록번호</th>
+        <td></td>
+        <th class="receiptTdName">E-mail 주소</th>
+        <td></td>
+    </tr>
+    <tr>
+        <th class="receiptTdName" rowspan="2">질병 분류 기호 </th>
+        <td></td>
+        <th class="receiptTdName" rowspan="2" colspan="2">처방 의료인의 성명</th>
+        <td colspan="3" rowspan="2" style="text-align: right">(서명 또는 날인)</td>
+    </tr>
+    <tr>
+        <td></td>
+
+    </tr>
+    <tr>
+        <td colspan="6" style="text-align: center; border: none">
+            &#8251; 환자의 요구가 있는 때에는 질병분류기호를 기재하지 아니합니다.
+        </td>
+    </tr>
+</table>
+<table class="borderedTableForReceipt">
+<tr>
+    <th class="receiptTdName" colspan="2" style="text-align: center;width: 50%">처&nbsp;&nbsp;방&nbsp;&nbsp;의&nbsp;&nbsp;약&nbsp;&nbsp;품&nbsp;&nbsp;의&nbsp;&nbsp;&nbsp;&nbsp;명&nbsp;&nbsp;칭</th>
+    <th class="receiptTdName" style="width: 6%">1회 투약량</th>
+    <th class="receiptTdName" style="width: 6%">1회 투약 횟수</th>
+    <th class="receiptTdName" style="width: 6%">총<br>투약 횟수</th>
+    <th class="receiptTdName">용법</th>
+</tr>
+    <tr>
+        <td style="height: 300px" colspan="2"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th colspan="5">주사제 처방내역 (원내조제 &#9633;, 원외처방 &#9633;)</th>
+        <th>조제시 참고 사항</th>
+    </tr>
+    <tr>
+        <td style="height: 120px" colspan="2"></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <th>사용기간</th>
+        <th>교부일로부터 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) 일 간</th>
+        <th colspan="4">&#8251; 사용기간내에 약국에 제출하여야 합니다</th>
+    </tr>
+</table>
+<br>
+<hr style="width: 700px">
+</div>
+
+</body>
+</html>
