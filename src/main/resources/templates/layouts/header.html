@@ -35,7 +35,7 @@
 								<a th:href="@{/blog.html}">게시판</a>
 								<ul class="dropdown">
 									<li><a th:href="@{/}">Q&A</a></li>
-									<li><a th:href="@{/}">review</a></li>
+									<li><a th:href="@{/reviewboard}">review</a></li>
 								</ul>
 							</li>
 							<li><a th:href="@{/services.html}">Services</a></li>
@@ -56,11 +56,25 @@
 								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
 
+							<!-- emp인 경우에 보여지도록 설정-->
+							<th:block sec:authorize="hasAuthority('간호사')">
+								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
+								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
+							</th:block>
+
+							<!-- emp인 경우에 보여지도록 설정-->
+							<th:block sec:authorize="hasAuthority('의사')">
+								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
+								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
+							</th:block>
+
 							<!-- user인 경우에 보여지도록 설정-->
 							<th:block sec:authorize="hasAuthority('ROLE_USER')">
 								<li class="nav-item"><a th:href="@{/mypage}" class="nav-link">마이 페이지</a></li>
 								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
+
+
 						</ul>
 						<a th:href="@{/}"
 						   class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block d-lg-none light"

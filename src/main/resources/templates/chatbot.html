@@ -5,68 +5,263 @@
   <title>Chatbot</title>
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <style>
-    .chat_wrap {display:none;width: 350px;height: 500px;position: fixed;bottom: 30px;right: 95px;background: #a9bdce;}
-    .chat_content {height: 600px;width: 500px;overflow-y:scroll;padding:10px 15px;background: cornflowerblue}
-    .chat_input {padding:2px 5px;}
-    .chat_header {padding: 10px 15px;border-bottom: 1px solid #95a6b4;}
-    .chat_header .close_btn {border: none;background: none;float: right;}
-    .send_btn {border: 1px solid #666;background: #ffeb33;height: 28px;color: #0a0a0a;}
-    .msg_box:after {content: '';display: block;clear:both;}
-    .msg_box > span {padding: 3px 5px;word-break: break-all;display: block;max-width: 300px;margin-bottom: 10px;border-radius: 4px}
-    .msg_box.send > span {background:#ffeb33;float: right;}
-    .msg_box.receive > span {background:#fff;float: left;}
+    .chat_wrap {
+      display: none;
+      width: 350px;
+      height: 500px;
+      position: fixed;
+      bottom: 30px;
+      right: 95px;
+      background: #a9bdce;
+      font-family: Arial, sans-serif;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    .chat_content {
+      height: 400px; /* 채팅창 높이 조절 */
+      overflow-y: auto;
+      padding: 10px;
+      background: #ffffff;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .chat_input {
+      width: calc(100% - 70px); /* 전송 버튼 고려하여 너비 조정 */
+      padding: 8px 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      margin-right: -5px;
+    }
+
+    .send_btn {
+      width: 60px;
+      padding: 8px;
+      font-size: 14px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+
+    .chat_header {
+      padding: 10px 15px;
+      border-bottom: 1px solid #95a6b4;
+      background-color: #a9bdce;
+      color: #ffffff;
+      font-weight: bold;
+      border-radius: 10px 10px 0 0;
+
+    }
+
+    .chat_header .close_btn {
+      border: none;
+      background: none;
+      float: right;
+      font-size: 18px;
+      cursor: pointer;
+      color: #ffffff;
+    }
+    .chat_inner {
+      margin-top: 10px;
+      padding: 10px;
+      max-width: calc(100% - 20px); /* 말풍선 최대 너비 */
+      word-wrap: break-word;
+      border-radius: 10px;
+      clear: both;
+      background-color: #f1f0f0;
+      color: #333333;
+      float: left;
+    }
+
+
+    .msg_box {
+      margin-top: 10px;
+      padding: 10px;
+      max-width: calc(100% - 20px); /* 말풍선 최대 너비 */
+      word-wrap: break-word;
+      border-radius: 10px;
+      clear: both;
+    }
+
+    .msg_box.send {
+      background-color: #4CAF50;
+      color: white;
+      float: right;
+    }
+
+    .msg_box.receive {
+      background-color: #f1f0f0;
+      color: #333333;
+      float: left;
+    }
+
+    .msg_box > span {
+      display: block;
+      word-break: break-all;
+      max-width: 100%;
+    }
+
+    .btn_info_wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-link {
+      padding: 8px 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-link:hover {
+      background-color: #0056b3;
+    }
+
+    /* 모달 스타일 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
   </style>
 </head>
 <body>
-<div class="chat_header">
-  <span>챗봇</span>
-  <button type="button" id="close_chat_btn" class="close_btn">X</button>
-</div>
-<div id="divbox" class="chat_content"></div>
-<form id="chatForm" style="display: inline">
-  <input type="text" name="inputText" class="chat_input" id="input1" size="74" style="display: inline; width: 460px" />
-  <input type="button" value="전송" id="btn_submit" class="send_btn" style="display: inline;width: 40px" />
-</form>
-<script>
-  $('#btn_submit').click(function () {
-    send();
-  });
-  $('#chatForm').on('submit', function(e){
-    e.preventDefault();
-    send();
-  });
-  $('#close_chat_btn').on('click', function(){
-    $('#chat_wrap').hide().empty();
-  });
-  function send(){
-    $('#divbox').append('<div class="msg_box send"><span>'+$('#input1').val()+'<span></div>');
-    $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
-    $.ajax({
-      url:  '/chatbot/chatbotSend', //챗봇 api url
-      type: 'post',
-      dataType: 'text',
-      data: {inputText: $('#input1').val()},
-      success: function(data) {
-        console.log("success");
-        $('#divbox').append('<div class="msg_box receive"><span>'+ data +'<span></div>');
-        $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
-      }
-    });
-    $('#input1').val('');
-  }
-  $(document).ready(function () {
-    // 폼 제출 이벤트 처리
-    $('#chatForm').on('submit', function (event) {
-      event.preventDefault();
-      if ($('#inputText').val() === "") {
-        alert("질문을 입력하세요");
-        return false;
-      }
-      callAjax();
-      $('#inputText').val(''); // 입력란 비우기
-    });
+<img src="/icon/chatbotimg.png" alt="Chatbot Image" id="chatbotimg" style="width:50px;height:50px;position:fixed;bottom:10px;right:10px;cursor:pointer;">
 
-  });
+<div id="chatbotModal" class="modal">
+  <div class="modal-content">
+    <div class="modal_header" style="max-width: 500px;">
+      <span>챗봇</span>
+    <button type="button" id="close_chat_btn" class="close_btn" onclick="location.reload()">X</button>
+    </div>
+    <div id="divbox" class="chat_content" style="max-width: 500px;">
+        <div class="chat_inner" style="max-height: 1265px;">
+        반갑습니다 ! ^^<br>
+        낭만닥터 도우미 6B(육비)입니다. <br>
+        6(명의) B(itcampers)라는 뜻을 가지고 있어요 ! <br>
+        궁금한 점을 아래의 단축버튼으로 누르거나 <br>
+        직접 질문해주세요.
+      <div class="btn_info_wrap">
+    <button type="button" class="btn-link welcome1" onclick="onButtonClick('{&quot;type&quot;:&quot;TEXT&quot;,&quot;displayText&quot;:&quot;진료예약 및 변경&quot;,&quot;postback&quot;:&quot;진료예약 및 변경&quot;,&quot;link&quot;:null,&quot;phoneNumber&quot;:null,&quot;suggestion&quot;:{&quot;suggestionType&quot;:&quot;INTENT&quot;,&quot;source&quot;:&quot;진료예약 및 변경&quot;,&quot;target&quot;:&quot;352&quot;},&quot;addclass&quot;:&quot;welcome1&quot;}', 'pUP0NF8lNWDEFS7hFydz')">
+      <span>예약하기</span>                 </button>
+   <button type="button" class="btn-link welcome5" onclick="onButtonClick('{&quot;type&quot;:&quot;TEXT&quot;,&quot;displayText&quot;:&quot;병원안내&quot;,&quot;postback&quot;:&quot;병원안내&quot;,&quot;link&quot;:null,&quot;phoneNumber&quot;:null,&quot;suggestion&quot;:{&quot;suggestionType&quot;:&quot;INTENT&quot;,&quot;source&quot;:&quot;병원안내&quot;,&quot;target&quot;:&quot;71&quot;},&quot;addclass&quot;:&quot;welcome5&quot;}', 'pUP0NF8lNWDEFS7hFydz')">
+      <span>병원검색</span>                 </button>
+   <button type="button" class="btn-link home" onclick="location.reload()">
+      <span>처음으로</span>                </button>
+
+        </div>
+      </div>
+    </div>
+    <form id="chatForm" style="display: inline">
+      <input type="text" name="inputText" class="chat_input" id="input1" size="74" style="display: inline; width: 460px" />
+      <input type="button" value="전송" id="btn_submit" class="send_btn" style="display: inline;width: 40px" />
+    </form>
+  </div>
+</div>
+
+<script>
+  // 챗봇 이미지 클릭 시 모달 표시
+  document.getElementById('chatbotimg').onclick = function() {
+    document.getElementById('chatbotModal').style.display = "flex";
+
+    $('#btn_submit').click(function () {
+      send();
+    });
+    $('#chatForm').on('submit', function(e){
+      e.preventDefault();
+      send();
+    });
+    $('#close_chat_btn').on('click', function(){
+      $('#chat_wrap').hide().empty();
+    });
+    function send(){
+      $('#divbox').append('<div class="msg_box send"><span>'+$('#input1').val()+'<span></div>');
+      $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
+      $.ajax({
+        url:  '/chatbot/chatbotSend', //챗봇 api url
+        type: 'post',
+        dataType: 'text',
+        data: {inputText: $('#input1').val()},
+        success: function(data) {
+          console.log("success");
+          $('#divbox').append('<div class="msg_box receive"><span>'+ data +'<span></div>');
+          $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
+        }
+      });
+      $('#input1').val('');
+    }
+    $(document).ready(function () {
+      // 폼 제출 이벤트 처리
+      $('#chatForm').on('submit', function (event) {
+        event.preventDefault();
+        if ($('#inputText').val() === "") {
+          alert("질문을 입력하세요");
+          return false;
+        }
+        callAjax();
+        $('#inputText').val(''); // 입력란 비우기
+      });
+    });
+  }
+
+  // 모달 닫기 버튼 클릭 시 모달 숨김
+  document.getElementsByClassName('close')[0].onclick = function() {
+    document.getElementById('chatbotModal').style.display = "none";
+  }
+
+  // 모달 외부 클릭 시 모달 숨김
+  window.onclick = function(event) {
+    if (event.target == document.getElementById('chatbotModal')) {
+      document.getElementById('chatbotModal').style.display = "none";
+    }
+  }
 
 </script>
 </body>

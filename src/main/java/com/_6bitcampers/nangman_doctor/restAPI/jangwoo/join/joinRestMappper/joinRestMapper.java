@@ -1,4 +1,4 @@
-package com._6bitcampers.nangman_doctor.restAPI.jangwoo.joinRestMappper;
+package com._6bitcampers.nangman_doctor.restAPI.jangwoo.join.joinRestMappper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
