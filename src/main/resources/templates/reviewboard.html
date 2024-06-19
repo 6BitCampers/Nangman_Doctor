@@ -2,41 +2,118 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
-<div layout:fragment="content" class="section section-2" style="height: 800px;margin-left: 50px">
-    <table class="table" style="width: 70%; ">
-        <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>평점</th>
-            <th>작성자</th>
-            <th>작성일</th>
-            <th>조회수</th>
-        </tr>
-        <tr th:each="item,itemStat:${list}" >
-            <td th:text="${itemStat.count}"></td>
-            <td>
-                <form th:action="@{/reviewboard/detail}" method="post">
-                    <input type="hidden" name="review_no" th:value="${item.review_no}" />
-                    <input type="hidden" name="userId" th:value="${#authentication.name}" />
-                    <button type="submit" th:text="${item.review_title}"></button>
-                </form>
-            </td>
-            <td><span class="reviewStarsBoard"></span>
-                <script th:inline="javascript">
-                    let s = '';
-                    let ratings =/*[[${item.review_likecount}]]*/0;
-                    console.log(ratings);
-                    for (let i = 0; i < ratings; i++) {
-                        s += `<span style="color: gold">&#9733</span>`;
-                    }
-                    for (let i = 0; i < ratings - 5; i++) {
-                        s += `<span>&#9734;</span>`;
-                    }
-                    $(".reviewStarsBoard").html(s);
-                </script></td>
-            <td th:text="${userMap[item.user_no].user_name}"></td>
-            <td th:text="${item.getFormattedWriteday()}"></td>
-            <td th:text="${item.review_viewcount}"></td>
-        </tr>
-    </table>
+<div layout:fragment="content" class="section section-1" style="min-height: 600px;margin-left: 50px">
+    <!--
+// v0 by Vercel.
+// https://v0.dev/t/MsbVKJ1RpYM
+-->
+    <div class="w-full max-w-4xl mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Reviews</h1>
+        </div>
+        <div class="space-y-6">
+            <div class="bg-white rounded-lg shadow-md p-6" th:each="item,itemStat:${list}">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <span th:text="${hospitalDtoMap[item.user_no]}" style="font-weight: bold"></span>
+                            <form th:action="@{/reviewboard/detail}" method="post">
+                                <h2 class="text-lg font-semibold">
+                                    <input type="hidden" name="review_no" th:value="${item.review_no}"/>
+                                    <input type="hidden" name="userId" th:value="${#authentication.name}"/>
+                                    <a href="#4z"><button type="submit" th:text="${item.review_title}"></button></a>
+                                </h2>
+                            </form>
+                        <span class="reviewStarsBoard" th:data-index="${itemStat.index}"></span>
+                        <script th:inline="javascript">
+                            /*<![CDATA[*/
+                            document.addEventListener("DOMContentLoaded", function() {
+                                /* Each item in the list */
+                                var items = /*[[${list}]]*/ [];
+                                items.forEach(function(item, index) {
+                                    var ratings = item.review_likecount;
+                                    var starContainer = document.querySelector('.reviewStarsBoard[data-index="' + index + '"]');
+                                    if (starContainer) {
+                                        var s = '';
+                                        for (let i = 0; i < ratings; i++) {
+                                            s += '<span style="color: gold">&#9733;</span>';
+                                        }
+                                        for (let i = ratings; i < 5; i++) {
+                                            s += '<span style="color: gray">&#9734;</span>';
+                                        }
+                                        starContainer.innerHTML = s;
+                                    }
+                                });
+                            });
+                            /*]]>*/
+                        </script>
+                    </div>
+                    <div class="text-gray-500 text-sm">
+                        <span class="font-medium" th:with="nameLength=${userMap[item.user_no].user_name.length()}">
+                            <span th:if="${nameLength == 2}"><span th:text="${userMap[item.user_no].user_name.substring(0,1)}"></span> *</span>
+                            <span th:if="${nameLength > 2}">
+                                    <span th:text="${userMap[item.user_no].user_name.substring(0,1)}"></span>
+                                    <span th:each="i : ${#numbers.sequence(1, nameLength-2)}">*</span>
+                                    <span th:text="${userMap[item.user_no].user_name.substring(nameLength-1)}"></span>
+                                    </span>
+                        </span>
+                        <span class="ml-2" th:text="${item.getFormattedWriteday()}"></span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="ml-2">조회수 <span th:text="${item.review_viewcount}"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            <nav aria-label="pagination" class="mx-auto flex w-full justify-center" role="navigation">
+                <ul class="flex flex-row items-center gap-1">
+                    <li class="">
+                        <a
+                                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+                                aria-label="Go to previous page"
+                                th:href="@{/reviewboard(page=${currentpage}-1)}"
+                        >
+                            <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="lucide lucide-chevron-left h-4 w-4"
+                            >
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                            <span>Previous</span>
+                        </a>
+                    </li>
+                    <li class="" th:each="num : ${#numbers.sequence(1,totalNum/perPage+1)}">
+                        <a
+                                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
+                                th:href="@{/reviewboard(page=${num})}"
+                                th:text="${num}"
+                        >
+                        </a>
+                    </li>
+                    <li class="">
+                        <a
+                                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+                                aria-label="Go to previous page"
+                                th:href="@{/reviewboard(page=${currentpage+1})}"
+                        >
+                            <span>Next</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4">
+                                <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+    </div>
+
 </div>
