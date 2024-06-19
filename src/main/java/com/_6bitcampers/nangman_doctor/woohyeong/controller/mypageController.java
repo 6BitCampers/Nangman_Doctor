@@ -38,8 +38,6 @@ public class mypageController {
                 model.addAttribute("udto", udto);
                 model.addAttribute("status", status);
                 model.addAttribute("dto", dto);
-                System.out.println("rererere" + dto);
-                System.out.println(udto);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,7 +47,6 @@ public class mypageController {
             EmployeeDTO edto = mypageService.getEmployee(id);
             if (edto != null) {
                 model.addAttribute("edto", edto);
-                System.out.println(edto);
             }
         } catch (Exception e) {
             e.printStackTrace();
