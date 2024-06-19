@@ -53,4 +53,10 @@ public class qnaController {
             return ResponseEntity.ok().build();
         } else return ResponseEntity.status(201).build();
     }
+
+    @GetMapping("/searchPW")
+    public ResponseEntity<Object> searchPw(@RequestParam("email")String email,
+                                           @RequestParam("name") String name) {
+        return ResponseEntity.ok().build();
+    }
 }

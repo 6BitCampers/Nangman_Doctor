@@ -1,18 +1,23 @@
 package com._6bitcampers.nangman_doctor.woohyeong.controller;
 
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.woohyeong.Service.conferenceService;
 import com._6bitcampers.nangman_doctor.woohyeong.Service.reservationServiceW;
+import com._6bitcampers.nangman_doctor.woohyeong.dto.ReceiptDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +32,10 @@ public class conferenceController {
 
     @GetMapping("/test")
     public String home(Model model) {
-        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String id = customOAuth2User.getEmail();
+
         boolean employeeNoSuccess = false;
         boolean userNoSuccess = false;
 
@@ -45,13 +53,21 @@ public class conferenceController {
         } catch (Exception e) {
         }
 
+        LocalDateTime nowW = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String now = nowW.format(formatter);
+
+        // 모델에 데이터 추가
+        model.addAttribute("now", now);
+
+
         if(userNoSuccess){
             int user_no = conferenceService.getUserNo(id);
-            return "redirect:/payment?user_no=" + user_no;
+            return "redirect:/mypage";
         }
 
         if(employeeNoSuccess){
-            return "redirect:/";
+            return "surveyreceipt";
         }
 
         return "redirect:/errorPage";
@@ -79,7 +95,7 @@ public class conferenceController {
 //            sendSessionDataToNodeServer(name);
 
             // 브라우저 열기
-            openBrowser("https://192.168.0.18:3000");
+            openBrowser("https://192.168.0.22:3000");
 
             System.out.println("Node.js 서버가 시작되었습니다.");
         } catch (IOException | InterruptedException e) {
@@ -97,21 +113,11 @@ public class conferenceController {
         }
     }
 
-//    private void sendSessionDataToNodeServer(String name) {
-//        try {
-//            RestTemplate restTemplate = new RestTemplate();
-//            String url = "http://192.168.0.18:3000/receive-session-data";
-//
-//            // 세션 데이터
-//            Map<String, Object> sessionData = new HashMap<>();
-//            sessionData.put("name", name);
-//            sessionData.put("user", "exampleUser");
-//            sessionData.put("role", "exampleRole");
-//
-//            restTemplate.postForObject(url, sessionData, String.class);
-//            System.out.println("세션 데이터를 Node.js 서버로 전송했습니다.");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @GetMapping("/receipt/insert")
+    public String receiptinsert(@ModelAttribute ReceiptDTO dto) {
+        conferenceService.insertReceipt(dto);
+        return "";
+    }
+
+
 }
