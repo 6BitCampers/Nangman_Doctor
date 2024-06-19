@@ -1,10 +1,11 @@
 package com._6bitcampers.nangman_doctor.woohyeong.controller;
 
-import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.woohyeong.Service.mypageService;
 import com._6bitcampers.nangman_doctor.woohyeong.Service.reservationServiceW;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.EmployeeDTO;
+import com._6bitcampers.nangman_doctor.woohyeong.dto.ReceiptDTO;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,14 +27,18 @@ public class mypageController {
 
     @GetMapping("/mypage")
     public String mypage(Model model) {
-        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String id = customOAuth2User.getEmail();
         int userNo= reservationService.getUserNo(id);
         int status = reservationServiceW.getReservationStatus(userNo);
         try {
             UserDTO udto = mypageService.getUser(id);
             if (udto != null) {
+                ReceiptDTO dto = mypageService.getReceipt(userNo);
                 model.addAttribute("udto", udto);
                 model.addAttribute("status", status);
+                model.addAttribute("dto", dto);
+                System.out.println("rererere" + dto);
                 System.out.println(udto);
             }
         } catch (Exception e) {
@@ -58,9 +63,6 @@ public class mypageController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
 
         return "mypage"; // 템플릿 이름을 반환합니다. "mypage.html" 템플릿이 호출됩니다.
     }
