@@ -5,6 +5,15 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementService.EmpService;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
+
+import ch.qos.logback.core.net.SyslogOutputStream;
+import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
+import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
+import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
+import com._6bitcampers.nangman_doctor.leegahyun.management.managementService.EmpService;
+
+import org.apache.ibatis.annotations.Param;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +34,9 @@ public class EmpController {
     @Autowired
     private EmpService EmpService;
 
+    @Autowired
+    private ReservationService reservationService;
+
     @GetMapping("/emp")
     public String getEmployees(Model model) {
 
@@ -33,6 +45,7 @@ public class EmpController {
 
         List<EmpDto> emplist = EmpService.getEmpList(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("emplist", emplist);
+
 
         //리뷰보드 연결
         int perPage=10;
@@ -55,6 +68,10 @@ public class EmpController {
         model.addAttribute("totalNum", totalNum);
         model.addAttribute("currentpage", 1);
 
+
+        List<ReservationDto> reservations = reservationService.getReservationsByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("reservations", reservations);
+        System.out.println(reservations);
 
 
         return "emp";

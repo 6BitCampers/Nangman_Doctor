@@ -1,5 +1,7 @@
 package com._6bitcampers.nangman_doctor.woohyeong.Service;
 
+import com._6bitcampers.nangman_doctor.woohyeong.dto.ReceiptDTO;
+import com._6bitcampers.nangman_doctor.woohyeong.dto.ReservationDTOW;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com._6bitcampers.nangman_doctor.woohyeong.Mapper.conferenceMapper;
@@ -14,8 +16,16 @@ public class conferenceService {
         this.conferenceMapper = conferenceMapper;
     }
 
-    public String getEmail(String user_email){
-        return conferenceMapper.getEmail(user_email);
+    public int getUserNo(String user_email){
+        return conferenceMapper.getUserNo(user_email);
+    }
+
+    public ReservationDTOW getReservation(int employee_no){
+        return conferenceMapper.getReservation(employee_no);
+    }
+
+    public void insertReceipt(ReceiptDTO dto){
+        conferenceMapper.insertRecipt(dto);
     }
 
 }

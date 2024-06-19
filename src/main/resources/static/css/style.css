@@ -10500,7 +10500,25 @@ textarea {
         background: #f59b74;
         color: #fff; }
 
+.chatbotimg {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px; /* 아이콘의 전체 크기 */
+  height: 60px; /* 아이콘의 전체 크기 */
+  background-color: #007bff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
+.chatbotimg img {
+  width: 60px; /* 아이콘 이미지의 크기 */
+  height: 60px; /* 아이콘 이미지의 크기 */
+}
 input:invalid {
   border-color: red;
 }.container {
@@ -10509,3 +10527,250 @@ input:invalid {
    align-items: flex-start;
    justify-content: center;
  }
+
+.emp-box {
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.emp-box-likecount {
+  order: 1;
+}
+
+.emp-box-board {
+  order: 2;
+}
+
+.emp-box-announcement {
+  order: 3;
+}
+
+.emp-box-management {
+  order: 4;
+}
+
+.emp-box-reservation {
+  order: 5;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+thead tr {
+  background-color: #59b8e7;
+  color: #ffffff;
+  text-align: left;
+}
+
+th, td {
+  padding: 12px 15px;
+}
+
+tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+  border-bottom: 2px solid #59b8e7;
+}
+
+.chat_wrap {
+  display: none;
+  width: 350px;
+  height: 500px;
+  position: fixed;
+  bottom: 30px;
+  right: 95px;
+  background: #a9bdce;
+  font-family: Arial, sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.chat_content {
+  height: 400px; /* 채팅창 높이 조절 */
+  overflow-y: auto;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 10px 10px 0 0;
+}
+
+.chat_input {
+  width: calc(100% - 70px); /* 전송 버튼 고려하여 너비 조정 */
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  margin-right: -5px;
+}
+
+.send_btn {
+  width: 60px;
+  padding: 8px;
+  font-size: 14px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.chat_header {
+  padding: 10px 15px;
+  border-bottom: 1px solid #95a6b4;
+  background-color: #a9bdce;
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 10px 10px 0 0;
+
+}
+
+.chat_header .close_btn {
+  border: none;
+  background: none;
+  float: right;
+  font-size: 18px;
+  cursor: pointer;
+  color: #ffffff;
+}
+.chat_inner {
+  margin-top: 10px;
+  padding: 10px;
+  max-width: calc(100% - 20px); /* 말풍선 최대 너비 */
+  word-wrap: break-word;
+  border-radius: 10px;
+  clear: both;
+  background-color: #f1f0f0;
+  color: #333333;
+  float: left;
+}
+
+
+.msg_box {
+  margin-top: 10px;
+  padding: 10px;
+  max-width: calc(100% - 20px); /* 말풍선 최대 너비 */
+  word-wrap: break-word;
+  border-radius: 10px;
+  clear: both;
+}
+
+.msg_box.send {
+  background-color: #4CAF50;
+  color: white;
+  float: right;
+}
+
+.msg_box.receive {
+  background-color: #f1f0f0;
+  color: #333333;
+  float: left;
+}
+
+.msg_box > span {
+  display: block;
+  word-break: break-all;
+  max-width: 100%;
+}
+
+.btn_info_wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-link {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-link:hover {
+  background-color: #0056b3;
+}
+
+/* 모달 스타일 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.large-heading {
+  font-size: 3em; /* Adjust the size as needed */
+  font-weight: bold; /* Ensures the text is bold */
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden; /* Optional: hides overflow if the text is too long */
+  text-overflow: ellipsis; /* Optional: adds ellipsis if the text is too long */
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+ .star {
+   font-size: 2em;
+   cursor: pointer;
+   color: gray;
+ }
+.star.selected {
+  color: gold;
+}

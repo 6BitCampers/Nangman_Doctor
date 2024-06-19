@@ -3,6 +3,8 @@ package com._6bitcampers.nangman_doctor.baedongwoo.controller.payment;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PaymentDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.PaymentService;
+import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,14 +18,19 @@ import java.util.Map;
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping("/payment")
     public String payment(
-            @RequestParam String user_no,
+            @RequestParam int user_no,
             @RequestParam int receipt_no,
             Model model
     ){
+        userEntity userDto= reviewService.getUserInfo(user_no);
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
+
+        model.addAttribute("userDto", userDto);
         model.addAttribute("receiptDto", receiptDto);
         model.addAttribute("user_no", user_no);
         return "payment";

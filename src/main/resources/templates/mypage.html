@@ -1,54 +1,159 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}">
+      layout:decorate="~{layouts/layout}" xmlns="">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
 <div layout:fragment="content">
-    <!--
-// v0 by Vercel.
-// https://v0.dev/t/Kukw7xaPEBG
--->
-<!--    <div class="flex h-screen w-full items-center justify-center bg-orange-100">-->
-<!--        <div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">-->
-            <div class="section">
-                <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
-                    <div class="contact-info">
-
-                        <div class="address mt-4">
-                            <i class="icon-room"></i>
-                            <h4 class="mb-2">Location:</h4>
-                            <p>43 Raymouth Rd. Baltemoer, London 3910</p>
-                        </div>
-
-                        <div class="open-hours mt-4">
-                            <i class="icon-clock-o"></i>
-                            <h4 class="mb-2">Open Hours:</h4>
-                            <p>
-                                Sunday-Friday:<br>
-                                11:00 AM - 2300 PM
-                            </p>
-                        </div>
-
-                        <div class="email mt-4">
-                            <i class="icon-envelope"></i>
-                            <h4 class="mb-2">Email:</h4>
-                            <p>info@</p>
-                        </div>
-
-                        <div class="phone mt-4">
-                            <i class="icon-phone"></i>
-                            <h4 class="mb-2">Call:</h4>
-                            <p>+1 1234 55488 55</p>
-                        </div>
-
-                    </div>
-                </div>
+    <div th:if="${udto != null}" class="d-flex vh-100 bg-warning p-3 gap-3">
+        <div class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">
+            <div class="d-flex justify-content-end mb-3">
+                <a href="#" class="text-decoration-none text-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
+                </a>
+            </div>
+            <h1 th:text="${udto.user_name} + '님 환영합니다!'"></h1>
+            <table class="table table-striped mt-3">
+                <tr>
+                    <th>이름</th>
+                    <td th:text="${udto.user_name}"></td>
+                </tr>
+                <tr>
+                    <th>이메일</th>
+                    <td th:text="${udto.user_email}"></td>
+                </tr>
+                <tr>
+                    <th>전화번호</th>
+                    <td th:text="${udto.user_hp}"></td>
+                </tr>
+                <tr>
+                    <th>닉네임</th>
+                    <td th:text="${udto.user_nickname}"></td>
+                </tr>
+                <tr>
+                    <th>성별</th>
+                    <td th:text="${udto.user_gender}"></td>
+                </tr>
+                <tr>
+                    <th>주소</th>
+                    <td th:text="${udto.user_addr1}"></td>
+                </tr>
+                <tr th:if="${udto.user_interest != null}">
+                    <th>관심분야</th>
+                    <td th:text="${udto.user_interest}"></td>
+                </tr>
+            </table>
+            <span th:if="${status == 1}">
+                <button type="button" onclick="location.href='/test'" class="btn btn-primary mt-3">
+                    화상진료하러가기
+                </button>
+                <script>
+                    document.querySelector('button').addEventListener('mouseover', function() {
+                        this.classList.remove('btn-primary');
+                        this.classList.add('btn-dark');
+                    });
+                    document.querySelector('button').addEventListener('mouseout', function() {
+                        this.classList.remove('btn-dark');
+                        this.classList.add('btn-primary');
+                    });
+                </script>
+            </span>
+            <span th:if="${status != 1}">
+                <h1>화상진료 예약일이 아닙니다.</h1>
+            </span>
+            <br><br>
+            <form action="/payment" method="get">
+                <input type="hidden" name="user_no" th:value="${udto.user_no}">
+                <div th:if="${dto != null}">
+                    <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
+                <h1>결제정보</h1>
+                <table class="table table-striped mt-3">
+                    <tr>
+                        <th>결제정보</th>
+                        <th th:text="${dto.receipt_name}"></th>
+                    </tr>
+                    <tr>
+                        <th>진료일</th>
+                        <th th:text="${dto.receipt_date}"></th>
+                    </tr>
+                    <tr>
+                        <th>결제금액</th>
+                        <th th:text="${dto.receipt_amount}"></th>
+                    </tr>
+                </table>
+                <span>
+                    <button type="submit" class="btn btn-primary mt-3">
+                        결제하러가기
+                    </button>
+                </span>
+            </div>
+            </form>
         </div>
-                </div>
+
+<!--        <div th:if="${edto != null}" class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">-->
+<!--            <div class="d-flex justify-content-end mb-3">-->
+<!--                <a href="#" class="text-decoration-none text-dark">-->
+<!--                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">-->
+<!--                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>-->
+<!--                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>-->
+<!--                    </svg>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--            <h1 th:text="${edto.employee_name} + '님 환영합니다!'"></h1>-->
+<!--            <table class="table table-striped mt-3">-->
+<!--                <tr>-->
+<!--                    <th>이름</th>-->
+<!--                    <td th:text="${edto.employee_name}"></td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th>이메일</th>-->
+<!--                    <td th:text="${edto.employee_email}"></td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th>전화번호</th>-->
+<!--                    <td th:text="${edto.employee_phone}"></td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th>직책</th>-->
+<!--                    <td th:text="${edto.employee_position}"></td>-->
+<!--                </tr>-->
+<!--                <tr th:if="${edto.employee_department != null}">-->
+<!--                    <th>부서</th>-->
+<!--                    <td th:text="${edto.employee_department}"></td>-->
+<!--                </tr>-->
+<!--            </table>-->
+<!--        </div>-->
+
+        <!--예약목록 -->
+        <div class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">
+            <h2>예약 목록</h2>
+            <br>
+            <div class="col-md-8">
+                <ul class="list-unstyled w-100 mb-3">
+                    <li th:each="reservation, iterStat : ${reservationList}" th:id="'reservation-' + ${iterStat.index}" class="bg-white border rounded p-3 shadow-sm mb-3">
+                        <h2 class="h5">예약 번호: <span th:text="${reservation.get('reservation_no')}">1</span></h2>
+                        <p>이름: <span th:text="${reservation.get('user_name')}">홍길동</span></p>
+                        <p>날짜: <span th:text="${reservation.get('reservation_date')}">2023-01-01</span></p>
+                        <p>시간: <span th:text="${reservation.get('reservation_time')}">10:00 - 11:00</span></p>
+                        <p>진료명: <span th:text="${reservation.get('reservation_reason')}">진료명</span></p>
+                        <p>상태:
+                            <span th:if="${reservation.get('reservation_status') == 1}" class="text-warning">예약 요청</span>
+                            <span th:if="${reservation.get('reservation_status') == 2}" class="text-info">예약 메일확인</span>
+                            <span th:if="${reservation.get('reservation_status') == 3}" class="text-success">예약 확정하기</span>
+                        </p>
+                    </li>
+                    <br>
+                </ul>
             </div>
         </div>
-<!--    </div>-->
-<!--</div>-->
-
+    </div>
+</div>
+</body>
 </html>
