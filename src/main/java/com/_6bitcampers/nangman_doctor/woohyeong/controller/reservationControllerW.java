@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor.woohyeong.controller;
 
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.woohyeong.Service.reservationServiceW;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.ReservationDTOW;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,8 @@ public class reservationControllerW {
     //유저가 입력해서 입력한 폼을 유지한 채 의사한테 승인요청
     @GetMapping("/reservation/insertsurvey")
     public String insertSurvey(@ModelAttribute ReservationDTOW dto){
-        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String id = customOAuth2User.getEmail();
         reservationService.insertSurvey(dto);
         return "";
     }
@@ -30,7 +32,8 @@ public class reservationControllerW {
     //취소 누르면 해당 예약 신청 거절(삭제)
     @GetMapping("/reservation/updatesurvey")
     public String updateSurvey(int user_no){
-        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String id = customOAuth2User.getEmail();
         int employee_no = reservationService.getEmployeeNo(id);
         Map<String, Object> map = new HashMap<>();
         map.put("employee_no", employee_no);
