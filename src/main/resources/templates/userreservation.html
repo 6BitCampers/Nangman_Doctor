@@ -1,39 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
 <div layout:fragment="content">
-    <div class="flex h-screen w-full items-center justify-center bg-orange-100">
-        <div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">
-            <div class="space-y-2 text-center">
-                <h1 class="text-3xl font-bold">예약 현황</h1>
-            </div>
-            <div class="space-y-4">
-                <table class="min-w-full bg-white">
-                    <thead>
-                    <tr>
-                        <th class="py-2">예약 번호</th>
-                        <th class="py-2">이름</th>
-                        <th class="py-2">날짜</th>
-                        <th class="py-2">시간</th>
-                        <th class="py-2">진료명</th>
-                        <th class="py-2">진료 유형</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="reservation : ${reservations}">
-                        <td th:text="${reservation.reservation_no}">1</td>
-                        <td th:text="${reservation.user_name}">홍길동</td>
-                        <td th:text="${reservation.reservation_date}">2023-01-01</td>
-                        <td th:text="${reservation.reservation_time}">10:00 - 11:00</td>
-                        <td th:text="${reservation.reservation_reason}">진료명</td>
-                        <td th:text="${reservation.reservation_role}">상담</td>
-                    </tr>
-                    </tbody>
-                </table>
+    <div id="container" style="background-color: #f8f9fa; padding: 2rem;">
+        <div id="header" style="text-align: center; margin-bottom: 2rem;">
+            <h1>예약 현황</h1>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <ul class="list-unstyled">
+                    <li th:each="reservation, iterStat : ${reservations}" th:id="'reservation-' + ${iterStat.index}" style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 0.25rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <h2 class="h5">예약 번호: <span th:text="${reservation.reservation_no}">1</span></h2>
+                        <p>이름: <span th:text="${reservation.user_name}">홍길동</span></p>
+                        <p>날짜: <span th:text="${reservation.reservation_date}">2023-01-01</span></p>
+                        <p>시간: <span th:text="${reservation.reservation_time}">10:00 - 11:00</span></p>
+                        <p>진료명: <span th:text="${reservation.reservation_reason}">진료명</span></p>
+                        <!--<p>진료 유형:
+                            <span th:if="${reservation.reservation_role==1}">상담</span></p>
+                            <span th:if="${reservation.reservation_role==1}">상담</span></p>
+                            <span th:if="${reservation.reservation_role==1}">상담</span></p>-->
+                        <p>상태:
+                            <span th:if="${reservation.reservation_status == 1}" style="color: #ffc107;">예약 요청</span>
+                            <span th:if="${reservation.reservation_status == 2}" style="color: #17a2b8;">예약 메일확인</span>
+                            <span th:if="${reservation.reservation_status == 3}" style="color: #28a745;">예약 확정하기</span>
+                        </p>
+                    </li>
+                </ul>
             </div>
         </div>
+
     </div>
 </div>
+</body>
+
 </html>

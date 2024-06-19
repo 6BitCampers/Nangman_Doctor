@@ -31,10 +31,11 @@ public class ReservationService {
         this.mailSender = mailSender;
         this.templateEngine = templateEngine;
     }
-
+    //예약 저장
     public void saveReservation(ReservationDto reservationDto) {
-        // Generate a random UUID and set it to the reservationDto
+// Generate a random UUID and set it to the reservationDto
         reservationDto.setReservationRoom(UUID.randomUUID().toString());
+
 
         // Insert the reservation
         reservationMapper.insertReservation(reservationDto);
@@ -43,9 +44,12 @@ public class ReservationService {
         String employeeEmail = reservationMapper.getEmployeemailByNo(reservationDto.getEmployeeNo());
         String userEmail = reservationMapper.getUsermailByNo(reservationDto.getUserNo());
 
-        // Send reservation request emails
+        // 예약보내기
         sendReservationRequestEmail(userEmail, reservationDto);
         sendReservationRequestEmail(employeeEmail, reservationDto);
+    }
+    public int getUserNo(String id){
+        return reservationMapper.getUserNo(id);
     }
 
     public List<Map<String, Object>> getUserReservations(int userNo) {
@@ -59,6 +63,8 @@ public class ReservationService {
 
         sendEmail(to, "예약 요청", "firstemail", variables);
     }
+
+
 
     public void sendEmail(String to, String subject, String templateName, Map<String, Object> variables) {
         try {

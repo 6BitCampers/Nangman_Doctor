@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Alias("commentDto")
 public class commentDto {
     private String comment_comment;
-    private String employee_name;
+    private String employee_nickname;
     private int qna_no;
     private LocalDateTime writeday;
 }
