@@ -23,19 +23,4 @@ public interface qnaRestMapper {
 
     @Delete("delete from board_qna where qna_no=#{qna_no}")
     void deleteBoard(@Param("qna_no") int qna_no);
-
-    @Select("""
-select if(normal.count+employee.count=0,1,0) as count
-from (select count(*) count
-      from normal_user
-      where user_name = #{name}
-        and user_email = #{email}
-        and user_type = 'local') normal,
-     (select count(*) count
-      from hospital_employee
-      where employee_name = #{name}
-        and employee_email = #{email}
-        and employee_type = 'local') employee;
-""")
-    boolean existByEmailAndName(@Param("email")String email,@Param("name") String name);
 }

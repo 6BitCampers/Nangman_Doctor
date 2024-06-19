@@ -538,8 +538,12 @@
                                         const button = document.createElement("button");
                                         button.classList.add("video-call-button");
                                         button.innerText = "화상채팅";
+                                        button.addEventListener("click", function() {
+                                            window.location.href = "/test";
+                                        });
                                         cellContent.appendChild(button);
                                     }
+
 
                                     date++;
                                 }
