@@ -52,4 +52,7 @@ public class ReviewService {
     public String getHospitalName(int info_no){
         return reviewInter.getHospitalName(info_no);
     }
+    public void insertReview(ReviewDto reviewDto){
+        reviewInter.insertReview(reviewDto);
+    }
 }

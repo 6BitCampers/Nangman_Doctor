@@ -15,9 +15,6 @@
             var user_no = /*[[${user_no}]]*/ '0';
             var receipt_no = /*[[${receipt_no}]]*/ 0;
 
-            console.log("Receipt Amount: ", receiptDto.receipt_amount);
-            console.log("User No: ", user_no);
-            console.log(method);
             // ------ 결제창 띄우기 ------
             tossPayments
                 .requestPayment(method, {
@@ -53,12 +50,277 @@
             var method = $(this).val();
             pay(method);
         });
-    })
+        $('label.paymentLabels').click(function() {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected'); // 이미 선택된 라벨을 클릭하면 선택 해제
+                $(".pay-button").val("");
+            } else {
+                $('label.paymentLabels').removeClass('selected'); // 다른 라벨 선택 시 모든 라벨에서 selected 클래스 제거
+                $(this).addClass('selected'); // 클릭한 라벨에 selected 클래스 추가
+                $(".pay-button").val($(this).attr("for"));
+                console.log($(this).attr("for"));
+            }
+        });
+    });//function 끝
+
+
     </script>
-    <button type="button" style="margin-left: 100px; margin-top: 50px" class="pay-button" value="카드">카드 결제창 띄워보기</button>
-    <button type="button" style="margin-left: 100px; margin-top: 150px" class="pay-button" value="가상계좌">가상계좌 결제창 띄워보기</button>
-    <button type="button" style="margin-left: 100px; margin-top: 250px" class="pay-button" value="계좌이체">계좌이체 결제창 띄워보기</button>
-    <button type="button" style="margin-left: 100px; margin-top: 250px" class="pay-button" value="휴대폰">휴대폰 결제창 띄워보기</button>
+    <style>
+        /* Add hover and selected styles */
+        .paymentLabels:hover {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            border-color: #333;
+        }
+        .paymentLabels.selected {
+            background-color: #d0d0d0; /* 고정된 배경색 */
+            font-weight: bold; /* 고정된 폰트 두께 */
+            border-color: #000; /* 고정된 테두리 색 */
+        }
+    </style>
+    <!--
+// v0 by Vercel.
+// https://v0.dev/t/b6A1g2avNzN-->
+
+    <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-md" data-v0-t="card" style="margin-left: 36%;margin-top: -100px">
+        <div class="flex flex-col space-y-1.5 p-6">
+            <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">결제 수단 선택</h3>
+            <p class="text-sm text-muted-foreground">결제 수단을 선택하고 결제 정보를 입력하세요.</p>
+        </div>
+        <div class="p-6 grid gap-6">
+            <span style="font-weight: lighter;font-size: 12px">미선택 시 선택창이 열립니다.</span>
+            <div
+                    role="radiogroup"
+                    aria-required="false"
+                    dir="ltr"
+                    class="grid grid-cols-2 gap-4"
+                    tabindex="-1"
+                    style="outline:none"
+            >
+                <div>
+                    <button
+                            type="button"
+                            role="radio"
+                            aria-checked="true"
+                            data-state="checked"
+                            value="card"
+                            class="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 peer sr-only"
+                            id="카드"
+                            tabindex="-1"
+                            data-radix-collection-item=""
+                    >
+          <span data-state="checked" class="flex items-center justify-center">
+            <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-circle h-2.5 w-2.5 fill-current text-current"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+            </svg>
+          </span>
+                    </button>
+                    <input
+                            type="radio"
+                            aria-hidden="true"
+                            style="transform:translateX(-100%);position:absolute;pointer-events:none;opacity:0;margin:0"
+                            tabindex="-1"
+                            checked=""
+                            value="card"
+                    />
+                    <label
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&amp;:has([data-state=checked])]:border-primary paymentLabels"
+                            for="카드"
+
+                    >
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="mb-3 h-6 w-6"
+                        >
+                            <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+                            <line x1="2" x2="22" y1="10" y2="10"></line>
+                        </svg>
+                        카드
+                    </label>
+                </div>
+                <div>
+                    <button
+                            type="button"
+                            role="radio"
+                            aria-checked="false"
+                            data-state="unchecked"
+                            value="virtual-account"
+                            class="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 peer sr-only"
+                            id="가상계좌"
+                            tabindex="-1"
+                            data-radix-collection-item=""
+                    ></button>
+                    <input
+                            type="radio"
+                            aria-hidden="true"
+                            style="transform:translateX(-100%);position:absolute;pointer-events:none;opacity:0;margin:0"
+                            tabindex="-1"
+                            value="virtual-account"
+                    />
+                    <label
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&amp;:has([data-state=checked])]:border-primary paymentLabels"
+                            for="가상계좌"
+                    >
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="mb-3 h-6 w-6"
+                        >
+                            <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                            <path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2"></path>
+                            <path d="M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.5 1.3-.9 2.1-.9H21"></path>
+                        </svg>
+                        가상계좌
+                    </label>
+                </div>
+                <div>
+                    <button
+                            type="button"
+                            role="radio"
+                            aria-checked="false"
+                            data-state="unchecked"
+                            value="bank-transfer"
+                            class="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 peer sr-only"
+                            id="계좌이체"
+                            tabindex="-1"
+                            data-radix-collection-item=""
+                    ></button>
+                    <input
+                            type="radio"
+                            aria-hidden="true"
+                            style="transform:translateX(-100%);position:absolute;pointer-events:none;opacity:0;margin:0"
+                            tabindex="-1"
+                            value="bank-transfer"
+                    />
+                    <label
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&amp;:has([data-state=checked])]:border-primary paymentLabels"
+                            for="계좌이체"
+                    >
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="mb-3 h-6 w-6"
+                        >
+                            <rect width="20" height="12" x="2" y="6" rx="2"></rect>
+                            <circle cx="12" cy="12" r="2"></circle>
+                            <path d="M6 12h.01M18 12h.01"></path>
+                        </svg>
+                        계좌이체
+                    </label>
+                </div>
+                <div>
+                    <button
+                            type="button"
+                            role="radio"
+                            aria-checked="false"
+                            data-state="unchecked"
+                            value="mobile-payment"
+                            class="aspect-square h-4 w-4 rounded-full border border-primary text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 peer sr-only"
+                            id="휴대폰"
+                            tabindex="-1"
+                            data-radix-collection-item=""
+                    ></button>
+                    <input
+                            type="radio"
+                            aria-hidden="true"
+                            style="transform:translateX(-100%);position:absolute;pointer-events:none;opacity:0;margin:0"
+                            tabindex="-1"
+                            value="mobile-payment"
+                    />
+                    <label
+                            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&amp;:has([data-state=checked])]:border-primary paymentLabels"
+                            for="휴대폰"
+                    >
+                        <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="mb-3 h-6 w-6"
+                        >
+                            <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
+                            <path d="M12 18h.01"></path>
+                        </svg>
+                        휴대폰 결제
+                    </label>
+                </div>
+            </div>
+            <div class="grid gap-2">
+                <label
+                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        for="name"
+                >
+                    이름
+                </label>
+                <input
+                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        id="name"
+                        th:value="${userDto.getUser_name()}"
+                        readonly
+                        style="pointer-events: none"
+                />
+            </div>
+            <div class="grid gap-2">
+                <label
+                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        for="amount"
+                >
+                    결제 금액
+                </label>
+                <input
+                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        type="number"
+                        id="amount"
+                        th:value="${receiptDto.getReceipt_amount()}"
+                        readonly
+                        style="pointer-events: none"
+                />
+            </div>
+        </div>
+        <div class="flex items-center p-6" style="width: 100%; justify-content: center; align-items: center;">
+            <button value="" type="button" id="" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 pay-button"
+            style="color: white; font-weight: bold"> 결제하기
+            </button>
+        </div>
+    </div>
 </div>
 
 </html>
