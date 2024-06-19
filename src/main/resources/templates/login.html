@@ -52,8 +52,9 @@
 							Password
 						</label>
 						<a
-								href="#"
+								href='javascript:void(0)'
 								class="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+								onclick="resetPw(event)"
 						>
 							Forgot password?
 						</a>
@@ -89,5 +90,50 @@
 			</div>
 		</form>
 	</div>
+	<script>
+		function resetPw(e) {
+			e.preventDefault();
+			(async () => {
+				const { value: formValues } = await Swal.fire({
+					title: '삭제하기',
+					html:
+							'<label for="swal-input1">이름</label><input id="swal-input1" class="swal2-input"><br>' +
+							'<label for="swal-input2">이메일</label><input id="swal-input2" class="swal2-input" type="password">',
+					focusConfirm: false,
+					preConfirm: () => {
+						return [
+							document.getElementById('swal-input1').value,
+							document.getElementById('swal-input2').value
+						]
+					}
+				})
+
+				if (formValues) {
+					$.ajax({
+						url:"api/v1/searchPW",
+						data:{"name":formValues[0],"email":formValues[1]},
+						type:"get",
+						complete: function(e, xhr, settings){
+							if(e.status === 200){
+								Swal.fire({
+									icon: 'success',
+									title: '찾기 성공!',
+									text: formValues[0]+'님, '+formValues[1]+'로 전송을 완료 했습니다.',
+								});
+							}else{
+								Swal.fire({
+									icon: 'error',
+									title: '찾기 실패',
+									text: '맞는 계정이 없습니다!',
+								});
+							}
+						}
+					})
+				}
+			})()
+		}
+	</script>
+	<link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css}" integrity="sha256-h2Gkn+H33lnKlQTNntQyLXMWq7/9XI2rlPCsLsVcUBs=" crossorigin="anonymous">
+	<script th:src="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.all.min.js}" integrity="sha256-sxTH7wLusVF/zFlnDQEmsmwYORsWdufWfjsxdVYGRNI=" crossorigin="anonymous"></script>
 </div>
 </html>
