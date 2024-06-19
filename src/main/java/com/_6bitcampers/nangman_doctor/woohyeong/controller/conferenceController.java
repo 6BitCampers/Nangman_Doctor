@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor.woohyeong.controller;
 
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.woohyeong.Service.conferenceService;
 import com._6bitcampers.nangman_doctor.woohyeong.Service.reservationServiceW;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.ReceiptDTO;
@@ -31,7 +32,10 @@ public class conferenceController {
 
     @GetMapping("/test")
     public String home(Model model) {
-        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String id = customOAuth2User.getEmail();
+
         boolean employeeNoSuccess = false;
         boolean userNoSuccess = false;
 
@@ -59,7 +63,7 @@ public class conferenceController {
 
         if(userNoSuccess){
             int user_no = conferenceService.getUserNo(id);
-            return "redirect:/payment?user_no=" + user_no;
+            return "redirect:/mypage";
         }
 
         if(employeeNoSuccess){

@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
 	<title>Naver Search Results</title>
 	<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <div class="container">
-	<div style="text-align: center;">
-		<a href="/">
-			<h1 style="color:darkorange"><b>뉴스 검색</b></h1>
-		</a>
-	</div>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<h1>Naver Search Results</h1>
 	<form method="get" action="/naversearch">
-		<br>
-		<input type="text" name="query" placeholder="Search..." th:value="${query}"  required style="padding-left: 20px;" >
+		<input type="text" name="query" placeholder="Search..." th:value="${query}" required>
 		<button type="submit">Search</button>
 	</form>
 	<table class="table table-striped">
 		<thead>
 		<tr>
-			<th style="background-color: darkorange;">제목</th>
-			<th style="background-color: darkorange;">게시일</th>
+			<th>제목</th>
+			<th>게시일</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -31,12 +24,11 @@
 			<td th:text="${item.pubDate}">Pub Date</td>
 		</tr>
 		</tbody>
-
 	</table>
 	<nav aria-label="Page navigation">
 		<ul class="pagination">
 			<li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'" th:if="${currentPage > 1}">
-				<a style="" class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage - 1})}">Previous</a>
+				<a class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage - 1})}">Previous</a>
 			</li>
 			<li class="page-item" th:classappend="${currentPage == 1} ? 'active'">
 				<a class="page-link" th:href="@{/naversearch(query=${query}, page=1)}">1</a>

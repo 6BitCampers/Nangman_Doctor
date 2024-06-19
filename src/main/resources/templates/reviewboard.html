@@ -20,7 +20,8 @@
                                 <h2 class="text-lg font-semibold">
                                     <input type="hidden" name="review_no" th:value="${item.review_no}"/>
                                     <input type="hidden" name="userId" th:value="${#authentication.name}"/>
-                                    <a href="#4z"><button type="submit" th:text="${item.review_title}"></button></a>
+                                    <input type="hidden" name="currentPage" th:value="${currentpage==null?1:currentpage}">
+                                    <a href="#"><button type="submit" th:text="${item.review_title}"></button></a>
                                 </h2>
                             </form>
                         <span class="reviewStarsBoard" th:data-index="${itemStat.index}"></span>
@@ -70,6 +71,7 @@
                         <a
                                 class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
                                 aria-label="Go to previous page"
+                                th:if="${currentpage>1}"
                                 th:href="@{/reviewboard(page=${currentpage}-1)}"
                         >
                             <svg
@@ -90,17 +92,23 @@
                         </a>
                     </li>
                     <li class="" th:each="num : ${#numbers.sequence(1,totalNum/perPage+1)}">
-                        <a
-                                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
-                                th:href="@{/reviewboard(page=${num})}"
-                                th:text="${num}"
-                        >
+                        <a th:if="${currentpage == num}"
+                           class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
+                           th:classappend="${currentpage == num} ? 'disabled' : ''"
+                           th:text="${num}"
+                           style="pointer-events: none; cursor: default; color: gray;">
+                        </a>
+                        <a th:if="${currentpage != num}"
+                           class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
+                           th:href="@{/reviewboard(page=${num})}"
+                           th:text="${num}">
                         </a>
                     </li>
                     <li class="">
                         <a
                                 class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
                                 aria-label="Go to previous page"
+                                th:if="${currentpage<(totalNum/perPage+1)}"
                                 th:href="@{/reviewboard(page=${currentpage+1})}"
                         >
                             <span>Next</span>

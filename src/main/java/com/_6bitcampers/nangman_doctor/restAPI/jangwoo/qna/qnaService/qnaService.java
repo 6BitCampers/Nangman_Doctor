@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor.restAPI.jangwoo.qna.qnaService;
 
+import com._6bitcampers.nangman_doctor.minio.service.storageService;
 import com._6bitcampers.nangman_doctor.restAPI.jangwoo.qna.qnaDto.boardDto;
 import com._6bitcampers.nangman_doctor.restAPI.jangwoo.qna.qnaDto.commentDto;
 import com._6bitcampers.nangman_doctor.restAPI.jangwoo.qna.qnaMapper.qnaRestMapper;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +19,7 @@ public class qnaService {
 
     private final qnaRestMapper mapper;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final storageService storageService;
 
     public List<commentDto> findAllComment(int qna_no) {
         return mapper.findAllByQnANo(qna_no);
@@ -31,6 +34,11 @@ public class qnaService {
 
         if (image!=null){
             filename = UUID.randomUUID().toString();
+            try {
+                storageService.uploadFile("nangmandoctor","/QnABoard/"+filename,image.getInputStream(),image.getContentType());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         mapper.insertBoard(title,comment,username,passwordEncoder.encode(password),filename);
@@ -43,5 +51,14 @@ public class qnaService {
             return true;
         }
         return false;
+    }
+
+    public boolean searchPassword(String email, String name) {
+        if (mapper.existByEmailAndName(email, name)) {
+            return false;
+        } else {
+
+            return true;
+        }
     }
 }
