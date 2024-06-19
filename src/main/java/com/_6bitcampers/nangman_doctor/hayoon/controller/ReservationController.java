@@ -28,7 +28,7 @@ public class ReservationController {
     }
 
     @PostMapping("/reserveProc")
-    public String reserveProc(@RequestParam("name") String name,
+    public String reserveProc(@RequestParam("reservationName") String reservationName,
                               @RequestParam("reservation_date") String reservationDate,
                               @RequestParam("reservation_time") String reservationTime,
                               @RequestParam("reservation_reason") String reservationReason,
@@ -43,6 +43,7 @@ public class ReservationController {
 
 
         ReservationDto reservationDto = ReservationDto.builder()
+                .reservation_name(reservationName)
                 .reservation_reason(reservationReason)
                 .reservation_date(reservationDate)
                 .reservation_role(reservationRole)

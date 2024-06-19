@@ -25,7 +25,7 @@ public class ReservationService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
-    @Autowired
+
     public ReservationService(ReservationMapper reservationMapper, JavaMailSender mailSender, TemplateEngine templateEngine) {
         this.reservationMapper = reservationMapper;
         this.mailSender = mailSender;
