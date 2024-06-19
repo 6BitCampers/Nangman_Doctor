@@ -17,14 +17,31 @@ public class EmpService {
         return empMapper.findLikecountByInfoNo(email);
     }
 
-
     public List<EmpDto> getEmpList(String email){
         return empMapper.getEmpList(email);
     }
 
     public void registerRole(String email, String role) {
         empMapper.updateRoleByEmail(email, role);
-        // 이메일로 식별된 사용자의 역할을 업데이트하는 empMapper의 메서드가 있다고 가정합니다.
     }
+
+    public void registerPhoto(String email, String photo) {
+        empMapper.updatePhotoByEmail(email, photo);
+    }
+    public void registerDescription(String email, String description) {
+        empMapper.updateDescriptionByEmail(email, description);
+    }
+
+    public void registerAddress(String email, String addr) {
+        empMapper.updateAddrByEmail(email, addr);
+    }
+    public void registerPlus(String email, String plus) {
+        empMapper.updatePlusByEmail(email, plus);
+    }
+    public void registerHp(String email, String hp) {
+        empMapper.updateHpByEmail(email, hp);
+    }
+
+
 
 }
