@@ -20,6 +20,7 @@
                                 <h2 class="text-lg font-semibold">
                                     <input type="hidden" name="review_no" th:value="${item.review_no}"/>
                                     <input type="hidden" name="userId" th:value="${#authentication.name}"/>
+                                    <input type="hidden" name="currentPage" th:value="${currentpage==null?1:currentpage}">
                                     <a href="#4z"><button type="submit" th:text="${item.review_title}"></button></a>
                                 </h2>
                             </form>

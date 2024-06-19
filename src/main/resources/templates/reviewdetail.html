@@ -98,15 +98,16 @@
             <p th:text="${dto.review_content}"></p>
         </div>
         <div class="flex justify-between">
-            <button onclick="history.back()" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                Previous
-            </button>
+            <a th:href="@{/reviewboard(page=${currentPage})}">
+            <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                Back to List
+            </button></a>
             <div class="flex space-x-4">
                 <a th:href="@{/about-hospital/{hospital_no}(hospital_no=${hospital_no})}">
                 <button style="color: white" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
                     Visit Hospital
                 </button></a>
-                <span th:if="${#authentication.name==userDto.getUser_email()}"><button type="button" data-bs-toggle="modal" data-bs-target="#reviewUpdateModal" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                <span th:if="${#authentication.name.contains('@')?#authentication.name==userDto.getUser_email():#authentication.name==user_name}"><button type="button" data-bs-toggle="modal" data-bs-target="#reviewUpdateModal" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                     Edit
                 </button>
                 <button type="button" id="reviewDeleteBtn" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:text-accent-foreground h-10 px-4 py-2 text-red-500 hover:bg-red-100">
@@ -129,16 +130,17 @@
                 <div class="modal-body">
                         <table class="table" style="width: 100%;">
                             <tr>
-                                <th colspan="2"><label>
+                                <th colspan="2"><label style="width: 100%">
                                     <input type="hidden" name="review_no" th:value="${dto.review_no}">
-                                    <input type="text" name="review_title" class="input-group"
+                                    <input type="text" name="review_title" class="input-group" style="width: 100%"
                                            th:value="${dto.review_title}">
                                 </label>
                                     <br></th>
                             </tr>
                             <tr>
-                                <td>평점 <span id="inputRatings"></span>
+                                <td colspan="2">평점 <span id="inputRatings"></span>
                                     <input type="hidden" name="review_likecount" id="ratingsInput" th:value="${dto.review_likecount}">
+                                    <p style="font-weight: lighter;font-size: 14px">미변경 시 기존 평점이 유지됩니다</p>
                                 </td>
                             </tr>
                             <script>
@@ -172,14 +174,16 @@
                                 });
                             </script>
                             <tr>
-                                <td>작성자 : <span th:text="${user_name}"></span></td>
+                                <td>작성자 : <span th:text="${user_name}"></span>
+                                <input type="hidden" name="userId" th:value="${userId}"></td>
                                 <td style="text-align: right">작성일 : <span
                                         th:text="${#dates.format(dto.review_writeday, 'yyyy-MM-dd HH:mm')}"></span></td>
                             </tr>
                             <tr>
                                 <td colspan="2" style="width:100%;height: 200px">
-                                    <label>
-                                        <textarea name="review_content"
+                                    <label style="width: 100%;height: 100%">
+                                        <input type="hidden" name="currentPage" th:value="${currentPage}">
+                                        <textarea name="review_content" rows="10"
                                                   th:text="${dto.review_content}" style="width: 100%;height: 100%" class="input-group"></textarea></label>
                                 </td>
                             </tr>
