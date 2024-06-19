@@ -35,14 +35,14 @@ public class ReservationService {
     // 예약 저장
     public void saveReservation(ReservationDto reservationDto) {
         // Generate a random UUID and set it to the reservationDto
-        reservationDto.setReservationRoom(UUID.randomUUID().toString());
+        reservationDto.setReservation_room(UUID.randomUUID().toString());
 
         // Insert the reservation
         reservationMapper.insertReservation(reservationDto);
 
         // Get email addresses
-        String employeeEmail = reservationMapper.getEmployeemailByNo(reservationDto.getEmployeeNo());
-        String userEmail = reservationMapper.getUsermailByNo(reservationDto.getUserNo());
+        String employeeEmail = reservationMapper.getEmployeemailByNo(reservationDto.getEmployee_no());
+        String userEmail = reservationMapper.getUsermailByNo(reservationDto.getUser_no());
 
         // 예약 보내기
         sendReservationRequestEmail(userEmail, reservationDto);
@@ -57,13 +57,13 @@ public class ReservationService {
         return reservationMapper.getUserReservations(userNo);
     }
 
-    public List<ReservationDto> selectReservationsByEmployeeEmail(String employeeEmail){
-        return reservationMapper.selectReservationsByEmployeeEmail(employeeEmail);
+    public List<ReservationDto> getReservationsByEmail(String email){
+        return reservationMapper.getReservationsByEmail(email);
     }
 
     public void sendReservationRequestEmail(String to, ReservationDto reservationDto) {
         Map<String, Object> variables = new HashMap<>();
-        variables.put("userName", reservationMapper.getUserNameByNo(reservationDto.getUserNo()));
+        variables.put("userName", reservationMapper.getUserNameByNo(reservationDto.getUser_no()));
         variables.put("reservation", reservationDto);
 
         sendEmail(to, "예약 요청", "firstemail", variables);

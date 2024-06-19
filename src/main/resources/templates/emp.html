@@ -129,14 +129,15 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="res : ${reservationDtoList}">
-                    <td th:text="${res.reservationNo}"></td>
-                    <td th:text="${res.reservationReason}"></td>
-                    <td th:text="${res.reservationDate}"></td>
-                    <td th:text="${res.reservationTime}"></td>
-                    <td th:text="${res.reservationStatus}"></td>
-                    <td th:text="${res.reservationRoom}"></td>
-                    <td th:text="${res.reservationDetails}"></td>
+                <tr th:each="res : ${reservations}">
+                    <td th:text="${res.reservation_no}"></td>
+                    <td th:text="${res.reservation_reason}"></td>
+                    <td th:text="${res.reservation_date}"></td>
+                    <td th:text="${res.reservation_time}"></td>
+                    <td th:text="${res.reservation_status}"></td>
+                    <td th:text="${res.reservation_room}"></td>
+                    <td th:text="${res.reservation_content}"></td>
+
                 </tr>
                 </tbody>
             </table>

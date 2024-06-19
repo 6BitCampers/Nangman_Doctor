@@ -41,14 +41,16 @@ public class ReservationController {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         int userNo = reservationService.getUserNo(userEmail);
 
+
         ReservationDto reservationDto = ReservationDto.builder()
-                .name(name)
-                .reservationReason(reservationReason)
-                .reservationDate(reservationDate)
-                .reservationRole(reservationRole)
-                .employeeNo(employeeNo)
-                .userNo(userNo)
-                .reservationTime(reservationTime)
+                .reservation_reason(reservationReason)
+                .reservation_date(reservationDate)
+                .reservation_role(reservationRole)
+                .employee_no(employeeNo)
+                .user_no(userNo)
+                .reservation_time(reservationTime)
+
+
                 .build();
 
         reservationService.saveReservation(reservationDto);

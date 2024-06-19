@@ -35,8 +35,9 @@ public class EmpController {
         List<EmpDto> emplist = EmpService.getEmpList(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("emplist", emplist);
 
-        List<ReservationDto> reservationDtoList=reservationService.selectReservationsByEmployeeEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("reservationDtoList", reservationDtoList);
+        List<ReservationDto> reservations = reservationService.getReservationsByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("reservations", reservations);
+        System.out.println(reservations);
 
         return "emp";
     }
