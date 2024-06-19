@@ -97,7 +97,7 @@
             </div>
         </div>
         <div class="mb-6">
-            <p th:text="${dto.review_content}"></p>
+            <p th:utext="${dto.review_content}"></p>
         </div>
         <div class="flex justify-between">
             <a th:href="@{/reviewboard(page=${currentPage})}">
