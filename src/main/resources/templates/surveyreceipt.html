@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns="">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="display: flex; height: 100vh; background-color: orange; padding: 20px; gap: 20px;">
+        <div style="flex: 1; padding: 20px; background-color: whitesmoke; margin: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: flex-start;">
+            <div style="display: flex; justify-content: flex-end;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
+            </div>
+            <br>
+
+            <form action="/receipt/insert" method="get">
+                <input type="hidden" name="reservation_no" th:value="${reservation_no}">
+                <input type="hidden" name="info_no" th:value="${info_no}">
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <input type="text" name="receipt_name" class="form-control" placeholder="영수증, 처방전명">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <input type="text" name="receipt_date"
+                               th:value="${now}"
+                               class="form-control"
+                               readonly>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <input type="text" name="receipt_status" class="form-control" placeholder="환자상태">
+                    </div>
+                    <div class="col-6 mb-3">
+                        <input type="number" name="receipt_amount" class="form-control" placeholder="진료금액">
+                    </div>
+                    <div class="col-12 mb-3">
+                        <textarea name="receipt_reason" id="" cols="30" rows="7" class="form-control" placeholder="REASON"></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <input type="submit" value="보내기" class="btn btn-primary">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
