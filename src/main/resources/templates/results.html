@@ -29,14 +29,14 @@
     <div class="section">
         <div class="container">
             <h1 class="large-heading"><b>이 병원들이 유저 평점이 높아요</b></h1>
-            <table class="table table-striped">
+            <table class="table table-striped" style="width:100%">
                 <thead>
                 <tr>
-                    <th>사진</th>
-                    <th>이름</th>
-                    <th>별점</th>
-                    <th>주소</th>
-                    <th>Actions</th>
+                    <th style="background-color: darkorange; text-align: center;">사진</th>
+                    <th style="background-color: darkorange; text-align: center;">이름</th>
+                    <th style="background-color: darkorange; text-align: center;">별점</th>
+                    <th style="background-color: darkorange; text-align: center;">주소</th>
+                    <th style="background-color: darkorange;">예약 또는 상세보기</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,25 +49,23 @@
                   <!--  <td th:text="${hospital.info_description}">Description</td>-->
                     <td th:text="${hospital.info_likecount}">별점</td>
                     <td th:text="${hospital.info_addr}">주소</td>
-                    <td>
-                    <td>
+                    <td style="align-items: center;">
                         <a th:href="@{'/reservation.html?info_no=' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
                         <a th:href="@{'/about-hospital/' + ${hospital.info_no}}" class="btn btn-danger btn-sm">상세</a>
-                    </td>
                     </td>
                 </tr>
                 </tbody>
             </table>
-<br><br><br>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             <h1 class="large-heading"><b>검색결과</b></h1>
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>사진</th>
-                    <th>이름</th>
-                    <th>설명</th>
-                    <th>주소</th>
-                    <th>Actions</th>
+                    <th style="background-color: darkorange;">사진</th>
+                    <th style="background-color: darkorange;">이름</th>
+                    <th style="background-color: darkorange;">별점</th>
+                    <th style="background-color: darkorange;">주소</th>
+                    <th style="background-color: darkorange; text-align: center;">예약 또는 상세보기</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -80,10 +78,8 @@
                     <td th:text="${hospital.info_description}">Description</td>
                     <td th:text="${hospital.info_addr}">주소</td>
                     <td>
-                    <td>
                         <a th:href="@{'/reservation.html?info_no=' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
                         <a th:href="@{'/about-hospital/' + ${hospital.info_no}}" class="btn btn-danger btn-sm">상세</a>
-                    </td>
                     </td>
                 </tr>
                 </tbody>

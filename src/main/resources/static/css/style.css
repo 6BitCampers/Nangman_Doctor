@@ -10763,6 +10763,8 @@ tbody tr:last-of-type {
   white-space: nowrap; /* Prevents text from wrapping */
   overflow: hidden; /* Optional: hides overflow if the text is too long */
   text-overflow: ellipsis; /* Optional: adds ellipsis if the text is too long */
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
  .star {
    font-size: 2em;
