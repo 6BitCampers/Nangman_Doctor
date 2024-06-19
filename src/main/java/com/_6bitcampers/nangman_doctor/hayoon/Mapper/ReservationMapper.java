@@ -32,10 +32,16 @@ public interface ReservationMapper {
     @Select("SELECT reservation_status FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
     int getStatus(int reservationNo);
 
-    @Select("SELECT employee_no FROM hospital_employee WHERE info_no = #{infoNo}")
-    int getEmployeeNoByInfoNo(int infoNo);
+    @Select({
+            "SELECT * FROM hospital_reservation WHERE employee_no = ",
+            "(SELECT employee_no FROM hospital_employee WHERE employee_email = #{email})"
+    })
+    List<ReservationDto> getReservationsByEmail(String email);
+
 
     @Select(("SELECT user_no FROM normal_user WHERE user_email=#{id}"))
     int getUserNo(String id);
 
+    @Select("SELECT employee_no FROM hospital_employee WHERE info_no = #{infoNo}")
+    int getEmployeeNoByInfoNo(int infoNo);
 }

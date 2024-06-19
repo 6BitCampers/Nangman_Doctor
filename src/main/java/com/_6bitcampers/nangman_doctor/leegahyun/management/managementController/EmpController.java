@@ -1,11 +1,17 @@
 package com._6bitcampers.nangman_doctor.leegahyun.management.managementController;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
+import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementService.EmpService;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelExtensionsKt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +24,9 @@ public class EmpController {
     @Autowired
     private EmpService EmpService;
 
+    @Autowired
+    private ReservationService reservationService;
+
     @GetMapping("/emp")
     public String getEmployees(Model model) {
         List<EmpDto> employees = EmpService.getEmployeeLikeCounts(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -25,6 +34,10 @@ public class EmpController {
 
         List<EmpDto> emplist = EmpService.getEmpList(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("emplist", emplist);
+
+        List<ReservationDto> reservations = reservationService.getReservationsByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("reservations", reservations);
+        System.out.println(reservations);
 
         return "emp";
     }
