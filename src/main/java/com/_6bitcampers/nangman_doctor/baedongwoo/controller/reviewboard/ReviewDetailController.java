@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/reviewboard")
@@ -57,6 +61,7 @@ public class ReviewDetailController {
         model.addAttribute("user_name", user_name);
         model.addAttribute("hospital_name", hospital_name);
         model.addAttribute("userDto",userDto);
+        model.addAttribute("user_no",user_no);
         model.addAttribute("hospital_no",hospital_no);
         model.addAttribute("review_no",review_no);
         model.addAttribute("userId",userId);
@@ -73,13 +78,34 @@ public class ReviewDetailController {
             @RequestParam int review_likecount,
             @RequestParam String userId,
             @RequestParam int currentPage,
+            @RequestParam List<MultipartFile> photos,
             Model model
     ){
+        StringBuilder filenames = new StringBuilder();
+        String filename=null;
+
+        if (!photos.isEmpty()) {
+            for (int i = 0; i < photos.size(); i++) {
+                MultipartFile photo = photos.get(i);
+                filename = UUID.randomUUID().toString();
+                try {
+                    storageService.uploadFile("nangmandoctor", "/reviewBoard/" + filename, photo.getInputStream(), photo.getContentType());
+                    filenames.append(filename);
+                    if (i < photos.size() - 1) {
+                        filenames.append(",,"); //구분자 삽입
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
         Map<String,Object>map=new HashMap<>();
         map.put("review_title",review_title);
         map.put("review_no",review_no);
         map.put("review_content",review_content);
         map.put("review_likecount",review_likecount);
+        map.put("photos",filenames);
         reviewService.updateReview(map);
 
        model.addAttribute("review_no",review_no);
@@ -87,6 +113,27 @@ public class ReviewDetailController {
        model.addAttribute("currentPage",currentPage);
 
         return "forward:/reviewboard/detail";
+    }
+
+    @PostMapping("/reviewUpdateForm")
+    public String reviewUpdateForm(
+            @RequestParam int review_no,
+            @RequestParam int user_no,
+            @RequestParam String user_name,
+            @RequestParam String userId,
+            @RequestParam int currentPage,
+            Model model
+    ){
+        ReviewDto dto=reviewService.getReviewBySeq(review_no);
+        userEntity userDto=reviewService.getUserInfo(user_no);
+
+        model.addAttribute("dto",dto);
+        model.addAttribute("user_name",user_name);
+        model.addAttribute("userDto",userDto);
+        model.addAttribute("user_no",userId);
+        model.addAttribute("currentPage",currentPage);
+
+        return "reviewUpdateForm";
     }
 
     @ResponseBody
@@ -100,8 +147,41 @@ public class ReviewDetailController {
 
     @PostMapping("/insert")
     public String insertReview(
-            @RequestParam ReviewDto reviewDto
-    ){
+            @RequestParam String review_title,
+            @RequestParam String review_content,
+            @RequestParam int review_likecount,
+            @RequestParam List<MultipartFile> photos,
+            @RequestParam int employee_no,
+            @RequestParam int user_no
+            ){
+        StringBuilder filenames = new StringBuilder();
+        String filename=null;
+
+        if (!photos.isEmpty()) {
+            for (int i = 0; i < photos.size(); i++) {
+                MultipartFile photo = photos.get(i);
+                filename = UUID.randomUUID().toString();
+                try {
+                    storageService.uploadFile("nangmandoctor", "/reviewBoard/" + filename, photo.getInputStream(), photo.getContentType());
+                    filenames.append(filename);
+                    if (i < photos.size() - 1) {
+                        filenames.append(",,"); //구분자 삽입
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        ReviewDto reviewDto= ReviewDto.builder().
+                review_title(review_title).
+                review_content(review_content).
+                employee_no(employee_no).
+                user_no(user_no).
+                review_likecount(review_likecount).
+                photos(filenames.toString()).
+                build();
+
         reviewService.insertReview(reviewDto);
 
         return "redirect:/mypage";
