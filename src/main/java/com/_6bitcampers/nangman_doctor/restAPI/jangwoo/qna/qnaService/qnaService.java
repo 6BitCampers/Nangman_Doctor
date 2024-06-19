@@ -53,12 +53,5 @@ public class qnaService {
         return false;
     }
 
-    public boolean searchPassword(String email, String name) {
-        if (mapper.existByEmailAndName(email, name)) {
-            return false;
-        } else {
 
-            return true;
-        }
-    }
 }
