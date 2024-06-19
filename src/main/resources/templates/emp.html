@@ -116,6 +116,30 @@
         <div class="emp-box emp-box-reservation">
             <h3>예약관리</h3>
             <hr>
+            <table>
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Reason</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Room</th>
+                    <th>Content</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="res : ${reservationDtoList}">
+                    <td th:text="${res.reservationNo}"></td>
+                    <td th:text="${res.reservationReason}"></td>
+                    <td th:text="${res.reservationDate}"></td>
+                    <td th:text="${res.reservationTime}"></td>
+                    <td th:text="${res.reservationStatus}"></td>
+                    <td th:text="${res.reservationRoom}"></td>
+                    <td th:text="${res.reservationDetails}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -1,6 +1,8 @@
 package com._6bitcampers.nangman_doctor.leegahyun.management.managementController;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
+import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementService.EmpService;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.customOAuth2User;
@@ -22,6 +24,9 @@ public class EmpController {
     @Autowired
     private EmpService EmpService;
 
+    @Autowired
+    private ReservationService reservationService;
+
     @GetMapping("/emp")
     public String getEmployees(Model model) {
         List<EmpDto> employees = EmpService.getEmployeeLikeCounts(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -29,6 +34,9 @@ public class EmpController {
 
         List<EmpDto> emplist = EmpService.getEmpList(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("emplist", emplist);
+
+        List<ReservationDto> reservationDtoList=reservationService.selectReservationsByEmployeeEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("reservationDtoList", reservationDtoList);
 
         return "emp";
     }

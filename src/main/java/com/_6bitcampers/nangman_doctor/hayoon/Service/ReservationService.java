@@ -31,11 +31,11 @@ public class ReservationService {
         this.mailSender = mailSender;
         this.templateEngine = templateEngine;
     }
-    //예약 저장
-    public void saveReservation(ReservationDto reservationDto) {
-// Generate a random UUID and set it to the reservationDto
-        reservationDto.setReservationRoom(UUID.randomUUID().toString());
 
+    // 예약 저장
+    public void saveReservation(ReservationDto reservationDto) {
+        // Generate a random UUID and set it to the reservationDto
+        reservationDto.setReservationRoom(UUID.randomUUID().toString());
 
         // Insert the reservation
         reservationMapper.insertReservation(reservationDto);
@@ -44,16 +44,21 @@ public class ReservationService {
         String employeeEmail = reservationMapper.getEmployeemailByNo(reservationDto.getEmployeeNo());
         String userEmail = reservationMapper.getUsermailByNo(reservationDto.getUserNo());
 
-        // 예약보내기
+        // 예약 보내기
         sendReservationRequestEmail(userEmail, reservationDto);
         sendReservationRequestEmail(employeeEmail, reservationDto);
     }
-    public int getUserNo(String id){
+
+    public int getUserNo(String id) {
         return reservationMapper.getUserNo(id);
     }
 
     public List<Map<String, Object>> getUserReservations(int userNo) {
         return reservationMapper.getUserReservations(userNo);
+    }
+
+    public List<ReservationDto> selectReservationsByEmployeeEmail(String employeeEmail){
+        return reservationMapper.selectReservationsByEmployeeEmail(employeeEmail);
     }
 
     public void sendReservationRequestEmail(String to, ReservationDto reservationDto) {
@@ -63,8 +68,6 @@ public class ReservationService {
 
         sendEmail(to, "예약 요청", "firstemail", variables);
     }
-
-
 
     public void sendEmail(String to, String subject, String templateName, Map<String, Object> variables) {
         try {
@@ -84,5 +87,10 @@ public class ReservationService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
+
+    // info_no를 이용해 employee_no 가져오기
+    public int getEmployeeNoByInfoNo(int infoNo) {
+        return reservationMapper.getEmployeeNoByInfoNo(infoNo);
     }
 }

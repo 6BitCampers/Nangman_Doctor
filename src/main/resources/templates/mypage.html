@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
+
 <body>
 <div layout:fragment="content">
     <div th:if="${udto != null}" style="display: flex; height: 100vh; background-color: orange; padding: 20px; gap: 20px;">
@@ -50,18 +52,16 @@
                 </tr>
             </table>
             <span th:if="${status == 1}">
-                <button type="button" onclick="location.href='/test'" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease;">
+                <a href="/test" style="background-color: #007bff; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-size: 16px; display: inline-block; transition: background-color 0.3s ease;">
                     화상진료하러가기
-                </button>
-
-                        <script>
-                            document.querySelector('button').addEventListener('mouseover', function() {
-                                this.style.backgroundColor = '#0056b3';
-                            });
-                            document.querySelector('button').addEventListener('mouseout', function() {
-                                this.style.backgroundColor = '#007bff';
-                            });
-                        </script>
+                </a>
+                <script>
+                    $('a').hover(function() {
+                        $(this).css('background-color', '#0056b3');
+                    }, function() {
+                        $(this).css('background-color', '#007bff');
+                    });
+                </script>
             </span>
         </div>
 
@@ -113,7 +113,10 @@
                         <p>진료명: <span th:text="${reservation.get('reservation_reason')}">진료명</span></p>
                         <p>상태:
                             <span th:if="${reservation.get('reservation_status') == 1}" style="color: #ffc107;">예약 요청</span>
-                            <span th:if="${reservation.get('reservation_status') == 2}" style="color: #17a2b8;">예약 메일확인</span>
+                            <span th:if="${reservation.get('reservation_status') == 2}" style="color: #17a2b8;">예약 메일확인
+                                <a href="#" class="styled-link confirm-button" onclick="confirmReservation(/* 추가 인자 */)">확정</a>
+                                <a href="#" class="styled-link reject-button" onclick="rejectReservation(/* 추가 인자 */)">거절</a>
+                            </span>
                             <span th:if="${reservation.get('reservation_status') == 3}" style="color: #28a745;">예약 확정하기</span>
                         </p>
                     </li>
@@ -121,7 +124,81 @@
                 </ul>
             </div>
         </div>
+        <style>
+            .styled-link {
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+                text-decoration: none;
+                display: inline-block;
+            }
+
+            .confirm-button {
+                background-color: orange; /* Orange background */
+                color: white; /* White text */
+            }
+
+            .confirm-button:hover,
+            .confirm-button:focus {
+                background-color: #e69500; /* Darker orange */
+                color: white;
+                box-shadow: 0 0.5em 0.5em -0.4em rgba(0, 0, 0, 0.2);
+                transform: translateY(-0.25em);
+            }
+
+            .reject-button {
+                background-color: white; /* White background */
+                color: orange; /* Orange text */
+                border: 1px solid orange; /* Orange border */
+            }
+
+            .reject-button:hover,
+            .reject-button:focus {
+                background-color: #f2f2f2; /* Light grey background */
+                color: orange;
+                box-shadow: 0 0.5em 0.5em -0.4em rgba(0, 0, 0, 0.2);
+                transform: translateY(-0.25em);
+            }
+        </style>
     </div>
 </div>
+
+<script>
+    function confirmReservation(/* 추가 인자 */) {
+        $.ajax({
+            url: '/confirm',
+            method: 'POST',
+            data: {
+                // 추가 인자
+            },
+            success: function(response) {
+                // 성공 핸들러
+            },
+            error: function(error) {
+                // 에러 핸들러
+            }
+        });
+    }
+
+    function rejectReservation(/* 추가 인자 */) {
+        $.ajax({
+            url: '/reject',
+            method: 'POST',
+            data: {
+                // 추가 인자
+            },
+            success: function(response) {
+                // 성공 핸들러
+            },
+            error: function(error) {
+                // 에러 핸들러
+            }
+        });
+    }
+</script>
+
 </body>
 </html>
+
