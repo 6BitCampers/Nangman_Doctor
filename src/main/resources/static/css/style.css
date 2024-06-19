@@ -10760,6 +10760,9 @@ tbody tr:last-of-type {
 .large-heading {
   font-size: 3em; /* Adjust the size as needed */
   font-weight: bold; /* Ensures the text is bold */
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden; /* Optional: hides overflow if the text is too long */
+  text-overflow: ellipsis; /* Optional: adds ellipsis if the text is too long */
 }
  .star {
    font-size: 2em;
