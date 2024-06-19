@@ -82,34 +82,16 @@ public class ReviewDetailController {
             @RequestParam int review_likecount,
             @RequestParam String userId,
             @RequestParam int currentPage,
-            @RequestParam List<MultipartFile> photos,
             Model model
     ){
-        StringBuilder filenames = new StringBuilder();
-        String filename=null;
 
-        if (!photos.isEmpty()) {
-            for (int i = 0; i < photos.size(); i++) {
-                MultipartFile photo = photos.get(i);
-                filename = UUID.randomUUID().toString();
-                try {
-                    storageService.uploadFile("nangmandoctor", "/reviewBoard/" + filename, photo.getInputStream(), photo.getContentType());
-                    filenames.append(filename);
-                    if (i < photos.size() - 1) {
-                        filenames.append(",,"); //구분자 삽입
-                    }
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
+
 
         Map<String,Object>map=new HashMap<>();
         map.put("review_title",review_title);
         map.put("review_no",review_no);
         map.put("review_content",review_content);
         map.put("review_likecount",review_likecount);
-        map.put("photos",filenames);
         reviewService.updateReview(map);
 
        model.addAttribute("review_no",review_no);
