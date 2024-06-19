@@ -49,8 +49,7 @@
                     </div>
                     <div class="text-gray-500 text-sm">
                         <span class="font-medium" th:with="nameLength=${userMap[item.user_no].user_name.length()}">
-                            <span th:if="${nameLength == 1}">*${userMap[item.user_no].user_name.substring(1)}</span>
-                            <span th:if="${nameLength == 2}">**${userMap[item.user_no].user_name.substring(2)}</span>
+                            <span th:if="${nameLength == 2}"><span th:text="${userMap[item.user_no].user_name.substring(0,1)}"></span> *</span>
                             <span th:if="${nameLength > 2}">
                                     <span th:text="${userMap[item.user_no].user_name.substring(0,1)}"></span>
                                     <span th:each="i : ${#numbers.sequence(1, nameLength-2)}">*</span>

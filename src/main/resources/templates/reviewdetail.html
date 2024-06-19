@@ -3,11 +3,11 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <div layout:fragment="content" class="section">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!--
 // v0 by Vercel.
 // https://v0.dev/t/8eJ9Pz5VLVn
 -->
-
     <div class="bg-white rounded-lg shadow-md p-6 md:p-8" style="width: 700px;margin-left: 20%">
         <div class="flex items-center justify-between mb-4">
             <h1 class="text-2xl font-bold" th:text="${dto.review_title}"></h1>
@@ -65,8 +65,7 @@
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
                 <span class="font-medium" th:with="nameLength=${user_name.length()}">
-                            <span th:if="${nameLength == 1}">*${user_name.substring(1)}</span>
-                            <span th:if="${nameLength == 2}">**${user_name.substring(2)}</span>
+                            <span th:if="${nameLength == 2}"><span th:text="${user_name.substring(0,1)}"></span> *</span>
                             <span th:if="${nameLength > 2}">
                                     <span th:text="${user_name.substring(0,1)}"></span>
                                     <span th:each="i : ${#numbers.sequence(1, nameLength-2)}">*</span>
@@ -104,7 +103,7 @@
             </button>
             <div class="flex space-x-4">
                 <a th:href="@{/about-hospital/{hospital_no}(hospital_no=${hospital_no})}">
-                <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                <button style="color: white" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
                     Visit Hospital
                 </button></a>
                 <span th:if="${#authentication.name==userDto.getUser_email()}"><button type="button" data-bs-toggle="modal" data-bs-target="#reviewUpdateModal" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
@@ -117,6 +116,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="reviewUpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <form th:action="@{/reviewboard/update}" method="post">
         <div class="modal-dialog">
