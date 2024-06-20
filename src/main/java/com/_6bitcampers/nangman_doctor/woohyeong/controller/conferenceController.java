@@ -31,10 +31,12 @@ public class conferenceController {
     private reservationServiceW reservationService;
 
     @GetMapping("/test")
-    public String home(Model model) {
+    public String home(Model model, int reservation_no) {
 
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String id = customOAuth2User.getEmail();
+
+        System.out.println(reservation_no);
 
         boolean employeeNoSuccess = false;
         boolean userNoSuccess = false;
