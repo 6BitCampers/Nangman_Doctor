@@ -24,11 +24,7 @@ public class StatusController {
 
     }
 
-   /* @GetMapping("/getInfoNo")
-    @ResponseBody
-    public int getInfoNo(@RequestParam("reservationNo") int reservationNo) {
-        return reservationService.getInfoNo(reservationNo);
-    }*/
+
 
 
 }
