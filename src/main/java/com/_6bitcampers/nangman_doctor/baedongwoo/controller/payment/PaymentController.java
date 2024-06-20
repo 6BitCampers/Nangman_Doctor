@@ -49,9 +49,7 @@ public class PaymentController {
         int hospital_no=receiptDto.getInfo_no();
         String user_no=orderId.substring(5);
 
-        PaymentDto paymentDto= new PaymentDto();
-
-        paymentDto=PaymentDto.builder()
+        PaymentDto paymentDto= PaymentDto.builder()
                 .payment_method(method)
                 .payment_amount(amount)
                 .user_no(Integer.parseInt(user_no))
@@ -71,7 +69,7 @@ public class PaymentController {
         
         paymentService.updateReceipt(receiptMap);
 
-        return "redirect:mypage?user_no="+user_no;
+        return "redirect:mypage";
     }
 
 
