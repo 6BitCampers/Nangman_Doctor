@@ -34,7 +34,7 @@ public class mypageController {
         try {
             UserDTO udto = mypageService.getUser(id);
             if (udto != null) {
-                ReceiptDTO dto = mypageService.getReceipt(userNo);
+                List<ReceiptDTO> dto = mypageService.getReceipt(userNo);
                 model.addAttribute("udto", udto);
                 model.addAttribute("status", status);
                 model.addAttribute("dto", dto);
@@ -73,7 +73,7 @@ public class mypageController {
         try {
             UserDTO udto = mypageService.getUser(id);
             if (udto != null) {
-                ReceiptDTO dto = mypageService.getReceipt(userNo);
+                List<ReceiptDTO> dto = mypageService.getReceipt(userNo);
                 model.addAttribute("udto", udto);
                 model.addAttribute("status", status);
                 model.addAttribute("dto", dto);

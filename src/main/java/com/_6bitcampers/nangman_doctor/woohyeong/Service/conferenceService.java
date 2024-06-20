@@ -28,4 +28,8 @@ public class conferenceService {
         conferenceMapper.insertRecipt(dto);
     }
 
+    public int getInfoNo(int reservation_no){
+        return conferenceMapper.getInfoNo(reservation_no);
+    }
+
 }

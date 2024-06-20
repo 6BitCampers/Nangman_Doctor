@@ -26,4 +26,10 @@ public interface conferenceMapper {
     values(#{receipt_name}, #{receipt_status}, #{receipt_reason}, now(), #{reservation_no}, #{receipt_amount}, #{info_no})
 """)
     void insertRecipt(ReceiptDTO dto);
+
+    @Select("""
+    select i.info_no from hospital_reservation r left join hospital_employee e on r.employee_no = e.employee_no
+    left join hospital_info i on i.info_no = e.info_no where r.reservation_no = #{reservation_no}
+""")
+    int getInfoNo(int reservation_no);
 }
