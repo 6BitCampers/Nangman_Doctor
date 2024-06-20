@@ -334,20 +334,20 @@
 			const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
 
 			if (!emailRegex.test(email)) {
-				swal(
-						'경고!!',
-						'<b style="color:coral;">이메일 형식이 다릅니다.</b>',
-						'warning'
-				)
+				Swal.fire({
+					icon: 'error',
+					title: '이메일 형식이 다릅니다.',
+					text: '이메일을 다시 확인해주세요.!',
+				});
 				return;
 			}
 
 			if (!phoneRegex.test(phone_number)) {
-				swal(
-						'경고!!',
-						'<b style="color:coral;">핸드폰 형식이 다릅니다.</b>',
-						'warning'
-				)
+				Swal.fire({
+					icon: 'error',
+					title: '핸드폰 번호 형식이 다릅니다..',
+					text: '핸드폰 번호를 다시 확인해주세요.!',
+				});
 				return;
 			}
 
@@ -366,22 +366,22 @@
 							success : function (data){
 								if (data.status=='true') document.getElementById("login_form").submit();
 								else {
-									swal(
-											'에러!!',
-											'<b style="color:red;">이미 해당 닉네임이 존재합니다.</b>',
-											'error'
-									)
+									Swal.fire({
+										icon: 'error',
+										title: '닉네임이 존재합니다.',
+										text: '이미 있는 닉네임입니다.!',
+									});
 									nickname.val("")
 								}
 							}
 						})
 					}
 					else {
-						swal(
-								'에러!!',
-								'<b style="color:red;">이미 해당 이메일이 존재합니다.</b>',
-								'error'
-						)
+						Swal.fire({
+							icon: 'error',
+							title: '이메일이 존재합니다.',
+							text: '이미 있는 계정입니다.!',
+						});
 						email.val("")
 					}
 				}
@@ -399,7 +399,7 @@
 			$("label[for='interest']").text("진료분야");
 		})
 	</script>
-	<link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css}" integrity="sha256-h2Gkn+H33lnKlQTNntQyLXMWq7/9XI2rlPCsLsVcUBs=" crossorigin="anonymous">
-	<script th:src="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.all.min.js}" integrity="sha256-sxTH7wLusVF/zFlnDQEmsmwYORsWdufWfjsxdVYGRNI=" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css" integrity="sha256-h2Gkn+H33lnKlQTNntQyLXMWq7/9XI2rlPCsLsVcUBs=" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.all.min.js" integrity="sha256-sxTH7wLusVF/zFlnDQEmsmwYORsWdufWfjsxdVYGRNI=" crossorigin="anonymous"></script>
 </div>
 </html>
