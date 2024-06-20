@@ -213,7 +213,8 @@
 					</div>
 				</div>
 				<button
-						class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
+						class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
+						style="background-color: darkorange;"
 						type="button" id="submit_btn"
 				>
 					제출하기
@@ -224,20 +225,26 @@
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
 		function search_location() {
+			var width = 500; //팝업의 너비
+			var height = 600; //팝업의 높이
 			new daum.Postcode({
-				oncomplete: function (data) {
+				width: width, //생성자에 크기 값을 명시적으로 지정해야 합니다.
+				height: height,
+				oncomplete: function(data) {
 					// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
 					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
 					// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
 					var addr = data.sido; // 시
 					var extraAddr = data.sigungu; // 그 이하
 
-					document.getElementById("address").value = addr + "시 " + extraAddr;
+					document.getElementById("address").value=addr+"시 "+extraAddr;
 					// 커서를 상세주소 필드로 이동한다.
 					document.getElementById("address").focus();
 				}
-			}).open();
+			}).open({
+				left: (window.screen.width / 2) - (width / 2),
+				top: (window.screen.height / 2) - (height / 2)
+			});
 		}
 
 		function check() {

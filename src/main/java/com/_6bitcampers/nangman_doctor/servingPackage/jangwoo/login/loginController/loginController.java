@@ -37,7 +37,7 @@ public class loginController {
     @GetMapping("/pwreset/{uuid}")
     public String pwreset(@PathVariable("uuid")String uuid){
 
-        return pwService.checkurl(uuid)?"resetpw":"alertpage/notinfo";
+        return pwService.checkurl(uuid)?"resetpw":"paymentError";
     }
 
     @PostMapping("/pwreset/{uuid}")

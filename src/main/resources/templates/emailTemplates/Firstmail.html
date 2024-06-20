@@ -12,7 +12,7 @@
 
 	<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
 	<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
-	<link th:href="@{https://fonts.googleapis.com/css2(family='Brygada+1918:ital,wght@0,400;0,600;0,700;1,400',family='Inter:wght@400;700&display=swap')}" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Brygada+1918:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
 	<link rel="stylesheet" th:href="@{fonts/icomoon/style.css}">
 	<link rel="stylesheet" th:href="@{fonts/flaticon/font/flaticon.css}">
@@ -23,7 +23,7 @@
 	<link rel="stylesheet" th:href="@{css/glightbox.min.css}">
 	<link rel="stylesheet" th:href="@{css/style.css}">
 
-	<title>낭만 닥터 비밀번호 초기화 이메일</title>
+	<title>예약 확인 이메일</title>
 	<style>
 		body {
 			font-family: Arial, sans-serif;
@@ -58,14 +58,18 @@
 </head>
 <body>
 <div class="container">
-	<h1>비밀번호 변경 이메일 변경 안내드립니다.</h1>
+	<h1>예약 확인</h1>
 	<p>안녕하세요, <strong th:text="${userName}"></strong>님.</p>
-	<p>다음 링크로 접속하셔서 이메일을 변경 해주시면 됩니다.</p>
+	<p>다음과 같이 예약이 확인되었습니다:</p>
 	<p>
-		<strong>초기화 주소</strong><br>
-		<h4 th:text="${url}"></h4>
-		<br>
+		<strong>예약 번호:</strong> <span th:text="${reservation.reservationNo}"></span><br>
+		<strong>진료명:</strong> <span th:text="${reservation.reservationReason}"></span><br>
+		<strong>예약 날짜:</strong> <span th:text="${reservation.reservationDate}"></span><br>
+		<strong>예약 시간:</strong> <span th:text="${reservation.reservationTime}"></span><br>
+		<strong>진료 유형:</strong> <span th:text="${reservation.reservationRole == 1 ? '상담' : (reservation.reservationRole == 2 ? '수술 경과 상담' : (reservation.reservationRole == 3 ? '수술' : ''))}"></span><br>
+		<strong>예약 상태:</strong> <span th:text="${reservation.reservationStatus == 1 ? '예약 요청상태' : ''}"></span>
 	</p>
+	<p>사이트주소<h4 th:text="${url}"></h4></p>
 	<p>감사합니다.</p>
 	<div class="footer">
 		<p>&copy; 2024 낭만닥터. All Rights Reserved.</p>

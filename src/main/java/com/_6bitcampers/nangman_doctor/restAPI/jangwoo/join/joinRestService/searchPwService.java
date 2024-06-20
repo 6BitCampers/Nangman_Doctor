@@ -67,7 +67,7 @@ public class searchPwService {
             emailValues.forEach(context::setVariable);
 
             //메일 내용 설정 : 템플릿 프로세스
-            String html = springTemplateEngine.process("/emailTemplates/passwordforgot", context);
+            String html = springTemplateEngine.process("emailTemplates/passwordforgot", context);
             helper.setText(html, true);
 
             //메일 보내기

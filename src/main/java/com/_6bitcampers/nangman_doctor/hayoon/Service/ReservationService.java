@@ -62,11 +62,13 @@ public class ReservationService {
     }
 
     public void sendReservationRequestEmail(String to, ReservationDto reservationDto) {
+        System.out.println("dd" + reservationMapper.getUserNameByNo(reservationDto.getUser_no()));
         Map<String, Object> variables = new HashMap<>();
         variables.put("userName", reservationMapper.getUserNameByNo(reservationDto.getUser_no()));
         variables.put("reservation", reservationDto);
+        System.out.println("ww" + variables);
 
-        sendEmail(to, "예약 요청", "firstemail", variables);
+        sendEmail(to, "예약 요청", "firstuseremail", variables);
     }
 
     public void sendEmail(String to, String subject, String templateName, Map<String, Object> variables) {
@@ -93,4 +95,9 @@ public class ReservationService {
     public int getEmployeeNoByInfoNo(int infoNo) {
         return reservationMapper.getEmployeeNoByInfoNo(infoNo);
     }
+
+    public int getEmployeeNo(int reservationNo) {
+        return reservationMapper.getEmployeeNo(reservationNo);
+    }
+
 }

@@ -12,7 +12,7 @@
     <div th:if="${udto != null}" class="d-flex vh-100 bg-warning p-3 gap-3">
         <div class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">
             <div class="d-flex justify-content-end mb-3">
-                <a href="#" class="text-decoration-none text-dark">
+                <a href="/mypage/updateform" class="text-decoration-none text-dark">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -69,32 +69,59 @@
                 <h1>화상진료 예약일이 아닙니다.</h1>
             </span>
             <br><br>
-            <form action="/payment" method="get">
+
                 <input type="hidden" name="user_no" th:value="${udto.user_no}">
-                <div th:if="${dto != null}">
+                <div th:each="dto : ${dto}">
+                    <div th:if="${dto.getPayment_no()!=null}">
+                        <table>
+                            <tr>
+                            <th th:text="${dto.receipt_name}"></th><td>결제일: <span th:text="${dto.getReceipt_date()}"></span></td>
+                            </tr>
+                            <tr><td colspan="2">
+                                <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow">
+                                    <input type="hidden" name="userId" th:value="${#authentication.name}">
+                                    <input type="hidden" name="dto" th:value="${dto}">
+                                    <input type="hidden" name="userDto" th:value="${udto}">
+                                <button type="submit" class="btn-primary receiptView" onclick="openPopup()">처방전 열람</button></form>
+                            </td></tr>
+                            <script>
+                                function openPopup() {
+                                    // 새로운 윈도우를 팝업으로 엽니다.
+                                    var popupWindow = window.open('', 'popupWindow', 'width=800,height=600,scrollbars=yes');
+
+                                    // 폼을 제출하여 팝업 윈도우에 데이터를 전송합니다.
+                                    document.getElementById('popupForm').submit();
+                                }
+                            </script>
+                        </table>
+                    </div>
+                    <form action="/payment" method="post">
+                    <div th:if="${dto.getPayment_no()==null}">
                     <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
-                <h1>결제정보</h1>
-                <table class="table table-striped mt-3">
-                    <tr>
-                        <th>결제정보</th>
-                        <th th:text="${dto.receipt_name}"></th>
-                    </tr>
-                    <tr>
-                        <th>진료일</th>
-                        <th th:text="${dto.receipt_date}"></th>
-                    </tr>
-                    <tr>
-                        <th>결제금액</th>
-                        <th th:text="${dto.receipt_amount}"></th>
-                    </tr>
-                </table>
-                <span>
-                    <button type="submit" class="btn btn-primary mt-3">
-                        결제하러가기
-                    </button>
-                </span>
-            </div>
-            </form>
+
+                    <h1>결제정보</h1>
+                    <table class="table table-striped mt-3">
+                        <tr>
+                            <th>결제정보</th>
+                            <th th:text="${dto.receipt_name}"></th>
+                        </tr>
+                        <tr>
+                            <th>진료일</th>
+                            <th th:text="${dto.receipt_date}"></th>
+                        </tr>
+                        <tr>
+                            <th>결제금액</th>
+                            <th th:text="${dto.receipt_amount}"></th>
+                        </tr>
+                    </table>
+                    <span>
+            <button type="submit" class="btn btn-primary mt-3">
+                결제하러가기
+            </button>
+        </span>
+                    </div></form>
+                </div>
+
         </div>
 
 <!--        <div th:if="${edto != null}" class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">-->
@@ -132,12 +159,14 @@
 <!--        </div>-->
 
         <!--예약목록 -->
+        <!-- 예약목록 -->
         <div class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">
             <h2>예약 목록</h2>
             <br>
             <div class="col-md-8">
                 <ul class="list-unstyled w-100 mb-3">
-                    <li th:each="reservation, iterStat : ${reservationList}" th:id="'reservation-' + ${iterStat.index}" class="bg-white border rounded p-3 shadow-sm mb-3">
+                    <li th:each="reservation, iterStat : ${reservationList}" th:id="'reservation-' + ${iterStat.index}"
+                        class="bg-white border rounded p-3 shadow-sm mb-3" th:if="${reservation.get('reservation_status') != 3}">
                         <h2 class="h5">예약 번호: <span th:text="${reservation.get('reservation_no')}">1</span></h2>
                         <p>이름: <span th:text="${reservation.get('user_name')}">홍길동</span></p>
                         <p>날짜: <span th:text="${reservation.get('reservation_date')}">2023-01-01</span></p>
@@ -145,15 +174,254 @@
                         <p>진료명: <span th:text="${reservation.get('reservation_reason')}">진료명</span></p>
                         <p>상태:
                             <span th:if="${reservation.get('reservation_status') == 1}" class="text-warning">예약 요청</span>
-                            <span th:if="${reservation.get('reservation_status') == 2}" class="text-info">예약 메일확인</span>
+                           <span th:if="${reservation.get('reservation_status') == 2}" class="text-info">예약 메일확인</span>
                             <span th:if="${reservation.get('reservation_status') == 3}" class="text-success">예약 확정하기</span>
                         </p>
+                        <div th:if="${reservation.get('reservation_status') == 2}">
+                            <button type="button" class="btn btn-success">수락</button>
+                            <button type="button" class="btn btn-danger">거절</button>
+                        </div>
                     </li>
-                    <br>
                 </ul>
             </div>
+        </div>
+
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button onclick="navigateMonth(-1)">이전</button>
+                <h2 id="currentMonthYear"></h2>
+                <button onclick="navigateMonth(1)">다음</button>
+            </div>
+            <table class="calendar-table">
+                <thead>
+                <tr>
+                    <th>일</th>
+                    <th>월</th>
+                    <th>화</th>
+                    <th>수</th>
+                    <th>목</th>
+                    <th>금</th>
+                    <th>토</th>
+                </tr>
+                </thead>
+                <tbody id="calendarBody">
+                </tbody>
+            </table>
+        </div>
+
+        <style>
+            .btn {
+                padding: 5px 10px;
+                margin: 2px;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .btn-success {
+                background-color: green;
+            }
+
+            .btn-danger {
+                background-color: red;
+            }
+
+            .calendar-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .calendar-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                max-width: 600px;
+                margin-bottom: 20px;
+            }
+
+            .calendar-header button {
+                padding: 5px 10px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .calendar-header button:hover {
+                background-color: orange;
+            }
+
+            .calendar-table {
+                width: 100%;
+                max-width: 600px;
+                border-collapse: collapse;
+            }
+
+            .calendar-table th, .calendar-table td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .calendar-table th {
+                background-color: orange;
+                color: white;
+            }
+
+            .calendar-table td {
+                position: relative;
+                background-color: white;
+            }
+
+            .calendar-table td:hover {
+                background-color: #f1f1f1;
+            }
+
+            .video-call-button {
+                padding: 5px 10px;
+                margin-top: 5px;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .video-call-button:hover {
+                background-color: #218838;
+            }
+        </style>
+
+        <script>
+            $(document).ready(function () {
+                // 수락 버튼 클릭 핸들러
+                $('.btn-success').on('click', function () {
+                    var row = $(this).closest('tr');
+                    var reservationNo = row.find('.reservation-no').text();
+
+                    $.ajax({
+                        url: '/updateReservationStatus',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ reservationNo: parseInt(reservationNo), status: 1 }), // 수락 상태 전송
+                        success: function (response) {
+                            alert('예약이 성공적으로 수락되었습니다.');
+                        },
+                        error: function (xhr, status, error) {
+                            alert('예약 수락에 실패하였습니다.');
+                        }
+                    });
+                });
+
+                // 거절 버튼 클릭 핸들러
+                $('.btn-danger').on('click', function () {
+                    var row = $(this).closest('tr');
+                    var reservationNo = row.find('.reservation-no').text();
+
+                    $.ajax({
+                        url: '/updateReservationStatus',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ reservationNo: parseInt(reservationNo), status: 2 }), // 거절 상태 전송
+                        success: function (response) {
+                            alert('예약이 성공적으로 거절되었습니다.');
+                        },
+                        error: function (xhr, status, error) {
+                            alert('예약 거절에 실패하였습니다.');
+                        }
+                    });
+                });
+            });
+        </script>
+
+
+        <script th:inline="javascript">
+            let reservationList = /*[[${reservationList}]]*/ [];
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+
+            function renderCalendar(month, year) {
+                const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월",
+                    "7월", "8월", "9월", "10월", "11월", "12월"];
+                const firstDay = new Date(year, month).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                const calendarBody = document.getElementById("calendarBody");
+                const currentMonthYear = document.getElementById("currentMonthYear");
+                calendarBody.innerHTML = "";
+                currentMonthYear.innerText = `${monthNames[month]} ${year}`;
+
+                let date = 1;
+                for (let i = 0; i < 6; i++) {
+                    const row = document.createElement("tr");
+                    for (let j = 0; j < 7; j++) {
+                        const cell = document.createElement("td");
+                        const cellContent = document.createElement("div");
+                        cellContent.style.display = "flex";
+                        cellContent.style.flexDirection = "column";
+                        cellContent.style.alignItems = "center";
+
+                        if (i === 0 && j < firstDay) {
+                            cell.innerText = "";
+                        } else if (date > daysInMonth) {
+                            break;
+                        } else {
+                            const dateDiv = document.createElement("div");
+                            dateDiv.innerText = date;
+                            cellContent.appendChild(dateDiv);
+
+                            // Check for reservations on this date
+                            const reservation = reservationList.find(reservation => {
+                                const resDate = new Date(reservation.reservation_date);
+                                return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && reservation.reservation_status === 3;
+                            });
+
+                            if (reservation) {
+                                const button = document.createElement("button");
+                                button.classList.add("video-call-button");
+                                button.innerText = "화상채팅";
+                                button.addEventListener("click", function() {
+                                    window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
+                                });
+                                cellContent.appendChild(button);
+                            }
+
+                            date++;
+                        }
+                        cell.appendChild(cellContent);
+                        row.appendChild(cell);
+                    }
+                    calendarBody.appendChild(row);
+                }
+            }
+
+            function navigateMonth(offset) {
+                currentMonth += offset;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                } else if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar(currentMonth, currentYear);
+            }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                renderCalendar(currentMonth, currentYear);
+            });
+        </script>
+
         </div>
     </div>
 </div>
 </body>
 </html>
+
+

@@ -34,7 +34,7 @@ public class mypageController {
         try {
             UserDTO udto = mypageService.getUser(id);
             if (udto != null) {
-                ReceiptDTO dto = mypageService.getReceipt(userNo);
+                List<ReceiptDTO> dto = mypageService.getReceipt(userNo);
                 model.addAttribute("udto", udto);
                 model.addAttribute("status", status);
                 model.addAttribute("dto", dto);
@@ -62,6 +62,45 @@ public class mypageController {
         }
 
         return "mypage"; // 템플릿 이름을 반환합니다. "mypage.html" 템플릿이 호출됩니다.
+    }
+
+    @GetMapping("/mypage/updateform")
+    public String updateform(Model model) {
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String id = customOAuth2User.getEmail();
+        int userNo= reservationService.getUserNo(id);
+        int status = reservationServiceW.getReservationStatus(userNo);
+        try {
+            UserDTO udto = mypageService.getUser(id);
+            if (udto != null) {
+                List<ReceiptDTO> dto = mypageService.getReceipt(userNo);
+                model.addAttribute("udto", udto);
+                model.addAttribute("status", status);
+                model.addAttribute("dto", dto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            EmployeeDTO edto = mypageService.getEmployee(id);
+            if (edto != null) {
+                model.addAttribute("edto", edto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            List<Map<String, Object>> reservationList = reservationService.getUserReservations(userNo);
+            if (reservationList != null && !reservationList.isEmpty()) {
+                model.addAttribute("reservationList", reservationList);
+                System.out.println(reservationList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "mypageform"; // 템플릿 이름을 반환합니다. "mypage.html" 템플릿이 호출됩니다.
     }
 
 }
