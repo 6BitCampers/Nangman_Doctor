@@ -13,6 +13,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("userEntity")
 public class userEntity {
     //not null
+    private int user_no;
     private String user_name;
     private String user_email;
     private String user_role;
