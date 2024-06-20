@@ -71,6 +71,9 @@ public class EmpController {
 
         List<ReservationDto> reservations = reservationService.getReservationsByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("reservations", reservations);
+
+
+
         System.out.println(reservations);
 
 
