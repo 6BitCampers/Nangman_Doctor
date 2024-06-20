@@ -4,15 +4,23 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
 import com._6bitcampers.nangman_doctor.minio.service.storageService;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
+import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/reviewboard")
@@ -57,6 +65,7 @@ public class ReviewDetailController {
         model.addAttribute("user_name", user_name);
         model.addAttribute("hospital_name", hospital_name);
         model.addAttribute("userDto",userDto);
+        model.addAttribute("user_no",user_no);
         model.addAttribute("hospital_no",hospital_no);
         model.addAttribute("review_no",review_no);
         model.addAttribute("userId",userId);
@@ -75,6 +84,9 @@ public class ReviewDetailController {
             @RequestParam int currentPage,
             Model model
     ){
+
+
+
         Map<String,Object>map=new HashMap<>();
         map.put("review_title",review_title);
         map.put("review_no",review_no);
@@ -89,6 +101,27 @@ public class ReviewDetailController {
         return "forward:/reviewboard/detail";
     }
 
+    @PostMapping("/reviewUpdateForm")
+    public String reviewUpdateForm(
+            @RequestParam int review_no,
+            @RequestParam int user_no,
+            @RequestParam String user_name,
+            @RequestParam String userId,
+            @RequestParam int currentPage,
+            Model model
+    ){
+        ReviewDto dto=reviewService.getReviewBySeq(review_no);
+        userEntity userDto=reviewService.getUserInfo(user_no);
+
+        model.addAttribute("dto",dto);
+        model.addAttribute("user_name",user_name);
+        model.addAttribute("userDto",userDto);
+        model.addAttribute("user_no",userId);
+        model.addAttribute("currentPage",currentPage);
+
+        return "reviewUpdateForm";
+    }
+
     @ResponseBody
     @GetMapping("/delete")
     public String deleteReview(
@@ -100,10 +133,44 @@ public class ReviewDetailController {
 
     @PostMapping("/insert")
     public String insertReview(
-            @RequestParam ReviewDto reviewDto
-    ){
+            @RequestParam String review_title,
+            @RequestParam String review_content,
+            @RequestParam int review_likecount,
+            @RequestParam int employee_no,
+            @RequestParam int user_no
+            ){
+        ReviewDto reviewDto= ReviewDto.builder().
+                review_title(review_title).
+                review_content(review_content).
+                employee_no(employee_no).
+                user_no(user_no).
+                review_likecount(review_likecount).
+                build();
+
         reviewService.insertReview(reviewDto);
 
         return "redirect:/mypage";
+    }
+
+    @PostMapping(value="/uploadSummernoteImageFile", produces = "application/json")
+    @ResponseBody
+    public JsonObject uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
+
+        JsonObject jsonObject = new JsonObject();
+
+        MultipartFile photo = multipartFile;
+        String filename = UUID.randomUUID()+"";
+        String filepath="http://minioDB.midichi.kro.kr/nangmandoctor";
+        try {
+            storageService.uploadFile("nangmandoctor", "/reviewBoard/" + filename, photo.getInputStream(), photo.getContentType());
+            jsonObject.addProperty("url", filepath+"/reviewBoard/"+filename);
+            jsonObject.addProperty("responseCode", "success");
+        } catch (IOException e) {
+            storageService.deleteFile("nangmandoctor", "/reviewBoard/"+filename);
+            jsonObject.addProperty("responseCode", "error");
+            throw new RuntimeException(e);
+        }
+
+        return jsonObject;
     }
 }

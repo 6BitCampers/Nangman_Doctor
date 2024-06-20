@@ -131,45 +131,64 @@
                     </span>
                 </div>
             </header>
-            <div class="grid gap-8">
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+            <div class="grid gap-8" style="display: flex; margin: 10px;">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 400px;">
                     <div class="flex flex-col space-y-1.5 p-6">
-                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Join hospital</h3>
+                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Join Role</h3>
                     </div>
                     <div class="p-6">
-                        <form class="grid gap-4">
+                        <form action="/registerRole" method="post">
                             <div class="grid gap-2">
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">
                                     Name
                                 </label>
-                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="name" placeholder="John Doe" type="text"/>
+
+                                <input
+                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        id="name"
+                                        placeholder="이름을 입력하세요"
+                                        type="text"
+                                />
+
                             </div>
                             <div class="grid gap-2">
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">
                                     Email
                                 </label>
-                                <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" id="email" placeholder="john@example.com" type="email"/>
+
+                                <input
+                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        id="email"
+                                        placeholder="nangman@examle.com"
+                                        type="email"
+                                />
                             </div>
                             <div class="grid gap-2">
-                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="role">
+                                <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        >
                                     Role
                                 </label>
-                                <button type="button" role="combobox" aria-controls="radix-:ra:" aria-expanded="false" aria-autocomplete="none" dir="ltr" data-state="closed" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                <select id="role" name="role" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                    <option value="user">
+                                        User
+                                    </option>
+                                    <option value="doctor" >Doctor</option>
+                                    <option value="nurse" >Nurse</option>
+                                    <option value="manager">Manager</option>
+
                                     <span style="pointer-events: none;">User</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 opacity-50" aria-hidden="true">
                                         <path d="m6 9 6 6 6-6"></path>
                                     </svg>
-                                </button>
-                                <select aria-hidden="true" tabindex="-1" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; overflow-wrap: normal;">
-                                    <option value="user" selected="">
-                                        User
-                                    </option>
-                                    <option value="admin">Admin</option>
-                                    <option value="manager">Manager</option>
+
                                 </select>
                             </div>
-                            <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full" type="submit">
-                                Create User
+                            <button
+                                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
+                                    type="submit"
+                            >
+                                Join
                             </button>
                         </form>
                     </div>
@@ -238,81 +257,72 @@
                         </div>
                     </div>
                 </div>
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+            </div>
+            <div class="grid gap-8" style="display: flex; margin: 10px;">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 650px;">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Reviews</h3>
                     </div>
+
                     <div class="p-6">
+
                         <div class="grid gap-4">
-                            <div class="flex items-start gap-4">
-                                <span class="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
-                                    <img class="aspect-square h-full w-full" alt="Avatar" src="/placeholder-user.jpg"/>
-                                </span>
-                                <div class="flex-1 grid gap-2">
-                                    <div class="flex items-center gap-2">
-                                        <div class="font-semibold">John Doe</div>
-                                        <div class="flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-primary">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-primary">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-primary">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-muted stroke-muted-foreground">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-muted stroke-muted-foreground">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        The product was great and the service was excellent. I highly recommend this company.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <span class="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
-                                    <img class="aspect-square h-full w-full" alt="Avatar" src="/placeholder-user.jpg"/>
-                                </span>
-                                <div class="flex-1 grid gap-2">
-                                    <div class="flex items-center gap-2">
-                                        <div class="font-semibold">Jane Smith</div>
-                                        <div class="flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-primary">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-primary">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-primary">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-primary">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-muted stroke-muted-foreground">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 fill-muted stroke-muted-foreground">
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        I'm really impressed with the quality of this product. It exceeded my expectations.
-                                    </p>
-                                </div>
+
+                            <div class="relative w-full overflow-auto">
+                                <table class="w-full caption-bottom text-sm">
+                                    <thead class="[&amp;_tr]:border-b">
+                                    <tr>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            No</th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Subject</th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Likecount</th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Writer</th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Writeday</th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            View</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody class="[&amp;_tr:last-child]:border-0">
+                                    <tr th:each="item,itemStat:${list}" class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                        <td th:text="${itemStat.count}"></td>
+                                        <td>
+                                            <form th:action="@{/reviewboard/detail}" method="post">
+                                                <input type="hidden" name="review_no" th:value="${item.review_no}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"/>
+                                                <input type="hidden" name="userId" th:value="${#authentication.name}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"/>
+                                                <button type="submit" th:text="${item.review_title}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></button>
+                                            </form>
+                                        </td>
+                                        <td><span class="reviewStarsBoard"></span>
+                                            <script th:inline="javascript">
+                                                let s = '';
+                                                let ratings =/*[[${item.review_likecount}]]*/0;
+                                                console.log(ratings);
+                                                for (let i = 0; i < ratings; i++) {
+                                                    s += `<span style="color: gold">&#9733</span>`;
+                                                }
+                                                for (let i = 0; i < ratings - 5; i++) {
+                                                    s += `<span>&#9734;</span>`;
+                                                }
+                                                $(".reviewStarsBoard").html(s);
+                                            </script></td>
+                                        <td th:text="${userMap[item.user_no].user_name}"></td>
+                                        <td th:text="${item.getFormattedWriteday()}"></td>
+                                        <td th:text="${item.review_viewcount}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 650px;">
                     <div class="flex flex-col space-y-1.5 p-6">
-                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Announcements</h3>
+                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Change Information</h3>
                     </div>
                     <div class="p-6">
                         <div class="grid gap-4">
@@ -337,6 +347,8 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="grid gap-8" style="display: flex; margin: 10px;">
                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Reservations</h3>
@@ -577,5 +589,14 @@
         </div>
     </div>
 </div>
+            </div>
+        </div>
+
+
+            </div>
+        </div>
+
+    </div>
 </div>
+
 </html>
