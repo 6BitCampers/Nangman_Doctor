@@ -56,7 +56,6 @@ public class securityConfig{
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/my/**").authenticated()
                         .requestMatchers("/addinfo","addinfo/").hasRole("LOGINONLY")
-                        .requestMatchers("pwreset/","/pwreset/").hasRole("RESET")
                         .requestMatchers("/", "/login", "/loginProc", "/join", "/joinProc","/loginError").permitAll()
                         .anyRequest().permitAll());
 
