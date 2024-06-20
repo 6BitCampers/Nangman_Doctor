@@ -148,6 +148,10 @@
                             <span th:if="${reservation.get('reservation_status') == 2}" class="text-info">예약 메일확인</span>
                             <span th:if="${reservation.get('reservation_status') == 3}" class="text-success">예약 확정하기</span>
                         </p>
+                        <div th:if="${reservation.get('reservation_status') == 2}">
+                            <button type="button" class="btn btn-success">수락</button>
+                            <button type="button" class="btn btn-danger">거절</button>
+                        </div>
                     </li>
                     <br>
                 </ul>

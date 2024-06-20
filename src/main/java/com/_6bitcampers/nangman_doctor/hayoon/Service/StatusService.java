@@ -13,7 +13,7 @@ public class StatusService {
         this.statusMapper = statusMapper;
     }
 
-    public void updateStatus(int reservationNo, int status){
-        statusMapper.updateStatus(reservationNo, status);
+    public void updateStatus(int reservationNo){
+        statusMapper.updateStatus(reservationNo);
     }
 }

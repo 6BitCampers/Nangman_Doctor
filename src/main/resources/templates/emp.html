@@ -539,7 +539,7 @@
                                         button.classList.add("video-call-button");
                                         button.innerText = "화상채팅";
                                         button.addEventListener("click", function() {
-                                            window.location.href = "/test";
+                                            window.location.href = "/test?reservation_no=${reservationNo}";
                                         });
                                         cellContent.appendChild(button);
                                     }
@@ -571,11 +571,11 @@
                     });
                 </script>
 
-                </div>
-
-
             </div>
+
+
         </div>
     </div>
+</div>
 </div>
 </html>

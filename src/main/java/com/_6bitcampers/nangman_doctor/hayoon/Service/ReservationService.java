@@ -93,4 +93,9 @@ public class ReservationService {
     public int getEmployeeNoByInfoNo(int infoNo) {
         return reservationMapper.getEmployeeNoByInfoNo(infoNo);
     }
+
+    public int getEmployeeNo(int reservationNo) {
+        return reservationMapper.getEmployeeNo(reservationNo);
+    }
+
 }

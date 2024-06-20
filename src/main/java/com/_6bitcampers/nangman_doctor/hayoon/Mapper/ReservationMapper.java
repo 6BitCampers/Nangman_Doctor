@@ -44,4 +44,7 @@ public interface ReservationMapper {
 
     @Select("SELECT employee_no FROM hospital_employee WHERE info_no = #{infoNo}")
     int getEmployeeNoByInfoNo(int infoNo);
+
+    @Select("SELECT employee_no FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
+    int getEmployeeNo(int reservationNo);
 }
