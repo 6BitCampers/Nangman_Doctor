@@ -9,7 +9,7 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/layout}">
 <div layout:fragment="content">
-	<div class="flex h-screen w-full items-center justify-center bg-orange-100 dark:bg-orange-950">
+	<div class="flex h-screen w-full items-center justify-center bg-orange-100">
 		<div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">
 			<div class="space-y-2 text-center">
 				<h1 class="text-3xl font-bold">추가 정보 입력</h1>
@@ -242,6 +242,17 @@
 
 		function check() {
 			let nickname = $("#nickname").val();
+			let phone_number = $("#phone").val()
+			const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
+
+			if (!phoneRegex.test(phone_number)) {
+				swal(
+						'경고!!',
+						'<b style="color:coral;">핸드폰 형식이 다릅니다.</b>',
+						'warning'
+				)
+				return;
+			}
 
 			$.ajax({
 				url: "/api/v1/nicknamecheck",
@@ -268,5 +279,7 @@
 			$("label[for='interest']").text("진료분야");
 		})
 	</script>
+	<link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css}" integrity="sha256-h2Gkn+H33lnKlQTNntQyLXMWq7/9XI2rlPCsLsVcUBs=" crossorigin="anonymous">
+	<script th:src="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.all.min.js}" integrity="sha256-sxTH7wLusVF/zFlnDQEmsmwYORsWdufWfjsxdVYGRNI=" crossorigin="anonymous"></script>
 </div>
 </html>

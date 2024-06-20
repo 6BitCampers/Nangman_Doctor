@@ -9,8 +9,8 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/layout}">
 <div layout:fragment="content">
-	<div class="flex h-screen w-full items-center justify-center bg-orange-100" >
-		<div class="mx-auto max-w-md space-y-6">
+	<div class="flex w-full items-center justify-center bg-orange-100 py-4" >
+		<div class="mx-auto max-w-md space-y-6 my-auto">
 			<div class="space-y-2 text-center">
 				<h1 class="text-3xl font-bold">회원가입</h1>
 				<p class="text-gray-500">
@@ -321,6 +321,27 @@
 		function check() {
 			let email = $("#email").val();
 			let nickname = $("#nickname").val();
+			let phone_number = $("#phone").val()
+			const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+			const phoneRegex = /^\d{3}-\d{4}-\d{4}$/;
+
+			if (!emailRegex.test(email)) {
+				swal(
+						'경고!!',
+						'<b style="color:coral;">이메일 형식이 다릅니다.</b>',
+						'warning'
+				)
+				return;
+			}
+
+			if (!phoneRegex.test(phone_number)) {
+				swal(
+						'경고!!',
+						'<b style="color:coral;">핸드폰 형식이 다릅니다.</b>',
+						'warning'
+				)
+				return;
+			}
 
 			$.ajax({
 				url:"/api/v1/emailcheck",
@@ -337,16 +358,26 @@
 							success : function (data){
 								if (data.status=='true') document.getElementById("login_form").submit();
 								else {
-									alert("이미 닉네임이 존재합니다.")
+									swal(
+											'에러!!',
+											'<b style="color:red;">이미 해당 닉네임이 존재합니다.</b>',
+											'error'
+									)
+									nickname.val("")
 								}
 							}
 						})
 					}
 					else {
-						alert("이미 이메일이 존재합니다.")
+						swal(
+								'에러!!',
+								'<b style="color:red;">이미 해당 이메일이 존재합니다.</b>',
+								'error'
+						)
+						email.val("")
 					}
 				}
-			})
+			});
 		}
 
 		$("#submit_btn").on("click",function(){
@@ -360,5 +391,7 @@
 			$("label[for='interest']").text("진료분야");
 		})
 	</script>
+	<link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css}" integrity="sha256-h2Gkn+H33lnKlQTNntQyLXMWq7/9XI2rlPCsLsVcUBs=" crossorigin="anonymous">
+	<script th:src="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.all.min.js}" integrity="sha256-sxTH7wLusVF/zFlnDQEmsmwYORsWdufWfjsxdVYGRNI=" crossorigin="anonymous"></script>
 </div>
 </html>
