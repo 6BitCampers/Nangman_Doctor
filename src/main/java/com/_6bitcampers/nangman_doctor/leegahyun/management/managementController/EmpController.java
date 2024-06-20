@@ -76,8 +76,18 @@ public class EmpController {
 
         System.out.println(reservations);
 
+        List<EmpDto> hospital_list=EmpService.getAllHospitalNames();
+        model.addAttribute("hospital_list", hospital_list);
 
         return "emp";
+    }
+    @PostMapping("/registerName")
+    public String registerName(@RequestParam("hname") String hname, Model model) {
+
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        EmpService.registerName(email, hname);
+
+        return "redirect:/emp";
     }
 
     @PostMapping("/registerRole")
@@ -89,34 +99,41 @@ public class EmpController {
         return "redirect:/emp";
     }
 
+
+    @PostMapping("/registerPhoto")
     public String registerPhoto(@RequestParam("photo") String photo, Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerRole(email, photo);
+        EmpService.registerPhoto(email, photo);
 
         return "redirect:/emp";
     }
+
+    @PostMapping("/registerDescription")
     public String registerDescription(@RequestParam("desciption") String description, Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerRole(email, description);
+        EmpService.registerDescription(email, description);
 
         return "redirect:/emp";
     }
 
+    @PostMapping("/registerAddress")
     public String registerAddress(@RequestParam("address") String address, Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerRole(email, address);
+        EmpService.registerAddress(email, address);
 
         return "redirect:/emp";
     }
+    @PostMapping("/registerPlus")
     public String registerPlus(@RequestParam("plus") String plus, Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerRole(email, plus);
+        EmpService.registerPlus(email, plus);
 
         return "redirect:/emp";
     }
+    @PostMapping("/registerHp")
     public String registerHp(@RequestParam("hp") String hp, Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerRole(email, hp);
+        EmpService.registerHp(email, hp);
 
         return "redirect:/emp";
     }

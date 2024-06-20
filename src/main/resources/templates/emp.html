@@ -3,6 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <div layout:fragment="content">
 
@@ -46,6 +47,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
+
             // 수락 버튼 클릭 핸들러
             $('.accept-button').on('click', function () {
                 var row = $(this).closest('tr');
@@ -55,7 +57,7 @@
                     url: '/updateReservationStatus',
                     method: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({ reservationNo: parseInt(reservationNo), status: 1 }), // 수락 상태 전송
+                    data: JSON.stringify({reservationNo: parseInt(reservationNo), status: 1}), // 수락 상태 전송
                     success: function (response) {
                         alert('예약이 성공적으로 수락되었습니다.');
                     },
@@ -74,7 +76,7 @@
                     url: '/updateReservationStatus',
                     method: 'POST',
                     contentType: 'application/json',
-                    data: JSON.stringify({ reservationNo: parseInt(reservationNo), status: 2 }), // 거절 상태 전송
+                    data: JSON.stringify({reservationNo: parseInt(reservationNo), status: 2}), // 거절 상태 전송
                     success: function (response) {
                         alert('예약이 성공적으로 거절되었습니다.');
                     },
@@ -84,25 +86,10 @@
                 });
             });
         });
-    </script>
-    <script>
-        function navigateMonth(offset) {
-            let currentMonth = /*[[${currentMonth}]]*/ '0';
-            let currentYear = /*[[${currentYear}]]*/ '0';
-            let newMonth = parseInt(currentMonth) + offset;
-            let newYear = parseInt(currentYear);
 
-            if (newMonth < 1) {
-                newMonth = 12;
-                newYear--;
-            } else if (newMonth > 12) {
-                newMonth = 1;
-                newYear++;
-            }
 
-            window.location.href = `?month=${newMonth}&year=${newYear}`;
-        }
     </script>
+
 
     <div class="flex w-full">
         <div class="flex-1 bg-gray-100 p-8">
@@ -135,24 +122,24 @@
             <div class="grid gap-8" style="display: flex; margin: 10px;">
                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 400px;">
                     <div class="flex flex-col space-y-1.5 p-6">
-                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Join Role</h3>
+                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Register Hospital & Role</h3>
+                        <p class="text-sm text-muted-foreground">Please register and identify the hospital you belong to and your role.</p>
                     </div>
                     <div class="p-6">
                         <form action="/registerRole" method="post">
-                            <div class="grid gap-2">
-                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="name">
+                            <div class="grid gap-2" style="margin: 10px;">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                     Name
                                 </label>
 
                                 <input
                                         class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                        id="name"
                                         placeholder="이름을 입력하세요"
                                         type="text"
                                 />
 
                             </div>
-                            <div class="grid gap-2">
+                            <div class="grid gap-2" style="margin: 10px;">
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">
                                     Email
                                 </label>
@@ -164,13 +151,15 @@
                                         type="email"
                                 />
                             </div>
-                            <div class="grid gap-2">
-                                <label
-                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
+
+                            <div class="grid gap-2" style="margin: 10px;">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        >
+
                                     Role
                                 </label>
-                                <select id="role" name="role" class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                <div class="flex items-center gap-2" style="width: 100%;">
+                                <select id="role" name="role" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
                                     <option value="user">
                                         User
                                     </option>
@@ -179,21 +168,37 @@
                                     <option value="manager">Manager</option>
 
                                     <span style="pointer-events: none;">User</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 opacity-50" aria-hidden="true">
-                                        <path d="m6 9 6 6 6-6"></path>
-                                    </svg>
 
                                 </select>
+                                    <button
+                                            class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600"
+                                            type="submit"
+                                    >
+                                        Register
+                                    </button>
+                                </div>
                             </div>
-                            <button
-                                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
-                                    type="submit"
-                            >
-                                Join
-                            </button>
+                        </form>
+                        <form action="/registerName" method="post">
+                            <div class="grid gap-2" style="margin: 10px;">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    Hospital Name
+                                </label>
+                                <div class="flex items-center gap-2" style="width: 100%;">
+                                    <select id="hname" name="hname" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                        <option value="">Select your hospital</option>
+                                        <option th:each="hospital : ${hospital_list}" th:text="${hospital.info_name}" th:value="${hospital.info_name}"></option>
+                                    </select>
+                                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600">
+                                        Register
+                                    </button>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 </div>
+
                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">User List</h3>
@@ -322,34 +327,150 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 650px;">
                     <div class="flex flex-col space-y-1.5 p-6">
-                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Change Information</h3>
+                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+                            Update Hospital Information
+                        </h3>
+                        <p class="text-sm text-muted-foreground">Modify your hospital's details and branding.</p>
                     </div>
-                    <div class="p-6">
-                        <div class="grid gap-4">
-                            <div class="flex items-start gap-4">
-                                <div class="flex-1 grid gap-2">
-                                    <div class="font-semibold">New Product Launch</div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        We're excited to announce the launch of our latest product. Check it out on our website.
-                                    </p>
+                    <div class="p-6 grid gap-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2" th:each="info:${employees}">
+                                <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    Hospital Name
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <h2 class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        th:text="${info.info_name}"></h2>
+
                                 </div>
-                                <div class="text-xs font-medium text-gray-500 dark:text-gray-400">June 1, 2023</div>
+                                </form>
                             </div>
-                            <div class="flex items-start gap-4">
-                                <div class="flex-1 grid gap-2">
-                                    <div class="font-semibold">Website Maintenance</div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        Our website will be undergoing maintenance on June 15th. Please expect some downtime during this period.
-                                    </p>
+                            <div class="space-y-2">
+                                <form action="/registerHp" th:each="info:${employees}" method="post">
+                                <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        for="hp"
+                                >
+                                    HP
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <input
+                                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                            id="hp" name="hp" th:value="${info.info_hp}"
+                                            type="tel"
+                                    />
+                                    <th:block sec:authorize="hasAuthority('manager')">
+                                        <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                            Edit
+                                        </button>
+                                    </th:block>
                                 </div>
-                                <div class="text-xs font-medium text-gray-500 dark:text-gray-400">June 10, 2023</div>
+                                </form>
                             </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <form action="/registerAddress" th:each="info:${employees}" method="post">
+                                <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        for="address"
+                                >
+                                    Address
+                                </label>
+                                <div class="flex items-center gap-2"  style="width: 600px;">
+                                <input
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    id="address" name="address" th:value="${info.info_addr}"
+                                        style="width: 100%;"
+                                    />
+                                    <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600"
+                                            onclick="">
+                                        주소찾기
+                                    </button>
+                                    <th:block sec:authorize="hasAuthority('manager')">
+                                        <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                            Edit
+                                        </button>
+                                    </th:block>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <form action="/registerPlus" th:each="info:${employees}" method="post">
+                                <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        for="plus"
+                                >
+                                    Plus
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <input
+                                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                            id="plus" name="plus" th:value="${info.info_plus}"
+                                    />
+                                    <th:block sec:authorize="hasAuthority('manager')">
+                                        <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                            Edit
+                                        </button>
+                                    </th:block>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <form action="/registerDescription" th:each="info:${employees}" method="post">
+                            <label
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    for="description"
+                            >
+                                Description
+                            </label>
+                            <div class="flex items-center gap-2">
+        <input
+                class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]"
+                id="description" name="description" th:value="${info.info_description}"
+        />
+                                <th:block sec:authorize="hasAuthority('manager')">
+                                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                        Edit
+                                    </button>
+                                </th:block>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="space-y-2">
+                            <form action="/registerPhoto" th:each="info:${employees}" method="post">
+                            <label
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    for="photo"
+                            >
+                                Logo or Header Image
+                            </label>
+                            <div class="flex items-center gap-2">
+                                <input
+                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        id="photo" name="photo" th:value="${info.info_photo}"
+                                        type="file"
+                                />
+                                <th:block sec:authorize="hasAuthority('manager')">
+                                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                        Edit
+                                    </button>
+                                </th:block>
+                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
+
             <div class="grid gap-8" style="display: flex; margin: 10px;">
                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
                     <div class="flex flex-col space-y-1.5 p-6">
@@ -401,6 +522,15 @@
                         <!-- Include this CSS to style the buttons -->
                         <style>
                             .accept-button, .reject-button {
+                                padding: 5px 10px;
+                                margin: 2px;
+                                color: white;
+                                background-color: green;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            }
+                            .submit-button{
                                 padding: 5px 10px;
                                 margin: 2px;
                                 color: white;
@@ -591,5 +721,6 @@
         </div>
     </div>
 </div>
+
 
 </html>

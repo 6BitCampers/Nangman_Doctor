@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EmpDto {
     private int info_no;
+    private String info_name;
     private String employee_name;
     private float info_likecount;
     private int employee_no;

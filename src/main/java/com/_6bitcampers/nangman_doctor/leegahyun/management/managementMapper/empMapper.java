@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface empMapper {
-    @Select("SELECT hi.info_no,he.employee_name,hi.info_likecount FROM (select * from hospital_employee where employee_email=#{email}) he JOIN hospital_info hi ON he.info_no = hi.info_no")
+    @Select("SELECT hi.info_name,hi.info_photo,hi.info_description,hi.info_addr,hi.info_plus,hi.info_hp,hi.info_no,he.employee_name,hi.info_likecount FROM (select * from hospital_employee where employee_email=#{email}) he JOIN hospital_info hi ON he.info_no = hi.info_no")
     List<EmpDto> findLikecountByInfoNo(@Param("email") String email);
 
     @Select("SELECT hi.info_photo,hi.info_description,hi.info_addr,hi.info_plus,hi.info_hp,hi.info_no,he.employee_name,hi.info_likecount,he.employee_no,he.employee_role,he.employee_email,he.employee_addr1,he.employee_hp,he.employee_nickname,he.employee_likecount FROM hospital_employee he JOIN hospital_info hi ON he.info_no = hi.info_no WHERE he.info_no = (SELECT info_no FROM hospital_employee WHERE employee_email = #{email});")
@@ -34,5 +34,9 @@ public interface empMapper {
     @Update("UPDATE hospital_info hi JOIN hospital_employee he ON he.info_no = hi.info_no SET hi.info_hp = #{hp} WHERE he.employee_email = #{email}")
     void updateHpByEmail(@Param("email") String email, @Param("hp") String hp);
 
+    @Select("SELECT info_name FROM hospital_info")
+    List<EmpDto> getAllHospitalNames();
 
+    @Update("UPDATE hospital_employee he SET he.info_no = ( SELECT hi.info_no FROM hospital_info hi WHERE hi.info_name = #{hname} LIMIT 1) WHERE he.employee_email = #{email}")
+    void updateNameByEmail(@Param("email") String email,@Param("hname") String hname);
 }

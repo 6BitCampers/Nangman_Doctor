@@ -43,5 +43,12 @@ public class EmpService {
     }
 
 
+    public List<EmpDto> getAllHospitalNames() {
+        return empMapper.getAllHospitalNames();
+    }
+
+    public void registerName(String email, String hname) {
+        empMapper.updateNameByEmail(email, hname);
+    }
 
 }
