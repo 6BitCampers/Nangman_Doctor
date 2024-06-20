@@ -71,29 +71,31 @@
             <br><br>
             <form action="/payment" method="get">
                 <input type="hidden" name="user_no" th:value="${udto.user_no}">
-                <div th:if="${dto != null}">
+
+                <div th:each="dto : ${dto}">
                     <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
-                <h1>결제정보</h1>
-                <table class="table table-striped mt-3">
-                    <tr>
-                        <th>결제정보</th>
-                        <th th:text="${dto.receipt_name}"></th>
-                    </tr>
-                    <tr>
-                        <th>진료일</th>
-                        <th th:text="${dto.receipt_date}"></th>
-                    </tr>
-                    <tr>
-                        <th>결제금액</th>
-                        <th th:text="${dto.receipt_amount}"></th>
-                    </tr>
-                </table>
-                <span>
-                    <button type="submit" class="btn btn-primary mt-3">
-                        결제하러가기
-                    </button>
-                </span>
-            </div>
+
+                    <h1>결제정보</h1>
+                    <table class="table table-striped mt-3">
+                        <tr>
+                            <th>결제정보</th>
+                            <th th:text="${dto.receipt_name}"></th>
+                        </tr>
+                        <tr>
+                            <th>진료일</th>
+                            <th th:text="${dto.receipt_date}"></th>
+                        </tr>
+                        <tr>
+                            <th>결제금액</th>
+                            <th th:text="${dto.receipt_amount}"></th>
+                        </tr>
+                    </table>
+                    <span>
+            <button type="submit" class="btn btn-primary mt-3">
+                결제하러가기
+            </button>
+        </span>
+                </div>
             </form>
         </div>
 

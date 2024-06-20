@@ -6,6 +6,8 @@ import com._6bitcampers.nangman_doctor.woohyeong.dto.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface mypageMapper {
     @Select("""
@@ -23,5 +25,5 @@ public interface mypageMapper {
         on r.reservation_no = hr.reservation_no left join normal_user u on hr.user_no = u.user_no
     where u.user_no = #{user_no}
 """)
-    ReceiptDTO getReceipt(int user_no);
+    List<ReceiptDTO> getReceipt(int user_no);
 }
