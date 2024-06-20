@@ -13,7 +13,7 @@ import java.util.Map;
 public interface ReservationMapper {
 
     @Insert("INSERT INTO hospital_reservation (reservation_room, reservation_reason, reservation_date, reservation_role, employee_no, user_no, reservation_time, reservation_status) " +
-            "VALUES (#{reservationRoom}, #{reservationReason}, #{reservationDate}, #{reservationRole}, #{employeeNo}, #{userNo}, #{reservationTime}, 1)")
+            "VALUES (#{reservation_room}, #{reservation_reason}, #{reservation_date}, #{reservation_role}, #{employee_no}, #{user_no}, #{reservation_time}, 1)")
     void insertReservation(ReservationDto dto);
 
     @Select("SELECT user_name FROM normal_user WHERE user_no = #{userNo}")

@@ -24,10 +24,6 @@
                         <p>날짜: <span th:text="${reservation.reservation_date}">2023-01-01</span></p>
                         <p>시간: <span th:text="${reservation.reservation_time}">10:00 - 11:00</span></p>
                         <p>진료명: <span th:text="${reservation.reservation_reason}">진료명</span></p>
-                        <!--<p>진료 유형:
-                            <span th:if="${reservation.reservation_role==1}">상담</span></p>
-                            <span th:if="${reservation.reservation_role==1}">상담</span></p>
-                            <span th:if="${reservation.reservation_role==1}">상담</span></p>-->
                         <p>상태:
                             <span th:if="${reservation.reservation_status == 1}" style="color: #ffc107;">예약 요청</span>
                             <span th:if="${reservation.reservation_status == 2}" style="color: #17a2b8;">예약 메일확인</span>

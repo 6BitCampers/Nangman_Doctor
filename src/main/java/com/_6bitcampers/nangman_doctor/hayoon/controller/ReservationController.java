@@ -28,7 +28,7 @@ public class ReservationController {
     }
 
     @PostMapping("/reserveProc")
-    public String reserveProc(@RequestParam("reservationName") String reservationName,
+    public String reserveProc(@RequestParam("name") String reservationName,
                               @RequestParam("reservation_date") String reservationDate,
                               @RequestParam("reservation_time") String reservationTime,
                               @RequestParam("reservation_reason") String reservationReason,
@@ -40,7 +40,8 @@ public class ReservationController {
         // Get the userNo from the SecurityContext
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         int userNo = reservationService.getUserNo(userEmail);
-
+        System.out.println(userNo);
+        System.out.println(reservationName);
 
         ReservationDto reservationDto = ReservationDto.builder()
                 .reservation_name(reservationName)
@@ -65,6 +66,7 @@ public class ReservationController {
         int userNo = reservationService.getUserNo(userEmail);
         List<Map<String, Object>> reservations = reservationService.getUserReservations(userNo);
         model.addAttribute("reservations", reservations);
+        System.out.println("테스트: " + reservations);
         return "userreservation";
     }
 }
