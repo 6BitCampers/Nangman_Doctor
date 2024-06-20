@@ -108,17 +108,18 @@ public class ReviewDetailController {
     public String reviewUpdateForm(
             @RequestParam int review_no,
             @RequestParam int currentPage,
+            @RequestParam int user_no,
             Model model
     ){
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId= customOAuth2User.getEmail();
         String user_name=customOAuth2User.getRealName();
-        int user_no=customOAuth2User.getUserNo();
 
         ReviewDto dto=reviewService.getReviewBySeq(review_no);
         userEntity userDto=reviewService.getUserInfo(user_no);
 
         model.addAttribute("dto",dto);
+        model.addAttribute("user_no",user_no);
         model.addAttribute("user_name",user_name);
         model.addAttribute("userDto",userDto);
         model.addAttribute("userId",userId);
@@ -163,11 +164,12 @@ public class ReviewDetailController {
             @RequestParam String review_content,
             @RequestParam int review_likecount,
             @RequestParam int employee_no,
+            @RequestParam int user_no,
             @RequestParam List<String> uploadedUUIDs
             ){
 
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int user_no=customOAuth2User.getUserNo();
+
         
         List<String> imageUrls = extractImageUrls(review_content);
         storageService.moveFilesToFinalBucket(imageUrls,uploadedUUIDs);

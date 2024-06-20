@@ -31,6 +31,7 @@
                 <div class="flex items-center space-x-2">
                     <span class="text-2xl">평점</span>
                     <span id="inputRatingsInsert"></span>
+                    <input type="hidden" name="user_no" th:value="${user_no}">
                     <input type="hidden" name="review_likecount" id="ratingsInputInsert" value="">
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {

@@ -114,6 +114,7 @@
                 </a><br>
                 <div th:if="${#authentication.name.contains('@')?#authentication.name==userDto.getUser_email():#authentication.name==user_name}">
                     <form th:action="@{/reviewboard/reviewUpdateForm}" method="post">
+                        <input type="hidden" name="user_no" th:value="${user_no}">
                         <input type="hidden" name="review_no" th:value="${review_no}">
                         <input type="hidden" name="currentPage" th:value="${currentPage}">
                         <button

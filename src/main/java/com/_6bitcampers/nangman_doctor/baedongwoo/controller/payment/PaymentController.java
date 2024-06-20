@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class PaymentController {
     @Autowired
     private ReviewService reviewService;
 
-    @GetMapping("/payment")
+    @PostMapping("/payment")
     public String payment(
             @RequestParam int user_no,
             @RequestParam int receipt_no,
