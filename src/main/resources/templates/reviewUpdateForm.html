@@ -6,168 +6,188 @@
     <!-- include summernote css/js -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <!-- include libraries(jQuery, bootstrap) -->
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
     <!--include summernotecss/js-->
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.css" rel="stylesheet">
+    <!--
+// v0 by Vercel.
+// https://v0.dev/t/LPZBm0AuH9z
+-->
+    <form id="formUpdateReview" th:action="@{/reviewboard/update}" method="post" th:object="${dto}"
+          enctype="multipart/form-data">
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-6xl mx-auto review-edit-container" data-v0-t="card">
+            <div class="flex flex-col space-y-1.5 p-6" >
+                <h2 class="whitespace-nowrap tracking-tight font-bold">내 리뷰 수정</h2>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <input type="hidden" name="uploadedUUIDs" id="uploadedUUIDs">
+                    <input type="hidden" name="review_no" th:value="${dto.review_no}">
+                    <input
+                            class="flex h-10 rounded-md border bg-background px-3 py-2 text-2xl ring-offset-background file:border-0 file:bg-transparent file:text-lg file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-full border-gray-300"
+                            type="text"
+                            th:value="${dto.review_title}"
+                            name="review_title"
+                    />
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">평점</span>
+                    <span id="inputRatings"></span>
+                    <input type="hidden" name="review_likecount" id="ratingsInput"
+                           th:value="${dto.review_likecount}">
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const inputRatings = document.getElementById('inputRatings');
+                            const ratingsInput = document.getElementById('ratingsInput');
+                            const starCount = 5;
 
-    <form th:action="@{/reviewboard/update}" method="post" enctype="multipart/form-data">
-        <table class="table" style="width: 800px; margin-left: 20%">
-                        <tr>
-                            <th colspan="2"><label style="width: 100%">
-                                <input type="hidden" name="review_no" th:value="${dto.review_no}">
-                                <input type="text" name="review_title" class="input-group" style="width: 100%"
-                                       th:value="${dto.review_title}">
-                            </label>
-                                <br></th>
-                        </tr>
-                        <tr>
-                            <td colspan="2">평점 <span id="inputRatings"></span>
-                                <input type="hidden" name="review_likecount" id="ratingsInput"
-                                       th:value="${dto.review_likecount}">
-                                <p style="font-weight: lighter;font-size: 14px">미변경 시 기존 평점이 유지됩니다</p>
-                            </td>
-                        </tr>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                const inputRatings = document.getElementById('inputRatings');
-                                const ratingsInput = document.getElementById('ratingsInput');
-                                const starCount = 5;
+                            // Create stars
+                            for (let i = 1; i <= starCount; i++) {
+                                const star = document.createElement('span');
+                                star.classList.add('star');
+                                star.innerHTML = '★';
+                                star.dataset.ratingValue = i;
+                                star.addEventListener('click', setRating);
+                                inputRatings.appendChild(star);
+                            }
 
-                                // Create stars
-                                for (let i = 1; i <= starCount; i++) {
-                                    const star = document.createElement('span');
-                                    star.classList.add('star');
-                                    star.innerHTML = '★';
-                                    star.dataset.ratingValue = i;
-                                    star.addEventListener('click', setRating);
-                                    inputRatings.appendChild(star);
-                                }
-
-                                function setRating(event) {
-                                    const selectedRating = event.currentTarget.dataset.ratingValue;
-                                    ratingsInput.value = selectedRating;
-                                    const stars = inputRatings.querySelectorAll('.star');
-                                    stars.forEach(star => {
-                                        if (star.dataset.ratingValue <= selectedRating) {
-                                            star.classList.add('selected');
-                                        } else {
-                                            star.classList.remove('selected');
-                                        }
-                                    });
-                                }
-                            });
-                        </script>
-                        <tr>
-                            <td>작성자 : <span th:text="${user_name}"></span>
-                                <input type="hidden" name="userId" th:value="${userId}"></td>
-                            <td style="text-align: right">작성일 : <span
-                                    th:text="${#dates.format(dto.review_writeday, 'yyyy-MM-dd HH:mm')}"></span></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="width:100%;height: 200px">
-                                    <input type="hidden" name="currentPage" th:value="${currentPage}">
-                                    <div class="post-form">
-                                        <label for="summernote" style="display: none"></label><textarea name="review_content" id="summernote"
-                                                                          th:utext="${dto.review_content}"        style="width: 100%;" rows="10">
-	                                        </textarea>
-                                    </div>
-                                <script>
-                                    $(function (){
-                                        $('#summernote').summernote({
-
-                                            // 에디터 크기 설정
-                                            height: 500,
-                                            // 에디터 한글 설정
-                                            lang: 'ko-KR',
-                                            // 에디터에 커서 이동 (input창의 autofocus라고 생각하시면 됩니다.)
-                                            toolbar: [
-                                                // [groupName, [list of button]]
-                                                //글꼴 설정
-                                                ['fontname',['fontname']],
-                                                // 글자 크기 설정
-                                                ['fontsize', ['fontsize']],
-                                                // 글자 [굵게, 기울임, 밑줄, 취소 선, 지우기]
-                                                ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
-                                                // 글자색 설정
-                                                ['color', ['color']],
-                                                // 표 만들기
-                                                ['table', ['table']],
-                                                // 서식 [글머리 기호, 번호매기기, 문단정렬]
-                                                ['para', ['ul', 'ol', 'paragraph']],
-                                                // 줄간격 설정
-                                                ['height', ['height']],
-                                                // 이미지 첨부
-                                                ['insert',['picture']],
-                                                ['view', ['help']]
-                                            ],
-                                            // 추가한 글꼴
-                                            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'],
-                                            // 추가한 폰트사이즈
-                                            fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72','96'],
-                                            // focus는 작성 페이지 접속시 에디터에 커서를 위치하도록 하려면 설정해주세요.
-                                            focus : true,
-                                            // callbacks은 이미지 업로드 처리입니다.
-                                            callbacks : {
-                                                onImageUpload : function(files, editor, welEditable) {
-                                                    // 다중 이미지 처리를 위해 for문을 사용했습니다.
-                                                    for (var i = 0; i < files.length; i++) {
-                                                        uploadSummernoteImageFile(files[0],this);
-                                                    }
-                                                },
-                                                    onPaste: function (e) {
-                                                        var clipboardData = e.originalEvent.clipboardData;
-                                                        if (clipboardData && clipboardData.items && clipboardData.items.length) {
-                                                            var item = clipboardData.items[0];
-                                                            if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
-                                                                e.preventDefault();
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                        });
-                                    })
-                                    /**
-                                     * 이미지 파일 업로드
-                                     */
-                                    function uploadSummernoteImageFile(file, editor) {
-                                        var formdata = new FormData();
-                                        formdata.append("file", file);
-                                        $.ajax({
-                                            data : formdata,
-                                            type : "POST",
-                                            url : "/reviewboard/uploadSummernoteImageFile",
-                                            contentType : false,
-                                            processData : false,
-                                            success : function (response) {
-                                                var imgurl = $('<img>').attr({
-                                                    'src': response.url,
-                                                    // json형태로 반환되는 주소.
-                                                    'crossorigin': 'anonymous',
-                                                    // crossorigin attr을 삽입하지 않으면 CORS에러가 난다!
-                                                });
-                                                $("#summernote").summernote("insertNode", imgurl[0]);
-                                                // insertNode는 html tag를 summernote 내부에 삽입해주는 기능.
-                                            },
-                                        });
+                            function setRating(event) {
+                                const selectedRating = event.currentTarget.dataset.ratingValue;
+                                ratingsInput.value = selectedRating;
+                                const stars = inputRatings.querySelectorAll('.star');
+                                stars.forEach(star => {
+                                    if (star.dataset.ratingValue <= selectedRating) {
+                                        star.classList.add('selected');
+                                    } else {
+                                        star.classList.remove('selected');
                                     }
-                                </script>
-                            </td>
-                        </tr>
-            <tr>
-                <td colspan="2" style="text-align: right">
-                    <button type="submit" class="btn btn-primary">수정 완료</button>
-                    <a th:href="@{/reviewboard(page=${currentPage})}">
-                    <button type="button" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2"
-                    >Back to List</button>
-                    </a>
-                </td>
-            </tr>
-                    </table>
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+                <div class="text-xl text-gray-500">미변경 시 기존 평점이 유지됩니다</div>
+                <div class="flex justify-between text-2xl text-gray-500">
+                    <span>작성자: <span th:text="${user_name}"></span></span>
+                    <input type="hidden" name="userId" th:value="${userId}"></td>
+                    <span>작성일: <span th:text="${#dates.format(dto.review_writeday, 'yyyy-MM-dd HH:mm')}"></span></span>
+                </div>
+                <input type="hidden" name="currentPage" th:value="${currentPage}">
+                <div class="post-form">
+                    <label for="review_content" style="display: none"></label><textarea name="review_content"
+                                                                                        id="review_content"
+                                                                                        th:field="*{review_content}"
+                                                                                        th:utext="${dto.review_content}"
+                                                                                        style="width: 100%;" rows="10">
+	                                        </textarea>
+                </div>
+                <script>
+                    var uploadedUUIDs = [];
+                    $(function () {
+                        $('#review_content').summernote({
 
+                            // 에디터 크기 설정
+                            height: 500,
+                            // 에디터 한글 설정
+                            lang: 'ko-KR',
+                            // 에디터에 커서 이동 (input창의 autofocus라고 생각하시면 됩니다.)
+                            toolbar: [
+                                // [groupName, [list of button]]
+                                //글꼴 설정
+                                ['fontname', ['fontname']],
+                                // 글자 크기 설정
+                                ['fontsize', ['fontsize']],
+                                // 글자 [굵게, 기울임, 밑줄, 취소 선, 지우기]
+                                ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                                // 글자색 설정
+                                ['color', ['color']],
+                                // 표 만들기
+                                ['table', ['table']],
+                                // 서식 [글머리 기호, 번호매기기, 문단정렬]
+                                ['para', ['ul', 'ol', 'paragraph']],
+                                // 줄간격 설정
+                                ['height', ['height']],
+                                // 이미지 첨부
+                                ['insert', ['picture']],
+                                ['view', ['help']]
+                            ],
+                            // 추가한 글꼴
+                            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋음체', '바탕체'],
+                            // 추가한 폰트사이즈
+                            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72', '96'],
+                            // focus는 작성 페이지 접속시 에디터에 커서를 위치하도록 하려면 설정해주세요.
+                            focus: true,
+                            // callbacks은 이미지 업로드 처리입니다.
+                            callbacks: {
+                                onImageUpload: function (files, editor, welEditable) {
+                                    // 다중 이미지 처리를 위해 for문을 사용했습니다.
+                                    for (var i = 0; i < files.length; i++) {
+                                        uploadSummernoteImageFile(files[i], this);
+                                    }
+                                },
+                                onPaste: function (e) {
+                                    var clipboardData = e.originalEvent.clipboardData;
+                                    if (clipboardData && clipboardData.items && clipboardData.items.length) {
+                                        var item = clipboardData.items[0];
+                                        if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+                                            e.preventDefault();
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    });//function end
+                    function updateHiddenInput(uuids) {
+                        $('#uploadedUUIDs').val(JSON.stringify(uuids));
+                    }
+
+                    /**
+                     * 이미지 파일 업로드
+                     */
+                    function uploadSummernoteImageFile(file, editor) {
+                        var formdata = new FormData();
+                        formdata.append("file", file);
+                        $.ajax({
+                            data: formdata,
+                            type: "POST",
+                            url: "/reviewboard/uploadSummernoteImageFile",
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                if (response.responseCode === "success") {
+                                    var imgurl = $('<img>').attr({
+                                        'src': response.url,
+                                        // json형태로 반환되는 주소.
+                                        'crossorigin': 'anonymous',
+                                        // crossorigin attr을 삽입하지 않으면 CORS에러가 난다!
+                                    });
+                                    $("#review_content").summernote("insertNode", imgurl[0]);
+                                    // insertNode는 html tag를 summernote 내부에 삽입해주는 기능.
+                                    uploadedUUIDs.push(response.filename);
+                                    updateHiddenInput(uploadedUUIDs);
+                                }
+                            },
+                        });
+                    }
+                </script>
+            </div>
+            <div class="items-center p-6 flex justify-between">
+                <a th:href="@{/reviewboard(page=${currentPage})}">
+                    <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-2xl font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                        Back to List
+                    </button>
+                </a>
+
+                <button type="submit"
+                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-2xl font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                    수정 완료
+                </button>
+            </div>
+        </div>
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 </div>
 </html>

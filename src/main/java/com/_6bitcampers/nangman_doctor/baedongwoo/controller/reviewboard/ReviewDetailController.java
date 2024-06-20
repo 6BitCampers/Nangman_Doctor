@@ -3,24 +3,22 @@ package com._6bitcampers.nangman_doctor.baedongwoo.controller.reviewboard;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
 import com._6bitcampers.nangman_doctor.minio.service.storageService;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/reviewboard")
@@ -30,6 +28,8 @@ public class ReviewDetailController {
     private ReviewService reviewService;
     @Autowired
     private storageService storageService;
+
+    private static final String filepath="http://minioDB.midichi.kro.kr/nangmandoctor";
 
     @PostMapping("/detail")
     public String detail(
@@ -82,15 +82,18 @@ public class ReviewDetailController {
             @RequestParam int review_likecount,
             @RequestParam String userId,
             @RequestParam int currentPage,
+            @RequestParam List<String> uploadedUUIDs,
             Model model
     ){
-
-
+        List<String> imageUrls = extractImageUrls(review_content);
+        storageService.moveFilesToFinalBucket(imageUrls,uploadedUUIDs);
+        String updatedReview_content=updateImagePaths(review_content);
 
         Map<String,Object>map=new HashMap<>();
+
         map.put("review_title",review_title);
         map.put("review_no",review_no);
-        map.put("review_content",review_content);
+        map.put("review_content",updatedReview_content);
         map.put("review_likecount",review_likecount);
         reviewService.updateReview(map);
 
@@ -104,22 +107,37 @@ public class ReviewDetailController {
     @PostMapping("/reviewUpdateForm")
     public String reviewUpdateForm(
             @RequestParam int review_no,
-            @RequestParam int user_no,
-            @RequestParam String user_name,
-            @RequestParam String userId,
             @RequestParam int currentPage,
             Model model
     ){
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId= customOAuth2User.getEmail();
+        String user_name=customOAuth2User.getRealName();
+        int user_no=customOAuth2User.getUserNo();
+
         ReviewDto dto=reviewService.getReviewBySeq(review_no);
         userEntity userDto=reviewService.getUserInfo(user_no);
 
         model.addAttribute("dto",dto);
         model.addAttribute("user_name",user_name);
         model.addAttribute("userDto",userDto);
-        model.addAttribute("user_no",userId);
+        model.addAttribute("userId",userId);
         model.addAttribute("currentPage",currentPage);
 
         return "reviewUpdateForm";
+    }
+
+    @PostMapping("/writeReview")
+    public String writeReview(
+            Model model
+    ){
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId= customOAuth2User.getEmail();
+        String user_name=customOAuth2User.getRealName();
+
+        model.addAttribute("userId",userId);
+        model.addAttribute("user_name",user_name);
+        return "reviewWriteForm";
     }
 
     @ResponseBody
@@ -127,6 +145,14 @@ public class ReviewDetailController {
     public String deleteReview(
             @RequestParam int review_no
     ){
+        ReviewDto dto=reviewService.getReviewBySeq(review_no);
+        String review_content=dto.getReview_content();
+        List<String> deletedUrls=extractImageUrlsFromDeleting(review_content);
+
+        for(String deletedUrl:deletedUrls){
+            storageService.deleteFile("nangmandoctor","/reviewBoard/"+deletedUrl);
+        }
+
         reviewService.deleteReview(review_no);
         return "{}";
     }
@@ -137,11 +163,19 @@ public class ReviewDetailController {
             @RequestParam String review_content,
             @RequestParam int review_likecount,
             @RequestParam int employee_no,
-            @RequestParam int user_no
+            @RequestParam List<String> uploadedUUIDs
             ){
+
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int user_no=customOAuth2User.getUserNo();
+        
+        List<String> imageUrls = extractImageUrls(review_content);
+        storageService.moveFilesToFinalBucket(imageUrls,uploadedUUIDs);
+        String updatedReview_content=updateImagePaths(review_content);
+
         ReviewDto reviewDto= ReviewDto.builder().
                 review_title(review_title).
-                review_content(review_content).
+                review_content(updatedReview_content).
                 employee_no(employee_no).
                 user_no(user_no).
                 review_likecount(review_likecount).
@@ -152,25 +186,59 @@ public class ReviewDetailController {
         return "redirect:/mypage";
     }
 
+    //AJAX로 업로드 되는 이미지 바로바로 저장하기
     @PostMapping(value="/uploadSummernoteImageFile", produces = "application/json")
     @ResponseBody
     public JsonObject uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
 
         JsonObject jsonObject = new JsonObject();
 
-        MultipartFile photo = multipartFile;
         String filename = UUID.randomUUID()+"";
-        String filepath="http://minioDB.midichi.kro.kr/nangmandoctor";
+
         try {
-            storageService.uploadFile("nangmandoctor", "/reviewBoard/" + filename, photo.getInputStream(), photo.getContentType());
-            jsonObject.addProperty("url", filepath+"/reviewBoard/"+filename);
+            storageService.uploadFile("nangmandoctor", "/temp/" + filename, multipartFile.getInputStream(), multipartFile.getContentType());
+            jsonObject.addProperty("url", filepath+"/temp/"+filename);
+            jsonObject.addProperty("filename", filename);
             jsonObject.addProperty("responseCode", "success");
         } catch (IOException e) {
-            storageService.deleteFile("nangmandoctor", "/reviewBoard/"+filename);
+            storageService.deleteFile("nangmandoctor", "/temp/"+filename);
             jsonObject.addProperty("responseCode", "error");
             throw new RuntimeException(e);
         }
 
         return jsonObject;
     }
+
+    //삭제하는 리뷰에 저장된 이미지 이름 가져오기
+    private List<String> extractImageUrlsFromDeleting(String content) {
+        List<String> deletedUrls = new ArrayList<>();
+        String regex = "/reviewBoard/([^\"']+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(content);
+
+        while (matcher.find()) {
+            deletedUrls.add(matcher.group(1));
+        }
+
+        return deletedUrls;
+    }
+
+    //저장되는 리뷰에서 진짜로 저장할 이미지 이름 가져오기
+    private List<String> extractImageUrls(String content) {
+        List<String> imageUrls = new ArrayList<>();
+        String regex = "/temp/([^\"']+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(content);
+
+        while (matcher.find()) {
+            imageUrls.add(matcher.group(1));
+        }
+
+        return imageUrls;
+    }
+
+    public String updateImagePaths(String review_content) {
+        return review_content.replaceAll("/temp/", "/reviewBoard/");
+    }
+
 }
