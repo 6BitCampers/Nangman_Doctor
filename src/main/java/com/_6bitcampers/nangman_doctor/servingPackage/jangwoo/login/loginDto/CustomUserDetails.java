@@ -93,8 +93,5 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
         return entity.getUser_type();
     }
 
-    public int getUserNo(){
-        return entity.getUser_no();
-    }
 }
 
