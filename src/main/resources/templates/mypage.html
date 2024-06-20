@@ -69,9 +69,8 @@
                 <h1>화상진료 예약일이 아닙니다.</h1>
             </span>
             <br><br>
-            <form action="/payment" method="get">
+            <form action="/payment" method="post">
                 <input type="hidden" name="user_no" th:value="${udto.user_no}">
-
                 <div th:each="dto : ${dto}">
                     <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
 
