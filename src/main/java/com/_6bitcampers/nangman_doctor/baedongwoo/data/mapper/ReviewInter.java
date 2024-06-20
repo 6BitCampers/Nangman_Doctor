@@ -29,7 +29,7 @@ public interface ReviewInter {
     public int getHospitalNo(int employee_no);
     @Select("select info_name from hospital_info where info_no=#{info_no}")
     public String getHospitalName(int info_no);
-    @Insert("insert into hospital_review (review_title, review_content, review_writeday, employee_no, user_no, review_likecount,photos) " +
-            "values (#{review_title},#{review_content},now(),#{employ_no},#{user_no},#{review_likecount},#{photos})")
+    @Insert("insert into hospital_review (review_title, review_content, review_writeday, employee_no, user_no, review_likecount) " +
+            "values (#{review_title},#{review_content},now(),#{employ_no},#{user_no},#{review_likecount})")
     public void insertReview(ReviewDto reviewDto);
 }
