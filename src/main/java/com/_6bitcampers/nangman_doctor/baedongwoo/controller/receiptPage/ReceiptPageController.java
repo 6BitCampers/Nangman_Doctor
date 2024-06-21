@@ -6,8 +6,6 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
-import com._6bitcampers.nangman_doctor.woohyeong.dto.ReceiptDTO;
-import com._6bitcampers.nangman_doctor.woohyeong.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

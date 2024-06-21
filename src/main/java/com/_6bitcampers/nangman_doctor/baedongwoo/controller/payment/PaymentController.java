@@ -39,6 +39,7 @@ public class PaymentController {
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
 
         model.addAttribute("userDto", userDto);
+        model.addAttribute("receipt_no", receipt_no);
         model.addAttribute("receiptDto", receiptDto);
         model.addAttribute("user_no", user_no);
         return "payment";
@@ -77,7 +78,7 @@ public class PaymentController {
         
         paymentService.updateReceipt(receiptMap);
 
-        return "redirect:mypage";
+        return "paymentSuccess";
     }
 
 
