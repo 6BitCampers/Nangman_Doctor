@@ -57,10 +57,10 @@ public class ReservationController {
 
         reservationService.saveReservation(reservationDto);
 
-        return "redirect:/userreservation.html";
+        return "redirect:/userreservation";
     }
 
-    @GetMapping("/userreservation.html")
+    @GetMapping("/userreservation")
     public String showUserReservations(Model model) {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         int userNo = reservationService.getUserNo(userEmail);
