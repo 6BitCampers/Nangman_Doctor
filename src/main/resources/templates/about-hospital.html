@@ -30,6 +30,21 @@
 <body>
 
 <div layout:fragment="content">
+	<style>
+		.war {
+				font-size: 4em;
+				line-height: 1.2em;
+				text-align: justify;
+				width: 120%;
+				margin: auto;
+				white-space: pre;
+				overflow: visible;
+				word-wrap: break-word;
+				max-width: 2000px; /* Ensure the text box does not exceed this width */
+				color:white;
+			font-weight: bold;
+			}
+	</style>
 	<div class="hero overlay">
 		<div class="img-bg rellax">
 			<img src="/images/hero_2.jpg" alt="Image" class="img-fluid">
@@ -37,7 +52,7 @@
 		<div class="container">
 			<div class="row align-items-center justify-content-start">
 				<div class="col-lg-6 mx-auto text-center">
-					<h1 class="heading" th:text="${hospital.info_name}">Hospital Name</h1>
+					<h1 class="war" th:text="${hospital.info_name}"><b>&nbsp;&nbsp;&nbsp;Hospital Name<b></h1>
 				</div>
 			</div>
 		</div>
@@ -134,6 +149,22 @@
 					<div class="col-lg-6 mx-auto text-center">
 						<h1 style="text-align: center; font-size: 2em; background-color: whitesmoke; color: darkorange;" ><b>의료진</b></h1>
 					</div>
+					<table class="table table-striped">
+						<thead>
+						<tr>
+							<th style="background-color: darkorange;">이름</th>
+							<th style="background-color: darkorange;">분야</th>
+							<th style="background-color: darkorange;">연락처</th>
+						</tr>
+						</thead>
+						<tbody th:each="employee : ${employees}">
+						<tr>
+							<td th:text="${employee.employee_name}">Name</td>
+							<td th:text="${employee.employee_field}">NA</td>
+							<td th:text="${employee.employee_hp}">Gender</td>
+						</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

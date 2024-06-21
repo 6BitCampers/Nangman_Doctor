@@ -1,23 +1,57 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
 
 <head>
-	<title>Naver Search Results</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title> &mdash; Naver Search REsults</title>
 	<link rel="stylesheet" href="/css/style.css">
+	<style>
+		.description-map-container {
+			display: flex;
+			justify-content: space-between;
+		}
+		.description, .map-container {
+			width: 48%; /* Adjust the width as needed */
+		}
+		.map-container #map {
+			width: 100%;
+			height: 500px; /* Set a fixed height for the map */
+		}
+		.centered-heading {
+			text-align: center;
+			font-size: 2em; /* Adjust the font size as needed */
+		}
+
+	</style>
 </head>
-<body>
+
+<div layout:fragment="content">
+	<div class="hero overlay">
+		<div class="img-bg rellax">
+			<img src="/images/hero_2.jpg" alt="Image" class="img-fluid">
+		</div>
+		<div class="container">
+			<div class="row align-items-center justify-content-start">
+				<div class="col-lg-6 mx-auto text-center">
+					<h1 class="war" data-aos="fade-up" style="font-size: 50px; white-space: nowrap; color:white; text-align: center;"><b>관련 뉴스를 </b></h1>
+					<h1 class="war" data-aos="fade-up" style="font-size: 50px; white-space: nowrap; color:white; text-align: right;"><b>찾아보세요!</b></h1>
+				</div>
+			</div>
+		</div>
+	</div>
 <div class="container">
 	<div style="text-align: center;">
-		<a href="/">
-			<h1 style="color:darkorange"><b>뉴스 검색</b></h1>
-		</a>
+		<form method="get" action="/naversearch">
+			<br>
+			<input type="text" name="query" placeholder="Search..." th:value="${query}" required style="padding-left: 20px; border: 2px solid black;">
+			<button type="submit" class="btn btn-primary" style="background-color:darkorange">Search</button>
+		</form>
 	</div>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<form method="get" action="/naversearch">
-		<br>
-		<input type="text" name="query" placeholder="Search..." th:value="${query}"  required style="padding-left: 20px;" >
-		<button type="submit">Search</button>
-	</form>
+
 	<table class="table table-striped">
 		<thead>
 		<tr>
@@ -35,29 +69,29 @@
 	</table>
 	<nav aria-label="Page navigation">
 		<ul class="pagination">
-			<li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'" th:if="${currentPage > 1}">
-				<a style="" class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage - 1})}">Previous</a>
+			<li  class="page-item" th:classappend="${currentPage == 1} ? 'disabled'" th:if="${currentPage > 1}">
+				<a style="background-color: darkorange; color:white;" class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage - 1})}">Previous</a>
 			</li>
 			<li class="page-item" th:classappend="${currentPage == 1} ? 'active'">
-				<a class="page-link" th:href="@{/naversearch(query=${query}, page=1)}">1</a>
+				<a style="background-color: darkorange; color:white;" class="page-link" th:href="@{/naversearch(query=${query}, page=1)}">1</a>
 			</li>
 			<li class="page-item" th:if="${currentPage > 2}">
-				<a class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage - 1})}">...</a>
+				<a style="background-color: darkorange; color:white;" class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage - 1})}">...</a>
 			</li>
 			<li class="page-item active" th:if="${currentPage > 1}">
-				<span class="page-link" th:text="${currentPage}">1</span>
+				<span style="background-color: orangered" class="page-link" th:text="${currentPage}">1</span>
 			</li>
 			<li class="page-item" th:if="${currentPage < 1000}">
-				<a class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage + 1})}">...</a>
+				<a style="background-color: darkorange; color:white;" class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage + 1})}">...</a>
 			</li>
 			<li class="page-item" th:classappend="${currentPage == 1000} ? 'active'">
-				<a class="page-link" th:href="@{/naversearch(query=${query}, page=1000)}">1000</a>
+				<a style="background-color: darkorange; color:white;" class="page-link" th:href="@{/naversearch(query=${query}, page=1000)}">1000</a>
 			</li>
 			<li class="page-item" th:classappend="${currentPage == 1000} ? 'disabled'" th:if="${currentPage < 1000}">
-				<a class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage + 1})}">Next</a>
+				<a  style="background-color: darkorange; color:white;" class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage + 1})}">Next</a>
 			</li>
 		</ul>
 	</nav>
 </div>
-</body>
+</div>
 </html>
