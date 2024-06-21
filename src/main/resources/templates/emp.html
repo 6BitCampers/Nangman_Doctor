@@ -185,10 +185,24 @@
                                     Hospital Name
                                 </label>
                                 <div class="flex items-center gap-2" style="width: 100%;">
-                                    <select id="hname" name="hname" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-                                        <option value="">Select your hospital</option>
-                                        <option th:each="hospital : ${hospital_list}" th:text="${hospital.info_name}" th:value="${hospital.info_name}"></option>
-                                    </select>
+                                    <input
+                                            id="hospitalSearchInput"
+                                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                            placeholder="병원 이름 입력"
+                                            type="text"
+                                            onclick="openMappedUrl()"
+                                    />
+
+                                    <script>
+                                        const mappedUrl = "/register"; // 여기에 매핑 주소를 입력하세요
+
+                                        function openMappedUrl() {
+                                            // 새 창 열기
+                                            window.open(mappedUrl, '_blank');
+                                        }
+                                    </script>
+
+
                                     <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600">
                                         Register
                                     </button>
@@ -683,6 +697,7 @@
                                         button.classList.add("video-call-button");
                                         button.innerText = "화상채팅";
                                         button.addEventListener("click", function() {
+                                            window.open('https://webchat.midichi.kro.kr/');
                                             window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
                                         });
                                         cellContent.appendChild(button);
