@@ -91,8 +91,8 @@
                             </script>
                         </table>
                     </div>
-                    <form action="/payment" method="post">
-                    <div th:if="${dto.getPayment_no()==null}">
+                    <div th:if="${dto.getPayment_no()==0}">
+                        <form action="/payment" method="post">
                     <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
                         <input type="hidden" name="user_no" th:value="${udto.user_no}">
                     <h1>결제정보</h1>
@@ -115,7 +115,7 @@
                 결제하러가기
             </button>
         </span>
-                    </div></form>
+                        </form></div>
                 </div>
 
         </div>
