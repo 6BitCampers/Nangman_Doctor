@@ -647,9 +647,7 @@
 			});
 			function send(){
 				$('#divbox').append('<div class="msg_box send"><span>'+$('#input1').val()+'<span></div>');
-				if($('#input1').val()=="예약"){
-					window.location.href=`/reservation.html?info_no=485`;
-				}
+
 				$("#divbox").scrollTop($("#divbox")[0].scrollHeight);
 				$.ajax({
 					url:  '/chatbot/chatbotSend', //챗봇 api url
@@ -664,6 +662,12 @@
 
 					}
 				});
+				if($('#input1').val()=="예약"){
+					$('#divbox').append('<div class="msg_box receive"><span>'+ "원하시면 예, 원하지 않으시면 아니오를 입력해주세요!" +'<span></div>');
+				}
+				if($('#input1').val()=="예") {
+					window.location.href = `/reservation.html?info_no=452`;
+				}
 				$('#input1').val('');
 			}
 			$(document).ready(function () {
