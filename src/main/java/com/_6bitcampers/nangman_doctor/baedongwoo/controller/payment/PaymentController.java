@@ -4,6 +4,7 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PaymentDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.PaymentService;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
+import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class PaymentController {
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
 
         model.addAttribute("userDto", userDto);
+        model.addAttribute("receipt_no", receipt_no);
         model.addAttribute("receiptDto", receiptDto);
         model.addAttribute("user_no", user_no);
         return "payment";
@@ -50,17 +52,19 @@ public class PaymentController {
             @RequestParam String paymentKey,
             @RequestParam String method,
             @RequestParam int receipt_no,
-            @RequestParam int amount
+            @RequestParam int amount,
+            Model model
     ){
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
 
         int hospital_no=receiptDto.getInfo_no();
-        String user_no=orderId.substring(5);
+        String user_noS=orderId.substring(5);
+        int user_no=Integer.parseInt(user_noS);
 
         PaymentDto paymentDto= PaymentDto.builder()
                 .payment_method(method)
                 .payment_amount(amount)
-                .user_no(Integer.parseInt(user_no))
+                .user_no(user_no)
                 .payment_key(paymentKey)
                 .build();
 
@@ -77,7 +81,17 @@ public class PaymentController {
         
         paymentService.updateReceipt(receiptMap);
 
-        return "redirect:mypage";
+        EmpDto empDto= paymentService.gethospitalInfo(hospital_no);
+        userEntity userEntity=reviewService.getUserInfoByNum(user_no);
+
+        model.addAttribute("receiptDto", receiptDto);
+        model.addAttribute("paymentDto", paymentDto);
+        model.addAttribute("empDto", empDto);
+        model.addAttribute("userEntity", userEntity);
+        model.addAttribute("method", method);
+        model.addAttribute("orderId", orderId+receipt_no);
+
+        return "paymentSuccess";
     }
 
 

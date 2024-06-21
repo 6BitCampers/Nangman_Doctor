@@ -51,6 +51,11 @@
     #printReceiptPage:hover{
         color: gray;
     }
+    @media print {
+        #printOnlySpan {
+            display: none;
+        }
+    }
 </style>
 <body>
 <div class="receiptBtnGroup" style="display: flex">
@@ -100,7 +105,7 @@
         <td>&nbsp;<span th:text="${randomDiseaseWord}"></span></td>
         <th class="receiptTdName" rowspan="2" colspan="2" style="text-align: center">처방 의료인의 성명</th>
         <td colspan="3" rowspan="2" style="text-align: right; position: relative;">
-            <span th:if="${shouldBeVisible}" style="position: absolute; left: 0; clear: both; color: gray; font-size: 14px; font-weight: lighter">&nbsp;&nbsp;&nbsp;(인쇄 시에만 출력)</span>
+            <span id="printOnlySpan" style="position: absolute; left: 0; clear: both; color: gray; font-size: 14px; font-weight: lighter">&nbsp;&nbsp;&nbsp;(인쇄 시에만 출력)</span>
             (서명 또는 날인)
         </td>
     </tr>
@@ -194,9 +199,10 @@
                 }
                 .receiptStampImage{
                 position: absolute;
-                width: 150px;
-                right:40px;
-                top:260px;
+                width: 200px;
+                right:80px;
+                top:250px;
+                transform: rotate(30deg);
                 }
             </style>
         </head>
