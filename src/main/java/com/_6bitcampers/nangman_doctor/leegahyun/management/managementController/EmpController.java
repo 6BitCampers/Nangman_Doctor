@@ -58,7 +58,7 @@ public class EmpController {
 
         for (ReviewDto dto : list) {
             var user_no = dto.getUser_no();
-            userEntity userDto = reviewService.getUserInfo(user_no);
+            userEntity userDto = reviewService.getUserInfoByNum(user_no);
             userMap.put(user_no, userDto);
         }
 

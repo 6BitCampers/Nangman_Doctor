@@ -3,8 +3,10 @@ package com._6bitcampers.nangman_doctor.baedongwoo.controller.reviewboard;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
 import com._6bitcampers.nangman_doctor.search.HospitalDto;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +46,7 @@ public class ReviewBoardListController {
         for (ReviewDto dto : list) {
             var user_no = dto.getUser_no();
             var employee_no=dto.getEmployee_no();
-            userEntity userDto = reviewService.getUserInfo(user_no);
+            userEntity userDto = reviewService.getUserInfoByNum(user_no);
             userMap.put(user_no, userDto);
 
             var info_no=reviewService.getHospitalNo(employee_no);

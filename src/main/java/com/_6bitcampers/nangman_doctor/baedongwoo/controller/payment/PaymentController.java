@@ -4,8 +4,10 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PaymentDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.PaymentService;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +30,12 @@ public class PaymentController {
             @RequestParam int receipt_no,
             Model model
     ){
-        userEntity userDto= reviewService.getUserInfo(user_no);
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId= customOAuth2User.getEmail();
+        String user_type=customOAuth2User.getType();
+
+
+        userEntity userDto= reviewService.getUserInfo(userId, user_type);
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
 
         model.addAttribute("userDto", userDto);

@@ -3,6 +3,7 @@ package com._6bitcampers.nangman_doctor.baedongwoo.data.service;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PaymentDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.mapper.PaymentInter;
+import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,5 +24,8 @@ public class PaymentService {
     }
     public void updateReceipt(Map<String, Object> receiptMap){
         paymentInter.updateReceipt(receiptMap);
+    }
+    public EmpDto gethospitalInfo(int info_no){
+        return paymentInter.gethospitalInfo(info_no);
     }
 }

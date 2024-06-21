@@ -49,13 +49,11 @@ public class ReviewDetailController {
             session.setAttribute(identifier, "visited");
             reviewService.updateViewcount(review_no);
         }
-
-
         ReviewDto dto = reviewService.getReviewBySeq(review_no);
         int user_no=dto.getUser_no();
         int employee_no=dto.getEmployee_no();
 
-        userEntity userDto = reviewService.getUserInfo(user_no);
+        userEntity userDto = reviewService.getUserInfoByNum(user_no);
         String user_name=userDto.getUser_name();
         int hospital_no=reviewService.getHospitalNo(employee_no);
         String hospital_name=reviewService.getHospitalName(hospital_no);
@@ -106,17 +104,18 @@ public class ReviewDetailController {
 
     @PostMapping("/reviewUpdateForm")
     public String reviewUpdateForm(
+            @RequestParam int user_no,
             @RequestParam int review_no,
             @RequestParam int currentPage,
-            @RequestParam int user_no,
             Model model
     ){
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId= customOAuth2User.getEmail();
+        String user_type=customOAuth2User.getType();
         String user_name=customOAuth2User.getRealName();
 
         ReviewDto dto=reviewService.getReviewBySeq(review_no);
-        userEntity userDto=reviewService.getUserInfo(user_no);
+        userEntity userDto=reviewService.getUserInfoByNum(user_no);
 
         model.addAttribute("dto",dto);
         model.addAttribute("user_no",user_no);
@@ -167,9 +166,6 @@ public class ReviewDetailController {
             @RequestParam int user_no,
             @RequestParam List<String> uploadedUUIDs
             ){
-
-        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         
         List<String> imageUrls = extractImageUrls(review_content);
         storageService.moveFilesToFinalBucket(imageUrls,uploadedUUIDs);
