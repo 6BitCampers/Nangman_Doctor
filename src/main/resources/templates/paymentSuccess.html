@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
-<div layout:fragment="content" class="section">
+<div layout:fragment="content" class="section" style="margin-top: -130px">
     <!--
 // v0 by Vercel.
 // https://v0.dev/t/mRGblc6aKwq
@@ -39,15 +39,15 @@
                     <div class="grid gap-4">
                         <div class="flex items-center justify-between">
                             <p>결제 번호</p>
-                            <p class="font-medium">#12345</p>
+                            <p class="font-medium">#<span th:text="${orderId}"></span></p>
                         </div>
                         <div class="flex items-center justify-between">
                             <p>결제 일자</p>
-                            <p class="font-medium">2023년 6월 21일</p>
+                            <p class="font-medium" th:text="${#dates.format(receiptDto.getReceipt_date(),'yyyy년 MM월 dd일 HH시 mm분')}"></p>
                         </div>
                         <div class="flex items-center justify-between">
                             <p>결제 방식</p>
-                            <p class="font-medium">신용카드</p>
+                            <p class="font-medium" th:text="${method}"></p>
                         </div>
                     </div>
                 </div>
@@ -59,17 +59,17 @@
                 <div class="p-6">
                     <div class="grid gap-4">
                         <div class="flex items-center justify-between">
-                            <p>본인부담비</p>
-                            <p class="font-medium">₩50,000</p>
+                            <p class="font-weight-bold text-lg">본인부담비</p>
+                            <p class="font-medium font-weight-bold text-lg">&#x20A9; <span th:text="${receiptDto.receipt_amount}"></span></p>
                         </div>
                         <div class="flex items-center justify-between">
                             <p>공단부담비</p>
-                            <p class="font-medium">₩50,000</p>
+                            <p class="font-medium">&#x20A9; <span th:text="${receiptDto.receipt_amount*3/2}"></span></p>
                         </div>
                         <div data-orientation="horizontal" role="none" class="shrink-0 bg-border h-[1px] w-full"></div>
                         <div class="flex items-center justify-between font-bold">
                             <p>총 결제 금액</p>
-                            <p>₩100,000</p>
+                            <p>&#x20A9; <span th:text="${receiptDto.receipt_amount*5/2}"></span></p>
                         </div>
                     </div>
                 </div>
@@ -81,32 +81,32 @@
                 <div class="p-6">
                     <div class="grid gap-4">
                         <div>
-                            <p class="font-medium">홍길동</p>
-                            <p class="text-muted-foreground">서울특별시 강남구 테헤란로 123</p>
+                            <p class="font-medium" th:text="${userEntity.user_name}"></p>
+                            <p class="text-muted-foreground" th:text="${userEntity.user_addr}"></p>
                         </div>
                         <div>
-                            <p class="font-medium">010-1234-5678</p>
-                            <p class="text-muted-foreground">hong@example.com</p>
+                            <p class="font-medium text-lg font-weight-bold" th:text="${userEntity.user_hp}"></p>
+                            <p class="text-muted-foreground" th:text="${userEntity.user_email}"></p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
                 <div class="flex flex-col space-y-1.5 p-6">
-                    <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">프로모션</h3>
+                    <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">리뷰 쓰기</h3>
                 </div>
                 <div class="p-6">
                     <div class="grid gap-4">
-                        <p>다음 비대면 진료 시 5% 할인 쿠폰을 제공해 드립니다.</p>
+                        <p>여러분의 피드백이 병원을 발전시킵니다!</p>
                         <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3">
-                            쿠폰 받기
+                            리뷰 쓰러가기
                         </button>
                     </div>
                 </div>
             </div>
         </div>
         <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
-            홈으로 돌아가기
+            마이페이지로 돌아가기
         </button>
     </div>
 </div>
