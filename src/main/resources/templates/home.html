@@ -613,7 +613,7 @@
 					궁금한 점을 아래의 단축버튼으로 누르거나 <br>
 					직접 질문해주세요.
 					<div class="btn_info_wrap">
-						<button type="button" class="btn-link welcome1" onclick="location.href='/reservation.html'">
+						<button type="button" class="btn-link welcome1" onclick="location.href='/reservation.html?info_no=485'">
 							<span>예약하기</span>                 </button>
 						<button type="button" class="btn-link welcome5" onclick="location.href='/search'">
 							<a> 병원검색</a>                 </button>
@@ -647,6 +647,9 @@
 			});
 			function send(){
 				$('#divbox').append('<div class="msg_box send"><span>'+$('#input1').val()+'<span></div>');
+				if($('#input1').val()=="예약"){
+					window.location.href=`/reservation.html?info_no=485`;
+				}
 				$("#divbox").scrollTop($("#divbox")[0].scrollHeight);
 				$.ajax({
 					url:  '/chatbot/chatbotSend', //챗봇 api url
@@ -656,7 +659,9 @@
 					success: function(data) {
 						console.log("success");
 						$('#divbox').append('<div class="msg_box receive"><span>'+ data +'<span></div>');
+
 						$("#divbox").scrollTop($("#divbox")[0].scrollHeight);
+
 					}
 				});
 				$('#input1').val('');
