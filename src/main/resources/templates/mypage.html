@@ -383,6 +383,7 @@
                                 button.classList.add("video-call-button");
                                 button.innerText = "화상채팅";
                                 button.addEventListener("click", function() {
+                                    window.open('https://webchat.midichi.kro.kr/');
                                     window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
                                 });
                                 cellContent.appendChild(button);

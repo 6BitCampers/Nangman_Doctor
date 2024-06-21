@@ -44,7 +44,7 @@ public class conferenceController {
         boolean employeeNoSuccess = false;
         boolean userNoSuccess = false;
 
-        startNodeServer();
+//        startNodeServer();
 
         try {
             int employee_no = reservationService.getEmployeeNo(id);

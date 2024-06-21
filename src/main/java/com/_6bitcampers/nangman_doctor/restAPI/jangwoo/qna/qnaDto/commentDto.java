@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
-import java.time.LocalDateTime;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,5 +16,4 @@ public class commentDto {
     private String comment_comment;
     private String employee_nickname;
     private int qna_no;
-    private LocalDateTime writeday;
 }
