@@ -118,4 +118,9 @@ public class mypageController {
         return "redirect:/login";
     }
 
+    @GetMapping("/register")
+    public String register(Model model) {
+        return "register";
+    }
+
 }
