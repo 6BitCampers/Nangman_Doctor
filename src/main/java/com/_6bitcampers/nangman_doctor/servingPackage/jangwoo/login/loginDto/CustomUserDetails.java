@@ -1,6 +1,7 @@
 package com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto;
 
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
+import com._6bitcampers.nangman_doctor.woohyeong.dto.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -91,5 +92,6 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     public String getType() {
         return entity.getUser_type();
     }
+
 }
 

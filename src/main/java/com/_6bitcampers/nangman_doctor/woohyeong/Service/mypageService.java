@@ -7,6 +7,9 @@ import com._6bitcampers.nangman_doctor.woohyeong.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class mypageService {
     private final mypageMapper mypageMapper;
@@ -24,7 +27,11 @@ public class mypageService {
         return mypageMapper.getEmployee(user_email);
     }
 
-    public ReceiptDTO getReceipt(int user_no){
+    public List<ReceiptDTO> getReceipt(int user_no){
         return mypageMapper.getReceipt(user_no);
+    }
+
+    public void updateUser(Map<String, Object> map){
+        mypageMapper.updateUser(map);
     }
 }

@@ -10,14 +10,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ReservationDto {
-    private String reservationRoom;
-    private String name;
-    private int reservationNo; // Add this field
-    private String reservationReason;
-    private String reservationDate;
-    private int reservationRole;
-    private int employeeNo; // Default value set to 3
-    private int userNo; // Default value set to 7
-    private String reservationTime;
-    private int reservationStatus;
+    private int reservation_no;
+    private String reservation_name;
+    private String reservation_reason;
+    private String reservation_date;
+    private int reservation_role;
+    private int employee_no;
+    private int user_no;
+    private String reservation_time;
+    private int reservation_status;
+    private String reservation_room;
+    private String reservation_content;
+
 }

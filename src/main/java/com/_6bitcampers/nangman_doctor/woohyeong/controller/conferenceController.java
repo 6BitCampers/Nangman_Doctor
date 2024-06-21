@@ -31,10 +31,15 @@ public class conferenceController {
     private reservationServiceW reservationService;
 
     @GetMapping("/test")
-    public String home(Model model) {
+    public String home(Model model, int reservation_no) {
 
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String id = customOAuth2User.getEmail();
+
+        System.out.println(reservation_no);
+
+        int info_no = conferenceService.getInfoNo(reservation_no);
+
 
         boolean employeeNoSuccess = false;
         boolean userNoSuccess = false;
@@ -59,7 +64,8 @@ public class conferenceController {
 
         // 모델에 데이터 추가
         model.addAttribute("now", now);
-
+        model.addAttribute("reservation_no", reservation_no);
+        model.addAttribute("info_no", info_no);
 
         if(userNoSuccess){
             int user_no = conferenceService.getUserNo(id);
@@ -89,13 +95,13 @@ public class conferenceController {
             Process process = builder.start();
 
             // Node.js 서버가 준비되기를 기다릴 수도 있음
-            Thread.sleep(5000); // 예: 5초 대기
+            Thread.sleep(3000); // 예: 5초 대기
 
             // 세션 데이터를 Node.js 서버로 전송
 //            sendSessionDataToNodeServer(name);
 
             // 브라우저 열기
-            openBrowser("https://192.168.0.22:3000");
+            openBrowser("https://192.168.0.7:3000");
 
             System.out.println("Node.js 서버가 시작되었습니다.");
         } catch (IOException | InterruptedException e) {
@@ -116,7 +122,7 @@ public class conferenceController {
     @GetMapping("/receipt/insert")
     public String receiptinsert(@ModelAttribute ReceiptDTO dto) {
         conferenceService.insertReceipt(dto);
-        return "";
+        return "redirect:/emp";
     }
 
 

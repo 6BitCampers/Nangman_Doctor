@@ -3,56 +3,96 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <div layout:fragment="content">
 
     <style>
         /* Add the CSS styles here */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 1em;
-        font-family: sans-serif;
-        min-width: 400px;
-        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
 
-    thead tr {
-        background-color: #009879;
-        color: #ffffff;
-        text-align: left;
-    }
+        thead tr {
+            background-color: #009879;
+            color: #ffffff;
+            text-align: left;
+        }
 
-    th, td {
-        padding: 12px 15px;
-    }
+        th, td {
+            padding: 12px 15px;
+        }
 
-    tbody tr {
-        border-bottom: 1px solid #dddddd;
-    }
+        tbody tr {
+            border-bottom: 1px solid #dddddd;
+        }
 
-    tbody tr:nth-of-type(even) {
-        background-color: #f3f3f3;
-    }
+        tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
 
-    tbody tr:last-of-type {
-        border-bottom: 2px solid #009879;
-    }
+        tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
+
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // 수락 버튼 클릭 핸들러
+            $('.accept-button').on('click', function () {
+                var row = $(this).closest('tr');
+                var reservationNo = row.find('.reservation-no').text();
+
+                $.ajax({
+                    url: '/updateReservationStatus',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({reservationNo: parseInt(reservationNo), status: 1}), // 수락 상태 전송
+                    success: function (response) {
+                        alert('예약이 성공적으로 수락되었습니다.');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('예약 수락에 실패하였습니다.');
+                    }
+                });
+            });
+
+            // 거절 버튼 클릭 핸들러
+            $('.reject-button').on('click', function () {
+                var row = $(this).closest('tr');
+                var reservationNo = row.find('.reservation-no').text();
+
+                $.ajax({
+                    url: '/updateReservationStatus',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({reservationNo: parseInt(reservationNo), status: 2}), // 거절 상태 전송
+                    success: function (response) {
+                        alert('예약이 성공적으로 거절되었습니다.');
+                    },
+                    error: function (xhr, status, error) {
+                        alert('예약 거절에 실패하였습니다.');
+                    }
+                });
+            });
+        });
 
 
-</style>
+    </script>
 
-
-    <!--
-// v0 by Vercel.
-// https://v0.dev/t/zPiaIMEK0mK
--->
 
     <div class="flex w-full">
-
-        <div class="flex-1 bg-gray-100  p-8">
+        <div class="flex-1 bg-gray-100 p-8">
             <header class="flex items-center justify-between mb-8">
                 <h1 class="text-2xl font-bold">Admin Dashboard</h1>
                 <div class="flex items-center gap-4">
@@ -75,100 +115,90 @@
                         <span class="sr-only">Notifications</span>
                     </button>
                     <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8 border">
-          <img class="aspect-square h-full w-full" alt="Avatar" src="/placeholder-user.jpg" />
-        </span>
+                        <img class="aspect-square h-full w-full" alt="Avatar" src="/placeholder-user.jpg"/>
+                    </span>
                 </div>
             </header>
-            <div class="grid gap-8">
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+            <div class="grid gap-8" style="display: flex; margin: 10px;">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 400px;">
                     <div class="flex flex-col space-y-1.5 p-6">
-                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Join hospital</h3>
+                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Register Hospital & Role</h3>
+                        <p class="text-sm text-muted-foreground">Please register and identify the hospital you belong to and your role.</p>
                     </div>
                     <div class="p-6">
-                        <form class="grid gap-4">
-                            <div class="grid gap-2">
-                                <label
-                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                        for="name"
-                                >
+                        <form action="/registerRole" method="post">
+                            <div class="grid gap-2" style="margin: 10px;">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                     Name
                                 </label>
+
                                 <input
                                         class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                        id="name"
-                                        placeholder="John Doe"
+                                        placeholder="이름을 입력하세요"
                                         type="text"
                                 />
+
                             </div>
-                            <div class="grid gap-2">
-                                <label
-                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                        for="email"
-                                >
+                            <div class="grid gap-2" style="margin: 10px;">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">
                                     Email
                                 </label>
+
                                 <input
                                         class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                         id="email"
-                                        placeholder="john@example.com"
+                                        placeholder="nangman@examle.com"
                                         type="email"
                                 />
                             </div>
-                            <div class="grid gap-2">
-                                <label
-                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                        for="role">
-                                >
+
+                            <div class="grid gap-2" style="margin: 10px;">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        >
+
                                     Role
                                 </label>
-                                <button
-                                        type="button"
-                                        role="combobox"
-                                        aria-controls="radix-:ra:"
-                                        aria-expanded="false"
-                                        aria-autocomplete="none"
-                                        dir="ltr"
-                                        data-state="closed"
-                                        class="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                >
-                                    <span style="pointer-events: none;">User</span>
-                                    <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="2"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="lucide lucide-chevron-down h-4 w-4 opacity-50"
-                                            aria-hidden="true"
-                                    >
-                                        <path d="m6 9 6 6 6-6"></path>
-                                    </svg>
-                                </button>
-                                <select
-                                        aria-hidden="true"
-                                        tabindex="-1"
-                                        style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; overflow-wrap: normal;"
-                                >
-                                    <option value="user" selected="">
+                                <div class="flex items-center gap-2" style="width: 100%;">
+                                <select id="role" name="role" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                    <option value="user">
                                         User
                                     </option>
-                                    <option value="admin">Admin</option>
+                                    <option value="doctor" >Doctor</option>
+                                    <option value="nurse" >Nurse</option>
                                     <option value="manager">Manager</option>
+
+                                    <span style="pointer-events: none;">User</span>
+
                                 </select>
+                                    <button
+                                            class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600"
+                                            type="submit"
+                                    >
+                                        Register
+                                    </button>
+                                </div>
                             </div>
-                            <button
-                                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
-                                    type="submit"
-                            >
-                                Create User
-                            </button>
+                        </form>
+                        <form action="/registerName" method="post">
+                            <div class="grid gap-2" style="margin: 10px;">
+                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    Hospital Name
+                                </label>
+                                <div class="flex items-center gap-2" style="width: 100%;">
+                                    <select id="hname" name="hname" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                        <option value="">Select your hospital</option>
+                                        <option th:each="hospital : ${hospital_list}" th:text="${hospital.info_name}" th:value="${hospital.info_name}"></option>
+                                    </select>
+                                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600">
+                                        Register
+                                    </button>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 </div>
+
                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">User List</h3>
@@ -211,18 +241,8 @@
                                     <td th:text="${employeelist.employee_likecount}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 flex items-center gap-2">
                                         <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4"
-                                            >
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                                                 <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v10"></path>
                                                 <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
                                                 <path d="M10.4 12.6a2 2 0 1 1 3 3L8 21l-4 1 1-4Z"></path>
@@ -230,18 +250,7 @@
                                             <span class="sr-only">Edit</span>
                                         </button>
                                         <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4"
-                                            >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                                                 <path d="M3 6h18"></path>
                                                 <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
                                                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
@@ -250,219 +259,219 @@
                                         </button>
                                     </td>
                                 </tr>
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+            </div>
+            <div class="grid gap-8" style="display: flex; margin: 10px;">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 650px;">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Reviews</h3>
                     </div>
+
                     <div class="p-6">
+
                         <div class="grid gap-4">
-                            <div class="flex items-start gap-4">
-              <span class="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
-                <img class="aspect-square h-full w-full" alt="Avatar" src="/placeholder-user.jpg" />
-              </span>
-                                <div class="flex-1 grid gap-2">
-                                    <div class="flex items-center gap-2">
-                                        <div class="font-semibold">John Doe</div>
-                                        <div class="flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4 fill-primary"
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4 fill-primary"
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4 fill-primary"
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4 fill-muted stroke-muted-foreground"
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4 fill-muted stroke-muted-foreground"
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        The product was great and the service was excellent. I highly recommend this company.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-              <span class="relative flex shrink-0 overflow-hidden rounded-full w-10 h-10 border">
-                <img class="aspect-square h-full w-full" alt="Avatar" src="/placeholder-user.jpg" />
-              </span>
-                                <div class="flex-1 grid gap-2">
-                                    <div class="flex items-center gap-2">
-                                        <div class="font-semibold">Jane Smith</div>
-                                        <div class="flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4 fill-primary"
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4 fill-primary"
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4 fill-primary"
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4 fill-primary"
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4 fill-muted stroke-muted-foreground"
-                                            >
-                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        I'm really impressed with the quality of this product. It exceeded my expectations.
-                                    </p>
-                                </div>
+
+                            <div class="relative w-full overflow-auto">
+                                <table class="w-full caption-bottom text-sm">
+                                    <thead class="[&amp;_tr]:border-b">
+                                    <tr>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            No</th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Subject</th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Likecount</th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Writer</th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Writeday</th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            View</th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody class="[&amp;_tr:last-child]:border-0">
+                                    <tr th:each="item,itemStat:${list}" class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                        <td th:text="${itemStat.count}"></td>
+                                        <td>
+                                            <form th:action="@{/reviewboard/detail}" method="post">
+                                                <input type="hidden" name="review_no" th:value="${item.review_no}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"/>
+                                                <input type="hidden" name="userId" th:value="${#authentication.name}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"/>
+                                                <button type="submit" th:text="${item.review_title}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></button>
+                                            </form>
+                                        </td>
+                                        <td><span class="reviewStarsBoard"></span>
+                                            <script th:inline="javascript">
+                                                let s = '';
+                                                let ratings =/*[[${item.review_likecount}]]*/0;
+                                                console.log(ratings);
+                                                for (let i = 0; i < ratings; i++) {
+                                                    s += `<span style="color: gold">&#9733</span>`;
+                                                }
+                                                for (let i = 0; i < ratings - 5; i++) {
+                                                    s += `<span>&#9734;</span>`;
+                                                }
+                                                $(".reviewStarsBoard").html(s);
+                                            </script></td>
+                                        <td th:text="${userMap[item.user_no].user_name}"></td>
+                                        <td th:text="${item.getFormattedWriteday()}"></td>
+                                        <td th:text="${item.review_viewcount}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+
+
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 650px;">
                     <div class="flex flex-col space-y-1.5 p-6">
-                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Announcements</h3>
+                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
+                            Update Hospital Information
+                        </h3>
+                        <p class="text-sm text-muted-foreground">Modify your hospital's details and branding.</p>
                     </div>
-                    <div class="p-6">
-                        <div class="grid gap-4">
-                            <div class="flex items-start gap-4">
-                                <div class="flex-1 grid gap-2">
-                                    <div class="font-semibold">New Product Launch</div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        We're excited to announce the launch of our latest product. Check it out on our website.
-                                    </p>
+                    <div class="p-6 grid gap-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2" th:each="info:${employees}">
+                                <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    Hospital Name
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <h2 class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        th:text="${info.info_name}"></h2>
+
                                 </div>
-                                <div class="text-xs font-medium text-gray-500 dark:text-gray-400">June 1, 2023</div>
+                                </form>
                             </div>
-                            <div class="flex items-start gap-4">
-                                <div class="flex-1 grid gap-2">
-                                    <div class="font-semibold">Website Maintenance</div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        Our website will be undergoing maintenance on June 15th. Please expect some downtime during this
-                                        period.
-                                    </p>
+                            <div class="space-y-2">
+                                <form action="/registerHp" th:each="info:${employees}" method="post">
+                                <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        for="hp"
+                                >
+                                    HP
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <input
+                                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                            id="hp" name="hp" th:value="${info.info_hp}"
+                                            type="tel"
+                                    />
+                                    <th:block sec:authorize="hasAuthority('manager')">
+                                        <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                            Edit
+                                        </button>
+                                    </th:block>
                                 </div>
-                                <div class="text-xs font-medium text-gray-500 dark:text-gray-400">June 10, 2023</div>
+                                </form>
                             </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <form action="/registerAddress" th:each="info:${employees}" method="post">
+                                <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        for="address"
+                                >
+                                    Address
+                                </label>
+                                <div class="flex items-center gap-2"  style="width: 600px;">
+                                <input
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    id="address" name="address" th:value="${info.info_addr}"
+                                        style="width: 100%;"
+                                    />
+                                    <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600"
+                                            onclick="">
+                                        주소찾기
+                                    </button>
+                                    <th:block sec:authorize="hasAuthority('manager')">
+                                        <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                            Edit
+                                        </button>
+                                    </th:block>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <form action="/registerPlus" th:each="info:${employees}" method="post">
+                                <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        for="plus"
+                                >
+                                    Plus
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <input
+                                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                            id="plus" name="plus" th:value="${info.info_plus}"
+                                    />
+                                    <th:block sec:authorize="hasAuthority('manager')">
+                                        <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                            Edit
+                                        </button>
+                                    </th:block>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <form action="/registerDescription" th:each="info:${employees}" method="post">
+                            <label
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    for="description"
+                            >
+                                Description
+                            </label>
+                            <div class="flex items-center gap-2">
+        <input
+                class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]"
+                id="description" name="description" th:value="${info.info_description}"
+        />
+                                <th:block sec:authorize="hasAuthority('manager')">
+                                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                        Edit
+                                    </button>
+                                </th:block>
+                            </div>
+                            </form>
+                        </div>
+                        <div class="space-y-2">
+                            <form action="/registerPhoto" th:each="info:${employees}" method="post">
+                            <label
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    for="photo"
+                            >
+                                Logo or Header Image
+                            </label>
+                            <div class="flex items-center gap-2">
+                                <input
+                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        id="photo" name="photo" th:value="${info.info_photo}"
+                                        type="file"
+                                />
+                                <th:block sec:authorize="hasAuthority('manager')">
+                                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                                        Edit
+                                    </button>
+                                </th:block>
+                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+
+            <div class="grid gap-8" style="display: flex; margin: 10px;">
                 <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Reservations</h3>
@@ -485,1232 +494,233 @@
                                         Status
                                     </th>
                                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Actions
+                                        Reason
+                                    </th>
+                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                        Content
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody class="[&amp;_tr:last-child]:border-0">
-                                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">John Doe</td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">June 15, 2023</td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">6:00 PM</td>
+                                <tr th:each="res: ${reservations}" th:if="${res.reservation_status} != 3" class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                    <td th:text="${res.reservation_no}" class="p-4 align-middle reservation-no [&amp;:has([role=checkbox])]:pr-0"></td>
+                                    <td th:text="${res.reservation_date}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+                                    <td th:text="${res.reservation_time}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                        <div
-                                                class="inline-flex w-fit items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                                                data-v0-t="badge"
-                                        >
-                                            Confirmed
-                                        </div>
+                                        <span th:if="${res.reservation_status} == 1">
+                                            <button class="accept-button">수락</button>
+                                            <button class="reject-button">거절</button>
+                                        </span>
+                                        <span th:if="${res.reservation_status} == 2">응답대기중</span>
                                     </td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 flex items-center gap-2">
-                                        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4"
-                                            >
-                                                <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v10"></path>
-                                                <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-                                                <path d="M10.4 12.6a2 2 0 1 1 3 3L8 21l-4 1 1-4Z"></path>
-                                            </svg>
-                                            <span class="sr-only">Edit</span>
-                                        </button>
-                                        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4"
-                                            >
-                                                <path d="M3 6h18"></path>
-                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                            </svg>
-                                            <span class="sr-only">Delete</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Jane Smith</td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">June 20, 2023</td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">8:30 PM</td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                        <div
-                                                class="inline-flex w-fit items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                                                data-v0-t="badge"
-                                        >
-                                            Pending
-                                        </div>
-                                    </td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 flex items-center gap-2">
-                                        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4"
-                                            >
-                                                <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v10"></path>
-                                                <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-                                                <path d="M10.4 12.6a2 2 0 1 1 3 3L8 21l-4 1 1-4Z"></path>
-                                            </svg>
-                                            <span class="sr-only">Edit</span>
-                                        </button>
-                                        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4"
-                                            >
-                                                <path d="M3 6h18"></path>
-                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                            </svg>
-                                            <span class="sr-only">Delete</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Bob Johnson</td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">June 25, 2023</td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">12:00 PM</td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                        <div
-                                                class="inline-flex w-fit items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                                                data-v0-t="badge"
-                                        >
-                                            Confirmed
-                                        </div>
-                                    </td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 flex items-center gap-2">
-                                        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4"
-                                            >
-                                                <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v10"></path>
-                                                <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
-                                                <path d="M10.4 12.6a2 2 0 1 1 3 3L8 21l-4 1 1-4Z"></path>
-                                            </svg>
-                                            <span class="sr-only">Edit</span>
-                                        </button>
-                                        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                                            <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="24"
-                                                    height="24"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="w-4 h-4"
-                                            >
-                                                <path d="M3 6h18"></path>
-                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                            </svg>
-                                            <span class="sr-only">Delete</span>
-                                        </button>
-                                    </td>
+                                    <td th:text="${res.reservation_reason}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-reason"></td>
+                                    <td th:text="${res.reservation_content}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-content"></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
+                        <!-- Include this CSS to style the buttons -->
+                        <style>
+                            .accept-button, .reject-button {
+                                padding: 5px 10px;
+                                margin: 2px;
+                                color: white;
+                                background-color: green;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            }
+                            .submit-button{
+                                padding: 5px 10px;
+                                margin: 2px;
+                                color: white;
+                                background-color: green;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            }
+
+                            .reject-button {
+                                background-color: red;
+                            }
+
+                            .accept-button:hover, .reject-button:hover {
+                                opacity: 0.8;
+                            }
+                            .calendar-container {
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                flex-direction: column;
+                                padding: 20px;
+                            }
+
+                            .calendar-header {
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                width: 100%;
+                                max-width: 600px;
+                                margin-bottom: 20px;
+                            }
+
+                            .calendar-header button {
+                                padding: 5px 10px;
+                                background-color: #007bff;
+                                color: white;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            }
+
+                            .calendar-header button:hover {
+                                background-color: #0056b3;
+                            }
+
+                            .calendar-table {
+                                width: 100%;
+                                max-width: 600px;
+                                border-collapse: collapse;
+                            }
+
+                            .calendar-table th, .calendar-table td {
+                                border: 1px solid #ddd;
+                                padding: 10px;
+                                text-align: center;
+                            }
+
+                            .calendar-table th {
+                                background-color: #f4f4f4;
+                            }
+
+                            .calendar-table td:hover {
+                                background-color: #f1f1f1;
+                            }
+
+                            .video-call-button {
+                                padding: 5px 10px;
+                                margin-top: 5px;
+                                background-color: #28a745;
+                                color: white;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                            }
+
+                            .video-call-button:hover {
+                                background-color: #218838;
+                            }
+                        </style>
                     </div>
                 </div>
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                    <div class="flex flex-col space-y-1.5 p-6">
-                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Calendar</h3>
+
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button onclick="navigateMonth(-1)">Previous</button>
+                        <h2 id="currentMonthYear"></h2>
+                        <button onclick="navigateMonth(1)">Next</button>
                     </div>
-                    <div class="p-6">
-                        <div class="rdp p-3 rdp-multiple_months">
-                            <div class="flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0">
-                                <div class="space-y-4 rdp-caption_start">
-                                    <div class="flex justify-center pt-1 relative items-center">
-                                        <div class="text-sm font-medium" aria-live="polite" role="presentation" id="react-day-picker-1">
-                                            June 2024
-                                        </div>
-                                        <div class="space-x-1 flex items-center">
-                                            <button
-                                                    name="previous-month"
-                                                    aria-label="Go to previous month"
-                                                    class="rdp-button_reset rdp-button inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute left-1"
-                                                    type="button"
-                                            >
-                                                <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        class="lucide lucide-chevron-left h-4 w-4"
-                                                >
-                                                    <path d="m15 18-6-6 6-6"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <table class="w-full border-collapse space-y-1" role="grid" aria-labelledby="react-day-picker-1">
-                                        <thead class="rdp-head">
-                                        <tr class="flex">
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Sunday"
-                                            >
-                                                Su
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Monday"
-                                            >
-                                                Mo
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Tuesday"
-                                            >
-                                                Tu
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Wednesday"
-                                            >
-                                                We
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Thursday"
-                                            >
-                                                Th
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Friday"
-                                            >
-                                                Fr
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Saturday"
-                                            >
-                                                Sa
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="rdp-tbody">
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    26
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    27
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    28
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    29
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    30
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    31
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    1
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    2
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    3
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    4
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    5
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    6
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    7
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    8
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    9
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    10
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    11
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    12
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    13
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    14
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    15
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    16
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    17
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 bg-accent text-accent-foreground"
-                                                        role="gridcell"
-                                                >
-                                                    18
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    19
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    20
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    21
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    22
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    23
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    24
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    25
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    26
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    27
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    28
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    29
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    30
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    1
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    2
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    3
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    4
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    5
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    6
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="space-y-4 rdp-caption_end">
-                                    <div class="flex justify-center pt-1 relative items-center">
-                                        <div class="text-sm font-medium" aria-live="polite" role="presentation" id="react-day-picker-2">
-                                            July 2024
-                                        </div>
-                                        <div class="space-x-1 flex items-center">
-                                            <button
-                                                    name="next-month"
-                                                    aria-label="Go to next month"
-                                                    class="rdp-button_reset rdp-button inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input hover:bg-accent hover:text-accent-foreground h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 absolute right-1"
-                                                    type="button"
-                                            >
-                                                <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        class="lucide lucide-chevron-right h-4 w-4"
-                                                >
-                                                    <path d="m9 18 6-6-6-6"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <table class="w-full border-collapse space-y-1" role="grid" aria-labelledby="react-day-picker-2">
-                                        <thead class="rdp-head">
-                                        <tr class="flex">
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Sunday"
-                                            >
-                                                Su
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Monday"
-                                            >
-                                                Mo
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Tuesday"
-                                            >
-                                                Tu
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Wednesday"
-                                            >
-                                                We
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Thursday"
-                                            >
-                                                Th
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Friday"
-                                            >
-                                                Fr
-                                            </th>
-                                            <th
-                                                    scope="col"
-                                                    class="text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]"
-                                                    aria-label="Saturday"
-                                            >
-                                                Sa
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="rdp-tbody">
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    30
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    1
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    2
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    3
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    4
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    5
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    6
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    7
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    8
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    9
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    10
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    11
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    12
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    13
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    14
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    15
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    16
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    17
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    18
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    19
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    20
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    21
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    22
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    23
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    24
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    25
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    26
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    27
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="flex w-full mt-2">
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    28
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    29
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    30
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100"
-                                                        role="gridcell"
-                                                >
-                                                    31
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    1
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    2
-                                                </div>
-                                            </td>
-                                            <td
-                                                    class="text-center text-sm p-0 relative [&amp;:has([aria-selected])]:bg-accent first:[&amp;:has([aria-selected])]:rounded-l-md last:[&amp;:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20"
-                                                    role="presentation"
-                                            >
-                                                <div
-                                                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0 font-normal aria-selected:opacity-100 text-muted-foreground opacity-50"
-                                                        role="gridcell"
-                                                >
-                                                    3
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="calendar-table">
+                        <thead>
+                        <tr>
+                            <th>Su</th>
+                            <th>Mo</th>
+                            <th>Tu</th>
+                            <th>We</th>
+                            <th>Th</th>
+                            <th>Fr</th>
+                            <th>Sa</th>
+                        </tr>
+                        </thead>
+                        <tbody id="calendarBody">
+                        </tbody>
+                    </table>
                 </div>
+
+                <script th:inline="javascript">
+                    let reservations = /*[[${reservations}]]*/ [];
+                    let currentMonth = new Date().getMonth();
+                    let currentYear = new Date().getFullYear();
+
+                    function renderCalendar(month, year) {
+                        const monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"];
+                        const firstDay = new Date(year, month).getDay();
+                        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                        const calendarBody = document.getElementById("calendarBody");
+                        const currentMonthYear = document.getElementById("currentMonthYear");
+                        calendarBody.innerHTML = "";
+                        currentMonthYear.innerText = `${monthNames[month]} ${year}`;
+
+                        let date = 1;
+                        for (let i = 0; i < 6; i++) {
+                            const row = document.createElement("tr");
+                            for (let j = 0; j < 7; j++) {
+                                const cell = document.createElement("td");
+                                const cellContent = document.createElement("div");
+                                cellContent.style.display = "flex";
+                                cellContent.style.flexDirection = "column";
+                                cellContent.style.alignItems = "center";
+
+                                if (i === 0 && j < firstDay) {
+                                    cell.innerText = "";
+                                } else if (date > daysInMonth) {
+                                    break;
+                                } else {
+                                    const dateDiv = document.createElement("div");
+                                    dateDiv.innerText = date;
+                                    cellContent.appendChild(dateDiv);
+
+                                    // Check for reservations on this date
+                                    const reservation = reservations.find(res => {
+                                        const resDate = new Date(res.reservation_date);
+                                        return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && res.reservation_status === 3;
+                                    });
+
+                                    if (reservation) {
+                                        const button = document.createElement("button");
+                                        button.classList.add("video-call-button");
+                                        button.innerText = "화상채팅";
+                                        button.addEventListener("click", function() {
+                                            window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
+                                        });
+                                        cellContent.appendChild(button);
+                                    }
+
+
+                                    date++;
+                                }
+                                cell.appendChild(cellContent);
+                                row.appendChild(cell);
+                            }
+                            calendarBody.appendChild(row);
+                        }
+                    }
+
+                    function navigateMonth(offset) {
+                        currentMonth += offset;
+                        if (currentMonth < 0) {
+                            currentMonth = 11;
+                            currentYear--;
+                        } else if (currentMonth > 11) {
+                            currentMonth = 0;
+                            currentYear++;
+                        }
+                        renderCalendar(currentMonth, currentYear);
+                    }
+
+                    document.addEventListener("DOMContentLoaded", () => {
+                        renderCalendar(currentMonth, currentYear);
+                    });
+                </script>
+
             </div>
+
+
         </div>
     </div>
-
 </div>
+
+
 </html>

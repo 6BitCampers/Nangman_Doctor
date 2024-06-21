@@ -3,6 +3,12 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예약하기</title>
+</head>
+<body>
 <div layout:fragment="content">
     <div class="flex h-screen w-full items-center justify-center bg-orange-100">
         <div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">
@@ -47,11 +53,25 @@
                             required="">
                         <option value="1">상담</option>
                         <option value="2">수술 경과 상담</option>
-                        <option value="3">수술</option>
+
+                    </select>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_face">
+                        대면비대면 <span class="text-red-500">*</span>
+                    </label>
+                    <select id="reservation_face" name="reservation_face" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            required="">
+                        <option value="1">대면</option>
+                        <option value="2">비대면</option>
+
                     </select>
                 </div>
                 <!-- Hidden field for employee_no -->
                 <input type="hidden" id="employee_no" name="employee_no" th:value="${employeeNo}"/>
+                <!-- Hidden field for info_no -->
+                <input type="hidden" id="info_no" name="info_no" th:value="${info_no}"/>
                 <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
                         type="submit">
                     등록
@@ -142,4 +162,5 @@
         }
     </style>
 </div>
+</body>
 </html>

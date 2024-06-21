@@ -3,8 +3,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <div layout:fragment="content" class="section">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!--
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+       <!--
 // v0 by Vercel.
 // https://v0.dev/t/8eJ9Pz5VLVn
 -->
@@ -22,7 +23,7 @@
                     for (let i = 0; i < ratings; i++) {
                         s += `<span style="color: gold">&#9733</span>`;
                     }
-                    for (let i = 0; i < 5-ratings; i++) {
+                    for (let i = 0; i < 5 - ratings; i++) {
                         s += `<span style="color: gray">&#9734;</span>`;
                     }
                     $("#reviewStars").html(s);
@@ -65,7 +66,8 @@
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
                 <span class="font-medium" th:with="nameLength=${user_name.length()}">
-                            <span th:if="${nameLength == 2}"><span th:text="${user_name.substring(0,1)}"></span> *</span>
+                            <span th:if="${nameLength == 2}"><span
+                                    th:text="${user_name.substring(0,1)}"></span> *</span>
                             <span th:if="${nameLength > 2}">
                                     <span th:text="${user_name.substring(0,1)}"></span>
                                     <span th:each="i : ${#numbers.sequence(1, nameLength-2)}">*</span>
@@ -95,115 +97,47 @@
             </div>
         </div>
         <div class="mb-6">
-            <p th:text="${dto.review_content}"></p>
+            <p th:utext="${dto.review_content}"></p>
         </div>
         <div class="flex justify-between">
             <a th:href="@{/reviewboard(page=${currentPage})}">
-            <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                Back to List
-            </button></a>
-            <div class="flex space-x-4">
+                <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                    Back to List
+                </button>
+            </a>
+            <div class="flex space-x-4" >
                 <a th:href="@{/about-hospital/{hospital_no}(hospital_no=${hospital_no})}">
-                <button style="color: white" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
-                    Visit Hospital
-                </button></a>
-                <span th:if="${#authentication.name.contains('@')?#authentication.name==userDto.getUser_email():#authentication.name==user_name}"><button type="button" data-bs-toggle="modal" data-bs-target="#reviewUpdateModal" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                    <button style="color: white"
+                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                        Visit Hospital
+                    </button>
+                </a><br>
+                <div th:if="${#authentication.name.contains('@')?#authentication.name==userDto.getUser_email():#authentication.name==user_name}">
+                    <form th:action="@{/reviewboard/reviewUpdateForm}" method="post">
+                        <input type="hidden" name="user_no" th:value="${user_no}">
+                        <input type="hidden" name="review_no" th:value="${review_no}">
+                        <input type="hidden" name="currentPage" th:value="${currentPage}">
+                        <button
+                        type="submit"
+                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                     Edit
                 </button>
-                <button type="button" id="reviewDeleteBtn" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:text-accent-foreground h-10 px-4 py-2 text-red-500 hover:bg-red-100">
+                    </form>
+                <button type="button" id="reviewDeleteBtn"
+                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:text-accent-foreground h-10 px-4 py-2 text-red-500 hover:bg-red-100">
                     Delete
                 </button>
-                    </span>
+                    </div>
             </div>
         </div>
-    </div>
-
-    <div class="modal fade" id="reviewUpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <form th:action="@{/reviewboard/update}" method="post">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 수정하기</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                        <table class="table" style="width: 100%;">
-                            <tr>
-                                <th colspan="2"><label style="width: 100%">
-                                    <input type="hidden" name="review_no" th:value="${dto.review_no}">
-                                    <input type="text" name="review_title" class="input-group" style="width: 100%"
-                                           th:value="${dto.review_title}">
-                                </label>
-                                    <br></th>
-                            </tr>
-                            <tr>
-                                <td colspan="2">평점 <span id="inputRatings"></span>
-                                    <input type="hidden" name="review_likecount" id="ratingsInput" th:value="${dto.review_likecount}">
-                                    <p style="font-weight: lighter;font-size: 14px">미변경 시 기존 평점이 유지됩니다</p>
-                                </td>
-                            </tr>
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    const inputRatings = document.getElementById('inputRatings');
-                                    const ratingsInput = document.getElementById('ratingsInput');
-                                    const starCount = 5;
-
-                                    // Create stars
-                                    for (let i = 1; i <= starCount; i++) {
-                                        const star = document.createElement('span');
-                                        star.classList.add('star');
-                                        star.innerHTML = '★';
-                                        star.dataset.ratingValue = i;
-                                        star.addEventListener('click', setRating);
-                                        inputRatings.appendChild(star);
-                                    }
-
-                                    function setRating(event) {
-                                        const selectedRating = event.currentTarget.dataset.ratingValue;
-                                        ratingsInput.value = selectedRating;
-                                        const stars = inputRatings.querySelectorAll('.star');
-                                        stars.forEach(star => {
-                                            if (star.dataset.ratingValue <= selectedRating) {
-                                                star.classList.add('selected');
-                                            } else {
-                                                star.classList.remove('selected');
-                                            }
-                                        });
-                                    }
-                                });
-                            </script>
-                            <tr>
-                                <td>작성자 : <span th:text="${user_name}"></span>
-                                <input type="hidden" name="userId" th:value="${userId}"></td>
-                                <td style="text-align: right">작성일 : <span
-                                        th:text="${#dates.format(dto.review_writeday, 'yyyy-MM-dd HH:mm')}"></span></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="width:100%;height: 200px">
-                                    <label style="width: 100%;height: 100%">
-                                        <input type="hidden" name="currentPage" th:value="${currentPage}">
-                                        <textarea name="review_content" rows="10"
-                                                  th:text="${dto.review_content}" style="width: 100%;height: 100%" class="input-group"></textarea></label>
-                                </td>
-                            </tr>
-                        </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">수정 완료</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </div>
-        </form>
     </div>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        $("#reviewDeleteBtn").click(function (){
-            let review_no=/*[[review_no]]*/0;
+        $("#reviewDeleteBtn").click(function () {
+            let review_no =/*[[review_no]]*/0;
 
-            let comfirm=confirm("리뷰를 삭제하시겠습니까?");
-            if(comfirm) {
+            let comfirm = confirm("리뷰를 삭제하시겠습니까?");
+            if (comfirm) {
                 $.ajax({
                     type: "get",
                     dataType: "json",

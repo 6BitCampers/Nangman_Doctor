@@ -13,7 +13,7 @@ import java.util.Map;
 public interface ReservationMapper {
 
     @Insert("INSERT INTO hospital_reservation (reservation_room, reservation_reason, reservation_date, reservation_role, employee_no, user_no, reservation_time, reservation_status) " +
-            "VALUES (#{reservationRoom}, #{reservationReason}, #{reservationDate}, #{reservationRole}, #{employeeNo}, #{userNo}, #{reservationTime}, 1)")
+            "VALUES (#{reservation_room}, #{reservation_reason}, #{reservation_date}, #{reservation_role}, #{employee_no}, #{user_no}, #{reservation_time}, 1)")
     void insertReservation(ReservationDto dto);
 
     @Select("SELECT user_name FROM normal_user WHERE user_no = #{userNo}")
@@ -32,10 +32,19 @@ public interface ReservationMapper {
     @Select("SELECT reservation_status FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
     int getStatus(int reservationNo);
 
-    @Select("SELECT employee_no FROM hospital_employee WHERE info_no = #{infoNo}")
-    int getEmployeeNoByInfoNo(int infoNo);
+    @Select({
+            "SELECT * FROM hospital_reservation WHERE employee_no = ",
+            "(SELECT employee_no FROM hospital_employee WHERE employee_email = #{email})"
+    })
+    List<ReservationDto> getReservationsByEmail(String email);
+
 
     @Select(("SELECT user_no FROM normal_user WHERE user_email=#{id}"))
     int getUserNo(String id);
 
+    @Select("SELECT employee_no FROM hospital_employee WHERE info_no = #{infoNo}")
+    int getEmployeeNoByInfoNo(int infoNo);
+
+    @Select("SELECT employee_no FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
+    int getEmployeeNo(int reservationNo);
 }

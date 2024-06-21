@@ -38,7 +38,7 @@
 							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 							id="email"
 							placeholder="m@example.com"
-							required=""
+							required="required"
 							type="email"
 							name="email"
 					/>
@@ -52,8 +52,9 @@
 							Password
 						</label>
 						<a
-								href="#"
+								href='javascript:void(0)'
 								class="text-sm font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+								onclick="resetPw(event)"
 						>
 							Forgot password?
 						</a>
@@ -61,7 +62,7 @@
 					<input
 							class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
 							id="password"
-							required=""
+							required="required"
 							type="password"
 							name="password"
 					/>
@@ -70,16 +71,17 @@
 					<p id="valid" style="color: red; font-size:12px;"><a th:text="${exception}"></a></p>
 				</div>
 				<button
-						class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
+						class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
+						style="background-color: darkorange;"
 						type="submit"
 				>
-					Login
+					로그인하기
 				</button>
 				<div class="grid grid-cols-3 gap-4">
 					<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-background hover:bg-accent hover:text-accent-foreground h-10 w-full" onclick="location.href='/oauth2/authorization/google'" type="button">
 						<img th:src="@{/icon/google_login.png}" style="object-fit: cover">
 					</button>
-					<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-full" onclick="location.href='/oauth2/authorization/naver'" type="button">
+					<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-full" onclick="location.href='/oauth2/authorization/naver'" type="button">
 						<img th:src="@{/icon/naver_login.png}" style="object-fit: cover">
 					</button>
 					<button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-background hover:bg-accent hover:text-accent-foreground h-10 w-full" onclick="location.href='/oauth2/authorization/kakao'" type="button">
@@ -89,5 +91,51 @@
 			</div>
 		</form>
 	</div>
+	<script>
+		function resetPw(e) {
+			e.preventDefault();
+			(async () => {
+				const { value: formValues } = await Swal.fire({
+					title: '삭제하기',
+					html:
+							'<label for="swal-input1">이름</label><input id="swal-input1" class="swal2-input"><br>' +
+							'<label for="swal-input2">이메일</label><input id="swal-input2" class="swal2-input">',
+					focusConfirm: false,
+					preConfirm: () => {
+						return [
+							document.getElementById('swal-input1').value,
+							document.getElementById('swal-input2').value
+						]
+					}
+				})
+
+				if (formValues) {
+					$.ajax({
+						url:"api/v1/searchPW",
+						data:{"name":formValues[0],"email":formValues[1]},
+						type:"get",
+						async:false,
+						complete: function(e, xhr, settings){
+							if(e.status === 200){
+								Swal.fire({
+									icon: 'success',
+									title: '찾기 성공!',
+									text: formValues[0]+'님, '+formValues[1]+'로 전송을 완료 했습니다.',
+								});
+							}else{
+								Swal.fire({
+									icon: 'error',
+									title: '찾기 실패',
+									text: '맞는 계정이 없습니다!',
+								});
+							}
+						}
+					})
+				}
+			})()
+		}
+	</script>
+	<link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.min.css}" integrity="sha256-h2Gkn+H33lnKlQTNntQyLXMWq7/9XI2rlPCsLsVcUBs=" crossorigin="anonymous">
+	<script th:src="@{https://cdn.jsdelivr.net/npm/sweetalert2@11.11.1/dist/sweetalert2.all.min.js}" integrity="sha256-sxTH7wLusVF/zFlnDQEmsmwYORsWdufWfjsxdVYGRNI=" crossorigin="anonymous"></script>
 </div>
 </html>

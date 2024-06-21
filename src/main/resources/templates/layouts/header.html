@@ -38,9 +38,6 @@
 									<li><a th:href="@{/reviewboard}">review</a></li>
 								</ul>
 							</li>
-							<li><a th:href="@{/services.html}">Services</a></li>
-							<li><a th:href="@{/blog.html}">Blog</a></li>
-							<li><a th:href="@{/reservation.html}">예약하기</a></li>
 						</ul>
 					</div>
 					<div class="col-6 col-lg-3 text-lg-end">
@@ -57,13 +54,18 @@
 							</th:block>
 
 							<!-- emp인 경우에 보여지도록 설정-->
-							<th:block sec:authorize="hasAuthority('간호사')">
+							<th:block sec:authorize="hasAuthority('nurse')">
 								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
 								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
 
 							<!-- emp인 경우에 보여지도록 설정-->
-							<th:block sec:authorize="hasAuthority('의사')">
+							<th:block sec:authorize="hasAuthority('doctor')">
+								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
+								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
+							</th:block>
+							<!-- emp인 경우에 보여지도록 설정-->
+							<th:block sec:authorize="hasAuthority('manager')">
 								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
 								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
