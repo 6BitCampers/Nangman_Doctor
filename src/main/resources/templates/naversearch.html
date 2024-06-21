@@ -61,8 +61,8 @@
 		</thead>
 		<tbody>
 		<tr th:each="item : ${items}">
-			<td><a th:href="${item.originallink}" th:text="${item.title}" target="_blank">Title</a></td>
-			<td th:text="${item.pubDate}">Pub Date</td>
+			<td><a th:href="${item.originallink}" th:utext="${item.title}" target="_blank">Title</a></td>
+			<td th:utext="${item.pubDate}">Pub Date</td>
 		</tr>
 		</tbody>
 
