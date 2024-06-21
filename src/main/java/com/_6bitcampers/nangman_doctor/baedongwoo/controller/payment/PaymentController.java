@@ -52,10 +52,10 @@ public class PaymentController {
             @RequestParam String paymentKey,
             @RequestParam String method,
             @RequestParam int receipt_no,
-            @RequestParam int amount,
             Model model
     ){
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
+        int amount=receiptDto.getReceipt_amount();
 
         int hospital_no=receiptDto.getInfo_no();
         String user_noS=orderId.substring(5);

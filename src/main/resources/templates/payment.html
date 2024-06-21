@@ -9,14 +9,15 @@
         /*<![CDATA[*/
     $(function(){
         function pay(method){
-            var clientKey = 'test_ck_jExPeJWYVQwONKXNQEXx849R5gvN'
+            var clientKey = 'test_ck_jExPeJWYVQwONKXNQEXx849R5gvN';
             var tossPayments = TossPayments(clientKey);
 
+            var encryptionKey = "111";
             var receiptDto=/*[[${receiptDto}]]*/ {};
             var user_no = /*[[${user_no}]]*/ '0';
             var receipt_no = /*[[${receipt_no}]]*/ 0;
-            var orderId=createOrderId(user_no);
-
+            var orderId= createOrderId(user_no);
+            var successUrl='http://localhost:8080/payment/success?method='+method+'&receipt_no='+receipt_no;
             // ------ 결제창 띄우기 ------
             tossPayments
                 .requestPayment(method, {
@@ -26,11 +27,11 @@
                     // 더 많은 결제 정보 파라미터는 결제창 Javascript SDK에서 확인하세요.
                     // https://docs.tosspayments.com/reference/js-sdk
                     amount: receiptDto.receipt_amount, // 결제 금액
-                    orderId: orderId, // 주문번호(주문번호는 상점에서 직접 만들어주세요.)
+                    orderId:orderId, // 주문번호(주문번호는 상점에서 직접 만들어주세요.)
                     orderName: '테스트 결제', // 구매상품
                     customerName: '김토스', // 구매자 이름
-                    successUrl: 'http://localhost:8080/payment/success?method='+method+'&receipt_no='+receipt_no, // 결제 성공 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
-                    failUrl: 'http://localhost:8080/payment' // 결제 실패 시 이동할 페이지(이 주소는 예시입니다. 상점에서 직접 만들어주세요.)
+                    successUrl:successUrl,
+                    failUrl:'http://localhost:8080/payment'
                 })
                 // ------결제창을 띄울 수 없는 에러 처리 ------
                 // 메서드 실행에 실패해서 reject 된 에러를 처리하는 블록입니다.
@@ -60,7 +61,6 @@
                 $('label.paymentLabels').removeClass('selected'); // 다른 라벨 선택 시 모든 라벨에서 selected 클래스 제거
                 $(this).addClass('selected'); // 클릭한 라벨에 selected 클래스 추가
                 $(".pay-button").val($(this).attr("for"));
-                console.log($(this).attr("for"));
             }
         });
     });//function 끝
@@ -95,7 +95,6 @@
     <!--
 // v0 by Vercel.
 // https://v0.dev/t/b6A1g2avNzN-->
-
     <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-md" data-v0-t="card" style="margin-left: 36%;margin-top: -100px">
         <div class="flex flex-col space-y-1.5 p-6">
             <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">결제 수단 선택</h3>

@@ -7,7 +7,6 @@
 // v0 by Vercel.
 // https://v0.dev/t/mRGblc6aKwq
 -->
-
     <div class="flex flex-col items-center justify-center gap-8 py-12 md:py-24">
         <div class="flex flex-col items-center justify-center gap-4">
             <svg
@@ -59,8 +58,8 @@
                 <div class="p-6">
                     <div class="grid gap-4">
                         <div class="flex items-center justify-between">
-                            <p class="font-weight-bold text-lg">본인부담비</p>
-                            <p class="font-medium font-weight-bold text-lg">&#x20A9; <span th:text="${receiptDto.receipt_amount}"></span></p>
+                            <p class="font-weight-bold text-medium">총 결제 금액</p>
+                            <p class="font-weight-bold text-medium">&#x20A9; <span th:text="${receiptDto.receipt_amount*5/2}"></span></p>
                         </div>
                         <div class="flex items-center justify-between">
                             <p>공단부담비</p>
@@ -68,8 +67,8 @@
                         </div>
                         <div data-orientation="horizontal" role="none" class="shrink-0 bg-border h-[1px] w-full"></div>
                         <div class="flex items-center justify-between font-bold">
-                            <p>총 결제 금액</p>
-                            <p>&#x20A9; <span th:text="${receiptDto.receipt_amount*5/2}"></span></p>
+                            <p class="font-weight-bold text-lg">본인부담비</p>
+                            <p class="font-medium font-weight-bold text-lg">&#x20A9; <span th:text="${receiptDto.receipt_amount}"></span></p>
                         </div>
                     </div>
                 </div>
@@ -98,16 +97,20 @@
                 <div class="p-6">
                     <div class="grid gap-4">
                         <p>여러분의 피드백이 병원을 발전시킵니다!</p>
-                        <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3">
+                        <a th:href="@{/mypage}">
+                        <button style="color: white" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3"
+                        >
                             리뷰 쓰러가기
-                        </button>
+                        </button></a>
                     </div>
                 </div>
             </div>
         </div>
-        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
-            마이페이지로 돌아가기
-        </button>
+        <a th:href="@{/}">
+        <button style="color: white" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+        >
+            홈으로 돌아가기
+        </button></a>
     </div>
 </div>
 </html>
