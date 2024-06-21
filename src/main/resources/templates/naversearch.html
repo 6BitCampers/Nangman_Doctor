@@ -1,11 +1,34 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layouts/layout}">
 
 <head>
-	<title>Naver Search Results</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title> &mdash; Naver Search REsults</title>
 	<link rel="stylesheet" href="/css/style.css">
+	<style>
+		.description-map-container {
+			display: flex;
+			justify-content: space-between;
+		}
+		.description, .map-container {
+			width: 48%; /* Adjust the width as needed */
+		}
+		.map-container #map {
+			width: 100%;
+			height: 500px; /* Set a fixed height for the map */
+		}
+		.centered-heading {
+			text-align: center;
+			font-size: 2em; /* Adjust the font size as needed */
+		}
+
+	</style>
 </head>
-<body>
+
+<div layout:fragment="content">
 <div class="container">
 	<div style="text-align: center;">
 		<a href="/">
@@ -59,5 +82,5 @@
 		</ul>
 	</nav>
 </div>
-</body>
+</div>
 </html>

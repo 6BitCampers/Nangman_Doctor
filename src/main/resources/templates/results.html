@@ -46,16 +46,13 @@
                         <img th:unless="${hospital.info_photo != null}" src="/images/person_1.jpg" alt="Default Photo" class="img-fluid" width="30" height="30">
                     </td>
                     <td th:text="${hospital.info_name}">Hospital Name</td>
-                  <!--  <td th:text="${hospital.info_description}">Description</td>-->
+                    <!--  <td th:text="${hospital.info_description}">Description</td>-->
                     <td th:text="${hospital.info_likecount}">별점</td>
                     <td th:text="${hospital.info_addr}">주소</td>
                     <td style="align-items: center;">
                         <a th:href="@{'/reservation.html?info_no=' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
-                    <td>
-                        <a th:href="@{'/reservation.html?info_no=' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
                         <a th:href="@{'/about-hospital/' + ${hospital.info_no}}" class="btn btn-danger btn-sm">상세</a>
                     </td>
-
                 </tr>
                 </tbody>
             </table>
@@ -84,13 +81,11 @@
                         <a th:href="@{'/reservation.html?info_no=' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
                         <a th:href="@{'/about-hospital/' + ${hospital.info_no}}" class="btn btn-danger btn-sm">상세</a>
                     </td>
-
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
 </div>
 
 <div class="site-footer">

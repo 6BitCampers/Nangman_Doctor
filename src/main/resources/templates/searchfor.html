@@ -28,6 +28,20 @@
 </head>
 
 <body>
+<style>
+h1.war {
+font-size: 100px;
+text-align: justify;
+width: 120%;
+margin: auto;
+white-space: pre;
+overflow: visible;
+word-wrap: break-word;
+max-width: 2000px; /* Ensure the text box does not exceed this width */
+color:white;
+font-weight: bold;
+}
+</style>
 <div layout:fragment="content">
 
 <div class="hero overlay">
@@ -37,8 +51,8 @@
 	<div class="container">
 		<div class="row align-items-center justify-content-start">
 			<div class="col-lg-6 mx-auto text-center">
-				<h1 class="heading" data-aos="fade-up">병원검색</h1>
-				<p class="mb-4" data-aos="fade-up">관심분야의 병원들을 찾아보세요!</p>
+				<h1 class="war" data-aos="fade-up" style="font-size: 50px; white-space: nowrap; color:white; text-align: center;"><b>관심분야의 </b></h1>
+				<h1 class="war" data-aos="fade-up" style="font-size: 50px; white-space: nowrap; color:white; text-align: right;"><b>병원들을 찾아보세요!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></h1>
 			</div>
 		</div>
 	</div>
@@ -50,7 +64,7 @@
 			<div class="col-lg-8">
 				<form action="/results" method="get" class="d-flex align-items-center">
 					<input type="text" name="keyword" class="form-control me-2" placeholder="Search...">
-					<button type="submit" class="btn btn-primary">Search</button>
+					<button type="submit" class="btn btn-primary" style="background-color:darkorange">Search</button>
 				</form>
 			</div>
 		</div>
