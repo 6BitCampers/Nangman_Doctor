@@ -43,8 +43,11 @@ public class ReviewService {
     public void updateViewcount(int review_no){
         reviewInter.updateViewcount(review_no);
     }
-    public userEntity getUserInfo(int user_no){
-        return reviewInter.getUserInfo(user_no);
+    public userEntity getUserInfo(String user_email,String user_type){
+        return reviewInter.getUserInfo(user_email,user_type);
+    }
+    public userEntity getUserInfoByNum(int user_no){
+        return reviewInter.getUserInfoByNum(user_no);
     }
     public int getHospitalNo(int employee_no){
         return reviewInter.getHospitalNo(employee_no);

@@ -69,8 +69,6 @@
                 <h1>화상진료 예약일이 아닙니다.</h1>
             </span>
             <br><br>
-
-                <input type="hidden" name="user_no" th:value="${udto.user_no}">
                 <div th:each="dto : ${dto}">
                     <div th:if="${dto.getPayment_no()!=null}">
                         <table>
@@ -79,15 +77,13 @@
                             </tr>
                             <tr><td colspan="2">
                                 <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow">
-                                    <input type="hidden" name="userId" th:value="${#authentication.name}">
-                                    <input type="hidden" name="dto" th:value="${dto}">
-                                    <input type="hidden" name="userDto" th:value="${udto}">
+                                    <input type="hidden" name="receipt_no" th:value="${dto.getReceipt_no()}">
                                 <button type="submit" class="btn-primary receiptView" onclick="openPopup()">처방전 열람</button></form>
                             </td></tr>
                             <script>
                                 function openPopup() {
                                     // 새로운 윈도우를 팝업으로 엽니다.
-                                    var popupWindow = window.open('', 'popupWindow', 'width=800,height=600,scrollbars=yes');
+                                    var popupWindow = window.open('', 'popupWindow', 'width=900,height=1200,scrollbars=yes');
 
                                     // 폼을 제출하여 팝업 윈도우에 데이터를 전송합니다.
                                     document.getElementById('popupForm').submit();
@@ -98,7 +94,7 @@
                     <form action="/payment" method="post">
                     <div th:if="${dto.getPayment_no()==null}">
                     <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
-
+                        <input type="hidden" name="user_no" th:value="${udto.user_no}">
                     <h1>결제정보</h1>
                     <table class="table table-striped mt-3">
                         <tr>
