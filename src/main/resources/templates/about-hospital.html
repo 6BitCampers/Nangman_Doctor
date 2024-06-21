@@ -134,6 +134,22 @@
 					<div class="col-lg-6 mx-auto text-center">
 						<h1 style="text-align: center; font-size: 2em; background-color: whitesmoke; color: darkorange;" ><b>의료진</b></h1>
 					</div>
+					<table class="table table-striped">
+						<thead>
+						<tr>
+							<th style="background-color: darkorange;">이름</th>
+							<th style="background-color: darkorange;">분야</th>
+							<th style="background-color: darkorange;">연락처</th>
+						</tr>
+						</thead>
+						<tbody th:each="employee : ${employees}">
+						<tr>
+							<td th:text="${employee.employee_name}">Name</td>
+							<td th:text="${employee.employee_field}">NA</td>
+							<td th:text="${employee.employee_hp}">Gender</td>
+						</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
