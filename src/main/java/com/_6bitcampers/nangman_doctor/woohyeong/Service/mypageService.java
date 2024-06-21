@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class mypageService {
@@ -28,5 +29,9 @@ public class mypageService {
 
     public List<ReceiptDTO> getReceipt(int user_no){
         return mypageMapper.getReceipt(user_no);
+    }
+
+    public void updateUser(Map<String, Object> map){
+        mypageMapper.updateUser(map);
     }
 }
