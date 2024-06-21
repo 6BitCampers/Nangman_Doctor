@@ -100,7 +100,7 @@
         <td>&nbsp;<span th:text="${randomDiseaseWord}"></span></td>
         <th class="receiptTdName" rowspan="2" colspan="2" style="text-align: center">처방 의료인의 성명</th>
         <td colspan="3" rowspan="2" style="text-align: right; position: relative;">
-            <span style="position: absolute; left: 0; clear: both; color: gray; font-size: 14px; font-weight: lighter">&nbsp;&nbsp;&nbsp;(인쇄 시에만 출력)</span>
+            <span th:if="${shouldBeVisible}" style="position: absolute; left: 0; clear: both; color: gray; font-size: 14px; font-weight: lighter">&nbsp;&nbsp;&nbsp;(인쇄 시에만 출력)</span>
             (서명 또는 날인)
         </td>
     </tr>
@@ -134,7 +134,7 @@
         <th>조제시 참고 사항</th>
     </tr>
     <tr>
-        <td style="height: 120px" colspan="2"></td>
+        <td style="height: 120px" colspan="2"><img src="http://minioDB.midichi.kro.kr/nangmandoctor/reviewBoard/57aa7fed-e632-4313-9ec9-afd978fa07ce" class="receiptStampImage" style="display: none"></td>
         <td></td>
         <td></td>
         <td></td>
@@ -156,9 +156,9 @@
             var content = document.getElementById("printReceipt").innerHTML;
             var originalContent = document.body.innerHTML; // 기존의 body 내용 저장
             document.body.innerHTML = `
-        <html>
+        <html lang="ko">
         <head>
-            <title>처방전</title>
+            <title></title>
             <style>
                 .boxed {
                     border: 1px solid black;
@@ -192,14 +192,20 @@
                     margin-top: 60px;
                     margin-left: 40px;
                 }
+                .receiptStampImage{
+                position: absolute;
+                width: 150px;
+                right:40px;
+                top:260px;
+                }
             </style>
         </head>
         <body>
+        <img src="http://minioDB.midichi.kro.kr/nangmandoctor/reviewBoard/57aa7fed-e632-4313-9ec9-afd978fa07ce" class="receiptStampImage">
             ${content}
         </body>
         </html>
     `;
-
             window.print(); // 인쇄 창 띄우기
 
             // 기존의 body 내용을 복원

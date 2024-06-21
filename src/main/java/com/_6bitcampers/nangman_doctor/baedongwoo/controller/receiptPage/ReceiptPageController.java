@@ -51,6 +51,7 @@ public class ReceiptPageController {
         int randomDiseaseNum2=(int)(Math.random() * 9000 + 1000);
         String randomDiseaseWord2 = String.valueOf(randomUpperCaseLetter2) +" " + randomDiseaseNum2;
         model.addAttribute("randomDiseaseWord2",randomDiseaseWord2);
+        model.addAttribute("shouldBeVisible",true);
 
         return "ReceiptAndReviewWrite";
     }
