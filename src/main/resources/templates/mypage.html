@@ -70,7 +70,7 @@
             </span>
             <br><br>
                 <div th:each="dto : ${dto}">
-                    <div th:if="${dto.getPayment_no()!=null}">
+                    <div th:if="${dto.getPayment_no()==0}">
                         <table>
                             <tr>
                             <th th:text="${dto.receipt_name}"></th><td>결제일: <span th:text="${dto.getReceipt_date()}"></span></td>
@@ -91,7 +91,7 @@
                             </script>
                         </table>
                     </div>
-                    <div th:if="${dto.getPayment_no()==0}">
+                    <div th:if="${dto.getPayment_no()!=0}">
                         <form action="/payment" method="post">
                     <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
                         <input type="hidden" name="user_no" th:value="${udto.user_no}">

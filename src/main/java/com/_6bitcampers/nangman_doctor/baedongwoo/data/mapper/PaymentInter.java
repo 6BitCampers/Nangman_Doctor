@@ -19,4 +19,6 @@ public interface PaymentInter {
     public void updateReceipt(Map<String, Object> receiptMap);
     @Select("select * from hospital_info where info_no=#{info_no}")
     public EmpDto gethospitalInfo(int info_no);
+    @Select("select * from hospital_payment where payment_no=#{payment_no}")
+    public PaymentDto getPayment(int payment_no);
 }
