@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,11 +58,13 @@ public class mypageController {
             List<Map<String, Object>> reservationList = reservationService.getUserReservations(userNo);
             if (reservationList != null && !reservationList.isEmpty()) {
                 model.addAttribute("reservationList", reservationList);
-                System.out.println(reservationList);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //리뷰 작성시 필요한 값 보내기
+        model.addAttribute("userNo",userNo);
+        System.out.println(userNo);
 
         return "mypage"; // 템플릿 이름을 반환합니다. "mypage.html" 템플릿이 호출됩니다.
     }
@@ -71,6 +75,7 @@ public class mypageController {
         String id = customOAuth2User.getEmail();
         int userNo = reservationService.getUserNo(id);
         int status = reservationServiceW.getReservationStatus(userNo);
+
         try {
             UserDTO udto = mypageService.getUser(id);
             System.out.println("유디티오: " + udto);
@@ -121,6 +126,15 @@ public class mypageController {
     @GetMapping("/register")
     public String register(Model model) {
         return "register";
+    }
+
+    @ResponseBody
+    @GetMapping("/getHospitalName")
+    public Map<String,String> getHospitalName(@RequestParam int info_no) {
+        Map<String,String> map=new HashMap<>();
+        String info_name=mypageService.getInfoName(info_no);
+        map.put("info_name", info_name);
+        return map;
     }
 
 }

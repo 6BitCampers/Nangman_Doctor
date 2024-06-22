@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor.woohyeong.Mapper;
 
+import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.EmployeeDTO;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.ReceiptDTO;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.UserDTO;
@@ -34,4 +35,8 @@ public interface mypageMapper {
     where user_no = #{user_no}
 """)
     void updateUser(Map<String, Object> map);
+    @Select("""
+    select info_name from hospital_info where info_no=#{info_no}
+""")
+   String getInfoName(int info_no);
 }

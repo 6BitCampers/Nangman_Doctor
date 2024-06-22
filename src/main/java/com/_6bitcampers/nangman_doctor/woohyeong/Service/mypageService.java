@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor.woohyeong.Service;
 
+import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.woohyeong.Mapper.mypageMapper;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.EmployeeDTO;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.ReceiptDTO;
@@ -34,4 +35,7 @@ public class mypageService {
     public void updateUser(Map<String, Object> map){
         mypageMapper.updateUser(map);
     }
+    public String getInfoName(int info_no){
+        return mypageMapper.getInfoName(info_no);
+    };
 }
