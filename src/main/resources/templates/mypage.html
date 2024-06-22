@@ -154,7 +154,7 @@
 <!--            </table>-->
 <!--        </div>-->
 
-        <!--예약목록 -->
+
         <!-- 예약목록 -->
         <div class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">
             <h2>예약 목록</h2>
@@ -170,18 +170,54 @@
                         <p>진료명: <span th:text="${reservation.get('reservation_reason')}">진료명</span></p>
                         <p>상태:
                             <span th:if="${reservation.get('reservation_status') == 1}" class="text-warning">예약 요청</span>
-                           <span th:if="${reservation.get('reservation_status') == 2}" class="text-info">예약 메일확인</span>
-                            <span th:if="${reservation.get('reservation_status') == 3}" class="text-success">예약 확정하기</span>
+                            <span th:if="${reservation.get('reservation_status') == 2}" class="text-info" style="display: inline-flex; align-items: center; gap: 5px;">예약 확정
+                         <button type="button" class="btn btn-primary btn-sm"
+                                 th:data-id="${reservation.get('reservation_no')}"
+                                 th:onclick="'editReservation('+${reservation.get('reservation_no')} + ')'">수정</button>
+
+                             <button type="button" class="btn btn-danger btn-sm"
+                                     th:data-id="${reservation.get('reservation_no')}"
+                                     th:onclick="'deleteReservation(' + ${reservation.get('reservation_no')} + ')'">삭제</button>
+
+                           </span>
+
+
                         </p>
-                        <div th:if="${reservation.get('reservation_status') == 2}">
-                            <button type="button" class="btn btn-success">수락</button>
-                            <button type="button" class="btn btn-danger">거절</button>
-                        </div>
+
                     </li>
                 </ul>
             </div>
-        </div>
+            <script th:inline="javascript">
 
+                function editReservation(reservationNo) {
+                    if (confirm("수정하겠습니까? 수정하시면 지금 예약이 삭제됩니다.")) {
+                        window.location.href = "/edit?reservationNo=" + reservationNo;
+                    }
+                }
+
+
+
+                function deleteReservation(reservationNo) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/delete",
+                        data: { reservationNo: reservationNo },
+                        success: function(response) {
+                            if (response === "success") {
+                                alert("Reservation deleted successfully");
+                                // 필요 시 페이지 새로고침 또는 다른 동작 수행
+                                location.reload();
+                            } else {
+                                //alert("Failed to delete reservation");
+                            }
+                        },
+                        error: function() {
+                            alert("Error occurred while deleting reservation");
+                        }
+                    });
+                }
+            </script>
+            </div>
         <div class="calendar-container">
             <div class="calendar-header">
                 <button onclick="navigateMonth(-1)">이전</button>
@@ -294,111 +330,83 @@
             }
         </style>
 
-        <script>
-            $(document).ready(function () {
-                // 수락 버튼 클릭 핸들러
-                $('.btn-success').on('click', function () {
-                    var row = $(this).closest('tr');
-                    var reservationNo = row.find('.reservation-no').text();
-
-                    $.ajax({
-                        url: '/updateReservationStatus',
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({ reservationNo: parseInt(reservationNo), status: 1 }), // 수락 상태 전송
-                        success: function (response) {
-                            alert('예약이 성공적으로 수락되었습니다.');
-                        },
-                        error: function (xhr, status, error) {
-                            alert('예약 수락에 실패하였습니다.');
-                        }
-                    });
-                });
-
-                // 거절 버튼 클릭 핸들러
-                $('.btn-danger').on('click', function () {
-                    var row = $(this).closest('tr');
-                    var reservationNo = row.find('.reservation-no').text();
-
-                    $.ajax({
-                        url: '/updateReservationStatus',
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({ reservationNo: parseInt(reservationNo), status: 2 }), // 거절 상태 전송
-                        success: function (response) {
-                            alert('예약이 성공적으로 거절되었습니다.');
-                        },
-                        error: function (xhr, status, error) {
-                            alert('예약 거절에 실패하였습니다.');
-                        }
-                    });
-                });
-            });
-        </script>
 
 
-        <script th:inline="javascript">
-            let reservationList = /*[[${reservationList}]]*/ [];
-            let currentMonth = new Date().getMonth();
-            let currentYear = new Date().getFullYear();
 
-            function renderCalendar(month, year) {
-                const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월",
-                    "7월", "8월", "9월", "10월", "11월", "12월"];
-                const firstDay = new Date(year, month).getDay();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
+            <script th:inline="javascript">
+                let reservationList = /*[[${reservationList}]]*/ [];
+                let currentMonth = new Date().getMonth();
+                let currentYear = new Date().getFullYear();
 
-                const calendarBody = document.getElementById("calendarBody");
-                const currentMonthYear = document.getElementById("currentMonthYear");
-                calendarBody.innerHTML = "";
-                currentMonthYear.innerText = `${monthNames[month]} ${year}`;
+                function renderCalendar(month, year) {
+                    const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월",
+                        "7월", "8월", "9월", "10월", "11월", "12월"];
+                    const firstDay = new Date(year, month).getDay();
+                    const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-                let date = 1;
-                for (let i = 0; i < 6; i++) {
-                    const row = document.createElement("tr");
-                    for (let j = 0; j < 7; j++) {
-                        const cell = document.createElement("td");
-                        const cellContent = document.createElement("div");
-                        cellContent.style.display = "flex";
-                        cellContent.style.flexDirection = "column";
-                        cellContent.style.alignItems = "center";
+                    const calendarBody = document.getElementById("calendarBody");
+                    const currentMonthYear = document.getElementById("currentMonthYear");
+                    calendarBody.innerHTML = "";
+                    currentMonthYear.innerText = `${monthNames[month]} ${year}`;
 
-                        if (i === 0 && j < firstDay) {
-                            cell.innerText = "";
-                        } else if (date > daysInMonth) {
-                            break;
-                        } else {
-                            const dateDiv = document.createElement("div");
-                            dateDiv.innerText = date;
-                            cellContent.appendChild(dateDiv);
+                    let date = 1;
+                    for (let i = 0; i < 6; i++) {
+                        const row = document.createElement("tr");
+                        for (let j = 0; j < 7; j++) {
+                            const cell = document.createElement("td");
+                            const cellContent = document.createElement("div");
+                            cellContent.style.display = "flex";
+                            cellContent.style.flexDirection = "column";
+                            cellContent.style.alignItems = "center";
 
-                            // Check for reservations on this date
-                            const reservation = reservationList.find(reservation => {
-                                const resDate = new Date(reservation.reservation_date);
-                                return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && reservation.reservation_status === 3;
-                            });
+                            if (i === 0 && j < firstDay) {
+                                cell.innerText = "";
+                            } else if (date > daysInMonth) {
+                                break;
+                            } else {
+                                const dateDiv = document.createElement("div");
+                                dateDiv.innerText = date;
+                                cellContent.appendChild(dateDiv);
 
-                            if (reservation) {
-                                const button = document.createElement("button");
-                                button.classList.add("video-call-button");
-                                button.innerText = "화상채팅";
-                                button.addEventListener("click", function() {
-                                    window.open('https://webchat.midichi.kro.kr/');
-                                    window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
+                                // Check for reservations on this date
+                                const reservation = reservationList.find(reservation => {
+                                    const resDate = new Date(reservation.reservation_date);
+                                    return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && reservation.reservation_status === 2;
                                 });
-                                cellContent.appendChild(button);
+
+                                if (reservation) {
+                                    if (reservation.reservation_face === 2) {
+                                        const button = document.createElement("button");
+                                        button.classList.add("video-call-button");
+                                        button.innerText = "화상채팅";
+                                        button.addEventListener("click", function() {
+                                            window.open('https://webchat.midichi.kro.kr/');
+                                            window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
+                                        });
+                                        cellContent.appendChild(button);
+                                    } else if (reservation.reservation_face === 1) {
+                                        const text = document.createElement("span");
+                                        text.classList.add("in-person-appointment");
+                                        text.innerText = "대면 진료";
+                                        text.style.backgroundColor = "yellow";
+                                        text.style.padding = "0 5px";
+                                        text.style.borderRadius = "3px";
+                                        text.style.fontWeight = "bold";
+                                        cellContent.appendChild(text);
+                                    }
+                                }
+
+                                date++;
                             }
-
-                            date++;
+                            cell.appendChild(cellContent);
+                            row.appendChild(cell);
                         }
-                        cell.appendChild(cellContent);
-                        row.appendChild(cell);
+                        calendarBody.appendChild(row);
                     }
-                    calendarBody.appendChild(row);
                 }
-            }
 
-            function navigateMonth(offset) {
+
+                function navigateMonth(offset) {
                 currentMonth += offset;
                 if (currentMonth < 0) {
                     currentMonth = 11;

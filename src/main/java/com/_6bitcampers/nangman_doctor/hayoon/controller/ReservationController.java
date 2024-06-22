@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,12 +20,12 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-    @GetMapping("/reservation.html")
+    @GetMapping("/reservation")
     public String showReservationPage(@RequestParam("info_no") int infoNo, Model model) {
         int employeeNo = reservationService.getEmployeeNoByInfoNo(infoNo);
         model.addAttribute("info_no", infoNo);
         model.addAttribute("employeeNo", employeeNo);
-        return "reservation";
+        return "reservation";  // 원하는 HTML 페이지로 이동합니다.
     }
 
     @PostMapping("/reserveProc")
@@ -35,6 +36,7 @@ public class ReservationController {
                               @RequestParam("reservation_role") int reservationRole,
                               @RequestParam("employee_no") int employeeNo,
                               @RequestParam("info_no") int infoNo,
+                              @RequestParam("reservation_face") int reservationFace,
                               Model model) {
 
         // Get the userNo from the SecurityContext
@@ -51,22 +53,15 @@ public class ReservationController {
                 .employee_no(employeeNo)
                 .user_no(userNo)
                 .reservation_time(reservationTime)
-
+                .reservation_face(reservationFace)
 
                 .build();
 
         reservationService.saveReservation(reservationDto);
 
-        return "redirect:/userreservation";
-    }
 
-    @GetMapping("/userreservation")
-    public String showUserReservations(Model model) {
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        int userNo = reservationService.getUserNo(userEmail);
-        List<Map<String, Object>> reservations = reservationService.getUserReservations(userNo);
-        model.addAttribute("reservations", reservations);
-        System.out.println("테스트: " + reservations);
         return "userreservation";
     }
+
+
 }

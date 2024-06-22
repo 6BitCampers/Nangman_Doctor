@@ -45,51 +45,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-
-            // 수락 버튼 클릭 핸들러
-            $('.accept-button').on('click', function () {
-                var row = $(this).closest('tr');
-                var reservationNo = row.find('.reservation-no').text();
-
-                $.ajax({
-                    url: '/updateReservationStatus',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({reservationNo: parseInt(reservationNo), status: 1}), // 수락 상태 전송
-                    success: function (response) {
-                        alert('예약이 성공적으로 수락되었습니다.');
-                    },
-                    error: function (xhr, status, error) {
-                        alert('예약 수락에 실패하였습니다.');
-                    }
-                });
-            });
-
-            // 거절 버튼 클릭 핸들러
-            $('.reject-button').on('click', function () {
-                var row = $(this).closest('tr');
-                var reservationNo = row.find('.reservation-no').text();
-
-                $.ajax({
-                    url: '/updateReservationStatus',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify({reservationNo: parseInt(reservationNo), status: 2}), // 거절 상태 전송
-                    success: function (response) {
-                        alert('예약이 성공적으로 거절되었습니다.');
-                    },
-                    error: function (xhr, status, error) {
-                        alert('예약 거절에 실패하였습니다.');
-                    }
-                });
-            });
-        });
-
-
-    </script>
-
 
     <div class="flex w-full">
         <div class="flex-1 bg-gray-100 p-8">
@@ -485,56 +440,69 @@
                     </div>
                 </div>
 
-            <div class="grid gap-8" style="display: flex; margin: 10px;">
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                    <div class="flex flex-col space-y-1.5 p-6">
-                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Reservations</h3>
-                    </div>
-                    <div class="p-6">
-                        <div class="relative w-full overflow-auto">
-                            <table class="w-full caption-bottom text-sm">
-                                <thead class="[&amp;_tr]:border-b">
-                                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Customer
-                                    </th>
-                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Date
-                                    </th>
-                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Time
-                                    </th>
-                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Status
-                                    </th>
-                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Reason
-                                    </th>
-                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                        Content
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody class="[&amp;_tr:last-child]:border-0">
-                                <tr th:each="res: ${reservations}" th:if="${res.reservation_status} != 3" class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <td th:text="${res.reservation_no}" class="p-4 align-middle reservation-no [&amp;:has([role=checkbox])]:pr-0"></td>
-                                    <td th:text="${res.reservation_date}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
-                                    <td th:text="${res.reservation_time}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                        <span th:if="${res.reservation_status} == 1">
-                                            <button class="accept-button">수락</button>
-                                            <button class="reject-button">거절</button>
-                                        </span>
-                                        <span th:if="${res.reservation_status} == 2">응답대기중</span>
-                                    </td>
-                                    <td th:text="${res.reservation_reason}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-reason"></td>
-                                    <td th:text="${res.reservation_content}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-content"></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                <div class="grid gap-8" style="display: flex; margin: 10px;">
+                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+                        <div class="flex flex-col space-y-1.5 p-6">
+                            <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Reservations</h3>
                         </div>
-                        <!-- Include this CSS to style the buttons -->
-                        <style>
+                        <div class="p-6">
+                            <div class="relative w-full overflow-auto">
+                                <table class="w-full caption-bottom text-sm">
+                                    <thead class="[&amp;_tr]:border-b">
+                                    <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Customer
+                                        </th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Date
+                                        </th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Time
+                                        </th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Status
+                                        </th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Reason
+                                        </th>
+                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                            Content
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="[&amp;_tr:last-child]:border-0">
+                                    <tr th:each="res: ${reservations}" th:if="${res.reservation_status} != 3" class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                        <td th:text="${res.reservation_no}" class="p-4 align-middle reservation-no [&amp;:has([role=checkbox])]:pr-0"></td>
+                                        <td th:text="${res.reservation_date}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+                                        <td th:text="${res.reservation_time}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+                                        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                            <span th:if="${res.reservation_status} == 1">
+                                <div>
+                                    <button type="button" class="btn btn-success"
+                                            th:data-id="${res.reservation_no}"
+                                            th:onclick="'SendStatus(' + ${res.reservation_no} + ', true)'">
+                                        수락
+                                    </button>
+                                    <button type="button" class="btn btn-danger"
+                                            th:data-id="${res.reservation_no}"
+                                            th:onclick="'SendStatus(' + ${res.reservation_no} + ', false)'">
+                                        거절
+                                    </button>
+                                </div>
+                            </span>
+                                            <span th:if="${res.reservation_status} == 2">응답대기중</span>
+                                        </td>
+                                        <td th:text="${res.reservation_reason}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-reason"></td>
+                                        <td th:text="${res.reservation_content}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-content"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
                             .accept-button, .reject-button {
                                 padding: 5px 10px;
                                 margin: 2px;
@@ -689,18 +657,29 @@
                                     // Check for reservations on this date
                                     const reservation = reservations.find(res => {
                                         const resDate = new Date(res.reservation_date);
-                                        return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && res.reservation_status === 3;
+                                        return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && res.reservation_status === 2;
                                     });
 
                                     if (reservation) {
-                                        const button = document.createElement("button");
-                                        button.classList.add("video-call-button");
-                                        button.innerText = "화상채팅";
-                                        button.addEventListener("click", function() {
-                                            window.open('https://webchat.midichi.kro.kr/');
-                                            window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
-                                        });
-                                        cellContent.appendChild(button);
+                                        if (reservation.reservation_face === 2) {
+                                            const button = document.createElement("button");
+                                            button.classList.add("video-call-button");
+                                            button.innerText = "화상채팅";
+                                            button.addEventListener("click", function() {
+                                                window.open('https://webchat.midichi.kro.kr/');
+                                                window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
+                                            });
+                                            cellContent.appendChild(button);
+                                        } else if (reservation.reservation_face === 1) {
+                                            const text = document.createElement("span");
+                                            text.classList.add("in-person-appointment");
+                                            text.innerText = "대면 진료";
+                                            text.style.backgroundColor = "yellow";
+                                            text.style.padding = "0 5px";
+                                            text.style.borderRadius = "3px";
+                                            text.style.fontWeight = "bold";
+                                            cellContent.appendChild(text);
+                                        }
                                     }
 
 
@@ -728,6 +707,27 @@
                     document.addEventListener("DOMContentLoaded", () => {
                         renderCalendar(currentMonth, currentYear);
                     });
+                    function SendStatus(reservationNo, isAccepted) {
+                        $.ajax({
+                            url: '/SendStatus',
+                            type: 'POST',
+                            contentType: 'application/x-www-form-urlencoded',
+                            data: {
+                                reservationNo: reservationNo,
+                                isAccepted: isAccepted
+                            },
+                            success: function(response) {
+                                console.log(response.isAccepted);
+                                alert(`Message: ${response.isAccepted}, Reservation No: ${response.reservationNo}`);
+                                location.reload();
+                            },
+                            error: function(error) {
+                                alert('Error handling reservation----');
+                            }
+                        });
+                    }
+
+
                 </script>
 
             </div>
@@ -737,5 +737,5 @@
     </div>
 </div>
 
-
+</div>
 </html>
