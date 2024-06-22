@@ -28,4 +28,7 @@ public class PaymentService {
     public EmpDto gethospitalInfo(int info_no){
         return paymentInter.gethospitalInfo(info_no);
     }
+    public PaymentDto getPayment(int payment_no){
+        return  paymentInter.getPayment(payment_no);
+    }
 }

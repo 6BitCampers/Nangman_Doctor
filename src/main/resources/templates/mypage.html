@@ -70,7 +70,7 @@
             </span>
             <br><br>
                 <div th:each="dto : ${dto}">
-                    <div th:if="${dto.getPayment_no()!=0}">
+                    <div th:if="${dto.getPayment_no()==0}">
                         <table>
                             <tr>
                             <th th:text="${dto.receipt_name}"></th><td>결제일: <span th:text="${dto.getReceipt_date()}"></span></td>
