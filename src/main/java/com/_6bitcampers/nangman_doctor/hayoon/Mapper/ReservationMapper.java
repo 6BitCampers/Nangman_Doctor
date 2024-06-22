@@ -12,8 +12,8 @@ import java.util.Map;
 @Mapper
 public interface ReservationMapper {
 
-    @Insert("INSERT INTO hospital_reservation (reservation_room, reservation_reason, reservation_date, reservation_role, employee_no, user_no, reservation_time, reservation_status) " +
-            "VALUES (#{reservation_room}, #{reservation_reason}, #{reservation_date}, #{reservation_role}, #{employee_no}, #{user_no}, #{reservation_time}, 1)")
+    @Insert("INSERT INTO hospital_reservation (reservation_room, reservation_reason, reservation_date, reservation_role, employee_no, user_no, reservation_time, reservation_status, reservation_face) " +
+            "VALUES (#{reservation_room}, #{reservation_reason}, #{reservation_date}, #{reservation_role}, #{employee_no}, #{user_no}, #{reservation_time}, 1, #{reservation_face})")
     void insertReservation(ReservationDto dto);
 
     @Select("SELECT user_name FROM normal_user WHERE user_no = #{userNo}")
@@ -25,8 +25,7 @@ public interface ReservationMapper {
     @Select("SELECT user_email FROM normal_user WHERE user_no = #{userNo}")
     String getUsermailByNo(int userNo);
 
-    @Select("SELECT hr.*, nu.user_name FROM hospital_reservation hr " +
-            "JOIN normal_user nu ON hr.user_no = nu.user_no WHERE hr.user_no = #{userNo}")
+    @Select("SELECT hr.*, nu.user_name FROM hospital_reservation hr JOIN normal_user nu ON hr.user_no = nu.user_no WHERE hr.user_no = #{userNo}")
     List<Map<String, Object>> getUserReservations(int userNo);
 
     @Select("SELECT reservation_status FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
@@ -47,4 +46,13 @@ public interface ReservationMapper {
 
     @Select("SELECT employee_no FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
     int getEmployeeNo(int reservationNo);
+
+    @Select("SELECT user_no FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
+    int getUserNoByres(int reservationNo);
+
+    @Select("SELECT * FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
+    ReservationDto getResdto(int reservationNo);
+
+
+
 }
