@@ -15,7 +15,7 @@ public interface PaymentInter {
     public ReceiptDto getReceiptBySeq(int receipt_no);
     @Insert("insert into hospital_payment (payment_method, payment_amount, payment_date, user_no, payment_key) values (#{payment_method},#{payment_amount},now(),#{user_no},#{payment_key})")
     @Options(useGeneratedKeys = true, keyColumn = "payment_no", keyProperty = "payment_no")
-    public int uploadPayment(PaymentDto paymentDto);
+    public void uploadPayment(PaymentDto paymentDto);
     @Update("update hospital_receipt set receipt_payment_key=#{receipt_paymentKey},payment_no=#{payment_no},receipt_amount=#{receipt_amount} where receipt_no=#{receipt_no}")
     public void updateReceipt(Map<String, Object> receiptMap);
     @Select("select * from hospital_info where info_no=#{info_no}")

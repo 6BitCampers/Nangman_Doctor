@@ -33,7 +33,7 @@ public class ReviewBoardListController {
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             Model model) {
         int totalNum=reviewService.getAllReviewsCount();
-        int perPage=10;
+        int perPage=5;
 
         if(page<=0){
             page=1;

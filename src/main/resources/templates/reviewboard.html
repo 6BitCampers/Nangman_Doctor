@@ -68,62 +68,43 @@
             </div>
         </div>
 
-            <nav aria-label="pagination" class="mx-auto flex w-full justify-center" role="navigation">
-                <ul class="flex flex-row items-center gap-1">
-                    <li class="">
-                        <a
-                                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
-                                aria-label="Go to previous page"
-                                th:if="${currentpage>1}"
-                                th:href="@{/reviewboard(page=${currentpage}-1)}"
-                        >
-                            <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="lucide lucide-chevron-left h-4 w-4"
-                            >
-                                <path d="m15 18-6-6 6-6"></path>
-                            </svg>
-                            <span>Previous</span>
-                        </a>
-                    </li>
-                    <li class="" th:each="num : ${#numbers.sequence(1,totalNum/perPage+1)}">
-                        <a th:if="${currentpage == num}"
-                           class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
-                           th:classappend="${currentpage == num} ? 'disabled' : ''"
-                           th:text="${num}"
-                           style="pointer-events: none; cursor: default; color: gray;">
-                        </a>
-                        <a th:if="${currentpage != num}"
-                           class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10"
-                           th:href="@{/reviewboard(page=${num})}"
-                           th:text="${num}">
-                        </a>
-                    </li>
-                    <li class="">
-                        <a
-                                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
-                                aria-label="Go to previous page"
-                                th:if="${currentpage<(totalNum/perPage+1)}"
-                                th:href="@{/reviewboard(page=${currentpage+1})}"
-                        >
-                            <span>Next</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                 stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4">
-                                <path d="m9 18 6-6-6-6"></path>
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+        <nav aria-label="pagination" class="mx-auto flex w-full justify-center" role="navigation">
+            <ul class="flex flex-row items-center gap-1">
+                <li>
+                    <a th:if="${currentpage > 1}"
+                       class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+                       th:href="@{/reviewboard(page=${currentpage-1})}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                             stroke-linejoin="round" class="lucide lucide-chevron-left h-4 w-4">
+                            <path d="m15 18-6-6 6-6"></path>
+                        </svg>
+                        <span>Previous</span>
+                    </a>
+                </li>
+                <li th:each="num : ${#numbers.sequence(1, (totalNum / perPage) + 1)}">
+                    <a th:if="${num == currentpage}"
+                       class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10"
+                       style="pointer-events: none; cursor: default; color: gray;" th:text="${num}"></a>
+                    <span th:if="${num != currentpage}">
+                <a class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-10 w-10"
+                   th:href="@{/reviewboard(page=${num})}" th:text="${num}"></a>
+            </span>
+                </li>
+                <li>
+                    <a th:if="${currentpage < (totalNum / perPage + 1)}"
+                       class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+                       th:href="@{/reviewboard(page=${currentpage+1})}">
+                        <span>Next</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                             stroke-linejoin="round" class="lucide lucide-chevron-right h-4 w-4">
+                            <path d="m9 18 6-6-6-6"></path>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
     </div>
 

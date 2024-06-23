@@ -31,9 +31,6 @@ public class ReviewService {
     public ReviewDto getReviewBySeq(int review_no){
         return reviewInter.getReviewBySeq(review_no);
     }
-    public void addReview(ReviewDto reviewDto){
-        reviewInter.addReview(reviewDto);
-    }
     public void updateReview(Map<String,Object> map){
         reviewInter.updateReview(map);
     }
@@ -56,6 +53,6 @@ public class ReviewService {
         return reviewInter.getHospitalName(info_no);
     }
     public void insertReview(ReviewDto reviewDto){
-        reviewInter.insertReview(reviewDto);
+       reviewInter.insertReview(reviewDto);
     }
 }

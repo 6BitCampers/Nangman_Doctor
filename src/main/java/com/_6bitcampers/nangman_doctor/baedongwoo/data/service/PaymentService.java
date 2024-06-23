@@ -20,8 +20,8 @@ public class PaymentService {
     public ReceiptDto getReceiptBySeq(int receipt_no){
         return paymentInter.getReceiptBySeq(receipt_no);
     }
-    public int uploadPayment(PaymentDto paymentDto){
-        return paymentInter.uploadPayment(paymentDto);
+    public void uploadPayment(PaymentDto paymentDto){
+         paymentInter.uploadPayment(paymentDto);
     }
     public void updateReceipt(Map<String, Object> receiptMap){
         paymentInter.updateReceipt(receiptMap);
