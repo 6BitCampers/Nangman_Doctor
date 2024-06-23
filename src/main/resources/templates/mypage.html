@@ -146,15 +146,21 @@
                 </div>
             <script>
                 function openPopup() {
-                    // 새로운 윈도우를 팝업으로 엽니다.
-                    var popupWindow = window.open('', 'popupWindow', 'width=900,height=1200,scrollbars=yes');
+                    // 팝업 옵션 설정: 스크롤바 없애고, 확대/축소 가능하도록
+                    var popupOptions = 'width=900,height=1200,resizable=yes,scrollbars=no';
 
-                    // 팝업 창을 화면 중앙에 위치시킵니다.
+                    // 팝업 창을 중앙에 위치시키기 위한 계산
                     var left = (screen.width - 900) / 2;
                     var top = (screen.height - 1200) / 2;
-                    popupWindow.moveTo(left, top);
-                    // 폼을 제출하여 팝업 윈도우에 데이터를 전송합니다.
-                    document.getElementById('popupForm').submit();
+                    popupOptions += `,left=${left},top=${top}`;
+
+                    // 새로운 윈도우를 팝업으로 엽니다.
+                    var popupWindow = window.open('', 'popupWindow', popupOptions);
+
+                    // 팝업 윈도우에 폼을 제출합니다.
+                    var form = document.getElementById('popupForm');
+                    form.target = 'popupWindow'; // 폼의 target을 팝업 윈도우로 설정
+                    form.submit();
                 }
             </script>
 

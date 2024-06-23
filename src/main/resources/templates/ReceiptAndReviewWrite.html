@@ -29,7 +29,7 @@
          border-collapse: collapse;
      }
     .receiptTdName{
-        background-color: lightsteelblue;
+        background-color: #f1f3f5;
         text-align: center;
     }
     #printReceipt{
@@ -68,8 +68,8 @@
         <span>닫기</span>
     </button>
 </div>
-<br><br><br>
-<span>&#8251; 현재 페이지는 복사 방지를 위해 이미지화 되어 있어서 어색한 부분이 있을 수 있습니다</span>
+<br>
+<span>&#8251; 현재 페이지는 복사 방지를 위해 이미지화 되어 있어서<br>어색한 부분이 있을 수 있습니다</span>
 <div id="printReceipt">
 <hr style="width: 700px">
 <table style="width: 700px;border: none" >
@@ -159,6 +159,15 @@
 </div>
 </body>
 <script>
+    var empName = "${empDto.getEmployee_name()}"; // 서버에서 받아오는 값
+
+    function beforePrint() {
+        document.getElementById('printOnlySpan').textContent = empName;
+    }
+
+    function afterPrint() {
+        document.getElementById('printOnlySpan').textContent = '(인쇄 시에만 출력)';
+    }
     $(function () {
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -173,9 +182,10 @@
             // 이미지 엘리먼트 생성 및 속성 설정
             var img = new Image();
             img.src = imgData;
-            img.style.width = 'auto';// 이미지 너비 설정
+            img.style.height = '800px';// 이미지 너비 설정
             img.id = 'printedImage'; // 이미지에 ID 설정
             $(img).css({
+                'margin-left':'15%',
                 'margin-bottom': '50px',
                 'margin-top': '10px'
             });
@@ -187,10 +197,15 @@
             document.body.appendChild(img);
         });
 
-        $("#printReceiptPage").click(function () {
-            var content = document.getElementById("printReceipt").innerHTML;
-            var originalContent = document.body.innerHTML; // 기존의 body 내용 저장
-            document.body.innerHTML = `
+        });
+    $("#printReceiptPage").on("click",function () {
+        var content = document.getElementById("printReceipt").innerHTML;
+        var originalContent = document.body.innerHTML; // 기존의 body 내용 저장
+
+        window.onbeforeprint = beforePrint;
+        window.onafterprint = afterPrint;
+
+        document.body.innerHTML = `
         <html lang="ko">
         <head>
             <title></title>
@@ -213,7 +228,7 @@
                     border-collapse: collapse;
                 }
                 .receiptTdName {
-                    background-color: lightsteelblue;
+                    background-color: #f1f3f5 !important; -webkit-print-color-adjust:exact;
                     text-align: center;
                 }
                 #printReceipt {
@@ -227,26 +242,28 @@
                     margin-top: 60px;
                     margin-left: 40px;
                 }
-                .receiptStampImage{
-                position: absolute;
-                width: 200px;
-                right:80px;
-                top:250px;
-                transform: rotate(30deg);
+                .receiptStampImage {
+                    position: absolute;
+                    width: 200px;
+                    right: 80px;
+                    top: 250px;
+                    transform: rotate(30deg);
+                    -webkit-print-color-adjust: exact !important;   /* Chrome, Safari, Edge */
+                    color-adjust: exact !important;                 /* Firefox */
                 }
             </style>
         </head>
         <body>
-        <img src="http://minioDB.midichi.kro.kr/nangmandoctor/reviewBoard/57aa7fed-e632-4313-9ec9-afd978fa07ce" class="receiptStampImage">
+            <img src="http://minioDB.midichi.kro.kr/nangmandoctor/reviewBoard/57aa7fed-e632-4313-9ec9-afd978fa07ce" class="receiptStampImage" onload="window.print()">
             ${content}
         </body>
         </html>
     `;
-            window.print(); // 인쇄 창 띄우기
 
+        window.onafterprint = function () {
             // 기존의 body 내용을 복원
             document.body.innerHTML = originalContent;
-        });
+        }
     });
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
