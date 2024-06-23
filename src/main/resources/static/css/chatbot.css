@@ -1,4 +1,4 @@
-/* 아이콘을 오른쪽 하단에 고정 */
+/*!* 아이콘을 오른쪽 하단에 고정 *!*/
 .chatbotimg {
     position: fixed;
     bottom: 20px;
@@ -54,7 +54,7 @@
     width: 60px;
     padding: 8px;
     font-size: 14px;
-    background-color: #4CAF50;
+    background-color: #f1be44;
     color: white;
     border: none;
     border-radius: 0 5px 5px 0;
@@ -144,7 +144,6 @@
     display: none;
     position: fixed;
     z-index: 1000;
-    left: 0;
     top: 0;
     width: 100%;
     height: 100%;
@@ -188,16 +187,6 @@
 .large-heading {
     font-size: 3em; /* Adjust the size as needed */
     font-weight: bold; /* Ensures the text is bold */
-}
-
-.star {
-    font-size: 2em;
-    cursor: pointer;
-    color: gray;
-}
-
-.star.selected {
-    color: gold;
 }
 
 /* 작은 화면에서도 작동하도록 미디어 쿼리 수정 */
