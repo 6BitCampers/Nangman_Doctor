@@ -138,7 +138,8 @@
                                 }
                             }
                         });
-                    });//function end
+                    });
+
                     function updateHiddenInput(uuids) {
                         $('#uploadedUUIDs').val(JSON.stringify(uuids));
                     }
@@ -171,6 +172,21 @@
                             },
                         });
                     }
+
+                    $('#formUpdateReview').on('submit', function (e) {
+                        var content = $('#review_content').val();
+                        var urlPattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+                        var updatedContent = content.replace(urlPattern, function(url) {
+                            var isInImgTag = content.includes('<img') && content.includes('src="' + url);
+                            var isAlreadyLinked = content.includes('<a href="' + url);
+                            if (isInImgTag || isAlreadyLinked) {
+                                return url;
+                            } else {
+                                return '<a href="' + url + '" target="_blank">' + url + '</a>';
+                            }
+                        });
+                        $('#review_content').val(updatedContent);
+                    });
                 </script>
             </div>
             <div class="items-center p-6 flex justify-between">

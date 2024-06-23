@@ -35,7 +35,7 @@ public class ReviewDetailController {
     public String detail(
             HttpServletRequest request,
             HttpSession session,
-            @RequestParam int review_no,
+            @RequestParam("review_no") int review_no,
             @RequestParam(required = false) String userId,
             @RequestParam int currentPage,
             Model model) {
@@ -111,7 +111,6 @@ public class ReviewDetailController {
     ){
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId= customOAuth2User.getEmail();
-        String user_type=customOAuth2User.getType();
         String user_name=customOAuth2User.getRealName();
 
         ReviewDto dto=reviewService.getReviewBySeq(review_no);
@@ -164,8 +163,11 @@ public class ReviewDetailController {
             @RequestParam int review_likecount,
             @RequestParam int employee_no,
             @RequestParam int user_no,
-            @RequestParam List<String> uploadedUUIDs
+            @RequestParam List<String> uploadedUUIDs,
+            Model model
             ){
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId= customOAuth2User.getEmail();
         
         List<String> imageUrls = extractImageUrls(review_content);
         storageService.moveFilesToFinalBucket(imageUrls,uploadedUUIDs);
@@ -181,7 +183,7 @@ public class ReviewDetailController {
 
         reviewService.insertReview(reviewDto);
 
-        return "redirect:/mypage";
+        return "redirect:/reviewboard";
     }
 
     //AJAX로 업로드 되는 이미지 바로바로 저장하기

@@ -9,7 +9,7 @@
 </head>
 <div layout:fragment="content">
 
-    <div th:if="${udto != null}" class="d-flex vh-100 bg-warning p-3 gap-3">
+    <div th:if="${udto != null}" class="d-flex vh-100 bg-warning p-3 gap-3" style="height: auto">
         <div class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">
             <div class="d-flex justify-content-end mb-3">
                 <a href="/mypage/updateform" class="text-decoration-none text-dark">
@@ -70,53 +70,99 @@
             </span>
             <br><br>
                 <div th:each="dto : ${dto}">
-                    <div th:if="${dto.getPayment_no()==0}">
-                        <table>
-                            <tr>
-                            <th th:text="${dto.receipt_name}"></th><td>결제일: <span th:text="${dto.getReceipt_date()}"></span></td>
-                            </tr>
-                            <tr><td colspan="2">
-                                <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow">
-                                    <input type="hidden" name="receipt_no" th:value="${dto.getReceipt_no()}">
-                                <button type="submit" class="btn-primary receiptView" onclick="openPopup()">처방전 열람</button></form>
-                            </td></tr>
-                            <script>
-                                function openPopup() {
-                                    // 새로운 윈도우를 팝업으로 엽니다.
-                                    var popupWindow = window.open('', 'popupWindow', 'width=900,height=1200,scrollbars=yes');
-
-                                    // 폼을 제출하여 팝업 윈도우에 데이터를 전송합니다.
-                                    document.getElementById('popupForm').submit();
-                                }
-                            </script>
-                        </table>
-                    </div>
-                    <div th:if="${dto.getPayment_no()!=0}">
-                        <form action="/payment" method="post">
-                    <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
-                        <input type="hidden" name="user_no" th:value="${udto.user_no}">
-                    <h1>결제정보</h1>
-                    <table class="table table-striped mt-3">
+                    <div>
+                    <table class="table table-striped mt-3" style="height: auto">
                         <tr>
                             <th>결제정보</th>
-                            <th th:text="${dto.receipt_name}"></th>
+                            <td th:text="${dto.receipt_name}"></td>
                         </tr>
                         <tr>
+                        <tr>
+                            <th>방문 병원</th>
+                            <input type="hidden" id="myPageInfoNo" th:value="${dto.info_no}">
+                            <td id="visitedHospitalName"></td>
+                        </tr>
+                        <script>
+                            $(document).ready(function() {
+                                var infoNo = $('#myPageInfoNo').val();
+                                if (infoNo) {
+                                    $.ajax({
+                                        url: '/getHospitalName', // 서버의 엔드포인트 URL을 여기에 입력하세요
+                                        type: 'GET',
+                                        data: { info_no: infoNo },
+                                        success: function(response) {
+                                            // 서버 응답에서 info_name을 가져와서 표시
+                                            $('#visitedHospitalName').text(response.info_name);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error('AJAX 요청 실패:', status, error);
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
+                        <tr>
                             <th>진료일</th>
-                            <th th:text="${dto.receipt_date}"></th>
+                            <td th:text="${dto.receipt_date}"></td>
                         </tr>
                         <tr>
                             <th>결제금액</th>
-                            <th th:text="${dto.receipt_amount}"></th>
+                            <td th:text="${dto.receipt_amount}"></td>
+                        </tr>
+                        <tr>
+                            <th>결제 상태</th>
+                            <td th:switch="${dto.payment_no}">
+                                <span th:case="0">미결제 상태</span>
+                                <span th:case="*">결제 완료</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                <!-- 결제 하러 가기 버튼 -->
+                                <form action="/payment" method="post" style="display: inline;">
+                                    <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
+                                    <input type="hidden" name="user_no" th:value="${udto.user_no}">
+                                    <button type="submit" class="btn btn-primary mt-3" th:if="${dto.payment_no == 0}">
+                                        결제 하러 가기
+                                    </button>
+                                </form>
+
+                                <!-- 결제 완료된 경우 리뷰 쓰러 가기와 처방전 열람 -->
+                                <div th:if="${dto.payment_no != 0}" style="display: flex; justify-content: center; gap: 10px;">
+                                    <form method="post" th:action="@{/reviewboard/write}">
+                                        <input type="hidden" name="user_no" th:value="${userNo}">
+                                        <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
+                                    <button type="submit" class="btn btn-primary mt-3">리뷰 쓰러 가기</button>
+                                    </form>
+                                    <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow" style="display: inline;">
+                                        <input type="hidden" name="receipt_no" th:value="${dto.getReceipt_no()}">
+                                        <button type="submit" class="btn btn-primary mt-3 receiptView" onclick="openPopup()">처방전 열람</button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     </table>
-                    <span>
-            <button type="submit" class="btn btn-primary mt-3">
-                결제하러가기
-            </button>
-        </span>
-                        </form></div>
+                    </div>
                 </div>
+            <script>
+                function openPopup() {
+                    // 팝업 옵션 설정: 스크롤바 없애고, 확대/축소 가능하도록
+                    var popupOptions = 'width=900,height=1200,resizable=yes,scrollbars=no';
+
+                    // 팝업 창을 중앙에 위치시키기 위한 계산
+                    var left = (screen.width - 900) / 2;
+                    var top = (screen.height - 1200) / 2;
+                    popupOptions += `,left=${left},top=${top}`;
+
+                    // 새로운 윈도우를 팝업으로 엽니다.
+                    var popupWindow = window.open('', 'popupWindow', popupOptions);
+
+                    // 팝업 윈도우에 폼을 제출합니다.
+                    var form = document.getElementById('popupForm');
+                    form.target = 'popupWindow'; // 폼의 target을 팝업 윈도우로 설정
+                    form.submit();
+                }
+            </script>
 
         </div>
 

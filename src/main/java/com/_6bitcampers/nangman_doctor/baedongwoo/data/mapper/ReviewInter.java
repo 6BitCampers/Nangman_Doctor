@@ -15,8 +15,6 @@ public interface ReviewInter {
     public int getAllReviewsCount();
     @Select("select * from hospital_review where review_no=#{review_no}")
     public ReviewDto getReviewBySeq(int review_no);
-    @Insert("insert into hospital_review (review_title,review_content,review_writeday,employee_no,user_no,review_likecount) values (#{review_title},#{review_content},now(),#{employee_no},#{user_no},#{review_likecount})")
-    public void addReview(ReviewDto reviewDto);
     @Update("update hospital_review set review_title=#{review_title}, review_content=#{review_content},review_likecount=#{review_likecount} where review_no=#{review_no}")
     public void updateReview(Map<String,Object> map);
     @Delete("delete from hospital_review where review_no=#{review_no}")
@@ -31,7 +29,7 @@ public interface ReviewInter {
     public int getHospitalNo(int employee_no);
     @Select("select info_name from hospital_info where info_no=#{info_no}")
     public String getHospitalName(int info_no);
-    @Insert("insert into hospital_review (review_title, review_content, review_writeday, employee_no, user_no, review_likecount) " +
-            "values (#{review_title},#{review_content},now(),#{employ_no},#{user_no},#{review_likecount})")
+    @Insert("insert into hospital_review (review_title, review_content, review_writeday, employee_no, user_no, review_likecount) values (#{review_title},#{review_content},now(),#{employee_no},#{user_no},#{review_likecount})")
+    @Options(useGeneratedKeys = true, keyColumn = "review_no", keyProperty = "review_no")
     public void insertReview(ReviewDto reviewDto);
 }
