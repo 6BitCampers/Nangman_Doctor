@@ -19,10 +19,10 @@ public class ChatbotController {
         System.out.println(msg);
         return msg;
     }
-//    @GetMapping("/chat")
-//    public String chatbot() {
-//        return "chatbot.html";  // templates/chatbot.html 파일을 렌더링
-//    }
+    @GetMapping("/chat")
+    public String chatbot() {
+        return "chatbot";  // templates/chatbot.html 파일을 렌더링
+    }
 
 //    @Controller
 //    public static class HomeController {
