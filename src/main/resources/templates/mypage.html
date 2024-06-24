@@ -50,100 +50,95 @@
                     <td th:text="${udto.user_interest}"></td>
                 </tr>
             </table>
-            <span th:if="${status == 1}">
-                <button type="button" onclick="location.href='/test'" class="btn btn-primary mt-3">
-                    화상진료하러가기
-                </button>
-                <script>
-                    document.querySelector('button').addEventListener('mouseover', function() {
-                        this.classList.remove('btn-primary');
-                        this.classList.add('btn-dark');
-                    });
-                    document.querySelector('button').addEventListener('mouseout', function() {
-                        this.classList.remove('btn-dark');
-                        this.classList.add('btn-primary');
-                    });
-                </script>
-            </span>
-            <span th:if="${status != 1}">
-                <h1>화상진료 예약일이 아닙니다.</h1>
-            </span>
+<!--            <span th:if="${status == 1}">-->
+<!--                <button type="button" onclick="location.href='/test'" class="btn btn-primary mt-3">-->
+<!--                    화상진료하러가기-->
+<!--                </button>-->
+<!--                <script>-->
+<!--                    document.querySelector('button').addEventListener('mouseover', function() {-->
+<!--                        this.classList.remove('btn-primary');-->
+<!--                        this.classList.add('btn-dark');-->
+<!--                    });-->
+<!--                    document.querySelector('button').addEventListener('mouseout', function() {-->
+<!--                        this.classList.remove('btn-dark');-->
+<!--                        this.classList.add('btn-primary');-->
+<!--                    });-->
+<!--                </script>-->
+<!--            </span>-->
+<!--            <span th:if="${status != 1}">-->
+<!--                <h1>화상진료 예약일이 아닙니다.</h1>-->
+<!--            </span>-->
             <br><br>
-                <div th:each="dto : ${dto}">
-                    <div>
-                    <table class="table table-striped mt-3" style="height: auto">
-                        <tr>
-                            <th>결제정보</th>
-                            <td th:text="${dto.receipt_name}"></td>
-                        </tr>
-                        <tr>
-                        <tr>
-                            <th>방문 병원</th>
-                            <input type="hidden" id="myPageInfoNo" th:value="${dto.info_no}">
-                            <td id="visitedHospitalName"></td>
-                        </tr>
-                        <script>
-                            $(document).ready(function() {
-                                var infoNo = $('#myPageInfoNo').val();
-                                if (infoNo) {
-                                    $.ajax({
-                                        url: '/getHospitalName', // 서버의 엔드포인트 URL을 여기에 입력하세요
-                                        type: 'GET',
-                                        data: { info_no: infoNo },
-                                        success: function(response) {
-                                            // 서버 응답에서 info_name을 가져와서 표시
-                                            $('#visitedHospitalName').text(response.info_name);
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error('AJAX 요청 실패:', status, error);
-                                        }
-                                    });
-                                }
-                            });
-                        </script>
-                        <tr>
-                            <th>진료일</th>
-                            <td th:text="${dto.receipt_date}"></td>
-                        </tr>
-                        <tr>
-                            <th>결제금액</th>
-                            <td th:text="${dto.receipt_amount}"></td>
-                        </tr>
-                        <tr>
-                            <th>결제 상태</th>
-                            <td th:switch="${dto.payment_no}">
-                                <span th:case="0">미결제 상태</span>
-                                <span th:case="*">결제 완료</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="text-align: center;">
-                                <!-- 결제 하러 가기 버튼 -->
-                                <form action="/payment" method="post" style="display: inline;">
-                                    <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
-                                    <input type="hidden" name="user_no" th:value="${udto.user_no}">
-                                    <button type="submit" class="btn btn-primary mt-3" th:if="${dto.payment_no == 0}">
-                                        결제 하러 가기
-                                    </button>
-                                </form>
+<!--                <div th:each="dto : ${dto}">-->
+<!--                    <div>-->
+<!--                    <table class="table table-striped mt-3" style="height: auto">-->
+<!--                        <tr>-->
+<!--                            <th>결제정보</th>-->
+<!--                            <td th:text="${dto.receipt_name}"></td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                        <script>-->
+<!--                            $(document).ready(function() {-->
+<!--                                var infoNo = $('#myPageInfoNo').val();-->
+<!--                                if (infoNo) {-->
+<!--                                    $.ajax({-->
+<!--                                        url: '/getHospitalName', // 서버의 엔드포인트 URL을 여기에 입력하세요-->
+<!--                                        type: 'GET',-->
+<!--                                        data: { info_no: infoNo },-->
+<!--                                        success: function(response) {-->
+<!--                                            // 서버 응답에서 info_name을 가져와서 표시-->
+<!--                                            $('#visitedHospitalName').text(response.info_name);-->
+<!--                                        },-->
+<!--                                        error: function(xhr, status, error) {-->
+<!--                                            console.error('AJAX 요청 실패:', status, error);-->
+<!--                                        }-->
+<!--                                    });-->
+<!--                                }-->
+<!--                            });-->
+<!--                        </script>-->
+<!--                        <tr>-->
+<!--                            <th>진료일</th>-->
+<!--                            <td th:text="${dto.receipt_date}"></td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th>결제금액</th>-->
+<!--                            <td th:text="${dto.receipt_amount}"></td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <th>결제 상태</th>-->
+<!--                            <td th:switch="${dto.payment_no}">-->
+<!--                                <span th:case="0">미결제 상태</span>-->
+<!--                                <span th:case="*">결제 완료</span>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td colspan="2" style="text-align: center;">-->
+<!--                                &lt;!&ndash; 결제 하러 가기 버튼 &ndash;&gt;-->
+<!--                                <form action="/payment" method="post" style="display: inline;">-->
+<!--                                    <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">-->
+<!--                                    <input type="hidden" name="user_no" th:value="${udto.user_no}">-->
+<!--                                    <button type="submit" class="btn btn-primary mt-3" th:if="${dto.payment_no == 0}">-->
+<!--                                        결제 하러 가기-->
+<!--                                    </button>-->
+<!--                                </form>-->
 
-                                <!-- 결제 완료된 경우 리뷰 쓰러 가기와 처방전 열람 -->
-                                <div th:if="${dto.payment_no != 0}" style="display: flex; justify-content: center; gap: 10px;">
-                                    <form method="post" th:action="@{/reviewboard/write}">
-                                        <input type="hidden" name="user_no" th:value="${userNo}">
-                                        <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
-                                    <button type="submit" class="btn btn-primary mt-3">리뷰 쓰러 가기</button>
-                                    </form>
-                                    <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow" style="display: inline;">
-                                        <input type="hidden" name="receipt_no" th:value="${dto.getReceipt_no()}">
-                                        <button type="submit" class="btn btn-primary mt-3 receiptView" onclick="openPopup()">처방전 열람</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                    </div>
-                </div>
+<!--                                &lt;!&ndash; 결제 완료된 경우 리뷰 쓰러 가기와 처방전 열람 &ndash;&gt;-->
+<!--                                <div th:if="${dto.payment_no != 0}" style="display: flex; justify-content: center; gap: 10px;">-->
+<!--                                    <form method="post" th:action="@{/reviewboard/write}">-->
+<!--                                        <input type="hidden" name="user_no" th:value="${userNo}">-->
+<!--                                        <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">-->
+<!--                                    <button type="submit" class="btn btn-primary mt-3">리뷰 쓰러 가기</button>-->
+<!--                                    </form>-->
+<!--                                    <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow" style="display: inline;">-->
+<!--                                        <input type="hidden" name="receipt_no" th:value="${dto.getReceipt_no()}">-->
+<!--                                        <button type="submit" class="btn btn-primary mt-3 receiptView" onclick="openPopup()">처방전 열람</button>-->
+<!--                                    </form>-->
+<!--                                </div>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                    </div>-->
+<!--                </div>-->
             <script>
                 function openPopup() {
                     // 팝업 옵션 설정: 스크롤바 없애고, 확대/축소 가능하도록
@@ -416,21 +411,37 @@
 
                                 // Check for reservations on this date
                                 const reservation = reservationList.find(reservation => {
+                                    console.log('박주용' + reservation.reservation_status);
                                     const resDate = new Date(reservation.reservation_date);
-                                    return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && reservation.reservation_status === 2;
+                                    return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && (reservation.reservation_status === 2 || reservation.reservation_status === 3);
                                 });
 
+
+
                                 if (reservation) {
-                                    if (reservation.reservation_face === 2) {
+                                    if (reservation.reservation_status === 3) {
+                                        const button = document.createElement("button");
+                                        button.classList.add("btn", "btn-primary"); // Bootstrap 버튼 스타일 클래스 추가
+                                        button.setAttribute("type", "button");
+                                        button.setAttribute("data-bs-toggle", "modal"); // Bootstrap 모달 토글 속성 추가
+                                        button.setAttribute("data-bs-target", "#exampleModal"); // Bootstrap 모달 타겟 속성 추가
+                                        button.innerText = "결제";
+                                        // button.addEventListener("click", function() {
+                                        //     window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
+                                        // });
+                                        cellContent.appendChild(button);
+                                    }
+
+                                    else if (reservation.reservation_face === 2 && reservation.reservation_status === 2) {
                                         const button = document.createElement("button");
                                         button.classList.add("video-call-button");
-                                        button.innerText = "화상채팅";
+                                        button.innerText = "화상진료";
                                         button.addEventListener("click", function() {
                                             window.open('https://webchat.midichi.kro.kr/');
                                             window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
                                         });
                                         cellContent.appendChild(button);
-                                    } else if (reservation.reservation_face === 1) {
+                                    } else if (reservation.reservation_face === 1 && reservation.reservation_status === 2) {
                                         const text = document.createElement("span");
                                         text.classList.add("in-person-appointment");
                                         text.innerText = "대면 진료";
@@ -470,6 +481,92 @@
         </script>
 
         </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">결제정보</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div th:each="dto : ${dto}" class="modal-body">
+                    <table class="table table-striped mt-3" style="height: auto">
+                        <tr>
+                            <th>결제정보</th>
+                            <td th:text="${dto.receipt_name}"></td>
+                        </tr>
+                        <tr>
+                        <tr>
+                            <th>방문 병원</th>
+                            <input type="hidden" id="myPageInfoNo" th:value="${dto.info_no}">
+                            <td id="visitedHospitalName"></td>
+                        </tr>
+                        <script>
+                            $(document).ready(function() {
+                                var infoNo = $('#myPageInfoNo').val();
+                                if (infoNo) {
+                                    $.ajax({
+                                        url: '/getHospitalName', // 서버의 엔드포인트 URL을 여기에 입력하세요
+                                        type: 'GET',
+                                        data: { info_no: infoNo },
+                                        success: function(response) {
+                                            // 서버 응답에서 info_name을 가져와서 표시
+                                            $('#visitedHospitalName').text(response.info_name);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error('AJAX 요청 실패:', status, error);
+                                        }
+                                    });
+                                }
+                            });
+                        </script>
+                        <tr>
+                            <th>진료일</th>
+                            <td th:text="${dto.receipt_date}"></td>
+                        </tr>
+                        <tr>
+                            <th>결제금액</th>
+                            <td th:text="${dto.receipt_amount}"></td>
+                        </tr>
+                        <tr>
+                            <th>결제 상태</th>
+                            <td th:switch="${dto.payment_no}">
+                                <span th:case="0">미결제 상태</span>
+                                <span th:case="*">결제 완료</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                <!-- 결제 하러 가기 버튼 -->
+                                <form action="/payment" method="post" style="display: inline;">
+                                    <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
+                                    <input type="hidden" name="user_no" th:value="${udto.user_no}">
+                                    <button type="submit" class="btn btn-primary mt-3" th:if="${dto.payment_no == 0}">
+                                        결제 하러 가기
+                                    </button>
+                                </form>
+                                <div th:if="${dto.payment_no != 0}" style="display: flex; justify-content: center; gap: 10px;">
+                                    <form method="post" th:action="@{/reviewboard/write}">
+                                        <input type="hidden" name="user_no" th:value="${userNo}">
+                                        <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
+                                        <button type="submit" class="btn btn-primary mt-3">리뷰 쓰러 가기</button>
+                                    </form>
+                                    <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow" style="display: inline;">
+                                        <input type="hidden" name="receipt_no" th:value="${dto.getReceipt_no()}">
+                                        <button type="submit" class="btn btn-primary mt-3 receiptView" onclick="openPopup()">처방전 열람</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </html>
 

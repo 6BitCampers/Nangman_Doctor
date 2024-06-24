@@ -48,8 +48,6 @@
                                     info_name: infoName
                                 },
                                 success: function(data) {
-                                    const info_name = document.getElementsByName("info_name").values();
-                                    console.log("안녕" + info_name);
                                     displaySearchResults(data); // 검색 결과 표시 함수 호출
                                 },
                                 error: function(xhr, status, error) {
@@ -86,25 +84,12 @@
                 function submitForm() {
                     var infoName = $('#info_name').val().trim(); // 입력된 검색어
                     if (infoName !== '') {
-                        $('#hospitalSearchInput').val(infoName); // 검색어를 입력란에 설정
-                        openMappedUrl(); // 매핑된 URL 열기
-                    }
-                }
-
-                // 매핑된 URL 열기 함수
-                function openMappedUrl(infoName) {
-                    // emp.html 열기
-                    var url = '/emp?info_name=' + encodeURIComponent(infoName);
-                    var newWindow = window.open(url, '_blank'); // 새 창 열기
-                    if (newWindow) {
-                        newWindow.focus(); // 새 창 포커스
-                        // emp.html의 input 태그에 값 설정
-                        newWindow.onload = function() {
-                            newWindow.document.getElementById('hospitalSearchInput').value = infoName;
-                        };
+                        console.log(infoName);
+                        // 부모 창의 input 태그에 값 설정
+                        if (window.opener && !window.opener.closed) {
+                            window.opener.document.getElementById('hospitalSearchInput').value = infoName;
+                        }
                         window.close(); // 현재 창 닫기
-                    } else {
-                        alert('팝업 창이 차단되었습니다. 설정을 확인해주세요.');
                     }
                 }
 
