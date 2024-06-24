@@ -2,9 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head th:replace="~{layouts/head :: headFragment}"></head>
+<div th:replace="~{layouts/chatbot :: chatbotFragment}"></div>
 <body>
 <div th:replace="~{layouts/header :: headerFragment}"></div>
+
 <div layout:fragment="content"></div>
+
 <div th:replace="~{layouts/footer :: footerFragment}"></div>
+
 </body>
 </html>

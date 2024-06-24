@@ -22,20 +22,15 @@
 					<div class="col-6 d-none d-lg-block" style="width: 450px;">
 						<ul class="js-clone-nav site-menu text-center m-0 p-0">
 							<li><a th:href="@{/about-hospital.html}">낭만닥터 소개</a></li>
+							<li><a th:href="@{/search}">병원검색</a></li>
+							<li><a th:href="@{/naversearch}">뉴스</a></li>
 							<li class="has-children">
-								<a th:href="@{/}">병원 둘러보기</a>
+								<a th:href="@{/}">게시판</a>
 								<ul class="dropdown">
-									<li><a th:href="@{/search}">검색</a></li>
-									<li><a th:href="@{/naversearch}">뉴스검색</a></li>
+									<li><a th:href="@{/reviewboard}">후기</a></li>
+									<li><a th:href="@{/qna}">익명게시판</a></li>
 								</ul>
 							</li>
-							<li class="has-children">
-								<a th:href="@{/blog.html}">게시판</a>
-								<ul class="dropdown">
-									<li><a th:href="@{/qna}">Q&A</a></li>
-									<li><a th:href="@{/reviewboard}">review</a></li>
-								</ul></li>
-							<li><a th:href="@{https://webchat.midichi.kro.kr/}">상담</a></li>
 						</ul>
 					</div>
 					<div class="col-6 col-lg-3 text-lg-end">
@@ -47,23 +42,27 @@
 							</th:block>
 							<!-- emp인 경우에 보여지도록 설정-->
 							<th:block sec:authorize="hasAuthority('ROLE_EMP')">
+								<li class="nav-item"><a th:href="@{/mypage}" class="nav-link">마이 페이지</a></li>
 								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
 								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
 
 							<!-- emp인 경우에 보여지도록 설정-->
 							<th:block sec:authorize="hasAuthority('nurse')">
+								<li class="nav-item"><a th:href="@{/mypage}" class="nav-link">마이 페이지</a></li>
 								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
 								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
 
 							<!-- emp인 경우에 보여지도록 설정-->
 							<th:block sec:authorize="hasAuthority('doctor')">
+								<li class="nav-item"><a th:href="@{/mypage}" class="nav-link">마이 페이지</a></li>
 								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
 								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
 							<!-- emp인 경우에 보여지도록 설정-->
 							<th:block sec:authorize="hasAuthority('manager')">
+								<li class="nav-item"><a th:href="@{/mypage}" class="nav-link">마이 페이지</a></li>
 								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
 								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
