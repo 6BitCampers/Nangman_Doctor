@@ -10572,10 +10572,13 @@ tbody tr:last-of-type {
 }
 
 .right-menu {
-  display: flex;
-  justify-content: flex-end;
+  display: flex; /* flexbox를 사용하여 가로 정렬 */
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  list-style: none; /* 리스트 스타일 제거 */
+  padding: 0; /* 패딩 제거 */
+  margin: 0; /* 마진 제거 */
 }
 
 .right-menu .cta-button {
-  margin-left: 10px; /* 버튼 간격 조정 */
+  margin-left: 10px; /* 버튼 사이에 간격 추가 */
 }

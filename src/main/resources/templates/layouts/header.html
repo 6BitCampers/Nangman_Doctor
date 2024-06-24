@@ -13,13 +13,13 @@
 
 	<nav class="site-nav mt-3">
 		<div class="container">
-			<div class="site-navigation">
+			<div class="site-navigation" style="width: 100%;">
 
-				<div class="row align-items-center" style="width: 1300px;margin-left: 50px;">
+				<div class="row align-items-center" style="width: 100%;">
 					<div class="col-3" style="float: left;">
 						<a th:href="@{/}" class="logo">낭만닥터</a>
 					</div>
-					<div class="col-6 d-none d-lg-block" style="width: 450px;">
+					<div class="col-6 d-none d-lg-block" style="width: 400px;">
 						<ul class="js-clone-nav site-menu text-center m-0 p-0">
 							<li><a th:href="@{/about-hospital.html}">낭만닥터 소개</a></li>
 							<li><a th:href="@{/search}">병원검색</a></li>
@@ -33,25 +33,25 @@
 							</li>
 						</ul>
 					</div>
-					<div class="col-6 col-lg-3 text-lg-end">
-						<ul class="js-clone-nav d-none d-lg-inline-block text-end site-menu right-menu">
+					<div class="col-6 col-lg-4 text-lg-end">
+						<ul class="js-clone-nav d-none d-lg-inline-block text-end site-menu right-menu" style="list-style: none; padding: 0; margin: 0; display: flex; gap: 10px;">
 							<th:block sec:authorize="isAnonymous()">
 								<!-- 인증 받지 않음 -->
-								<li class="cta-button"><a th:href="@{/join}">회원가입</a></li>
-								<li class="cta-button"><a th:href="@{/login}">로그인</a></li>
+								<li class="cta-button" style="display: inline"><a th:href="@{/join}">회원가입</a></li>
+								<li class="cta-button"style="display: inline" ><a th:href="@{/login}">로그인</a></li>
 							</th:block>
 							<!-- emp인 경우에 보여지도록 설정-->
 							<th:block sec:authorize="hasAuthority('ROLE_EMP')">
-								<li class="nav-item"><a th:href="@{/mypage}" class="nav-link">마이 페이지</a></li>
+								<li class="nav-item" ><a th:href="@{/mypage}" class="nav-link">마이 페이지</a></li>
 								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
 								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
 
 							<!-- emp인 경우에 보여지도록 설정-->
 							<th:block sec:authorize="hasAuthority('nurse')">
-								<li class="nav-item"><a th:href="@{/mypage}" class="nav-link">마이 페이지</a></li>
-								<li class="nav-item"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
-								<li class="cta-button"><a th:href="@{/logout}">로그아웃</a></li>
+								<li class="nav-item"style="display: inline"><a th:href="@{/mypage}" class="nav-link">마이 페이지</a></li>
+								<li class="nav-item"style="display: inline"><a th:href="@{/emp}" class="nav-link">직원 페이지</a></li>
+								<li class="cta-button"style="display: inline"><a th:href="@{/logout}">로그아웃</a></li>
 							</th:block>
 
 							<!-- emp인 경우에 보여지도록 설정-->
