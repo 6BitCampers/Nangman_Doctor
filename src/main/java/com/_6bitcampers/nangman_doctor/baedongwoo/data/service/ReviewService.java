@@ -55,4 +55,7 @@ public class ReviewService {
     public void insertReview(ReviewDto reviewDto){
        reviewInter.insertReview(reviewDto);
     }
+    public String getEmployeeName(int employee_no){
+        return reviewInter.getEmployeeName(employee_no);
+    }
 }

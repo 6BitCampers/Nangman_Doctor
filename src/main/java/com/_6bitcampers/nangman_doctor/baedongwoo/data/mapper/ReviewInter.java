@@ -32,4 +32,6 @@ public interface ReviewInter {
     @Insert("insert into hospital_review (review_title, review_content, review_writeday, employee_no, user_no, review_likecount) values (#{review_title},#{review_content},now(),#{employee_no},#{user_no},#{review_likecount})")
     @Options(useGeneratedKeys = true, keyColumn = "review_no", keyProperty = "review_no")
     public void insertReview(ReviewDto reviewDto);
+    @Select("select employee_name from hospital_employee where employee_no=#{employee_no}")
+    public String getEmployeeName(int employee_no);
 }

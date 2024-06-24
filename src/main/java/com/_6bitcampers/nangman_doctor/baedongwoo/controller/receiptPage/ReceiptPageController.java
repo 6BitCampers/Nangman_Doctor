@@ -3,6 +3,7 @@ package com._6bitcampers.nangman_doctor.baedongwoo.controller.receiptPage;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.PaymentService;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
+import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
@@ -30,8 +31,15 @@ public class ReceiptPageController {
         userEntity userEntity= reviewService.getUserInfo(userId, user_type);
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
         int infoNo = receiptDto.getInfo_no();
+        int reservation_no=receiptDto.getReservation_no();
+        ReservationDto reservationDto =paymentService.getReservation(reservation_no);
+        int employee_no=reservationDto.getEmployee_no();
+        String empName= reviewService.getEmployeeName(employee_no);
+
         EmpDto empDto=paymentService.gethospitalInfo(infoNo);
 
+
+        model.addAttribute("empName",empName);
         model.addAttribute("empDto",empDto);
         model.addAttribute("receiptDto", receiptDto);
         model.addAttribute("userEntity", userEntity);

@@ -52,10 +52,12 @@
     #printReceiptPage:hover{
         color: gray;
     }
-    @media print {
-        #printOnlySpan {
-            display: none;
-        }
+    #printOnlySpan{
+        position: absolute;
+        left: 0;
+        clear: both;
+        color: gray; font-size: 14px;
+        font-weight: lighter;
     }
 </style>
 <body>
@@ -108,7 +110,7 @@
         <td>&nbsp;<span th:text="${randomDiseaseWord}"></span></td>
         <th class="receiptTdName" rowspan="2" colspan="2" style="text-align: center">처방 의료인의 성명</th>
         <td colspan="3" rowspan="2" style="text-align: right; position: relative;">
-            <span id="printOnlySpan" style="position: absolute; left: 0; clear: both; color: gray; font-size: 14px; font-weight: lighter">&nbsp;&nbsp;&nbsp;(인쇄 시에만 출력)</span>
+            <span id="printOnlySpan">&nbsp;&nbsp;&nbsp;(인쇄 시에만 출력)</span>
             (서명 또는 날인)
         </td>
     </tr>
@@ -158,16 +160,10 @@
 <hr style="width: 700px">
 </div>
 </body>
-<script>
-    var empName = "${empDto.getEmployee_name()}"; // 서버에서 받아오는 값
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let empName = /*[[${empName}]]*/ "name"; // 서버에서 받아오는 값
 
-    function beforePrint() {
-        document.getElementById('printOnlySpan').textContent = empName;
-    }
-
-    function afterPrint() {
-        document.getElementById('printOnlySpan').textContent = '(인쇄 시에만 출력)';
-    }
     $(function () {
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
@@ -197,13 +193,13 @@
             document.body.appendChild(img);
         });
 
-        });
+        });//function end
+
+
     $("#printReceiptPage").on("click",function () {
         var content = document.getElementById("printReceipt").innerHTML;
         var originalContent = document.body.innerHTML; // 기존의 body 내용 저장
 
-        window.onbeforeprint = beforePrint;
-        window.onafterprint = afterPrint;
 
         document.body.innerHTML = `
         <html lang="ko">
@@ -251,6 +247,11 @@
                     -webkit-print-color-adjust: exact !important;   /* Chrome, Safari, Edge */
                     color-adjust: exact !important;                 /* Firefox */
                 }
+                #printOnlySpan{
+                margin-left:10px;
+                font-size: 20px;
+                font-weight: bold;
+                }
             </style>
         </head>
         <body>
@@ -259,12 +260,15 @@
         </body>
         </html>
     `;
+        console.log(empName);
+        $("#printOnlySpan").text(empName);//empName 넣어주기
 
         window.onafterprint = function () {
             // 기존의 body 내용을 복원
             document.body.innerHTML = originalContent;
         }
     });
+    /*]]>*/
 </script>
 <script src="https://cdn.tailwindcss.com"></script>
 </html>
