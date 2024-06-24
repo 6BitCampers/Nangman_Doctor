@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.sql.Date;
 
 @Controller
 public class mypageController {
@@ -56,16 +59,40 @@ public class mypageController {
         }
         try {
             List<Map<String, Object>> reservationList = reservationService.getUserReservations(userNo);
-            System.out.println("테스트 박주용: " + reservationList.get(0));
+            int completed = 0;
+            int pending = 0;
+            int reserved = 0;
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
             if (reservationList != null && !reservationList.isEmpty()) {
                 model.addAttribute("reservationList", reservationList);
+
+                for (Map<String, Object> map : reservationList) {
+                    Date reservationDateSql = (Date) map.get("reservation_date");
+                    Integer reservationStatus = (Integer) map.get("reservation_status");
+
+                    LocalDateTime reservationDate = reservationDateSql.toLocalDate().atStartOfDay();
+                    if (reservationDate.isBefore(now)) {
+                        completed++;
+                        map.put("status","completed");
+                    } else if (reservationStatus != null && reservationStatus == 1) {
+                        pending++;
+                        map.put("status","pending");
+                    } else {
+                        reserved++;
+                        map.put("status","reserved");
+                    }
+                    model.addAttribute("completed",completed);
+                    model.addAttribute("reserved",reserved);
+                    model.addAttribute("pending",pending);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         //리뷰 작성시 필요한 값 보내기
         model.addAttribute("userNo",userNo);
-        System.out.println(userNo);
 
         return "mypage"; // 템플릿 이름을 반환합니다. "mypage.html" 템플릿이 호출됩니다.
     }
