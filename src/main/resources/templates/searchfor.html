@@ -29,18 +29,25 @@
 
 <body>
 <style>
-h1.war {
-font-size: 100px;
-text-align: justify;
-width: 120%;
-margin: auto;
-white-space: pre;
-overflow: visible;
-word-wrap: break-word;
-max-width: 2000px; /* Ensure the text box does not exceed this width */
-color:white;
-font-weight: bold;
-}
+	h1.war {
+		font-size: 100px;
+		text-align: justify;
+		width: 120%;
+		margin: auto;
+		white-space: pre;
+		overflow: visible;
+		word-wrap: break-word;
+		max-width: 2000px; /* Ensure the text box does not exceed this width */
+		color: white;
+		font-weight: bold;
+	}
+	input::placeholder {
+		font-size: 1.2rem;
+	}
+	.input-large {
+		width: 100%; /* Increase the width of the input field */
+		font-size: 1.2rem; /* Increase the font size of the input text */
+	}
 </style>
 <div layout:fragment="content">
 
@@ -58,19 +65,30 @@ font-weight: bold;
 	</div>
 </div>
 
-<div class="section">
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-lg-8">
-				<form action="/results" method="get" class="d-flex align-items-center">
-					<input type="text" name="keyword" class="form-control me-2" placeholder="Search...">
-					<button type="submit" class="btn btn-primary" style="background-color:darkorange">Search</button>
-				</form>
+	<div class="section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8">
+					<form action="/results" method="get" class="d-flex align-items-center">
+						<input id="search-input" style="width: 1000px" type="text" name="keyword" class="form-control me-2 input-large" placeholder="관심 있는 키워드를 입력해 주세요. 예: 내과, 치과, 피부과 등" value="">
+						<button type="submit" class="btn btn-primary" style="background-color:#f59b74">Search</button>
+					</form>
+				</div>
+				<div style="align-items: center; width: 1200px; text-align: center;">
+					<br><br>
+					<h3 style="color:#959ea9"><b>인기검색어!</b></h3>
+					<a style="width:auto; border-radius:20px; border:#dfc2c4; background-color: #dfc2c4" href="/results?keyword=코" class="btn btn-dark btn-sm">#코</a>
+					<a style="width:auto; border-radius:20px; border:#bfddcf; background-color: #bfddcf" href="/results?keyword=눈" class="btn btn-dark btn-sm">#눈</a>
+					<a style="width:auto; border-radius:20px; border:#99D3FF; background-color: #99D3FF" href="/results?keyword=양악" class="btn btn-dark btn-sm">#양악</a>
+					<a style="width:auto; border-radius:20px; border:#dde0e3; background-color: #dde0e3" href="/results?keyword=피부과" class="btn btn-dark btn-sm">#피부과</a>
+					<a style="width:auto; border-radius:20px; border:#dfc2c4; background-color: #dfc2c4" href="/results?keyword=강남" class="btn btn-dark btn-sm">#강남</a>
+					<a style="width:auto; border-radius:20px; border:#99D3FF; background-color: #99D3FF" href="/results?keyword=턱" class="btn btn-dark btn-sm">#턱</a>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
-</div>
+
 <div class="site-footer">
 	<div class="container">
 		<div class="row">

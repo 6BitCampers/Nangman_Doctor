@@ -10,5 +10,8 @@ public class EmployeeDto {
     private String employee_gender;
     private String employee_age;
     private String employee_hp;
+    private String employee_role;
+    private double employee_likecount;
+    private Long info_no;
 }
 

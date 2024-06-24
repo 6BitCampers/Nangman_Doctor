@@ -294,97 +294,18 @@
 
 		<div class="wide-slider-testimonial-wrap">
 			<div class="wide-slider-testimonial">
-				<div class="item">
+				<div th:each="employee : ${topEmployees}" class="item">
 					<blockquote class="block-testimonial">
 						<div class="author">
 							<img src="/images/person_1.jpg" alt="Free template by TemplateUX">
-							<h3>John Doe</h3>
-							<p class="position mb-5">CEO, Founder</p>
+							<h3 th:text="${employee.employee_name}">Employee Name</h3>
+							<p class="position mb-5" th:text="${employee.employee_likecount}">Employee Role</p>
 						</div>
 						<p>
-						<div class="quote">&ldquo;</div>
-						&ldquo;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-						there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the
-						Semantics, a large language ocean.&rdquo;</p>
-					</blockquote>
-				</div>
-
-				<div class="item">
-					<blockquote class="block-testimonial">
-						<div class="author">
-							<img src="/images/person_2.jpg" alt="Free template by TemplateUX">
-							<h3>James Woodland</h3>
-							<p class="position mb-5">Designer at Facebook</p>
-						</div>
-						<p>
-						<div class="quote">&ldquo;</div>
-						&ldquo;When she reached the first hills of the Italic Mountains, she had a last view back on the
-						skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her
-						own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her
-						way.&rdquo;</p>
-
-					</blockquote>
-				</div>
-
-				<div class="item">
-					<blockquote class="block-testimonial">
-						<div class="author">
-							<img src="/images/person_3.jpg" alt="Free template by TemplateUX">
-							<h3>Rob Smith</h3>
-							<p class="position mb-5">Product Designer at Twitter</p>
-						</div>
-						<p>
-						<div class="quote">&ldquo;</div>
-						&ldquo;A small river named Duden flows by their place and supplies it with the necessary
-						regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your
-						mouth.&rdquo;</p>
-					</blockquote>
-				</div>
-
-				<div class="item">
-					<blockquote class="block-testimonial">
-						<div class="author">
-							<img src="/images/person_1.jpg" alt="Free template by TemplateUX">
-							<h3>John Doe</h3>
-							<p class="position mb-5">CEO, Founder</p>
-						</div>
-						<p>
-						<div class="quote">&ldquo;</div>
-						&ldquo;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-						there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the
-						Semantics, a large language ocean.&rdquo;</p>
-					</blockquote>
-				</div>
-
-				<div class="item">
-					<blockquote class="block-testimonial">
-						<div class="author">
-							<img src="/images/person_2.jpg" alt="Free template by TemplateUX">
-							<h3>James Woodland</h3>
-							<p class="position mb-5">Designer at Facebook</p>
-						</div>
-						<p>
-						<div class="quote">&ldquo;</div>
-						&ldquo;When she reached the first hills of the Italic Mountains, she had a last view back on the
-						skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her
-						own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her
-						way.&rdquo;</p>
-
-					</blockquote>
-				</div>
-
-				<div class="item">
-					<blockquote class="block-testimonial">
-						<div class="author">
-							<img src="/images/person_3.jpg" alt="Free template by TemplateUX">
-							<h3>Rob Smith</h3>
-							<p class="position mb-5">Product Designer at Twitter</p>
-						</div>
-						<p>
-						<div class="quote">&ldquo;</div>
-						&ldquo;A small river named Duden flows by their place and supplies it with the necessary
-						regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your
-						mouth.&rdquo;</p>
+						<span style="color:#fd7e14" th:text="'주진료:'+${employee.employee_field}">Employee Field</span>
+						<br>
+						<span style="color:#fd7e14" th:text="${hospitalNames[employee.info_no]}">병원이름</span>
+						</p>
 					</blockquote>
 				</div>
 			</div>
@@ -498,77 +419,27 @@
 
 			<div class="row">
 				<div class="col-12" data-aos="fade-up" data-aos-delay="0">
-
 					<h2 class="heading mb-5">Recent Posts</h2>
 				</div>
 			</div>
 			<div class="row align-items-stretch">
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+				<div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100" th:each="item, iter : ${items}" th:if="${iter.index < 4}">
 					<div class="media-entry">
-						<a href="#">
-							<img src="/images/gal_1.jpg" alt="Image" class="img-fluid">
+						<a th:href="${item.originallink}" target="_blank">
+							<img th:src="'/images/gal_' + ${iter.index + 1} + '.jpg'" alt="Image" class="img-fluid">
 						</a>
 						<div class="bg-white m-body">
-							<span class="date">May 14, 2020</span>
-							<h3><a href="#">Far far away, behind the word mountains</a></h3>
-							<p>Vokalia and Consonantia, there live the blind texts. Separated they live.</p>
-
-							<a href="single.html" class="more d-flex align-items-center float-start">
+							<span class="date" th:text="${item.pubDate}">May 14, 2020</span>
+							<h3><a th:href="${item.originallink}" target="_blank" th:text="${item.title}">Far far away, behind the word mountains</a></h3>
+							<p th:text="${item.description}">Vokalia and Consonantia, there live the blind texts. Separated they live.</p>
+							<a th:href="${item.originallink}" target="_blank" class="more d-flex align-items-center float-start">
 								<span class="label">Read More</span>
 								<span class="arrow"><span class="icon-keyboard_arrow_right"></span></span>
 							</a>
 						</div>
 					</div>
 				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
-					<div class="media-entry">
-						<a href="#">
-							<img src="/images/gal_2.jpg" alt="Image" class="img-fluid">
-						</a>
-						<div class="bg-white m-body">
-							<span class="date">May 14, 2020</span>
-							<h3><a href="#">Far far away, behind the word mountains</a></h3>
-							<p>Vokalia and Consonantia, there live the blind texts. Separated they live.</p>
-
-							<a href="single.html" class="more d-flex align-items-center float-start">
-								<span class="label">Read More</span>
-								<span class="arrow"><span class="icon-keyboard_arrow_right"></span></span>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-					<div class="media-entry">
-						<a href="#">
-							<img src="/images/gal_3.jpg" alt="Image" class="img-fluid">
-						</a>
-						<div class="bg-white m-body">
-							<span class="date">May 14, 2020</span>
-							<h3><a href="#">Far far away, behind the word mountains</a></h3>
-							<p>Vokalia and Consonantia, there live the blind texts. Separated they live.</p>
-							<a href="single.html" class="more d-flex align-items-center float-start">
-								<span class="label">Read More</span>
-								<span class="arrow"><span class="icon-keyboard_arrow_right"></span></span>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-6 col-sm-6 col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
-					<div class="media-entry">
-						<a href="#">
-							<img src="/images/gal_4.jpg" alt="Image" class="img-fluid">
-						</a>
-						<div class="bg-white m-body">
-							<span class="date">May 14, 2020</span>
-							<h3><a href="#">Far far away, behind the word mountains</a></h3>
-							<p>Vokalia and Consonantia, there live the blind texts. Separated they live.</p>
-							<a href="single.html" class="more d-flex align-items-center float-start">
-								<span class="label">Read More</span>
-								<span class="arrow"><span class="icon-keyboard_arrow_right"></span></span>
-							</a>
-						</div>
-					</div>
-				</div>
+			</div>
 			</div>
 		</div>
 	</div>
