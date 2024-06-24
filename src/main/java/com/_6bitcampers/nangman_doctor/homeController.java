@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor;
 
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginService.roleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -18,9 +19,14 @@ public class homeController {
 
     @GetMapping("/")
     public String home() {
-        //로그인 시 이메일 출력
-        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+        //로그인 유저의 이메일 및 로그인 타입
+        CustomUserDetails userDetails= (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //로그인 유저의 이메일 출력
+        String useremail = userDetails.getUsername();
+        //로그인 유저의 로그인 타입 출력
+        String type = userDetails.getType();
 
+        //권한 읽어오기(ex. ROLE_EMP)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
