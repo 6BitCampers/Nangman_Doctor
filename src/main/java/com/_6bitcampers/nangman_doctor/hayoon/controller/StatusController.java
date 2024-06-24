@@ -32,7 +32,11 @@ public class StatusController {
 
 
     @PostMapping("/SendStatus")
-    public void updateReservationStatus(@RequestParam int reservationNo,@RequestParam String isAccepted, Model model) {
+    public Map<String, Object> updateReservationStatus(@RequestParam int reservationNo,@RequestParam String isAccepted, Model model) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("reservationNo", reservationNo);
+        response.put("isAccepted", isAccepted);
 
         System.out.println(reservationNo);
         System.out.println(isAccepted);
@@ -48,12 +52,15 @@ public class StatusController {
                 String employeeEmail=reservationMapper.getEmployeemailByNo(reservationMapper.getEmployeeNo(reservationNo));
                 String userEmail=reservationMapper.getUsermailByNo(reservationMapper.getUserNoByres(reservationNo));
 
-
+                System.out.println(employeeEmail);
+                System.out.println(userEmail);
 
                 // 예약 보내기
                 ReservationDto reservationDto=reservationMapper.getResdto(reservationNo);
                 statusService.sendReservationRequestEmail(userEmail, reservationDto);
                 statusService.sendReservationRequestEmail(employeeEmail, reservationDto);
+
+                System.out.println(reservationDto);
 
             }
         }
@@ -61,6 +68,7 @@ public class StatusController {
             statusService.deleteByReservationNo(reservationNo);
         }
 
+        return response;
 
     }
     @GetMapping("/edit")
