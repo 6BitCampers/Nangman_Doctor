@@ -38,4 +38,8 @@ public class mypageService {
     public String getInfoName(int info_no){
         return mypageMapper.getInfoName(info_no);
     };
+
+    public void updateReservation(int reservation_no){
+        mypageMapper.updateReservation(reservation_no);
+    }
 }

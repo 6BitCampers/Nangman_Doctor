@@ -39,4 +39,9 @@ public interface mypageMapper {
     select info_name from hospital_info where info_no=#{info_no}
 """)
    String getInfoName(int info_no);
+
+    @Update("""
+    update hospital_reservation set reservation_status = 3 where reservation_no = #{reservation_no}
+""")
+    void updateReservation(int reservation_no);
 }

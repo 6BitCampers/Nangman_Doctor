@@ -56,6 +56,7 @@ public class mypageController {
         }
         try {
             List<Map<String, Object>> reservationList = reservationService.getUserReservations(userNo);
+            System.out.println("테스트 박주용: " + reservationList.get(0));
             if (reservationList != null && !reservationList.isEmpty()) {
                 model.addAttribute("reservationList", reservationList);
             }
