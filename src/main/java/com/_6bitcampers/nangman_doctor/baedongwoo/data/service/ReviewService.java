@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor.baedongwoo.data.service;
 
+import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PillDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.mapper.ReviewInter;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
@@ -57,5 +58,8 @@ public class ReviewService {
     }
     public String getEmployeeName(int employee_no){
         return reviewInter.getEmployeeName(employee_no);
+    }
+    public PillDto getPillInfo(String pill_act){
+        return reviewInter.getPillInfo(pill_act);
     }
 }

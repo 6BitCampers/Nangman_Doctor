@@ -163,12 +163,8 @@ public class ReviewDetailController {
             @RequestParam int review_likecount,
             @RequestParam int employee_no,
             @RequestParam int user_no,
-            @RequestParam List<String> uploadedUUIDs,
-            Model model
+            @RequestParam List<String> uploadedUUIDs
             ){
-        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userId= customOAuth2User.getEmail();
-        
         List<String> imageUrls = extractImageUrls(review_content);
         storageService.moveFilesToFinalBucket(imageUrls,uploadedUUIDs);
         String updatedReview_content=updateImagePaths(review_content);
