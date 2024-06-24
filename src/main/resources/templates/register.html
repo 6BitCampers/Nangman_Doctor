@@ -84,6 +84,7 @@
                 function submitForm() {
                     var infoName = $('#info_name').val().trim(); // 입력된 검색어
                     if (infoName !== '') {
+                        console.log(infoName);
                         // 부모 창의 input 태그에 값 설정
                         if (window.opener && !window.opener.closed) {
                             window.opener.document.getElementById('hospitalSearchInput').value = infoName;
