@@ -1,7 +1,9 @@
 package com._6bitcampers.nangman_doctor.hayoon.controller;
 
+import com._6bitcampers.nangman_doctor.hayoon.Dto.HosInfoDto;
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
+import com._6bitcampers.nangman_doctor.search.HospitalDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,8 +25,12 @@ public class ReservationController {
     @GetMapping("/reservation")
     public String showReservationPage(@RequestParam("info_no") int infoNo, Model model) {
         int employeeNo = reservationService.getEmployeeNoByInfoNo(infoNo);
+        HosInfoDto hosInfoDto = reservationService.getHosdto(infoNo);
+
+        model.addAttribute("HosInfoDto", hosInfoDto);
         model.addAttribute("info_no", infoNo);
         model.addAttribute("employeeNo", employeeNo);
+
         return "reservation";  // 원하는 HTML 페이지로 이동합니다.
     }
 
@@ -37,6 +43,7 @@ public class ReservationController {
                               @RequestParam("employee_no") int employeeNo,
                               @RequestParam("info_no") int infoNo,
                               @RequestParam("reservation_face") int reservationFace,
+                              @RequestParam("reservation_content") String reservationContent,
                               Model model) {
 
         // Get the userNo from the SecurityContext
@@ -53,15 +60,12 @@ public class ReservationController {
                 .employee_no(employeeNo)
                 .user_no(userNo)
                 .reservation_time(reservationTime)
+                .reservation_content(reservationContent)
                 .reservation_face(reservationFace)
-
                 .build();
 
         reservationService.saveReservation(reservationDto);
 
-
         return "userreservation";
     }
-
-
 }

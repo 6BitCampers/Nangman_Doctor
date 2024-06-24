@@ -1,6 +1,8 @@
 package com._6bitcampers.nangman_doctor.hayoon.Mapper;
 
+import com._6bitcampers.nangman_doctor.hayoon.Dto.HosInfoDto;
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
+import com._6bitcampers.nangman_doctor.search.HospitalDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -11,9 +13,8 @@ import java.util.Map;
 
 @Mapper
 public interface ReservationMapper {
-
-    @Insert("INSERT INTO hospital_reservation (reservation_room, reservation_reason, reservation_date, reservation_role, employee_no, user_no, reservation_time, reservation_status, reservation_face) " +
-            "VALUES (#{reservation_room}, #{reservation_reason}, #{reservation_date}, #{reservation_role}, #{employee_no}, #{user_no}, #{reservation_time}, 1, #{reservation_face})")
+    @Insert("INSERT INTO hospital_reservation (reservation_reason, reservation_date, reservation_role, employee_no, user_no, reservation_time, reservation_status, reservation_face, reservation_content) " +
+            "VALUES (#{reservation_reason}, #{reservation_date}, #{reservation_role}, #{employee_no}, #{user_no}, #{reservation_time}, 1, #{reservation_face}, #{reservation_content})")
     void insertReservation(ReservationDto dto);
 
     @Select("SELECT user_name FROM normal_user WHERE user_no = #{userNo}")
@@ -41,8 +42,8 @@ public interface ReservationMapper {
     @Select(("SELECT user_no FROM normal_user WHERE user_email=#{id}"))
     int getUserNo(String id);
 
-    @Select("SELECT employee_no FROM hospital_employee WHERE info_no = #{infoNo}")
-    int getEmployeeNoByInfoNo(int infoNo);
+    @Select("SELECT employee_no FROM hospital_employee WHERE info_no = #{infoNo} LIMIT 1")
+    Integer getEmployeeNoByInfoNo(int infoNo);
 
     @Select("SELECT employee_no FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
     int getEmployeeNo(int reservationNo);
@@ -52,6 +53,9 @@ public interface ReservationMapper {
 
     @Select("SELECT * FROM hospital_reservation WHERE reservation_no = #{reservationNo}")
     ReservationDto getResdto(int reservationNo);
+
+    @Select("SELECT * FROM hospital_info WHERE info_no=#{infoNo}")
+    HosInfoDto getHosdto(int infoNo);
 
 
 

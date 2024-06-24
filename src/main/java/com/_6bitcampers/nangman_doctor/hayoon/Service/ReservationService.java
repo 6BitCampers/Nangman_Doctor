@@ -1,7 +1,9 @@
 package com._6bitcampers.nangman_doctor.hayoon.Service;
 
+import com._6bitcampers.nangman_doctor.hayoon.Dto.HosInfoDto;
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.hayoon.Mapper.ReservationMapper;
+import com._6bitcampers.nangman_doctor.search.HospitalDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,6 +22,8 @@ import java.util.UUID;
 
 @Service
 public class ReservationService {
+
+    private static final int DEFAULT_EMPLOYEE_NO = 3; // 기본 관리자 ID
 
     private  ReservationMapper reservationMapper;
     private  JavaMailSender mailSender;
@@ -89,9 +93,13 @@ public class ReservationService {
             e.printStackTrace();
         }
     }
-    // info_no를 이용해 employee_no 가져오기
     public int getEmployeeNoByInfoNo(int infoNo) {
-        return reservationMapper.getEmployeeNoByInfoNo(infoNo);
+        Integer employeeNo = reservationMapper.getEmployeeNoByInfoNo(infoNo);
+        return (employeeNo != null) ? employeeNo : DEFAULT_EMPLOYEE_NO;
+    }
+
+    public HosInfoDto getHosdto(int infoNo) {
+        return reservationMapper.getHosdto(infoNo);
     }
 
 
