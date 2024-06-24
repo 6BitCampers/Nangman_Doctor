@@ -2,6 +2,7 @@ package com._6bitcampers.nangman_doctor.woohyeong.controller;
 
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.woohyeong.Service.conferenceService;
+import com._6bitcampers.nangman_doctor.woohyeong.Service.mypageService;
 import com._6bitcampers.nangman_doctor.woohyeong.Service.reservationServiceW;
 import com._6bitcampers.nangman_doctor.woohyeong.dto.ReceiptDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class conferenceController {
     @Autowired
     private reservationServiceW reservationService;
 
+    @Autowired
+    private mypageService mypageService;
+
     @GetMapping("/test")
     public String home(Model model, int reservation_no) {
 
@@ -38,13 +42,15 @@ public class conferenceController {
 
         System.out.println(reservation_no);
 
+        mypageService.updateReservation(reservation_no);
+
         int info_no = conferenceService.getInfoNo(reservation_no);
 
 
         boolean employeeNoSuccess = false;
         boolean userNoSuccess = false;
 
-        startNodeServer();
+//        startNodeServer();
 
         try {
             int employee_no = reservationService.getEmployeeNo(id);

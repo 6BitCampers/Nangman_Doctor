@@ -1,7 +1,9 @@
 package com._6bitcampers.nangman_doctor.hayoon.Service;
 
+import com._6bitcampers.nangman_doctor.hayoon.Dto.HosInfoDto;
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.hayoon.Mapper.ReservationMapper;
+import com._6bitcampers.nangman_doctor.search.HospitalDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,9 +23,11 @@ import java.util.UUID;
 @Service
 public class ReservationService {
 
-    private final ReservationMapper reservationMapper;
-    private final JavaMailSender mailSender;
-    private final TemplateEngine templateEngine;
+    private static final int DEFAULT_EMPLOYEE_NO = 3; // 기본 관리자 ID
+
+    private  ReservationMapper reservationMapper;
+    private  JavaMailSender mailSender;
+    private  TemplateEngine templateEngine;
 
 
     public ReservationService(ReservationMapper reservationMapper, JavaMailSender mailSender, TemplateEngine templateEngine) {
@@ -34,8 +38,6 @@ public class ReservationService {
 
     // 예약 저장
     public void saveReservation(ReservationDto reservationDto) {
-        // Generate a random UUID and set it to the reservationDto
-        reservationDto.setReservation_room(UUID.randomUUID().toString());
 
         // Insert the reservation
         reservationMapper.insertReservation(reservationDto);
@@ -62,13 +64,14 @@ public class ReservationService {
     }
 
     public void sendReservationRequestEmail(String to, ReservationDto reservationDto) {
-        System.out.println("dd" + reservationMapper.getUserNameByNo(reservationDto.getUser_no()));
+        //System.out.println("dd" + reservationMapper.getUserNameByNo(reservationDto.getUser_no()));
         Map<String, Object> variables = new HashMap<>();
         variables.put("userName", reservationMapper.getUserNameByNo(reservationDto.getUser_no()));
         variables.put("reservation", reservationDto);
-        System.out.println("ww" + variables);
+       // System.out.println("ww" + variables);
 
-        sendEmail(to, "예약 요청", "firstuseremail", variables);
+        sendEmail(to, "예약 요청", "emailTemplates/firstuseremail", variables);
+        sendEmail(to,"예약 요청 확인","emailTemplates/firsthosemail",variables);
     }
 
     public void sendEmail(String to, String subject, String templateName, Map<String, Object> variables) {
@@ -90,14 +93,16 @@ public class ReservationService {
             e.printStackTrace();
         }
     }
-
-    // info_no를 이용해 employee_no 가져오기
     public int getEmployeeNoByInfoNo(int infoNo) {
-        return reservationMapper.getEmployeeNoByInfoNo(infoNo);
+        Integer employeeNo = reservationMapper.getEmployeeNoByInfoNo(infoNo);
+        return (employeeNo != null) ? employeeNo : DEFAULT_EMPLOYEE_NO;
     }
 
-    public int getEmployeeNo(int reservationNo) {
-        return reservationMapper.getEmployeeNo(reservationNo);
+    public HosInfoDto getHosdto(int infoNo) {
+        return reservationMapper.getHosdto(infoNo);
     }
+
+
+
 
 }

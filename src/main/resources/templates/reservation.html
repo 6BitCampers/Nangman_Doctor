@@ -4,163 +4,293 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>예약하기</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Search Results &mdash; Sterial</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+
 <div layout:fragment="content">
-    <div class="flex h-screen w-full items-center justify-center bg-orange-100">
-        <div class="mx-auto max-w-md space-y-6" style="position: absolute;top: 130px">
-            <div class="space-y-2 text-center">
-                <h1 class="text-3xl font-bold">예약하기</h1>
+    <div class="hero overlay">
+        <div class="img-bg rellax">
+            <img src="images/hero_2.jpg" alt="Image" class="img-fluid">
+        </div>
+        <div class="container">
+            <div class="row align-items-center justify-content-start">
+                <div class="col-lg-6 mx-auto text-center">
+                    <h1 class="heading" data-aos="fade-up">예약하기</h1>
+                    <p data-aos="fade-up">병원 예약 페이지입니다.</p>
+                </div>
             </div>
-            <form class="space-y-4" th:action="@{/reserveProc}" method="post" id="reservationForm" onsubmit="return handleSubmit(event)">
-                <div class="space-y-2">
-                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_name">
-                        이름 <span class="text-red-500">*</span>
-                    </label>
-                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                           id="reservation_name" placeholder="홍길동" required="" name="name"/>
-                </div>
-                <div class="space-y-2">
-                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_date">
-                        날짜 <span class="text-red-500">*</span>
-                    </label>
-                    <input type="date" id="reservation_date" name="reservation_date" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                           required=""/>
-                </div>
-                <div class="space-y-2">
-                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_time">
-                        예약 시간 <span class="text-red-500">*</span>
-                    </label>
-                    <div class="time-table" id="reservation_time">
-                        <!-- 시간 블록들은 JavaScript에서 생성 -->
-                    </div>
-                </div>
-                <div class="space-y-2">
-                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_reason">
-                        진료명 <span class="text-red-500">*</span>
-                    </label>
-                    <input class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                           id="reservation_reason" placeholder="진료명" required="" name="reservation_reason"/>
-                </div>
-                <div class="space-y-2">
-                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_role">
-                        진료 유형 <span class="text-red-500">*</span>
-                    </label>
-                    <select id="reservation_role" name="reservation_role" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            required="">
-                        <option value="1">상담</option>
-                        <option value="2">수술 경과 상담</option>
-
-                    </select>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="reservation_face">
-                        대면비대면 <span class="text-red-500">*</span>
-                    </label>
-                    <select id="reservation_face" name="reservation_face" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            required="">
-                        <option value="1">대면</option>
-                        <option value="2">비대면</option>
-
-                    </select>
-                </div>
-                <!-- Hidden field for employee_no -->
-                <input type="hidden" id="employee_no" name="employee_no" th:value="${employeeNo}"/>
-                <!-- Hidden field for info_no -->
-                <input type="hidden" id="info_no" name="info_no" th:value="${info_no}"/>
-                <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
-                        type="submit">
-                    등록
-                </button>
-            </form>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var today = new Date().toISOString().split('T')[0];
-            document.getElementById('reservation_date').setAttribute('min', today);
 
-            var timeTable = document.getElementById('reservation_time');
-            for (var i = 6; i < 24; i++) {
-                var timeBlock = document.createElement('div');
-                var startTime = i < 10 ? '0' + i + ':00' : i + ':00';
-                var endTime = (i + 1) < 10 ? '0' + (i + 1) + ':00' : (i + 1) + ':00';
-                timeBlock.textContent = startTime + ' - ' + endTime;
-                timeBlock.dataset.time = startTime + ' - ' + endTime;
-                timeBlock.addEventListener('click', function() {
-                    var selectedBlocks = document.querySelectorAll('.time-table div.selected');
-                    selectedBlocks.forEach(function(block) {
-                        block.classList.remove('selected');
-                    });
-                    this.classList.add('selected');
+    <nav class="site-nav mt-3">
+        <div class="container">
+            <div class="section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12" data-aos="fade-up" data-aos-delay="0">
+                            <h2 class="heading mb-5">예약 정보 입력</h2>
+                        </div>
+                        <div class="col-lg-4 mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
+                            <div class="contact-info">
+
+                                <div class="address mt-4">
+                                    <i class="icon-room"></i>
+                                    <h4 class="mb-2">Location:</h4>
+                                    <p th:text="${HosInfoDto.getInfo_addr()}"></p>
+                                </div>
+                                <div class="open-hours mt-4">
+                                    <i class="icon-clock-o"></i>
+                                    <h4 class="mb-2">Open Hours:</h4>
+                                    <p>
+                                        Sunday-Friday:<br>
+                                        11:00 AM - 2300 PM
+                                    </p>
+                                </div>
+<!--                                <div class="email mt-4">-->
+<!--                                    <i class="icon-envelope"></i>-->
+<!--                                    <h4 class="mb-2">Email:</h4>-->
+<!--                                    <p th:text="${HosInfoDto.getInfo_hp()}">-->
+<!--                                </div>-->
+                                <div class="phone mt-4">
+                                    <i class="icon-phone"></i>
+                                    <h4 class="mb-2">Call:</h4>
+                                    <p th:text="${HosInfoDto.getInfo_hp()}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                            <form class="space-y-4"  th:action="@{/reserveProc}" method="post" id="reservationForm" onsubmit="return handleSubmit(event)" style="max-width: 800px; width: 200%; margin: 0 auto;">
+                                <div class="row mb-4">
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" placeholder="이름" id="reservation_name" name="name" required="">
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="date" class="form-control" id="reservation_date" name="reservation_date" required="">
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <select class="form-control" id="reservation_time" name="reservation_time" required="">
+                                            <option value="" disabled selected>예약 시간</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <input type="text" class="form-control" placeholder="진료명" id="reservation_reason" name="reservation_reason" required="">
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-6">
+                                        <select class="form-control" id="reservation_role" name="reservation_role" required="">
+                                            <option value="1">상담</option>
+                                            <option value="2">수술 경과 상담</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <select class="form-control" id="reservation_face" name="reservation_face" required="">
+                                            <option value="1">대면</option>
+                                            <option value="2">비대면</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <textarea name="reservation_content" id="reservation_content" cols="30" rows="10" class="form-control" placeholder="Message"></textarea>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="employee_no" name="employee_no" th:value="${employeeNo}"/>
+                                <input type="hidden" id="info_no" name="info_no" th:value="${info_no}"/>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary w-100" style="height: 60px; font-size: 1.5rem;">등록</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="site-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="widget">
+                                <h3>About Us<span class="text-primary">.</span></h3>
+                                <p>이곳은 예약 페이지입니다. 문의사항은 아래 연락처로 연락해주세요.</p>
+                            </div>
+                            <div class="widget">
+                                <h3>Connect</h3>
+                                <ul class="list-unstyled social">
+                                    <li><a href="#"><span class="icon-instagram"></span></a></li>
+                                    <li><a href="#"><span class="icon-twitter"></span></a></li>
+                                    <li><a href="#"><span class="icon-facebook"></span></a></li>
+                                    <li><a href="#"><span class="icon-linkedin"></span></a></li>
+                                    <li><a href="#"><span class="icon-pinterest"></span></a></li>
+                                    <li><a href="#"><span class="icon-dribbble"></span></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2 ml-auto">
+                            <div class="widget">
+                                <h3>Links</h3>
+                                <ul class="list-unstyled float-left links">
+                                    <li><a href="#">About us</a></li>
+                                    <li><a href="#">Services</a></li>
+                                    <li><a href="#">News</a></li>
+                                    <li><a href="#">Careers</a></li>
+                                    <li><a href="#">Contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="widget">
+                                <h3>Company</h3>
+                                <ul class="list-unstyled float-left links">
+                                    <li><a href="#">About us</a></li>
+                                    <li><a href="#">Services</a></li>
+                                    <li><a href="#">News</a></li>
+                                    <li><a href="#">Careers</a></li>
+                                    <li><a href="#">Contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="widget">
+                                <h3>Contact</h3>
+                                <address>43 Raymouth Rd. Baltemoer, London 3910</address>
+                                <ul class="list-unstyled links mb-4">
+                                    <li><a href="tel://11234567890">+1(123)-456-7890</a></li>
+                                    <li><a href="tel://11234567890">+1(123)-456-7890</a></li>
+                                    <li><a href="mailto:info@mydomain.com">info@mydomain.com</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-12 text-center">
+                            <p class="mb-0">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> <!-- License information: https://untree.co/license/ -->
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var today = new Date().toISOString().split('T')[0];
+                    document.getElementById('reservation_date').setAttribute('min', today);
+
+                    var timeTable = document.getElementById('reservation_time');
+                    for (var i = 6; i < 24; i++) {
+                        var startTime = i < 10 ? '0' + i + ':00' : i + ':00';
+                        var endTime = (i + 1) < 10 ? '0' + (i + 1) + ':00' : (i + 1) + ':00';
+                        var option = document.createElement('option');
+                        option.value = startTime + ' - ' + endTime;
+                        option.textContent = startTime + ' - ' + endTime;
+                        timeTable.appendChild(option);
+                    }
                 });
-                timeTable.appendChild(timeBlock);
-            }
-        });
 
-        function handleSubmit(event) {
-            var selectedTimeBlock = document.querySelector('.time-table div.selected');
-            if (!selectedTimeBlock) {
-                alert('예약 시간을 선택해 주세요.');
-                event.preventDefault();
-                return false;
-            }
+                function handleSubmit(event) {
+                    var timeSelect = document.getElementById('reservation_time');
+                    if (timeSelect.value === "") {
+                        alert('예약 시간을 선택해 주세요.');
+                        event.preventDefault();
+                        return false;
+                    }
 
-            if (!confirm('예약 확정이 되었습니다. 병원에 메일 보내드릴게요~')) {
-                event.preventDefault();
-                return false;
-            }
+                    if (!confirm('예약 확정이 되었습니다. 병원에 메일 보내드릴게요~')) {
+                        event.preventDefault();
+                        return false;
+                    }
 
-            var timeInput = document.createElement('input');
-            timeInput.type = 'hidden';
-            timeInput.name = 'reservation_time';
-            timeInput.value = selectedTimeBlock.dataset.time;
-            document.getElementById('reservationForm').appendChild(timeInput);
-
-            return true;
-        }
-    </script>
-    <style>
-        body {
+                    return true;
+                }
+            </script>
+            <style>
+            body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
+            margin: 10px;
+            }
+
+            .form-group {
+            margin-bottom: 10px;
+            }
+
+            label {
             display: block;
             margin-bottom: 5px;
-        }
-        input, select, button {
-            width: 100%;
-            padding: 8px;
+            }
+
+            input, select, textarea, button {
+            width: 200%;
+
             margin: 5px 0;
             box-sizing: border-box;
-        }
-        .time-table {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .time-table div {
-            display: inline-block;
-            width: 23%;
+            font-size: 1.2rem;
+            }
+
+            .contact-info {
+            margin-top: 30px;
+            }
+
+
+
+            form {
+            max-width: 100px;
+            width: 100%;
             padding: 10px;
-            margin: 1%;
-            text-align: center;
-            border: 1px solid #ccc;
-            cursor: pointer;
             box-sizing: border-box;
-        }
-        .time-table div.selected {
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
+            }
+
+            .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            }
+
+            button {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            }
+
+            button:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+            }
+</style>
+        </div>
+    </nav>
 </div>
 </body>
 </html>

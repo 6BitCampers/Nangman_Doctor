@@ -1,9 +1,5 @@
 package com._6bitcampers.nangman_doctor;
 
-import com._6bitcampers.nangman_doctor.search.EmployeeDto;
-import com._6bitcampers.nangman_doctor.search.EmployeeService;
-import com._6bitcampers.nangman_doctor.search.NaverSearchItem;
-import com._6bitcampers.nangman_doctor.search.NaverSearchService;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginService.roleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,9 +27,14 @@ public class homeController {
 
     @GetMapping("/")
     public String home(Model model) throws JsonProcessingException {
-        //로그인 시 이메일 출력
-        String id = SecurityContextHolder.getContext().getAuthentication().getName();
+        //로그인 유저의 이메일 및 로그인 타입
+        //CustomUserDetails userDetails= (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //로그인 유저의 이메일 출력
+        //String useremail = userDetails.getUsername();
+        //로그인 유저의 로그인 타입 출력
+        //String type = userDetails.getType();
 
+        //권한 읽어오기(ex. ROLE_EMP)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();

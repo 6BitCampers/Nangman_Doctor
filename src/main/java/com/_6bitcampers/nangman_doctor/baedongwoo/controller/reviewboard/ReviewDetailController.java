@@ -35,7 +35,7 @@ public class ReviewDetailController {
     public String detail(
             HttpServletRequest request,
             HttpSession session,
-            @RequestParam int review_no,
+            @RequestParam("review_no") int review_no,
             @RequestParam(required = false) String userId,
             @RequestParam int currentPage,
             Model model) {
@@ -43,10 +43,10 @@ public class ReviewDetailController {
         String identifier = (userId != null && !userId.equals("anonymousUser")) ? userId : request.getSession().getId();
 
         //session에 해당 아이디가 없으면 조회수 증가
-        String isVisited = (String) request.getSession().getAttribute(identifier);
+        String isVisited = (String) request.getSession().getAttribute(identifier+review_no);
 
         if (isVisited == null) {
-            session.setAttribute(identifier, "visited");
+            session.setAttribute(identifier+review_no, "visited");
             reviewService.updateViewcount(review_no);
         }
         ReviewDto dto = reviewService.getReviewBySeq(review_no);
@@ -111,7 +111,6 @@ public class ReviewDetailController {
     ){
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId= customOAuth2User.getEmail();
-        String user_type=customOAuth2User.getType();
         String user_name=customOAuth2User.getRealName();
 
         ReviewDto dto=reviewService.getReviewBySeq(review_no);
@@ -166,7 +165,6 @@ public class ReviewDetailController {
             @RequestParam int user_no,
             @RequestParam List<String> uploadedUUIDs
             ){
-        
         List<String> imageUrls = extractImageUrls(review_content);
         storageService.moveFilesToFinalBucket(imageUrls,uploadedUUIDs);
         String updatedReview_content=updateImagePaths(review_content);
@@ -181,7 +179,7 @@ public class ReviewDetailController {
 
         reviewService.insertReview(reviewDto);
 
-        return "redirect:/mypage";
+        return "redirect:/reviewboard";
     }
 
     //AJAX로 업로드 되는 이미지 바로바로 저장하기

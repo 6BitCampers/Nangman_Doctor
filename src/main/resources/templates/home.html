@@ -11,27 +11,21 @@
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <div layout:fragment="content">
-	<div class="hero overlay">
+	<div class="hero overlay" style="height: 942px;">
 
 		<div class="img-bg rellax">
-			<img src="/images/hero_1.jpg" alt="Image" class="img-fluid">
+			<img src="/images/mainimg.jpg" alt="Image" class="img-fluid">
 		</div>
 
 		<div class="container">
-			<div class="row align-items-center justify-content-start">
-				<div class="chatbotimg" style="width: 60px;">
-					<img src="/icon/chatbotimg.png" alt="Chatbot Image" id="chatbotimg" >
-				</div>
+			<div class="row align-items-center justify-content-start" >
 
-				<div class="col-lg-5">
-
-					<h1 class="heading" data-aos="fade-up">It's a Big World Out There, Go Explore</h1>
-					<p class="mb-5" data-aos="fade-up">A small river named Duden flows by their place and supplies it
-						with the necessary regelialia. It is a paradisematic country, in which roasted parts of
-						sentences fly into your mouth.</p>
-
+				<div class="videolink"
+					 style="width: 60px; margin-right: 100px; position: fixed; bottom: 20px; right: 20px; height: 60px; /* 아이콘의 전체 크기 */
+							border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer;"
+				>
 					<div data-aos="fade-up">
-						<a href="https://www.youtube.com/watch?v=5n-e6lOhVq0"
+						<a href="https://youtu.be/FPPESPTZg-M?si=7C3KcBlA3ZYaAXwG"
 						   class="play-button align-items-center d-flex glightbox3">
 							<span class="icon-button me-3">
 								<span class="icon-play"></span>
@@ -279,25 +273,7 @@
 
 	</div>
 
-	<div class="section">
-		<div class="container">
-			<div class="row justify-content-between align-items-center">
-				<div class="col-lg-5 mb-4 mb-lg-0 order-lg-2" data-aos="fade-up">
-					<img src="/images/img-1.jpg" alt="Image" class="img-fluid">
-				</div>
-				<div class="col-lg-5" data-aos="fade-up" data-aos-delay="100">
-					<h2 class="heading mb-4">Sweet Memories Come To Life Again</h2>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
-						live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics,
-						a large language ocean.</p>
-					<p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It
-						is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-					<p class="my-4" data-aos="fade-up" data-aos-delay="200"><a href="#" class="btn btn-primary">Read
-						more</a></p>
-				</div>
-			</div>
-		</div>
-	</div>
+
 
 	<div class="section bg-light">
 
@@ -338,13 +314,20 @@
 
 	</div> <!-- /.untree_co-section -->
 
-	<div class="section">
+	<div class="section" id="target">
 		<div class="container">
 			<div class="row justify-content-between align-items-center">
 				<div class="col-lg-5 mb-4 mb-lg-0">
 					<img src="/images/img_v_2.jpg" alt="Image" class="img-fluid">
 				</div>
 				<div class="col-lg-5 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="100">
+
+					<script>
+						document.getElementById("aboutDoctor").addEventListener("click", function(event) {
+							event.preventDefault();
+							document.getElementById("target").scrollIntoView({ behavior: 'smooth' });
+						});
+					</script>
 
 					<h2 class="heading mb-5">Frequently Asked <br> Questions</h2>
 
@@ -460,107 +443,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="py-5 bg-primary">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-7 text-center mb-3 mb-lg-0 text-lg-start">
-					<h3 class="text-white m-0">Begin your adventurous journey here.</h3>
-				</div>
-				<div class="col-lg-5 text-center text-lg-end">
-					<a href="#" class="btn btn-outline-white">Get started</a>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<div id="chatbotModal" class="modal">
-		<div class="modal-content">
-			<div class="modal_header" style="max-width: 500px;">
-				<span>챗봇</span>
-				<button type="button" id="close_chat_btn" class="close_btn" onclick="location.reload()">X</button>
-			</div>
-			<div id="divbox" class="chat_content" style="max-width: 500px;">
-				<div class="chat_inner" style="max-height: 1265px;">
-					반갑습니다 ! ^^<br>
-					낭만닥터 도우미 6B(육비)입니다. <br>
-					6(명의) B(itcampers)라는 뜻을 가지고 있어요 ! <br>
-					궁금한 점을 아래의 단축버튼으로 누르거나 <br>
-					직접 질문해주세요.
-					<div class="btn_info_wrap">
-						<button type="button" class="btn-link welcome1" onclick="location.href='/reservation.html'">
-							<span>예약하기</span>                 </button>
-						<button type="button" class="btn-link welcome5" onclick="location.href='/search'">
-							<a> 병원검색</a>                 </button>
-						<button type="button" class="btn-link home" onclick="location.reload()">
-							<span>처음으로</span>                </button>
 
-					</div>
-				</div>
-			</div>
-			<form id="chatForm" style="display: inline">
-				<input type="text" name="inputText" class="chat_input" id="input1" size="74" style="display: inline; width: 460px" />
-				<input type="button" value="전송" id="btn_submit" class="send_btn" style="display: inline;width: 40px" />
-			</form>
-		</div>
-	</div>
-
-	<script>
-		// 챗봇 이미지 클릭 시 모달 표시
-		document.getElementById('chatbotimg').onclick = function() {
-			document.getElementById('chatbotModal').style.display = "flex";
-
-			$('#btn_submit').click(function () {
-				send();
-			});
-			$('#chatForm').on('submit', function(e){
-				e.preventDefault();
-				send();
-			});
-			$('#close_chat_btn').on('click', function(){
-				$('#chat_wrap').hide().empty();
-			});
-			function send(){
-				$('#divbox').append('<div class="msg_box send"><span>'+$('#input1').val()+'<span></div>');
-				$("#divbox").scrollTop($("#divbox")[0].scrollHeight);
-				$.ajax({
-					url:  '/chatbot/chatbotSend', //챗봇 api url
-					type: 'post',
-					dataType: 'text',
-					data: {inputText: $('#input1').val()},
-					success: function(data) {
-						console.log("success");
-						$('#divbox').append('<div class="msg_box receive"><span>'+ data +'<span></div>');
-						$("#divbox").scrollTop($("#divbox")[0].scrollHeight);
-					}
-				});
-				$('#input1').val('');
-			}
-			$(document).ready(function () {
-				// 폼 제출 이벤트 처리
-				$('#chatForm').on('submit', function (event) {
-					event.preventDefault();
-					if ($('#inputText').val() === "") {
-						alert("질문을 입력하세요");
-						return false;
-					}
-					callAjax();
-					$('#inputText').val(''); // 입력란 비우기
-				});
-			});
-		}
-
-		// 모달 닫기 버튼 클릭 시 모달 숨김
-		document.getElementsByClassName('close')[0].onclick = function() {
-			document.getElementById('chatbotModal').style.display = "none";
-		}
-
-		// 모달 외부 클릭 시 모달 숨김
-		window.onclick = function(event) {
-			if (event.target == document.getElementById('chatbotModal')) {
-				document.getElementById('chatbotModal').style.display = "none";
-			}
-		}
-
-	</script>
 </div>
+
 </html>

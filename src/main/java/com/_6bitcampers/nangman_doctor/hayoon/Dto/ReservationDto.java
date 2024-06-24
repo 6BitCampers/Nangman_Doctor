@@ -21,5 +21,6 @@ public class ReservationDto {
     private int reservation_status;
     private String reservation_room;
     private String reservation_content;
+    private int reservation_face;
 
 }

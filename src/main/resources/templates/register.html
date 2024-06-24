@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns="">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="display: flex; height: 100vh; background-color: orange; padding: 20px; gap: 20px;">
+        <div style="flex: 1; padding: 20px; background-color: whitesmoke; margin: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: flex-start;">
+            <div style="display: flex; justify-content: flex-end;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5.5 0 0 1-.5.5h-11a.5.5.5 0 0 1-.5-.5v-11a.5.5.5 0 0 1 .5-.5H9a.5.5.5 0 0 0 0-1H2.5A1.5 1.5.5 0 0 0 1 2.5z"/>
+                </svg>
+            </div>
+            <br>
+
+            <form id="searchForm">
+                <div class="mb-3">
+                    <input type="text" id="info_name" name="info_name" class="form-input w-full px-4 py-2 rounded-lg shadow-sm" placeholder="병원 검색">
+                </div>
+            </form>
+            <span>
+                <button type="button" class="btn btn-primary mt-3" onclick="submitForm()">
+                    제출
+                </button>
+            </span>
+            <div id="searchResults" class="mt-4">
+                <!-- 검색 결과가 나오는 곳 -->
+            </div>
+
+            <script>
+                $(document).ready(function() {
+                    $('#info_name').on('input', function() {
+                        var infoName = $(this).val().trim(); // 입력된 검색어
+
+                        if (infoName === '') {
+                            $('#searchResults').empty(); // 검색 결과 영역 비우기
+                        } else {
+                            // AJAX 요청
+                            $.ajax({
+                                url: '/search/info',
+                                type: 'GET',
+                                data: {
+                                    info_name: infoName
+                                },
+                                success: function(data) {
+                                    displaySearchResults(data); // 검색 결과 표시 함수 호출
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('AJAX Error: ' + status + ' - ' + error);
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // 검색 결과를 화면에 표시하는 함수
+                function displaySearchResults(results) {
+                    var resultList = $('#searchResults');
+                    resultList.empty(); // 이전 검색 결과 제거
+
+                    if (results.length > 0) {
+                        var ul = $('<ul class="list-disc list-inside"></ul>');
+
+                        $.each(results, function(index, item) {
+                            var li = $('<li class="mt-2"></li>').text(item.info_name); // 올바른 속성 참조
+                            li.on('click', function() {
+                                setInfoName(item.info_name); // 클릭 시 입력란에 값 설정
+                            });
+                            ul.append(li);
+                        });
+
+                        resultList.append(ul);
+                    } else {
+                        resultList.text('검색 결과가 없습니다.');
+                    }
+                }
+
+                // 제출 버튼 클릭 시 실행되는 함수
+                function submitForm() {
+                    var infoName = $('#info_name').val().trim(); // 입력된 검색어
+                    if (infoName !== '') {
+                        console.log(infoName);
+                        // 부모 창의 input 태그에 값 설정
+                        if (window.opener && !window.opener.closed) {
+                            window.opener.document.getElementById('hospitalSearchInput').value = infoName;
+                        }
+                        window.close(); // 현재 창 닫기
+                    }
+                }
+
+                // 입력란에 값 설정하는 함수
+                function setInfoName(name) {
+                    $('#info_name').val(name); // 입력란에 값 설정
+                    $('#searchResults').empty(); // 검색 결과 영역 비우기
+                }
+            </script>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

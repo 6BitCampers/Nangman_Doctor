@@ -44,24 +44,24 @@
                 </button>
             </span>
             </form>
-            <span th:if="${status == 1}">
-                <button type="button" onclick="location.href='/test'" class="btn btn-primary mt-3">
-                    화상진료하러가기
-                </button>
-                <script>
-                    document.querySelector('button').addEventListener('mouseover', function() {
-                        this.classList.remove('btn-primary');
-                        this.classList.add('btn-dark');
-                    });
-                    document.querySelector('button').addEventListener('mouseout', function() {
-                        this.classList.remove('btn-dark');
-                        this.classList.add('btn-primary');
-                    });
-                </script>
-            </span>
-            <span th:if="${status != 1}">
-                <h1>화상진료 예약일이 아닙니다.</h1>
-            </span>
+<!--            <span th:if="${status == 1}">-->
+<!--                <button type="button" onclick="location.href='/test'" class="btn btn-primary mt-3">-->
+<!--                    화상진료하러가기-->
+<!--                </button>-->
+<!--                <script>-->
+<!--                    document.querySelector('button').addEventListener('mouseover', function() {-->
+<!--                        this.classList.remove('btn-primary');-->
+<!--                        this.classList.add('btn-dark');-->
+<!--                    });-->
+<!--                    document.querySelector('button').addEventListener('mouseout', function() {-->
+<!--                        this.classList.remove('btn-dark');-->
+<!--                        this.classList.add('btn-primary');-->
+<!--                    });-->
+<!--                </script>-->
+<!--            </span>-->
+<!--            <span th:if="${status != 1}">-->
+<!--                <h1>화상진료 예약일이 아닙니다.</h1>-->
+<!--            </span>-->
             <br><br>
 
             <input type="hidden" name="user_no" th:value="${udto.user_no}">

@@ -133,18 +133,22 @@
     </div>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        $("#reviewDeleteBtn").click(function () {
-            let review_no =/*[[review_no]]*/0;
+        let review_no = /*[[${review_no}]]*/ 0;
+        let currentPage = /*[[${currentPage}]]*/ 0;
 
-            let comfirm = confirm("리뷰를 삭제하시겠습니까?");
-            if (comfirm) {
+        $("#reviewDeleteBtn").click(function () {
+            console.log(review_no);
+            console.log(currentPage);
+
+            let comfirmDelete = confirm("리뷰를 삭제하시겠습니까?");
+            if (comfirmDelete) {
                 $.ajax({
                     type: "get",
                     dataType: "json",
                     data: {"review_no": review_no},
                     url: "/reviewboard/delete",
                     success: function () {
-                        location.reload();
+                        location.href="/reviewboard?page="+currentPage;
                     }
                 })
             }
