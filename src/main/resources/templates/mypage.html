@@ -50,95 +50,95 @@
                     <td th:text="${udto.user_interest}"></td>
                 </tr>
             </table>
-            <span th:if="${status == 1}">
-                <button type="button" onclick="location.href='/test'" class="btn btn-primary mt-3">
-                    화상진료하러가기
-                </button>
-                <script>
-                    document.querySelector('button').addEventListener('mouseover', function() {
-                        this.classList.remove('btn-primary');
-                        this.classList.add('btn-dark');
-                    });
-                    document.querySelector('button').addEventListener('mouseout', function() {
-                        this.classList.remove('btn-dark');
-                        this.classList.add('btn-primary');
-                    });
-                </script>
-            </span>
-            <span th:if="${status != 1}">
-                <h1>화상진료 예약일이 아닙니다.</h1>
-            </span>
+            <!--            <span th:if="${status == 1}">-->
+            <!--                <button type="button" onclick="location.href='/test'" class="btn btn-primary mt-3">-->
+            <!--                    화상진료하러가기-->
+            <!--                </button>-->
+            <!--                <script>-->
+            <!--                    document.querySelector('button').addEventListener('mouseover', function() {-->
+            <!--                        this.classList.remove('btn-primary');-->
+            <!--                        this.classList.add('btn-dark');-->
+            <!--                    });-->
+            <!--                    document.querySelector('button').addEventListener('mouseout', function() {-->
+            <!--                        this.classList.remove('btn-dark');-->
+            <!--                        this.classList.add('btn-primary');-->
+            <!--                    });-->
+            <!--                </script>-->
+            <!--            </span>-->
+            <!--            <span th:if="${status != 1}">-->
+            <!--                <h1>화상진료 예약일이 아닙니다.</h1>-->
+            <!--            </span>-->
             <br><br>
-                <div th:each="dto : ${dto}">
-                    <div>
-                    <table class="table table-striped mt-3" style="height: auto">
-                        <tr>
-                            <th>결제정보</th>
-                            <td th:text="${dto.receipt_name}"></td>
-                        </tr>
-                        <tr>
-                        <script>
-                            $(document).ready(function() {
-                                var infoNo = $('#myPageInfoNo').val();
-                                if (infoNo) {
-                                    $.ajax({
-                                        url: '/getHospitalName', // 서버의 엔드포인트 URL을 여기에 입력하세요
-                                        type: 'GET',
-                                        data: { info_no: infoNo },
-                                        success: function(response) {
-                                            // 서버 응답에서 info_name을 가져와서 표시
-                                            $('#visitedHospitalName').text(response.info_name);
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error('AJAX 요청 실패:', status, error);
-                                        }
-                                    });
-                                }
-                            });
-                        </script>
-                        <tr>
-                            <th>진료일</th>
-                            <td th:text="${dto.receipt_date}"></td>
-                        </tr>
-                        <tr>
-                            <th>결제금액</th>
-                            <td th:text="${dto.receipt_amount}"></td>
-                        </tr>
-                        <tr>
-                            <th>결제 상태</th>
-                            <td th:switch="${dto.payment_no}">
-                                <span th:case="0">미결제 상태</span>
-                                <span th:case="*">결제 완료</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" style="text-align: center;">
-                                <!-- 결제 하러 가기 버튼 -->
-                                <form action="/payment" method="post" style="display: inline;">
-                                    <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
-                                    <input type="hidden" name="user_no" th:value="${udto.user_no}">
-                                    <button type="submit" class="btn btn-primary mt-3" th:if="${dto.payment_no == 0}">
-                                        결제 하러 가기
-                                    </button>
-                                </form>
+            <!--                <div th:each="dto : ${dto}">-->
+            <!--                    <div>-->
+            <!--                    <table class="table table-striped mt-3" style="height: auto">-->
+            <!--                        <tr>-->
+            <!--                            <th>결제정보</th>-->
+            <!--                            <td th:text="${dto.receipt_name}"></td>-->
+            <!--                        </tr>-->
+            <!--                        <tr>-->
+            <!--                        <script>-->
+            <!--                            $(document).ready(function() {-->
+            <!--                                var infoNo = $('#myPageInfoNo').val();-->
+            <!--                                if (infoNo) {-->
+            <!--                                    $.ajax({-->
+            <!--                                        url: '/getHospitalName', // 서버의 엔드포인트 URL을 여기에 입력하세요-->
+            <!--                                        type: 'GET',-->
+            <!--                                        data: { info_no: infoNo },-->
+            <!--                                        success: function(response) {-->
+            <!--                                            // 서버 응답에서 info_name을 가져와서 표시-->
+            <!--                                            $('#visitedHospitalName').text(response.info_name);-->
+            <!--                                        },-->
+            <!--                                        error: function(xhr, status, error) {-->
+            <!--                                            console.error('AJAX 요청 실패:', status, error);-->
+            <!--                                        }-->
+            <!--                                    });-->
+            <!--                                }-->
+            <!--                            });-->
+            <!--                        </script>-->
+            <!--                        <tr>-->
+            <!--                            <th>진료일</th>-->
+            <!--                            <td th:text="${dto.receipt_date}"></td>-->
+            <!--                        </tr>-->
+            <!--                        <tr>-->
+            <!--                            <th>결제금액</th>-->
+            <!--                            <td th:text="${dto.receipt_amount}"></td>-->
+            <!--                        </tr>-->
+            <!--                        <tr>-->
+            <!--                            <th>결제 상태</th>-->
+            <!--                            <td th:switch="${dto.payment_no}">-->
+            <!--                                <span th:case="0">미결제 상태</span>-->
+            <!--                                <span th:case="*">결제 완료</span>-->
+            <!--                            </td>-->
+            <!--                        </tr>-->
+            <!--                        <tr>-->
+            <!--                            <td colspan="2" style="text-align: center;">-->
+            <!--                                &lt;!&ndash; 결제 하러 가기 버튼 &ndash;&gt;-->
+            <!--                                <form action="/payment" method="post" style="display: inline;">-->
+            <!--                                    <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">-->
+            <!--                                    <input type="hidden" name="user_no" th:value="${udto.user_no}">-->
+            <!--                                    <button type="submit" class="btn btn-primary mt-3" th:if="${dto.payment_no == 0}">-->
+            <!--                                        결제 하러 가기-->
+            <!--                                    </button>-->
+            <!--                                </form>-->
 
-                                <!-- 결제 완료된 경우 리뷰 쓰러 가기와 처방전 열람 -->
-                                <div th:if="${dto.payment_no != 0}" style="display: flex; justify-content: center; gap: 10px;">
-                                    <form method="post" th:action="@{/reviewboard/write}">
-                                        <input type="hidden" name="user_no" th:value="${userNo}">
-                                        <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
-                                    <button type="submit" class="btn btn-primary mt-3">리뷰 쓰러 가기</button>
-                                    </form>
-                                    <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow" style="display: inline;">
-                                        <input type="hidden" name="receipt_no" th:value="${dto.getReceipt_no()}">
-                                        <button type="submit" class="btn btn-primary mt-3 receiptView" onclick="openPopup()">처방전 열람</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                    </div>
-                </div>
+            <!--                                &lt;!&ndash; 결제 완료된 경우 리뷰 쓰러 가기와 처방전 열람 &ndash;&gt;-->
+            <!--                                <div th:if="${dto.payment_no != 0}" style="display: flex; justify-content: center; gap: 10px;">-->
+            <!--                                    <form method="post" th:action="@{/reviewboard/write}">-->
+            <!--                                        <input type="hidden" name="user_no" th:value="${userNo}">-->
+            <!--                                        <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">-->
+            <!--                                    <button type="submit" class="btn btn-primary mt-3">리뷰 쓰러 가기</button>-->
+            <!--                                    </form>-->
+            <!--                                    <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow" style="display: inline;">-->
+            <!--                                        <input type="hidden" name="receipt_no" th:value="${dto.getReceipt_no()}">-->
+            <!--                                        <button type="submit" class="btn btn-primary mt-3 receiptView" onclick="openPopup()">처방전 열람</button>-->
+            <!--                                    </form>-->
+            <!--                                </div>-->
+            <!--                            </td>-->
+            <!--                        </tr>-->
+            <!--                    </table>-->
+            <!--                    </div>-->
+            <!--                </div>-->
             <script>
                 function openPopup() {
                     // 팝업 옵션 설정: 스크롤바 없애고, 확대/축소 가능하도록
@@ -161,39 +161,39 @@
 
         </div>
 
-<!--        <div th:if="${edto != null}" class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">-->
-<!--            <div class="d-flex justify-content-end mb-3">-->
-<!--                <a href="#" class="text-decoration-none text-dark">-->
-<!--                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">-->
-<!--                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>-->
-<!--                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>-->
-<!--                    </svg>-->
-<!--                </a>-->
-<!--            </div>-->
-<!--            <h1 th:text="${edto.employee_name} + '님 환영합니다!'"></h1>-->
-<!--            <table class="table table-striped mt-3">-->
-<!--                <tr>-->
-<!--                    <th>이름</th>-->
-<!--                    <td th:text="${edto.employee_name}"></td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th>이메일</th>-->
-<!--                    <td th:text="${edto.employee_email}"></td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th>전화번호</th>-->
-<!--                    <td th:text="${edto.employee_phone}"></td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th>직책</th>-->
-<!--                    <td th:text="${edto.employee_position}"></td>-->
-<!--                </tr>-->
-<!--                <tr th:if="${edto.employee_department != null}">-->
-<!--                    <th>부서</th>-->
-<!--                    <td th:text="${edto.employee_department}"></td>-->
-<!--                </tr>-->
-<!--            </table>-->
-<!--        </div>-->
+        <!--        <div th:if="${edto != null}" class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">-->
+        <!--            <div class="d-flex justify-content-end mb-3">-->
+        <!--                <a href="#" class="text-decoration-none text-dark">-->
+        <!--                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">-->
+        <!--                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>-->
+        <!--                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>-->
+        <!--                    </svg>-->
+        <!--                </a>-->
+        <!--            </div>-->
+        <!--            <h1 th:text="${edto.employee_name} + '님 환영합니다!'"></h1>-->
+        <!--            <table class="table table-striped mt-3">-->
+        <!--                <tr>-->
+        <!--                    <th>이름</th>-->
+        <!--                    <td th:text="${edto.employee_name}"></td>-->
+        <!--                </tr>-->
+        <!--                <tr>-->
+        <!--                    <th>이메일</th>-->
+        <!--                    <td th:text="${edto.employee_email}"></td>-->
+        <!--                </tr>-->
+        <!--                <tr>-->
+        <!--                    <th>전화번호</th>-->
+        <!--                    <td th:text="${edto.employee_phone}"></td>-->
+        <!--                </tr>-->
+        <!--                <tr>-->
+        <!--                    <th>직책</th>-->
+        <!--                    <td th:text="${edto.employee_position}"></td>-->
+        <!--                </tr>-->
+        <!--                <tr th:if="${edto.employee_department != null}">-->
+        <!--                    <th>부서</th>-->
+        <!--                    <td th:text="${edto.employee_department}"></td>-->
+        <!--                </tr>-->
+        <!--            </table>-->
+        <!--        </div>-->
 
 
         <!-- 예약목록 -->
@@ -258,7 +258,7 @@
                     });
                 }
             </script>
-            </div>
+        </div>
         <div class="calendar-container">
             <div class="calendar-header">
                 <button onclick="navigateMonth(-1)">이전</button>
@@ -374,96 +374,96 @@
 
 
 
-            <script th:inline="javascript">
-                let reservationList = /*[[${reservationList}]]*/ [];
-                let currentMonth = new Date().getMonth();
-                let currentYear = new Date().getFullYear();
+        <script th:inline="javascript">
+            let reservationList = /*[[${reservationList}]]*/ [];
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
 
-                function renderCalendar(month, year) {
-                    const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월",
-                        "7월", "8월", "9월", "10월", "11월", "12월"];
-                    const firstDay = new Date(year, month).getDay();
-                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+            function renderCalendar(month, year) {
+                const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월",
+                    "7월", "8월", "9월", "10월", "11월", "12월"];
+                const firstDay = new Date(year, month).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-                    const calendarBody = document.getElementById("calendarBody");
-                    const currentMonthYear = document.getElementById("currentMonthYear");
-                    calendarBody.innerHTML = "";
-                    currentMonthYear.innerText = `${monthNames[month]} ${year}`;
+                const calendarBody = document.getElementById("calendarBody");
+                const currentMonthYear = document.getElementById("currentMonthYear");
+                calendarBody.innerHTML = "";
+                currentMonthYear.innerText = `${monthNames[month]} ${year}`;
 
-                    let date = 1;
-                    for (let i = 0; i < 6; i++) {
-                        const row = document.createElement("tr");
-                        for (let j = 0; j < 7; j++) {
-                            const cell = document.createElement("td");
-                            const cellContent = document.createElement("div");
-                            cellContent.style.display = "flex";
-                            cellContent.style.flexDirection = "column";
-                            cellContent.style.alignItems = "center";
+                let date = 1;
+                for (let i = 0; i < 6; i++) {
+                    const row = document.createElement("tr");
+                    for (let j = 0; j < 7; j++) {
+                        const cell = document.createElement("td");
+                        const cellContent = document.createElement("div");
+                        cellContent.style.display = "flex";
+                        cellContent.style.flexDirection = "column";
+                        cellContent.style.alignItems = "center";
 
-                            if (i === 0 && j < firstDay) {
-                                cell.innerText = "";
-                            } else if (date > daysInMonth) {
-                                break;
-                            } else {
-                                const dateDiv = document.createElement("div");
-                                dateDiv.innerText = date;
-                                cellContent.appendChild(dateDiv);
+                        if (i === 0 && j < firstDay) {
+                            cell.innerText = "";
+                        } else if (date > daysInMonth) {
+                            break;
+                        } else {
+                            const dateDiv = document.createElement("div");
+                            dateDiv.innerText = date;
+                            cellContent.appendChild(dateDiv);
 
-                                // Check for reservations on this date
-                                const reservation = reservationList.find(reservation => {
-                                    console.log('박주용' + reservation.reservation_status);
-                                    const resDate = new Date(reservation.reservation_date);
-                                    return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && (reservation.reservation_status === 2 || reservation.reservation_status === 3);
-                                });
+                            // Check for reservations on this date
+                            const reservation = reservationList.find(reservation => {
+                                console.log('박주용' + reservation.reservation_status);
+                                const resDate = new Date(reservation.reservation_date);
+                                return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && (reservation.reservation_status === 2 || reservation.reservation_status === 3);
+                            });
 
 
 
-                                if (reservation) {
-                                    if (reservation.reservation_status === 3) {
-                                        const button = document.createElement("button");
-                                        button.classList.add("btn", "btn-primary"); // Bootstrap 버튼 스타일 클래스 추가
-                                        button.setAttribute("type", "button");
-                                        button.setAttribute("data-bs-toggle", "modal"); // Bootstrap 모달 토글 속성 추가
-                                        button.setAttribute("data-bs-target", "#exampleModal"); // Bootstrap 모달 타겟 속성 추가
-                                        button.innerText = "결제";
-                                        // button.addEventListener("click", function() {
-                                        //     window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
-                                        // });
-                                        cellContent.appendChild(button);
-                                    }
-
-                                    else if (reservation.reservation_face === 2 && reservation.reservation_status === 2) {
-                                        const button = document.createElement("button");
-                                        button.classList.add("video-call-button");
-                                        button.innerText = "화상진료";
-                                        button.addEventListener("click", function() {
-                                            window.open('https://webchat.midichi.kro.kr/');
-                                            window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
-                                        });
-                                        cellContent.appendChild(button);
-                                    } else if (reservation.reservation_face === 1 && reservation.reservation_status === 2) {
-                                        const text = document.createElement("span");
-                                        text.classList.add("in-person-appointment");
-                                        text.innerText = "대면 진료";
-                                        text.style.backgroundColor = "yellow";
-                                        text.style.padding = "0 5px";
-                                        text.style.borderRadius = "3px";
-                                        text.style.fontWeight = "bold";
-                                        cellContent.appendChild(text);
-                                    }
+                            if (reservation) {
+                                if (reservation.reservation_status === 3) {
+                                    const button = document.createElement("button");
+                                    button.classList.add("btn", "btn-primary"); // Bootstrap 버튼 스타일 클래스 추가
+                                    button.setAttribute("type", "button");
+                                    button.setAttribute("data-bs-toggle", "modal"); // Bootstrap 모달 토글 속성 추가
+                                    button.setAttribute("data-bs-target", "#exampleModal"); // Bootstrap 모달 타겟 속성 추가
+                                    button.innerText = "결제";
+                                    // button.addEventListener("click", function() {
+                                    //     window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
+                                    // });
+                                    cellContent.appendChild(button);
                                 }
 
-                                date++;
+                                else if (reservation.reservation_face === 2 && reservation.reservation_status === 2) {
+                                    const button = document.createElement("button");
+                                    button.classList.add("video-call-button");
+                                    button.innerText = "화상진료";
+                                    button.addEventListener("click", function() {
+                                        window.open('https://webchat.midichi.kro.kr/');
+                                        window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
+                                    });
+                                    cellContent.appendChild(button);
+                                } else if (reservation.reservation_face === 1 && reservation.reservation_status === 2) {
+                                    const text = document.createElement("span");
+                                    text.classList.add("in-person-appointment");
+                                    text.innerText = "대면 진료";
+                                    text.style.backgroundColor = "yellow";
+                                    text.style.padding = "0 5px";
+                                    text.style.borderRadius = "3px";
+                                    text.style.fontWeight = "bold";
+                                    cellContent.appendChild(text);
+                                }
                             }
-                            cell.appendChild(cellContent);
-                            row.appendChild(cell);
+
+                            date++;
                         }
-                        calendarBody.appendChild(row);
+                        cell.appendChild(cellContent);
+                        row.appendChild(cell);
                     }
+                    calendarBody.appendChild(row);
                 }
+            }
 
 
-                function navigateMonth(offset) {
+            function navigateMonth(offset) {
                 currentMonth += offset;
                 if (currentMonth < 0) {
                     currentMonth = 11;
@@ -480,7 +480,7 @@
             });
         </script>
 
-        </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -567,7 +567,7 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 </html>
 
 
