@@ -722,7 +722,10 @@
                                 location.reload();
                             },
                             error: function(error) {
-                                alert('Error handling reservation----');
+                                console.log(reservationNo);
+                                console.log(isAccepted);
+                                console.log(error);
+                                // alert('Error handling reservation----');
                             }
                         });
                     }
