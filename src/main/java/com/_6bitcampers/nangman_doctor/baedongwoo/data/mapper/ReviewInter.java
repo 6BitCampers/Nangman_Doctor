@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor.baedongwoo.data.mapper;
 
+import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PillDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import org.apache.ibatis.annotations.*;
@@ -34,4 +35,6 @@ public interface ReviewInter {
     public void insertReview(ReviewDto reviewDto);
     @Select("select employee_name from hospital_employee where employee_no=#{employee_no}")
     public String getEmployeeName(int employee_no);
+    @Select("select * from pill_names where pill_act=#{pill_act} order by rand() limit 1")
+    public PillDto getPillInfo(String pill_act);
 }
