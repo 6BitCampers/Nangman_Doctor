@@ -22,4 +22,5 @@ public class HospitalService {
     public HospitalDto findHospitalById(Long hospitalId) {
         return hospitalMapper.findById(hospitalId);
     }
+
 }
