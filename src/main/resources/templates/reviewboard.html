@@ -71,9 +71,9 @@
         <nav aria-label="pagination" class="mx-auto flex w-full justify-center" role="navigation">
             <ul class="flex flex-row items-center gap-1">
                 <li>
-                    <a th:if="${currentpage > 1}"
-                       class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
-                       th:href="@{/reviewboard(page=${currentpage-1})}">
+                    <a class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
+                       th:href="@{/reviewboard(page=${currentpage-1})}"
+                       th:if="${currentpage > 1}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                              stroke-linejoin="round" class="lucide lucide-chevron-left h-4 w-4">
@@ -85,7 +85,7 @@
                 <li th:each="num : ${#numbers.sequence(1, (totalNum / perPage) + 1)}">
                     <a th:if="${num == currentpage}"
                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10"
-                       style="pointer-events: none; cursor: default; color: gray;" th:text="${num}"></a>
+                       style="pointer-events: none; cursor: default; color: orange;" th:text="${num}"></a>
                     <span th:if="${num != currentpage}">
                 <a class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-10 w-10"
                    th:href="@{/reviewboard(page=${num})}" th:text="${num}"></a>
