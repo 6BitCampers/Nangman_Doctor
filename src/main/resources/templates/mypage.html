@@ -6,198 +6,188 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <div layout:fragment="content">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.all.min.js"></script>
+    <!--
+// v0 by Vercel.
+// https://v0.dev/t/nULdeR4ujUU
+-->
 
-    <div th:if="${udto != null}" class="d-flex vh-100 bg-warning p-3 gap-3" style="height: auto">
-        <div class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">
-            <div class="d-flex justify-content-end mb-3">
-                <a href="/mypage/updateform" class="text-decoration-none text-dark">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                    </svg>
+    <div class="grid grid-cols-[300px_1fr_300px] gap-8 max-w-6xl mx-auto py-10 px-4">
+        <div class="bg-background rounded-lg shadow-lg p-6">
+            <div class="flex items-center gap-4">
+      <span class="relative flex shrink-0 overflow-hidden rounded-full w-12 h-12">
+        <img class="aspect-square h-full w-full" th:src="@{/images/placeholder-user.jpg}"/>
+      </span>
+                <div>
+                    <h3 class="font-semibold text-lg" th:text="${udto.user_name}"></h3>
+                    <p class="text-muted-foreground text-sm" th:text="${udto.user_email}"></p>
+                    <p class="text-muted-foreground text-sm" th:text="${udto.user_hp}"></p>
+                </div>
+            </div>
+            <div data-orientation="horizontal" role="none" class="shrink-0 bg-border h-[1px] w-full my-4"></div>
+            <div class="grid gap-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-muted-foreground">Address: </span>
+                    <span class="font-medium" th:text="${udto.user_addr1}"></span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-muted-foreground">Age Range:</span>
+                    <span class="font-medium" th:text="${udto.getUser_age()}"></span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-muted-foreground">Total Reservations:</span>
+                    <span class="font-medium" th:text="${reservationList==null?0:reservationList.size()}"></span>
+                </div>
+            </div>
+            <div data-orientation="horizontal" role="none" class="shrink-0 bg-border h-[1px] w-full my-4"></div>
+            <div class="grid gap-2">
+                <a th:href="@{/mypage/updateform}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2" style="text-decoration: none;">
+                    Edit Profile
+                </a>
+                <button onclick="resetPw(event)" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                    Change Password
+                </button>
+                <script>
+                    function resetPw(e) {
+                        e.preventDefault();
+                        (async () => {
+                            const { value: formValues } = await Swal.fire({
+                                title: '비밀번호 재설정',
+                                html:
+                                    '<label for="swal-input1">이름</label><input id="swal-input1" class="swal2-input"><br>' +
+                                    '<label for="swal-input2">이메일</label><input id="swal-input2" class="swal2-input">',
+                                focusConfirm: false,
+                                preConfirm: () => {
+                                    return [
+                                        document.getElementById('swal-input1').value,
+                                        document.getElementById('swal-input2').value
+                                    ]
+                                }
+                            })
+
+                            if (formValues) {
+                                $.ajax({
+                                    url:"api/v1/searchPW",
+                                    data:{"name":formValues[0],"email":formValues[1]},
+                                    type:"get",
+                                    async:false,
+                                    complete: function(e, xhr, settings){
+                                        if(e.status === 200){
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: '찾기 성공!',
+                                                text: formValues[0]+'님, '+formValues[1]+'로 전송을 완료 했습니다.',
+                                            });
+                                        }else{
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: '찾기 실패',
+                                                text: '맞는 계정이 없습니다!',
+                                            });
+                                        }
+                                    }
+                                })
+                            }
+                        })()
+                    }
+                </script>
+                <a th:href="@{/logout}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+                Log out
                 </a>
             </div>
-            <h1 th:text="${udto.user_name} + '님 환영합니다!'"></h1>
-            <table class="table table-striped mt-3">
-                <tr>
-                    <th>이름</th>
-                    <td th:text="${udto.user_name}"></td>
-                </tr>
-                <tr>
-                    <th>이메일</th>
-                    <td th:text="${udto.user_email}"></td>
-                </tr>
-                <tr>
-                    <th>전화번호</th>
-                    <td th:text="${udto.user_hp}"></td>
-                </tr>
-                <tr>
-                    <th>닉네임</th>
-                    <td th:text="${udto.user_nickname}"></td>
-                </tr>
-                <tr>
-                    <th>성별</th>
-                    <td th:text="${udto.user_gender}"></td>
-                </tr>
-                <tr>
-                    <th>주소</th>
-                    <td th:text="${udto.user_addr1}"></td>
-                </tr>
-                <tr th:if="${udto.user_interest != null}">
-                    <th>관심분야</th>
-                    <td th:text="${udto.user_interest}"></td>
-                </tr>
-            </table>
-            <!--            <span th:if="${status == 1}">-->
-            <!--                <button type="button" onclick="location.href='/test'" class="btn btn-primary mt-3">-->
-            <!--                    화상진료하러가기-->
-            <!--                </button>-->
-            <!--                <script>-->
-            <!--                    document.querySelector('button').addEventListener('mouseover', function() {-->
-            <!--                        this.classList.remove('btn-primary');-->
-            <!--                        this.classList.add('btn-dark');-->
-            <!--                    });-->
-            <!--                    document.querySelector('button').addEventListener('mouseout', function() {-->
-            <!--                        this.classList.remove('btn-dark');-->
-            <!--                        this.classList.add('btn-primary');-->
-            <!--                    });-->
-            <!--                </script>-->
-            <!--            </span>-->
-            <!--            <span th:if="${status != 1}">-->
-            <!--                <h1>화상진료 예약일이 아닙니다.</h1>-->
-            <!--            </span>-->
-            <br><br>
-            <!--                <div th:each="dto : ${dto}">-->
-            <!--                    <div>-->
-            <!--                    <table class="table table-striped mt-3" style="height: auto">-->
-            <!--                        <tr>-->
-            <!--                            <th>결제정보</th>-->
-            <!--                            <td th:text="${dto.receipt_name}"></td>-->
-            <!--                        </tr>-->
-            <!--                        <tr>-->
-            <!--                        <script>-->
-            <!--                            $(document).ready(function() {-->
-            <!--                                var infoNo = $('#myPageInfoNo').val();-->
-            <!--                                if (infoNo) {-->
-            <!--                                    $.ajax({-->
-            <!--                                        url: '/getHospitalName', // 서버의 엔드포인트 URL을 여기에 입력하세요-->
-            <!--                                        type: 'GET',-->
-            <!--                                        data: { info_no: infoNo },-->
-            <!--                                        success: function(response) {-->
-            <!--                                            // 서버 응답에서 info_name을 가져와서 표시-->
-            <!--                                            $('#visitedHospitalName').text(response.info_name);-->
-            <!--                                        },-->
-            <!--                                        error: function(xhr, status, error) {-->
-            <!--                                            console.error('AJAX 요청 실패:', status, error);-->
-            <!--                                        }-->
-            <!--                                    });-->
-            <!--                                }-->
-            <!--                            });-->
-            <!--                        </script>-->
-            <!--                        <tr>-->
-            <!--                            <th>진료일</th>-->
-            <!--                            <td th:text="${dto.receipt_date}"></td>-->
-            <!--                        </tr>-->
-            <!--                        <tr>-->
-            <!--                            <th>결제금액</th>-->
-            <!--                            <td th:text="${dto.receipt_amount}"></td>-->
-            <!--                        </tr>-->
-            <!--                        <tr>-->
-            <!--                            <th>결제 상태</th>-->
-            <!--                            <td th:switch="${dto.payment_no}">-->
-            <!--                                <span th:case="0">미결제 상태</span>-->
-            <!--                                <span th:case="*">결제 완료</span>-->
-            <!--                            </td>-->
-            <!--                        </tr>-->
-            <!--                        <tr>-->
-            <!--                            <td colspan="2" style="text-align: center;">-->
-            <!--                                &lt;!&ndash; 결제 하러 가기 버튼 &ndash;&gt;-->
-            <!--                                <form action="/payment" method="post" style="display: inline;">-->
-            <!--                                    <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">-->
-            <!--                                    <input type="hidden" name="user_no" th:value="${udto.user_no}">-->
-            <!--                                    <button type="submit" class="btn btn-primary mt-3" th:if="${dto.payment_no == 0}">-->
-            <!--                                        결제 하러 가기-->
-            <!--                                    </button>-->
-            <!--                                </form>-->
-
-            <!--                                &lt;!&ndash; 결제 완료된 경우 리뷰 쓰러 가기와 처방전 열람 &ndash;&gt;-->
-            <!--                                <div th:if="${dto.payment_no != 0}" style="display: flex; justify-content: center; gap: 10px;">-->
-            <!--                                    <form method="post" th:action="@{/reviewboard/write}">-->
-            <!--                                        <input type="hidden" name="user_no" th:value="${userNo}">-->
-            <!--                                        <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">-->
-            <!--                                    <button type="submit" class="btn btn-primary mt-3">리뷰 쓰러 가기</button>-->
-            <!--                                    </form>-->
-            <!--                                    <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow" style="display: inline;">-->
-            <!--                                        <input type="hidden" name="receipt_no" th:value="${dto.getReceipt_no()}">-->
-            <!--                                        <button type="submit" class="btn btn-primary mt-3 receiptView" onclick="openPopup()">처방전 열람</button>-->
-            <!--                                    </form>-->
-            <!--                                </div>-->
-            <!--                            </td>-->
-            <!--                        </tr>-->
-            <!--                    </table>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <script>
-                function openPopup() {
-                    // 팝업 옵션 설정: 스크롤바 없애고, 확대/축소 가능하도록
-                    var popupOptions = 'width=900,height=1200,resizable=yes,scrollbars=no';
-
-                    // 팝업 창을 중앙에 위치시키기 위한 계산
-                    var left = (screen.width - 900) / 2;
-                    var top = (screen.height - 1200) / 2;
-                    popupOptions += `,left=${left},top=${top}`;
-
-                    // 새로운 윈도우를 팝업으로 엽니다.
-                    var popupWindow = window.open('', 'popupWindow', popupOptions);
-
-                    // 팝업 윈도우에 폼을 제출합니다.
-                    var form = document.getElementById('popupForm');
-                    form.target = 'popupWindow'; // 폼의 target을 팝업 윈도우로 설정
-                    form.submit();
-                }
-            </script>
-
         </div>
 
-        <!--        <div th:if="${edto != null}" class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">-->
-        <!--            <div class="d-flex justify-content-end mb-3">-->
-        <!--                <a href="#" class="text-decoration-none text-dark">-->
-        <!--                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">-->
-        <!--                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>-->
-        <!--                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>-->
-        <!--                    </svg>-->
-        <!--                </a>-->
-        <!--            </div>-->
-        <!--            <h1 th:text="${edto.employee_name} + '님 환영합니다!'"></h1>-->
-        <!--            <table class="table table-striped mt-3">-->
-        <!--                <tr>-->
-        <!--                    <th>이름</th>-->
-        <!--                    <td th:text="${edto.employee_name}"></td>-->
-        <!--                </tr>-->
-        <!--                <tr>-->
-        <!--                    <th>이메일</th>-->
-        <!--                    <td th:text="${edto.employee_email}"></td>-->
-        <!--                </tr>-->
-        <!--                <tr>-->
-        <!--                    <th>전화번호</th>-->
-        <!--                    <td th:text="${edto.employee_phone}"></td>-->
-        <!--                </tr>-->
-        <!--                <tr>-->
-        <!--                    <th>직책</th>-->
-        <!--                    <td th:text="${edto.employee_position}"></td>-->
-        <!--                </tr>-->
-        <!--                <tr th:if="${edto.employee_department != null}">-->
-        <!--                    <th>부서</th>-->
-        <!--                    <td th:text="${edto.employee_department}"></td>-->
-        <!--                </tr>-->
-        <!--            </table>-->
-        <!--        </div>-->
+
+        <div class="bg-background rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Reservation Status</h2>
+            <div class="grid gap-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                        <span>Completed</span>
+                    </div>
+                    <span class="font-medium" th:text="${completed==null?0:completed}"></span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+                        <span>Reserved</span>
+                    </div>
+                    <span class="font-medium" th:text="${reserved==null?0:reserved}"></span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-pink-300"></div>
+                        <span>Pending</span>
+                    </div>
+                    <span class="font-medium" th:text="${pending==null?0:pending}"></span>
+                </div>
+            </div>
+            <div data-orientation="horizontal" role="none" class="shrink-0 bg-border h-[1px] w-full my-4"></div>
+            <div class="grid gap-4">
+                <h3 class="text-lg font-semibold">Recent Reservations</h3>
+                <div class="grid gap-2">
+                    <div class="flex items-center justify-between" th:if="${reservationList==null}">
+                        <h4 class="font-medium">No Reservation On load</h4>
+                    </div>
+                    <div class="flex items-center justify-between bg-background rounded-medium shadow-sm p-2" th:each="reservation,iterStat: ${reservationList}" th:id="'reservation-' + ${iterStat.index}">
+                        <div>
+                            <h4 class="font-medium" th:text="${reservation.get('reservation_reason')}"></h4><br>
+                            <p class="text-muted-foreground text-sm"><span th:text="${reservation.get('reservation_date')}"></span> <span th:text="${reservation.get('reservation_time')}"></span></p>
+                        </div>
+
+                        <button type="button" class="btn btn-primary btn-sm"
+                                th:data-id="${reservation.get('reservation_no')}"
+                                th:onclick="'editReservation('+${reservation.get('reservation_no')} + ')'">수정</button>
+
+                        <button type="button" class="btn btn-danger btn-sm"
+                                th:data-id="${reservation.get('reservation_no')}"
+                                th:onclick="'deleteReservation(' + ${reservation.get('reservation_no')} + ')'">삭제</button>
+                        <div
+                                class="inline-flex w-fit items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground"
+                                data-v0-t="badge"
+                                th:text="${reservation.get('status')}"
+                        >
+                        </div>
+                    </div><!--each end-->
+                    </div>
+                </div>
+            </div>
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button onclick="navigateMonth(-1)">이전</button>
+                <h2 id="currentMonthYear"></h2>
+                <button onclick="navigateMonth(1)">다음</button>
+            </div>
+            <table class="calendar-table">
+                <thead>
+                <tr>
+                    <th>일</th>
+                    <th>월</th>
+                    <th>화</th>
+                    <th>수</th>
+                    <th>목</th>
+                    <th>금</th>
+                    <th>토</th>
+                </tr>
+                </thead>
+                <tbody id="calendarBody">
+                </tbody>
+            </table>
+        </div>
+        </div>
+
+
+
+
 
 
         <!-- 예약목록 -->
-        <div class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3">
+        <div class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3" hidden>
             <h2>예약 목록</h2>
             <br>
             <div class="col-md-8">
@@ -231,12 +221,10 @@
             <script th:inline="javascript">
 
                 function editReservation(reservationNo) {
-                    if (confirm("수정하겠습니까? 수정하시면 지금 예약이 삭제됩니다.")) {
+                    if (confirm("현재 예약이 삭제되며 예약 페이지로 이동합니다")) {
                         window.location.href = "/edit?reservationNo=" + reservationNo;
                     }
                 }
-
-
 
                 function deleteReservation(reservationNo) {
                     $.ajax({
@@ -259,28 +247,7 @@
                 }
             </script>
         </div>
-        <div class="calendar-container">
-            <div class="calendar-header">
-                <button onclick="navigateMonth(-1)">이전</button>
-                <h2 id="currentMonthYear"></h2>
-                <button onclick="navigateMonth(1)">다음</button>
-            </div>
-            <table class="calendar-table">
-                <thead>
-                <tr>
-                    <th>일</th>
-                    <th>월</th>
-                    <th>화</th>
-                    <th>수</th>
-                    <th>목</th>
-                    <th>금</th>
-                    <th>토</th>
-                </tr>
-                </thead>
-                <tbody id="calendarBody">
-                </tbody>
-            </table>
-        </div>
+
 
         <style>
             .btn {
@@ -306,6 +273,7 @@
                 align-items: center;
                 flex-direction: column;
                 padding: 20px;
+                width: 500px;
             }
 
             .calendar-header {
@@ -342,11 +310,6 @@
                 text-align: center;
             }
 
-            .calendar-table th {
-                background-color: orange;
-                color: white;
-            }
-
             .calendar-table td {
                 position: relative;
                 background-color: white;
@@ -370,8 +333,6 @@
                 background-color: #218838;
             }
         </style>
-
-
 
 
         <script th:inline="javascript">
@@ -411,7 +372,6 @@
 
                             // Check for reservations on this date
                             const reservation = reservationList.find(reservation => {
-                                console.log('박주용' + reservation.reservation_status);
                                 const resDate = new Date(reservation.reservation_date);
                                 return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && (reservation.reservation_status === 2 || reservation.reservation_status === 3);
                             });
@@ -478,6 +438,24 @@
             document.addEventListener("DOMContentLoaded", () => {
                 renderCalendar(currentMonth, currentYear);
             });
+
+            function openPopup(){
+            // 팝업 옵션 설정: 스크롤바 없애고, 확대/축소 가능하도록
+            var popupOptions = 'width=900,height=1200,resizable=yes,scrollbars=no';
+
+            // 팝업 창을 중앙에 위치시키기 위한 계산
+            var left = (screen.width - 900) / 2;
+            var top = (screen.height - 1200) / 2;
+            popupOptions += `,left=${left},top=${top}`;
+
+            // 새로운 윈도우를 팝업으로 엽니다.
+            var popupWindow = window.open('', 'popupWindow', popupOptions);
+
+            // 팝업 윈도우에 폼을 제출합니다.
+            var form = document.getElementById('popupForm');
+            form.target = 'popupWindow'; // 폼의 target을 팝업 윈도우로 설정
+            form.submit();
+            }
         </script>
 
     </div>
