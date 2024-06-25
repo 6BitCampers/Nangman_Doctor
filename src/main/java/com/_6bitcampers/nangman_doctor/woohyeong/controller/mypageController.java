@@ -36,10 +36,11 @@ public class mypageController {
     public String mypage(Model model) {
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String id = customOAuth2User.getEmail();
+        String type = customOAuth2User.getType();
         int userNo= reservationService.getUserNo(id);
         int status = reservationServiceW.getReservationStatus(userNo);
         try {
-            UserDTO udto = mypageService.getUser(id);
+            UserDTO udto = mypageService.getUser(id, type);
             if (udto != null) {
                 Map<String, Object> map = new HashMap<>();
 //                map.put("user_no", userNo);

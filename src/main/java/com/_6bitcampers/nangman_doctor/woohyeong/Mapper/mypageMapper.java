@@ -14,9 +14,9 @@ import java.util.Map;
 @Mapper
 public interface mypageMapper {
     @Select("""
-    select * from normal_user where user_email = #{user_email}
+    select * from normal_user where user_email = #{user_email} and user_type = #{user_type}
 """)
-    UserDTO getUser(String user_email);
+    UserDTO getUser(String user_email, String user_type);
 
     @Select("""
     select * from hospital_employee where employee_email = #{employee_email}
