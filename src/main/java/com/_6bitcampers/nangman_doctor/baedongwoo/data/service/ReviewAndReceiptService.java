@@ -69,4 +69,7 @@ public class ReviewAndReceiptService {
     public PillDto getPillContent(int pill_no){
         return reviewAndReceiptInter.getPillContent(pill_no);
     }
+    public void insertPcContent(PcDto pcDto){
+        reviewAndReceiptInter.insertPcContent(pcDto);
+    }
 }

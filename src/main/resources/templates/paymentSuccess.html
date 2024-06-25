@@ -34,7 +34,7 @@
                     $('#userEmail').text(response.userEntity.user_email);
                     $('#paymentUserNo').val(response.user_no);
                     console.log(response.user_no);
-                    $('#paymentReceiptNo').val(response.receipt_no);
+                    $('.paymentReceiptNo').val(response.receipt_no);
                     console.log(response.receipt_no);
                 }
             });
@@ -128,17 +128,36 @@
             <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
                 <div class="flex flex-col space-y-1.5 p-6">
                     <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">리뷰 쓰기</h3>
+                    <br>
+                    <p>여러분의 피드백이 병원을 발전시킵니다!</p>
                 </div>
                 <div class="p-6">
-                    <div class="grid gap-4">
-                        <p>여러분의 피드백이 병원을 발전시킵니다!</p>
+                    <div class="grid gap-4" style="display: flex">
                             <form th:action="@{/reviewboard/write}" method="post">
                                 <input type="hidden" name="user_no" id="paymentUserNo">
-                                <input type="hidden" name="receipt_no" id="paymentReceiptNo">
+                                <input type="hidden" name="receipt_no" class="paymentReceiptNo">
                             <button style="color: white" type="submit"
                                     class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3">
                                 리뷰 쓰러가기
                             </button></form>
+                        <script>
+                            function openPopup(){
+                                var popupOptions = 'width=900,height=1200,resizable=yes,scrollbars=no';
+                                var left = (screen.width - 900) / 2;
+                                var top = (screen.height - 1200) / 2;
+                                popupOptions += `,left=${left},top=${top}`;
+                                var popupWindow = window.open('', 'popupWindow', popupOptions);
+                                var form = document.getElementById('popupForm');
+                                form.submit();
+                            }
+                        </script>
+                        <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow">
+                            <input type="hidden" name="receipt_no" class="paymentReceiptNo">
+                            <button style="color: white" type="button" onclick="openPopup()"
+                                    class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3">
+                                처방전 열람 및 인쇄
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
