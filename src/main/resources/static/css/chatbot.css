@@ -1,9 +1,7 @@
 /*!* 아이콘을 오른쪽 하단에 고정 *!*/
 .chatbotimg {
-    bottom: 20px;
+    bottom: 30px;
     right: 20px;
-    width: 60px; /* 아이콘의 전체 크기 */
-    height: 60px; /* 아이콘의 전체 크기 */
     background-color: #f1f2f3;
     border-radius: 50%;
     display: flex;
@@ -13,11 +11,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.chatbotimg img {
-    width: 60px; /* 아이콘 이미지의 크기 */
-    height: 60px; /* 아이콘 이미지의 크기 */
-    z-index:999;
-}
 
 .chat_wrap {
     display: none;
@@ -265,114 +258,3 @@
     background-color: #e06a0d;
 }
 
-
-
-.relative {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-}
-
-.absolute {
-    position: absolute;
-}
-
-.bottom-4 {
-    bottom: 1rem;
-}
-
-.right-4 {
-    right: 1rem;
-}
-
-.inline-flex {
-    display: inline-flex;
-}
-
-.items-center {
-    align-items: center;
-}
-
-.justify-center {
-    justify-content: center;
-}
-
-.whitespace-nowrap {
-    white-space: nowrap;
-}
-
-.text-sm {
-    font-size: 0.875rem;
-}
-
-.font-medium {
-    font-weight: 500;
-}
-
-.ring-offset-background {
-    ring-offset-color: #fff;
-}
-
-.transition-colors {
-    transition: color 0.2s;
-}
-
-.focus-visible\:outline-none:focus-visible {
-    outline: none;
-}
-
-.focus-visible\:ring-2:focus-visible {
-    box-shadow: 0 0 0 2px #fff;
-}
-
-.focus-visible\:ring-ring:focus-visible {
-    ring-color: #fff;
-}
-
-.focus-visible\:ring-offset-2:focus-visible {
-    ring-offset-width: 2px;
-}
-
-.disabled\:pointer-events-none:disabled {
-    pointer-events: none;
-}
-
-.disabled\:opacity-50:disabled {
-    opacity: 0.5;
-}
-
-.hover\:text-accent-foreground:hover {
-    color: #ff0;
-}
-
-.h-10 {
-    height: 2.5rem;
-}
-
-.w-10 {
-    width: 2.5rem;
-}
-
-.bg-primary {
-    background-color: #007bff;
-}
-
-.text-primary-foreground {
-    color: #fff;
-}
-
-.rounded-full {
-    border-radius: 9999px;
-}
-
-.p-3 {
-    padding: 0.75rem;
-}
-
-.shadow-lg {
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.hover\:bg-primary\/90:hover {
-    background-color: rgba(0, 123, 255, 0.9);
-}
