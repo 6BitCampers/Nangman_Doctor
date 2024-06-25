@@ -87,21 +87,21 @@ public class PaymentController {
 
             paymentService.updateReceipt(receiptMap);
 
-            String encryptedReceiptNo = AESUtil.encrypt(String.valueOf(receipt_no));
+            String encryptedReceiptNo = AESUtil.encrypt(String.valueOf(receipt_no).trim());
 
-            return "redirect:/payment/paymentSuccess?receipt_noEN="+encryptedReceiptNo;
+            return "redirect:/payment/paymentSuccess?receipt_noEn="+encryptedReceiptNo;
         } else{
             return "paymentError";
         }
     }
     @GetMapping("/paymentSuccess")
-    public String paymentSuccessPage(@RequestParam String receipt_noEN
+    public String paymentSuccessPage(@RequestParam String receipt_noEn
     ,Model model){
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId= customOAuth2User.getEmail();
         String user_type=customOAuth2User.getType();
 
-        int receipt_no=Integer.parseInt(AESUtil.decrypt(receipt_noEN));
+        int receipt_no=Integer.parseInt(AESUtil.decrypt(receipt_noEn));
 
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
         int payment_no=receiptDto.getPayment_no();
