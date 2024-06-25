@@ -72,4 +72,7 @@ public class ReviewAndReceiptService {
     public void insertPcContent(PcDto pcDto){
         reviewAndReceiptInter.insertPcContent(pcDto);
     }
+    public void updateReceiptPc(int prescription_no, int receipt_no){
+        reviewAndReceiptInter.updateReceiptPc(prescription_no,receipt_no);
+    }
 }

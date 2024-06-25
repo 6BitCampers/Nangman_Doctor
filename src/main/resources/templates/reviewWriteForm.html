@@ -13,6 +13,21 @@
 // v0 by Vercel.
 // https://v0.dev/t/LPZBm0AuH9z
 -->
+    <style>
+        #star-rating {
+            font-size: 22px; /* 별 모양의 폰트 크기 설정 */
+        }
+        .star{
+            font-size: inherit;
+            color:gray;
+            transition: transform 0.2s ease-in-out;
+        }
+        .star.selected {
+            font-size: 1em;
+            color: #f1be44; /* 노란색 별 */
+            transform: scale(1.2);
+        }
+    </style>
     <form id="formInsertReview" th:action="@{/reviewboard/insert}" method="post"
           enctype="multipart/form-data">
         <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-6xl mx-auto review-edit-container" data-v0-t="card">
@@ -30,40 +45,21 @@
                             name="review_title"
                     />
                 </div>
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-2" style="display: flex">
+                    <div id="star-rating">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                    </div>
                     <span class="text-2xl">평점</span>
-                    <span id="inputRatingsInsert"></span>
                     <input type="hidden" name="user_no" th:value="${user_no}">
                     <input type="hidden" name="employee_no" th:value="${employeeNo}">
-                    <input type="hidden" name="review_likecount" id="ratingsInputInsert" value="5">
+                    <input type="hidden" name="review_likecount" id="ratingsInput" value="5">
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
-                            const inputRatings = document.getElementById('inputRatingsInsert');
-                            const ratingsInput = document.getElementById('ratingsInputInsert');
-                            const starCount = 5;
 
-                            // Create stars
-                            for (let i = 1; i <= starCount; i++) {
-                                const star = document.createElement('span');
-                                star.classList.add('star');
-                                star.innerHTML = '★';
-                                star.dataset.ratingValue = i;
-                                star.addEventListener('click', setRating);
-                                inputRatings.appendChild(star);
-                            }
-
-                            function setRating(event) {
-                                const selectedRating = event.currentTarget.dataset.ratingValue;
-                                ratingsInput.value = selectedRating;
-                                const stars = inputRatings.querySelectorAll('.star');
-                                stars.forEach(star => {
-                                    if (star.dataset.ratingValue <= selectedRating) {
-                                        star.classList.add('selected');
-                                    } else {
-                                        star.classList.remove('selected');
-                                    }
-                                });
-                            }
                         });
                     </script>
                 </div>
@@ -79,7 +75,40 @@
                 </div>
                 <script>
                     var uploadedUUIDs = [];
-                    $(function () {
+                    $(document).ready(function () {
+                        // 모든 별 요소를 가져옵니다.
+                        const stars = document.querySelectorAll('.star');
+                        const input = document.getElementById('ratingsInput');
+                        const ratingValue = parseInt(input.value); // #ratingsInput의 값 가져오기
+
+                        // #ratingsInput의 값에 따라 별을 초기화합니다.
+                        stars.forEach((star, index) => {
+                            if (index < ratingValue) {
+                                star.classList.add('selected');
+                            } else {
+                                star.classList.remove('selected');
+                            }
+                        });
+
+                        // 각 별 요소에 클릭 이벤트를 추가합니다.
+                        stars.forEach(star => {
+                            star.addEventListener('click', function () {
+                                const value = this.getAttribute('data-value'); // 클릭한 별의 값을 가져옵니다.
+
+                                // 별 색깔 변경을 위한 클래스 조작
+                                stars.forEach(s => {
+                                    if (s.getAttribute('data-value') <= value) {
+                                        s.classList.add('selected');
+                                    } else {
+                                        s.classList.remove('selected');
+                                    }
+                                });
+
+                                // input 태그의 값 업데이트
+                                document.getElementById('ratingsInput').value = value;
+                            });
+                        });
+
                         $('#review_contentIn').summernote({
 
                             // 에디터 크기 설정

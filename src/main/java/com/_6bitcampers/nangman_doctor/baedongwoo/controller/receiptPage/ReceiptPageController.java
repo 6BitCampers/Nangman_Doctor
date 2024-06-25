@@ -49,8 +49,11 @@ public class ReceiptPageController {
 
         try {
             PcDto pcDto = reviewAndReceiptService.getPcContents(receipt_no);
+            int prescrition_no= pcDto.getPc_no();
             PillDto soyumDto=reviewAndReceiptService.getPillContent(pcDto.getPc_pill_1());
             PillDto jintongDto=reviewAndReceiptService.getPillContent(pcDto.getPc_pill_2());
+
+            reviewAndReceiptService.updateReceiptPc(prescrition_no,receipt_no);
 
             model.addAttribute("pcDto", pcDto);
             model.addAttribute("soyumDto", soyumDto);
@@ -84,6 +87,10 @@ public class ReceiptPageController {
                     .build();
 
             reviewAndReceiptService.insertPcContent(pcDto);
+
+            int prescription_no= pcDto.getPc_no();
+
+            reviewAndReceiptService.updateReceiptPc(prescription_no,receipt_no);
 
             model.addAttribute("pcDto", pcDto);
             model.addAttribute("soyumDto", soyumDto);
