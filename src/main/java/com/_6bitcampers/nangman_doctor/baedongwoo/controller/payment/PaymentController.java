@@ -132,6 +132,7 @@ public class PaymentController {
 
         PaymentDto paymentDto=paymentService.getPayment(payment_no);
         String method=paymentDto.getPayment_method();
+        int user_no=paymentDto.getUser_no();
 
         int hospital_no=receiptDto.getInfo_no();
         userEntity userEntity= reviewAndReceiptService.getUserInfo(userId, user_type);
@@ -146,6 +147,7 @@ public class PaymentController {
         response.put("method", method);
         response.put("receipt_no", receipt_no);
         response.put("amount", amount);
+        response.put("user_no", user_no);
 
         return response;
     }

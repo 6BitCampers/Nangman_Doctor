@@ -32,6 +32,8 @@
                     $('#userAddress').text(response.userEntity.user_addr);
                     $('#userPhone').text(response.userEntity.user_hp);
                     $('#userEmail').text(response.userEntity.user_email);
+                    $('#paymentUserNo').val(response.user_no);
+                    $('#paymentReceiptNo').val(response.receipt_no);
                 }
             });
         }
@@ -128,12 +130,13 @@
                 <div class="p-6">
                     <div class="grid gap-4">
                         <p>여러분의 피드백이 병원을 발전시킵니다!</p>
-                        <a th:href="@{/mypage}">
-                            <button style="color: white"
+                            <form th:action="@{/reviewboard/write}" method="post">
+                                <input type="hidden" id="paymentUserNo">
+                                <input type="hidden" id="paymentReceiptNo">
+                            <button style="color: white" type="submit"
                                     class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3">
                                 리뷰 쓰러가기
-                            </button>
-                        </a>
+                            </button></form>
                     </div>
                 </div>
             </div>
