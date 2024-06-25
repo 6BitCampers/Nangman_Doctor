@@ -3,12 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Search Results &mdash; Sterial</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+
 <body>
 
 <div layout:fragment="content">
@@ -17,14 +12,15 @@
             <img src="images/hero_2.jpg" alt="Image" class="img-fluid">
         </div>
         <div class="container">
-            <div class="row align-items-center justify-content-start">
-                <div class="col-lg-6 mx-auto text-center">
-                    <h1 class="heading" data-aos="fade-up">예약하기</h1>
-                    <p data-aos="fade-up">병원 예약 페이지입니다.</p>
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-6 mx-auto text-center d-flex flex-column align-items-center">
+                    <h1 class="heading" data-aos="fade-up" style="margin-bottom: 10px; white-space: nowrap;">예약하기</h1>
+                    <p data-aos="fade-up" style="white-space: nowrap;">병원 예약 페이지입니다.</p>
                 </div>
             </div>
         </div>
     </div>
+
 
     <nav class="site-nav mt-3">
         <div class="container">
@@ -36,7 +32,6 @@
                         </div>
                         <div class="col-lg-4 mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
                             <div class="contact-info">
-
                                 <div class="address mt-4">
                                     <i class="icon-room"></i>
                                     <h4 class="mb-2">Location:</h4>
@@ -50,15 +45,10 @@
                                         11:00 AM - 2300 PM
                                     </p>
                                 </div>
-<!--                                <div class="email mt-4">-->
-<!--                                    <i class="icon-envelope"></i>-->
-<!--                                    <h4 class="mb-2">Email:</h4>-->
-<!--                                    <p th:text="${HosInfoDto.getInfo_hp()}">-->
-<!--                                </div>-->
                                 <div class="phone mt-4">
                                     <i class="icon-phone"></i>
                                     <h4 class="mb-2">Call:</h4>
-                                    <p th:text="${HosInfoDto.getInfo_hp()}">
+                                    <p th:text="${HosInfoDto.getInfo_hp()}"></p>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +59,7 @@
                             <form class="space-y-4"  th:action="@{/reserveProc}" method="post" id="reservationForm" onsubmit="return handleSubmit(event)" style="max-width: 800px; width: 200%; margin: 0 auto;">
                                 <div class="row mb-4">
                                     <div class="col-6">
-                                        <input type="text" class="form-control" placeholder="이름" id="reservation_name" name="name" required="">
+                                        <input type="text" class="form-control" placeholder="이름" id="reservation_name" name="name" th:value="${name}" required="">
                                     </div>
                                     <div class="col-6">
                                         <input type="date" class="form-control" id="reservation_date" name="reservation_date" required="">
@@ -110,7 +100,7 @@
                                 <input type="hidden" id="info_no" name="info_no" th:value="${info_no}"/>
                                 <div class="row">
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary w-100" style="height: 60px; font-size: 1.5rem;">등록</button>
+                                        <button type="submit" class="btn btn-primary w-100" style="height: 60px; font-size: 1.5rem; background-color: darkorange;">등록</button>
                                     </div>
                                 </div>
                             </form>
@@ -120,74 +110,6 @@
                 </div>
             </div>
 
-            <div class="site-footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="widget">
-                                <h3>About Us<span class="text-primary">.</span></h3>
-                                <p>이곳은 예약 페이지입니다. 문의사항은 아래 연락처로 연락해주세요.</p>
-                            </div>
-                            <div class="widget">
-                                <h3>Connect</h3>
-                                <ul class="list-unstyled social">
-                                    <li><a href="#"><span class="icon-instagram"></span></a></li>
-                                    <li><a href="#"><span class="icon-twitter"></span></a></li>
-                                    <li><a href="#"><span class="icon-facebook"></span></a></li>
-                                    <li><a href="#"><span class="icon-linkedin"></span></a></li>
-                                    <li><a href="#"><span class="icon-pinterest"></span></a></li>
-                                    <li><a href="#"><span class="icon-dribbble"></span></a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-2 ml-auto">
-                            <div class="widget">
-                                <h3>Links</h3>
-                                <ul class="list-unstyled float-left links">
-                                    <li><a href="#">About us</a></li>
-                                    <li><a href="#">Services</a></li>
-                                    <li><a href="#">News</a></li>
-                                    <li><a href="#">Careers</a></li>
-                                    <li><a href="#">Contact</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-2">
-                            <div class="widget">
-                                <h3>Company</h3>
-                                <ul class="list-unstyled float-left links">
-                                    <li><a href="#">About us</a></li>
-                                    <li><a href="#">Services</a></li>
-                                    <li><a href="#">News</a></li>
-                                    <li><a href="#">Careers</a></li>
-                                    <li><a href="#">Contact</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3">
-                            <div class="widget">
-                                <h3>Contact</h3>
-                                <address>43 Raymouth Rd. Baltemoer, London 3910</address>
-                                <ul class="list-unstyled links mb-4">
-                                    <li><a href="tel://11234567890">+1(123)-456-7890</a></li>
-                                    <li><a href="tel://11234567890">+1(123)-456-7890</a></li>
-                                    <li><a href="mailto:info@mydomain.com">info@mydomain.com</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row mt-5">
-                        <div class="col-12 text-center">
-                            <p class="mb-0">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> <!-- License information: https://untree.co/license/ -->
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
@@ -222,75 +144,73 @@
                 }
             </script>
             <style>
-            body {
-            font-family: Arial, sans-serif;
-            margin: 10px;
-            }
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 10px;
+                }
 
-            .form-group {
-            margin-bottom: 10px;
-            }
+                .form-group {
+                    margin-bottom: 10px;
+                }
 
-            label {
-            display: block;
-            margin-bottom: 5px;
-            }
+                label {
+                    display: block;
+                    margin-bottom: 5px;
+                }
 
-            input, select, textarea, button {
-            width: 200%;
+                input, select, textarea, button {
+                    width: 200%;
+                    margin: 5px 0;
+                    box-sizing: border-box;
+                    font-size: 1.2rem;
+                }
 
-            margin: 5px 0;
-            box-sizing: border-box;
-            font-size: 1.2rem;
-            }
+                .contact-info {
+                    margin-top: 30px;
+                }
 
-            .contact-info {
-            margin-top: 30px;
-            }
+                form {
+                    max-width: 100px;
+                    width: 100%;
+                    padding: 10px;
+                    box-sizing: border-box;
+                }
 
+                .form-control {
+                    display: block;
+                    width: 100%;
+                    padding: 0.75rem 1rem;
+                    font-size: 1.2rem;
+                    line-height: 1.5;
+                    color: #495057;
+                    background-color: #fff;
+                    background-clip: padding-box;
+                    border: 1px solid #ced4da;
+                    border-radius: 0.25rem;
+                    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+                }
 
+                button {
+                    color: #fff;
+                    background-color: Orange;
+                    border-color: #007bff;
+                    display: block;
+                    width: 100%;
+                    padding: 0.75rem 1rem;
+                    font-size: 1.5rem;
+                    line-height: 1.5;
+                    border-radius: 0.25rem;
+                    cursor: pointer;
+                }
 
-            form {
-            max-width: 100px;
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-            }
-
-            .form-control {
-            display: block;
-            width: 100%;
-            padding: 0.75rem 1rem;
-            font-size: 1.2rem;
-            line-height: 1.5;
-            color: #495057;
-            background-color: #fff;
-            background-clip: padding-box;
-            border: 1px solid #ced4da;
-            border-radius: 0.25rem;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-            }
-
-            button {
-            color: #fff;
-            background-color: #007bff;
-            border-color: #007bff;
-            display: block;
-            width: 100%;
-            padding: 0.75rem 1rem;
-            font-size: 1.5rem;
-            line-height: 1.5;
-            border-radius: 0.25rem;
-            cursor: pointer;
-            }
-
-            button:hover {
-            background-color: #0056b3;
-            border-color: #004085;
-            }
-</style>
+                button:hover {
+                    background-color: #0056b3;
+                    border-color: #004085;
+                }
+            </style>
         </div>
     </nav>
+
 </div>
 </body>
 </html>
