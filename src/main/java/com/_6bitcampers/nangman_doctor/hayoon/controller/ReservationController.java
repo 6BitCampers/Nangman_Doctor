@@ -25,22 +25,27 @@ public class ReservationController {
 
     @GetMapping("/reservation")
     public String showReservationPage(@RequestParam("info_no") int infoNo, Model model) {
+        // Fetch the employee number and hospital info based on the info_no
         int employeeNo = reservationService.getEmployeeNoByInfoNo(infoNo);
         HosInfoDto hosInfoDto = reservationService.getHosdto(infoNo);
 
+        // Get the current authenticated user
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userId= customOAuth2User.getEmail();
+        String userId = customOAuth2User.getEmail();
 
-        String name=reservationService.getUserNameByNo(reservationService.getUserNo(userId));
+        // Get the user's name using the userId
+        String name = reservationService.getUserNameByNo(reservationService.getUserNo(userId));
 
-
-        model.addAttribute("name",name);
+        // Add attributes to the model
+        model.addAttribute("name", name);
         model.addAttribute("HosInfoDto", hosInfoDto);
         model.addAttribute("info_no", infoNo);
         model.addAttribute("employeeNo", employeeNo);
 
+        // Return the name of the Thymeleaf template to be rendered
         return "reservation";
     }
+
 
     @PostMapping("/reserveProc")
     public String reserveProc(@RequestParam("name") String reservationName,
@@ -56,9 +61,11 @@ public class ReservationController {
 
         // Get the userNo from the SecurityContext
 
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId= customOAuth2User.getEmail();
 
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        int userNo = reservationService.getUserNo(userEmail);
+
+        int userNo = reservationService.getUserNo(userId);
         System.out.println(userNo);
         System.out.println(reservationName);
 
