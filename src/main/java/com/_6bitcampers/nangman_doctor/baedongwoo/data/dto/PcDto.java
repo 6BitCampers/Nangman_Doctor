@@ -17,7 +17,7 @@ public class PcDto {
     private String pc_regi_num;
     private String pc_disease_num1;
     private String pc_disease_num2;
-    private int pc_pill_1_no;
-    private int pc_pill_2_no;
+    private int pc_pill_1;
+    private int pc_pill_2;
     private int receipt_no;
 }

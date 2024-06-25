@@ -367,7 +367,7 @@
                                     button.classList.add("btn", "btn-primary"); // Bootstrap 버튼 스타일 클래스 추가
                                     button.setAttribute("data-bs-toggle", "modal"); // Bootstrap 모달 토글 속성 추가
                                     button.setAttribute("data-bs-target", "#exampleModal"); // Bootstrap 모달 타겟 속성 추가
-                                    button.innerText = "결제";
+                                    button.innerText = "상세";
 
 
                                     button.onclick = function() {
@@ -440,15 +440,7 @@
                             }
                             $('#receiptNo').val(receipt.receipt_no);  // receipt_no에 해당하는 키 사용
                             $('#userNo').val(receipt.user_no);  // user_no에 해당하는 키 사용
-
-                            // 각 값이 올바르게 설정되었는지 확인
-                            console.log('receiptName:', receipt.receipt_name);
-                            console.log('visitedHospitalName:', receipt.info_name);
-                            console.log('receiptDate:', receipt.receipt_date);
-                            console.log('receiptAmount:', receipt.receipt_amount);
-                            console.log(typeof receipt.receipt_no);
-                            console.log('receiptNo:', receipt.receipt_no);
-                            console.log('userNo:', receipt.user_no);
+                            $('')
                         } else {
                             console.log('No data found or data is empty array');
                         }
