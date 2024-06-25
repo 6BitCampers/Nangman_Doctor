@@ -28,8 +28,8 @@ public class mypageService {
         return mypageMapper.getEmployee(user_email);
     }
 
-    public List<ReceiptDTO> getReceipt(int user_no){
-        return mypageMapper.getReceipt(user_no);
+    public List<ReceiptDTO> getReceipt(Map<String, Object> map){
+        return mypageMapper.getReceipt(map);
     }
 
     public void updateUser(Map<String, Object> map){
