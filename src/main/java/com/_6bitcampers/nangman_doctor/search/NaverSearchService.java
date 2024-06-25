@@ -36,7 +36,7 @@ public class NaverSearchService {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
-        String apiURL = apiUrl + "?query=" + text + "&start=" + ((page - 1) * 10 + 1) + "&display=10";
+        String apiURL = apiUrl + "?query=" + text + "&start=" + ((page - 1) * 9 + 1) + "&display=9";
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
