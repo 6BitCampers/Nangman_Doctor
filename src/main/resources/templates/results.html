@@ -47,7 +47,8 @@
                             </div>
                         </div>
                         <div class="flex space-x-2">
-                            <a style="color:white; background-color: blue; border:blue" th:href="@{'/reservation?info_no=' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
+
+                            <a style="color:white; background-color: blue; border:blue" th:if="${isLoggedIn}" th:href="@{'/reservation?info_no=' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
                             <a style="color:blue; background-color: white;" th:href="@{'/about-hospital/' + ${hospital.info_no}}" class="btn btn-dark btn-sm">상세</a>
                         </div>
                     </div>

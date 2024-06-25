@@ -27,24 +27,31 @@ public class ReservationController {
     public String showReservationPage(@RequestParam("info_no") int infoNo, Model model) {
         // Fetch the employee number and hospital info based on the info_no
         int employeeNo = reservationService.getEmployeeNoByInfoNo(infoNo);
+
+        List<ReservationDto> HosResDto = reservationService.getResbyempno(employeeNo);
+
         HosInfoDto hosInfoDto = reservationService.getHosdto(infoNo);
 
-        // Get the current authenticated user
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId = customOAuth2User.getEmail();
 
         // Get the user's name using the userId
         String name = reservationService.getUserNameByNo(reservationService.getUserNo(userId));
 
-        // Add attributes to the model
+
+
+
+        model.addAttribute("HosResDto", HosResDto);
         model.addAttribute("name", name);
         model.addAttribute("HosInfoDto", hosInfoDto);
         model.addAttribute("info_no", infoNo);
         model.addAttribute("employeeNo", employeeNo);
 
+
         // Return the name of the Thymeleaf template to be rendered
         return "reservation";
     }
+
 
 
     @PostMapping("/reserveProc")

@@ -57,6 +57,10 @@ public interface ReservationMapper {
     @Select("SELECT * FROM hospital_info WHERE info_no=#{infoNo}")
     HosInfoDto getHosdto(int infoNo);
 
+    @Select("SELECT * FROM hospital_reservation WHERE employee_no = #{employeeNo} and reservation_status=2")
+    List<ReservationDto> getResbyempno(int employeeNo);
+
+
 
 
 }
