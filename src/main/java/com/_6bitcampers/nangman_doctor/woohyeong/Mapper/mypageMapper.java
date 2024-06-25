@@ -25,10 +25,11 @@ public interface mypageMapper {
 
     @Select("""
     select * from hospital_receipt r left join hospital_reservation hr 
-        on r.reservation_no = hr.reservation_no left join normal_user u on hr.user_no = u.user_no
-    where u.user_no = #{user_no}
+        on r.reservation_no = hr.reservation_no left join normal_user u on hr.user_no = u.user_no 
+        left join hospital_info i on i.info_no = r.info_no
+    where u.user_no = #{user_no} and hr.reservation_no = #{reservation_no}
 """)
-    List<ReceiptDTO> getReceipt(int user_no);
+    List<ReceiptDTO> getReceipt(Map<String, Object> map);
 
     @Update("""
     update normal_user set user_name=#{user_name}, user_email=#{user_email}, user_hp = #{user_hp}, user_nickname=#{user_nickname}

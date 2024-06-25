@@ -1,27 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}" xmlns="">
+      layout:decorate="~{layouts/layout}">
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
+<body>
 <div layout:fragment="content">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.all.min.js"></script>
-    <!--
-// v0 by Vercel.
-// https://v0.dev/t/nULdeR4ujUU
--->
 
     <div class="grid grid-cols-[300px_1fr_300px] gap-8 max-w-6xl mx-auto py-10 px-4">
         <div class="bg-background rounded-lg shadow-lg p-6">
             <div class="flex items-center gap-4">
-      <span class="relative flex shrink-0 overflow-hidden rounded-full w-12 h-12">
-        <img class="aspect-square h-full w-full" th:src="@{/images/placeholder-user.jpg}"/>
-      </span>
+                <span class="relative flex shrink-0 overflow-hidden rounded-full w-12 h-12">
+                    <img class="aspect-square h-full w-full" th:src="@{/images/placeholder-user.jpg}"/>
+                </span>
                 <div>
                     <h3 class="font-semibold text-lg" th:text="${udto.user_name}"></h3>
                     <p class="text-muted-foreground text-sm" th:text="${udto.user_email}"></p>
@@ -96,11 +94,10 @@
                     }
                 </script>
                 <a th:href="@{/logout}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-                Log out
+                    Log out
                 </a>
             </div>
         </div>
-
 
         <div class="bg-background rounded-lg shadow-lg p-6">
             <h2 class="text-xl font-semibold mb-4">Reservation Status</h2>
@@ -150,41 +147,34 @@
                         <div
                                 class="inline-flex w-fit items-center whitespace-nowrap rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground"
                                 data-v0-t="badge"
-                                th:text="${reservation.get('status')}"
-                        >
+                                th:text="${reservation.get('status')}">
                         </div>
                     </div><!--each end-->
-                    </div>
                 </div>
             </div>
-        <div class="calendar-container">
-            <div class="calendar-header">
-                <button onclick="navigateMonth(-1)">이전</button>
-                <h2 id="currentMonthYear"></h2>
-                <button onclick="navigateMonth(1)">다음</button>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <button onclick="navigateMonth(-1)">이전</button>
+                    <h2 id="currentMonthYear"></h2>
+                    <button onclick="navigateMonth(1)">다음</button>
+                </div>
+                <table class="calendar-table">
+                    <thead>
+                    <tr>
+                        <th>일</th>
+                        <th>월</th>
+                        <th>화</th>
+                        <th>수</th>
+                        <th>목</th>
+                        <th>금</th>
+                        <th>토</th>
+                    </tr>
+                    </thead>
+                    <tbody id="calendarBody">
+                    </tbody>
+                </table>
             </div>
-            <table class="calendar-table">
-                <thead>
-                <tr>
-                    <th>일</th>
-                    <th>월</th>
-                    <th>화</th>
-                    <th>수</th>
-                    <th>목</th>
-                    <th>금</th>
-                    <th>토</th>
-                </tr>
-                </thead>
-                <tbody id="calendarBody">
-                </tbody>
-            </table>
         </div>
-        </div>
-
-
-
-
-
 
         <!-- 예약목록 -->
         <div class="flex-fill p-3 bg-light rounded shadow-sm d-flex flex-column justify-content-start m-3" hidden>
@@ -211,10 +201,7 @@
                                      th:onclick="'deleteReservation(' + ${reservation.get('reservation_no')} + ')'">삭제</button>
 
                            </span>
-
-
                         </p>
-
                     </li>
                 </ul>
             </div>
@@ -234,10 +221,9 @@
                         success: function(response) {
                             if (response === "success") {
                                 alert("Reservation deleted successfully");
-                                // 필요 시 페이지 새로고침 또는 다른 동작 수행
                                 location.reload();
                             } else {
-                                //alert("Failed to delete reservation");
+                                alert("Failed to delete reservation");
                             }
                         },
                         error: function() {
@@ -247,7 +233,6 @@
                 }
             </script>
         </div>
-
 
         <style>
             .btn {
@@ -334,7 +319,6 @@
             }
         </style>
 
-
         <script th:inline="javascript">
             let reservationList = /*[[${reservationList}]]*/ [];
             let currentMonth = new Date().getMonth();
@@ -376,23 +360,24 @@
                                 return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && (reservation.reservation_status === 2 || reservation.reservation_status === 3);
                             });
 
-
-
                             if (reservation) {
                                 if (reservation.reservation_status === 3) {
                                     const button = document.createElement("button");
-                                    button.classList.add("btn", "btn-primary"); // Bootstrap 버튼 스타일 클래스 추가
                                     button.setAttribute("type", "button");
+                                    button.classList.add("btn", "btn-primary"); // Bootstrap 버튼 스타일 클래스 추가
                                     button.setAttribute("data-bs-toggle", "modal"); // Bootstrap 모달 토글 속성 추가
                                     button.setAttribute("data-bs-target", "#exampleModal"); // Bootstrap 모달 타겟 속성 추가
                                     button.innerText = "결제";
-                                    // button.addEventListener("click", function() {
-                                    //     window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
-                                    // });
-                                    cellContent.appendChild(button);
-                                }
 
-                                else if (reservation.reservation_face === 2 && reservation.reservation_status === 2) {
+
+                                    button.onclick = function() {
+                                        alert("onclick function");
+                                        fetchPaymentInfo(reservation.reservation_no); // 결제 정보를 가져오는 함수 호출
+                                    };
+
+                                    cellContent.appendChild(button);
+
+                                } else if (reservation.reservation_face === 2 && reservation.reservation_status === 2) {
                                     const button = document.createElement("button");
                                     button.classList.add("video-call-button");
                                     button.innerText = "화상진료";
@@ -422,6 +407,59 @@
                 }
             }
 
+            function fetchPaymentInfo(reservationNo) {
+                $.ajax({
+                    url: `/getPaymentInfo?reservationNo=${reservationNo}`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log('Fetched data:', data);  // 응답 데이터 확인
+
+                        if (data && data.length > 0) {
+                            const receipt = data[0];
+                            console.log('Receipt data:', receipt);  // receipt 객체 확인
+
+                            // ID가 있는지 확인
+                            if ($('#receiptName').length > 0) {
+                                console.log('Element exists');  // 요소가 존재하는지 확인
+                            } else {
+                                console.log('Element not found');  // 요소가 존재하지 않는 경우
+                            }
+
+                            // 데이터를 요소에 할당
+                            $('#receiptName').text(receipt.receipt_name);
+                            $('#visitedHospitalName').text(receipt.info_name);  // visited_hospital_name에 해당하는 키 사용
+                            $('#receiptDate').text(receipt.receipt_date);  // receipt_date에 해당하는 키 사용
+                            $('#receiptAmount').text(receipt.receipt_amount);  // receipt_amount에 해당하는 키 사용
+                            if (typeof receipt.receipt_payment_key === 'undefined') {
+                                $('#paymentStatus').text('미결제 상태');
+                                console.log('paymentStatus:', receipt.receipt_payment_key);
+                            } else {
+                                $('#paymentStatus').text('결제 완료');
+                                console.log('paymentStatus:', receipt.receipt_payment_key);
+                            }
+                            $('#receiptNo').text(receipt.receipt_no);  // receipt_no에 해당하는 키 사용
+                            $('#userNo').text(receipt.user_no);  // user_no에 해당하는 키 사용
+
+                            // 각 값이 올바르게 설정되었는지 확인
+                            console.log('receiptName:', receipt.receipt_name);
+                            console.log('visitedHospitalName:', receipt.info_name);
+                            console.log('receiptDate:', receipt.receipt_date);
+                            console.log('receiptAmount:', receipt.receipt_amount);
+                            console.log(typeof receipt.receipt_payment_key);
+                            console.log('receiptNo:', receipt.receipt_no);
+                            console.log('userNo:', receipt.user_no);
+                        } else {
+                            console.log('No data found or data is empty array');
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Error fetching payment info:', errorThrown);
+                    }
+                });
+            }
+
+
 
             function navigateMonth(offset) {
                 currentMonth += offset;
@@ -440,24 +478,16 @@
             });
 
             function openPopup(){
-            // 팝업 옵션 설정: 스크롤바 없애고, 확대/축소 가능하도록
-            var popupOptions = 'width=900,height=1200,resizable=yes,scrollbars=no';
-
-            // 팝업 창을 중앙에 위치시키기 위한 계산
-            var left = (screen.width - 900) / 2;
-            var top = (screen.height - 1200) / 2;
-            popupOptions += `,left=${left},top=${top}`;
-
-            // 새로운 윈도우를 팝업으로 엽니다.
-            var popupWindow = window.open('', 'popupWindow', popupOptions);
-
-            // 팝업 윈도우에 폼을 제출합니다.
-            var form = document.getElementById('popupForm');
-            form.target = 'popupWindow'; // 폼의 target을 팝업 윈도우로 설정
-            form.submit();
+                var popupOptions = 'width=900,height=1200,resizable=yes,scrollbars=no';
+                var left = (screen.width - 900) / 2;
+                var top = (screen.height - 1200) / 2;
+                popupOptions += `,left=${left},top=${top}`;
+                var popupWindow = window.open('', 'popupWindow', popupOptions);
+                var form = document.getElementById('popupForm');
+                form.target = 'popupWindow';
+                form.submit();
             }
         </script>
-
     </div>
 
     <!-- Modal -->
@@ -468,73 +498,36 @@
                     <h5 class="modal-title" id="exampleModalLabel">결제정보</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div th:each="dto : ${dto}" class="modal-body">
+                <div class="modal-body">
                     <table class="table table-striped mt-3" style="height: auto">
                         <tr>
                             <th>결제정보</th>
-                            <td th:text="${dto.receipt_name}"></td>
+                            <td id="receiptName"></td>
                         </tr>
-                        <tr>
                         <tr>
                             <th>방문 병원</th>
-                            <input type="hidden" id="myPageInfoNo" th:value="${dto.info_no}">
+                            <input type="hidden" id="myPageInfoNo">
                             <td id="visitedHospitalName"></td>
                         </tr>
-                        <script>
-                            $(document).ready(function() {
-                                var infoNo = $('#myPageInfoNo').val();
-                                if (infoNo) {
-                                    $.ajax({
-                                        url: '/getHospitalName', // 서버의 엔드포인트 URL을 여기에 입력하세요
-                                        type: 'GET',
-                                        data: { info_no: infoNo },
-                                        success: function(response) {
-                                            // 서버 응답에서 info_name을 가져와서 표시
-                                            $('#visitedHospitalName').text(response.info_name);
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.error('AJAX 요청 실패:', status, error);
-                                        }
-                                    });
-                                }
-                            });
-                        </script>
                         <tr>
                             <th>진료일</th>
-                            <td th:text="${dto.receipt_date}"></td>
+                            <td id="receiptDate"></td>
                         </tr>
                         <tr>
                             <th>결제금액</th>
-                            <td th:text="${dto.receipt_amount}"></td>
+                            <td id="receiptAmount"></td>
                         </tr>
                         <tr>
                             <th>결제 상태</th>
-                            <td th:switch="${dto.payment_no}">
-                                <span th:case="0">미결제 상태</span>
-                                <span th:case="*">결제 완료</span>
-                            </td>
+                            <td id="paymentStatus"></td>
                         </tr>
                         <tr>
                             <td colspan="2" style="text-align: center;">
-                                <!-- 결제 하러 가기 버튼 -->
-                                <form action="/payment" method="post" style="display: inline;">
-                                    <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
-                                    <input type="hidden" name="user_no" th:value="${udto.user_no}">
-                                    <button type="submit" class="btn btn-primary mt-3" th:if="${dto.payment_no == 0}">
-                                        결제 하러 가기
-                                    </button>
+                                <form id="paymentForm" action="/payment" method="post" style="display: inline;">
+                                    <input type="hidden" name="receipt_no" id="receiptNo">
+                                    <input type="hidden" name="user_no" id="userNo">
+                                    <button type="submit" class="btn btn-primary mt-3">결제 하러 가기</button>
                                 </form>
-                                <div th:if="${dto.payment_no != 0}" style="display: flex; justify-content: center; gap: 10px;">
-                                    <form method="post" th:action="@{/reviewboard/write}">
-                                        <input type="hidden" name="user_no" th:value="${userNo}">
-                                        <input type="hidden" name="receipt_no" th:value="${dto.receipt_no}">
-                                        <button type="submit" class="btn btn-primary mt-3">리뷰 쓰러 가기</button>
-                                    </form>
-                                    <form th:action="@{/receiptView}" method="post" id="popupForm" target="popupWindow" style="display: inline;">
-                                        <input type="hidden" name="receipt_no" th:value="${dto.getReceipt_no()}">
-                                        <button type="submit" class="btn btn-primary mt-3 receiptView" onclick="openPopup()">처방전 열람</button>
-                                    </form>
-                                </div>
                             </td>
                         </tr>
                     </table>
@@ -545,7 +538,7 @@
             </div>
         </div>
     </div>
+
 </div>
+</body>
 </html>
-
-
