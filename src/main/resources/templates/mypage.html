@@ -220,10 +220,11 @@
                         data: { reservationNo: reservationNo },
                         success: function(response) {
                             if (response === "success") {
-                                alert("Reservation deleted successfully");
+                                alert("예약이 삭제되었습니다.")
+                                // 필요 시 페이지 새로고침 또는 다른 동작 수행
                                 location.reload();
                             } else {
-                                alert("Failed to delete reservation");
+                                alert("예약 삭제에 변수발생");
                             }
                         },
                         error: function() {
@@ -231,6 +232,7 @@
                         }
                     });
                 }
+
             </script>
         </div>
 

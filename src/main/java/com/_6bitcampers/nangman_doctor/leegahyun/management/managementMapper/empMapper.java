@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -39,4 +40,5 @@ public interface empMapper {
 
     @Update("UPDATE hospital_employee he SET he.info_no = ( SELECT hi.info_no FROM hospital_info hi WHERE hi.info_name = #{hname} LIMIT 1) WHERE he.employee_email = #{email}")
     void updateNameByEmail(@Param("email") String email,@Param("hname") String hname);
+
 }
