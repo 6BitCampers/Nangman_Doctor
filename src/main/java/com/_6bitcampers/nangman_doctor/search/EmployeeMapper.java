@@ -10,4 +10,14 @@ public interface EmployeeMapper {
 
     @Select("SELECT * FROM hospital_employee WHERE info_no = #{infoNo}")
     List<EmployeeDto> findByInfoNo(Long infoNo);
+
+    @Select("SELECT * FROM hospital_employee " +
+            "WHERE employee_role = 'ROLE_EMP' " +
+            "ORDER BY employee_likecount DESC " +
+            "LIMIT 10")
+    List<EmployeeDto> findTop10ByRoleAndLikeCount();
+
+    @Select("SELECT info_name FROM hospital_info WHERE info_no = #{infoNo}")
+    String findHospitalNameByInfoNo(Long infoNo);
 }
+

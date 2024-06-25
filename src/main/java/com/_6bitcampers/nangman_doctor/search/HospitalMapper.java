@@ -14,4 +14,6 @@ public interface HospitalMapper {
     List<HospitalDto> findTopRatedByKeyword(String keyword);
     @Select("SELECT * FROM hospital_info WHERE info_no = #{info_no}")
     HospitalDto findById(Long info_no);
+    @Select("SELECT info_name FROM hospital_info WHERE info_no = #{info_no}")
+    HospitalDto findName(Long info_no);
 }

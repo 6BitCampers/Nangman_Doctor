@@ -8,14 +8,24 @@ import java.util.List;
 public class EmployeeService {
 
     private final EmployeeMapper employeeMapper;
+    private final HospitalMapper hospitalMapper;
 
     @Autowired
-    public EmployeeService(EmployeeMapper employeeMapper) {
+    public EmployeeService(EmployeeMapper employeeMapper, HospitalMapper hospitalMapper) {
         System.out.println(employeeMapper);
         this.employeeMapper = employeeMapper;
+        this.hospitalMapper = hospitalMapper;
     }
 
     public List<EmployeeDto> getEmployeesByInfoNo(Long infoNo) {
         return employeeMapper.findByInfoNo(infoNo);
+    }
+
+    public List<EmployeeDto> getTop10EmployeesByLikeCount() {
+        return employeeMapper.findTop10ByRoleAndLikeCount();
+    }
+
+    public String getHospitalNameByInfoNo(Long infoNo) {
+        return employeeMapper.findHospitalNameByInfoNo(infoNo);
     }
 }

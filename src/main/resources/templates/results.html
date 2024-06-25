@@ -21,6 +21,10 @@
                 <div class="col-lg-6 mx-auto text-center">
                     <h1 class="heading" data-aos="fade-up">Search Results</h1>
                     <p class="mb-4" data-aos="fade-up">Here are the results for your search.</p>
+                    <form action="/results" method="get" class="d-flex align-items-center">
+                        <input style="width: 1000px" type="text" name="keyword" class="form-control me-2 input-large" placeholder="" value=>
+                        <button type="submit" class="btn btn-primary" style="background-color:darkorange">Search</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -28,63 +32,54 @@
 
     <div class="section">
         <div class="container">
-            <h1 class="large-heading"><b>이 병원들이 유저 평점이 높아요</b></h1>
-            <table class="table table-striped" style="width:100%">
-                <thead>
-                <tr>
-                    <th style="background-color: darkorange; text-align: center;">사진</th>
-                    <th style="background-color: darkorange; text-align: center;">이름</th>
-                    <th style="background-color: darkorange; text-align: center;">별점</th>
-                    <th style="background-color: darkorange; text-align: center;">주소</th>
-                    <th style="background-color: darkorange;">예약 또는 상세보기</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="hospital : ${topRatedHospitals}">
-                    <td>
-                        <img th:if="${hospital.info_photo != null}" th:src="@{${hospital.info_photo}}" alt="Hospital Photo" class="img-fluid" width="30" height="30">
-                        <img th:unless="${hospital.info_photo != null}" src="/images/person_1.jpg" alt="Default Photo" class="img-fluid" width="30" height="30">
-                    </td>
-                    <td th:text="${hospital.info_name}">Hospital Name</td>
-                    <!--  <td th:text="${hospital.info_description}">Description</td>-->
-                    <td th:text="${hospital.info_likecount}">별점</td>
-                    <td th:text="${hospital.info_addr}">주소</td>
-                    <td>
-                        <a th:href="@{'/reservation?info_no=' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
-                        <a th:href="@{'/about-hospital/' + ${hospital.info_no}}" class="btn btn-danger btn-sm">상세</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-            <h1 class="large-heading"><b>검색결과</b></h1>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th style="background-color: darkorange;">사진</th>
-                    <th style="background-color: darkorange;">이름</th>
-                    <th style="background-color: darkorange;">별점</th>
-                    <th style="background-color: darkorange;">주소</th>
-                    <th style="background-color: darkorange; text-align: center;">예약 또는 상세보기</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="hospital : ${hospitals}">
-                    <td>
-                        <img th:if="${hospital.info_photo != null}" th:src="@{${hospital.info_photo}}" alt="Hospital Photo" class="img-fluid" width="30" height="30">
-                        <img th:unless="${hospital.info_photo != null}" src="/images/person_1.jpg" alt="Default Photo" class="img-fluid" width="30" height="30">
-                    </td>
-                    <td th:text="${hospital.info_name}">Hospital Name</td>
-                    <td th:text="${hospital.info_description}">Description</td>
-                    <td th:text="${hospital.info_addr}">주소</td>
-                    <td>
-                        <a th:href="@{'/reservation.html' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
 
-                        <a th:href="@{'/about-hospital/' + ${hospital.info_no}}" class="btn btn-danger btn-sm">상세</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <br><br>
+            <br>
+            <div class="space-y-6" style="width:1000px;">
+                <h1 class="large-heading"><b>이 병원들이 유저 평점이 높아요</b></h1>
+                <div class="bg-white rounded-lg shadow-md p-6" th:each="hospital : ${topRatedHospitals}">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <img th:if="${hospital.info_photo != null}" th:src="@{${hospital.info_photo}}" alt="Hospital Photo" class="img-fluid" width="30" height="30">
+                            <img th:unless="${hospital.info_photo != null}" src="/images/person_1.jpg" alt="Default Photo" class="img-fluid" width="30" height="30">
+                            <div class="ml-4">
+                                <h2 class="text-lg font-semibold" th:text="${hospital.info_name}">Hospital Name</h2>
+                                <p class="text-gray-600" th:text="${hospital.info_description}">Description</p>
+                                <p class="text-gray-600" th:text="${hospital.info_addr}">주소</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a style="color:white; background-color: blue; border:blue" th:href="@{'/reservation.html?info_no=' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
+                            <a style="color:blue; background-color: white;" th:href="@{'/about-hospital/' + ${hospital.info_no}}" class="btn btn-dark btn-sm">상세</a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <br><br><br><br><br><br><br> <br><br><br><br><br><br><br>
+            <div class="space-y-6" style="width:1000px;">
+                <br><br><br>
+                <h1 class="large-heading"><b> 일반 검색 결과에요</b></h1>
+                <div class="bg-white rounded-lg shadow-md p-6" th:each="hospital : ${hospitals}">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <img th:if="${hospital.info_photo != null}" th:src="@{${hospital.info_photo}}" alt="Hospital Photo" class="img-fluid" width="30" height="30">
+                            <img th:unless="${hospital.info_photo != null}" src="/images/person_1.jpg" alt="Default Photo" class="img-fluid" width="30" height="30">
+                            <div class="ml-4">
+                                <h2 class="text-lg font-semibold" th:text="${hospital.info_name}">Hospital Name</h2>
+                                <p class="text-gray-600" th:text="${hospital.info_description}">Description</p>
+                                <p class="text-gray-600" th:text="${hospital.info_addr}">주소</p>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a style="color:white; background-color: blue; border:blue" th:href="@{'/reservation.html?info_no=' + ${hospital.info_no}}" class="btn btn-success btn-sm">예약</a>
+                            <a style="color:blue; background-color: white;" th:href="@{'/about-hospital/' + ${hospital.info_no}}" class="btn btn-dark btn-sm">상세</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
@@ -179,7 +174,6 @@
     function appoint() {
         window.location.href = '/reservation.html';
     }
-
 
     function moreDescription(hospitalId) {
         window.location.href = '/about-hospital/' + hospitalId;

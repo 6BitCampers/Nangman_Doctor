@@ -1,8 +1,9 @@
 package com._6bitcampers.nangman_doctor.baedongwoo.data.service;
 
+import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PcDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PillDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
-import com._6bitcampers.nangman_doctor.baedongwoo.data.mapper.ReviewInter;
+import com._6bitcampers.nangman_doctor.baedongwoo.data.mapper.ReviewAndReceiptInter;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ReviewService {
+public class ReviewAndReceiptService {
 
     @Autowired
-    private ReviewInter reviewInter;
+    private ReviewAndReceiptInter reviewAndReceiptInter;
 
     public List<ReviewDto> getPagenationedReviews(int startnum, int perPage) {
         Map<String,Integer> pagination = new HashMap<>();
@@ -23,43 +24,49 @@ public class ReviewService {
         pagination.put("startnum", startnum);
         pagination.put("perPage", perPage);
 
-        return reviewInter.getPagenationedReviews(pagination);
+        return reviewAndReceiptInter.getPagenationedReviews(pagination);
     }
 
     public int getAllReviewsCount(){
-        return reviewInter.getAllReviewsCount();
+        return reviewAndReceiptInter.getAllReviewsCount();
     }
     public ReviewDto getReviewBySeq(int review_no){
-        return reviewInter.getReviewBySeq(review_no);
+        return reviewAndReceiptInter.getReviewBySeq(review_no);
     }
     public void updateReview(Map<String,Object> map){
-        reviewInter.updateReview(map);
+        reviewAndReceiptInter.updateReview(map);
     }
     public void deleteReview(int review_no){
-        reviewInter.deleteReview(review_no);
+        reviewAndReceiptInter.deleteReview(review_no);
     }
     public void updateViewcount(int review_no){
-        reviewInter.updateViewcount(review_no);
+        reviewAndReceiptInter.updateViewcount(review_no);
     }
     public userEntity getUserInfo(String user_email,String user_type){
-        return reviewInter.getUserInfo(user_email,user_type);
+        return reviewAndReceiptInter.getUserInfo(user_email,user_type);
     }
     public userEntity getUserInfoByNum(int user_no){
-        return reviewInter.getUserInfoByNum(user_no);
+        return reviewAndReceiptInter.getUserInfoByNum(user_no);
     }
     public int getHospitalNo(int employee_no){
-        return reviewInter.getHospitalNo(employee_no);
+        return reviewAndReceiptInter.getHospitalNo(employee_no);
     }
     public String getHospitalName(int info_no){
-        return reviewInter.getHospitalName(info_no);
+        return reviewAndReceiptInter.getHospitalName(info_no);
     }
     public void insertReview(ReviewDto reviewDto){
-       reviewInter.insertReview(reviewDto);
+       reviewAndReceiptInter.insertReview(reviewDto);
     }
     public String getEmployeeName(int employee_no){
-        return reviewInter.getEmployeeName(employee_no);
+        return reviewAndReceiptInter.getEmployeeName(employee_no);
     }
-    public PillDto getPillInfo(String pill_act){
-        return reviewInter.getPillInfo(pill_act);
+    public PillDto getRandomPillInfo(String pill_act){
+        return reviewAndReceiptInter.getRandomPillInfo(pill_act);
+    }
+    public PcDto getPcContents(int receipt_no){
+        return reviewAndReceiptInter.getPcContents(receipt_no);
+    }
+    public PillDto getPillContent(int pill_no){
+        return reviewAndReceiptInter.getPillContent(pill_no);
     }
 }

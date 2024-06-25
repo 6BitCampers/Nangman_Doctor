@@ -20,16 +20,16 @@ public class mypageService {
         this.mypageMapper = mypageMapper;
     }
 
-    public UserDTO getUser(String user_email){
-        return mypageMapper.getUser(user_email);
+    public UserDTO getUser(String user_email, String user_type){
+        return mypageMapper.getUser(user_email, user_type);
     }
 
     public EmployeeDTO getEmployee(String user_email){
         return mypageMapper.getEmployee(user_email);
     }
 
-    public List<ReceiptDTO> getReceipt(int user_no){
-        return mypageMapper.getReceipt(user_no);
+    public List<ReceiptDTO> getReceipt(Map<String, Object> map){
+        return mypageMapper.getReceipt(map);
     }
 
     public void updateUser(Map<String, Object> map){

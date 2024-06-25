@@ -22,8 +22,8 @@ public class reservationServiceW {
         reservationMapper.updateSurvey(map);
     }
 
-    public int getEmployeeNo(String employee_email){
-        return reservationMapper.getEmployeeNo(employee_email);
+    public int getEmployeeNo(String employee_email, String employee_type){
+        return reservationMapper.getEmployeeNo(employee_email, employee_type);
     }
 
     public void deleteSurvey(int reservation_no){

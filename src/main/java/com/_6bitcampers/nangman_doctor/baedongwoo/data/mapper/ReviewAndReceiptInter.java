@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor.baedongwoo.data.mapper;
 
+import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PcDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PillDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface ReviewInter {
+public interface ReviewAndReceiptInter {
     @Select("select * from hospital_review order by review_no desc limit #{startnum},#{perPage}")
     public List<ReviewDto> getPagenationedReviews(Map<String,Integer> pagination);
     @Select("select count(*) from hospital_review")
@@ -36,5 +37,9 @@ public interface ReviewInter {
     @Select("select employee_name from hospital_employee where employee_no=#{employee_no}")
     public String getEmployeeName(int employee_no);
     @Select("select * from pill_names where pill_act=#{pill_act} order by rand() limit 1")
-    public PillDto getPillInfo(String pill_act);
+    public PillDto getRandomPillInfo(String pill_act);
+    @Select("select * from prescription_content where receipt_no=#{receipt_no}")
+    public PcDto getPcContents(int receipt_no);
+    @Select("select * from pill_names where pill_no=#{pill_no}")
+    public PillDto getPillContent(int pill_no);
 }

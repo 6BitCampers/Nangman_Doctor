@@ -3,10 +3,9 @@ package com._6bitcampers.nangman_doctor.baedongwoo.controller.reviewboard;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.PaymentService;
-import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
+import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewAndReceiptService;
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
-import com._6bitcampers.nangman_doctor.search.HospitalDto;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ import java.util.Map;
 @Controller
 public class ReviewBoardListController {
     @Autowired
-    private ReviewService reviewService;
+    private ReviewAndReceiptService reviewAndReceiptService;
     @Autowired
     private PaymentService paymentService;
 
@@ -32,7 +31,7 @@ public class ReviewBoardListController {
     public String reviewBoard(
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
             Model model) {
-        int totalNum=reviewService.getAllReviewsCount();
+        int totalNum= reviewAndReceiptService.getAllReviewsCount();
         int perPage=5;
 
         if(page<=0){
@@ -44,7 +43,7 @@ public class ReviewBoardListController {
         int startnum=(page-1)*perPage;
 
 
-        List<ReviewDto> list= reviewService.getPagenationedReviews(startnum, perPage);
+        List<ReviewDto> list= reviewAndReceiptService.getPagenationedReviews(startnum, perPage);
 
         model.addAttribute("list", list);
         Map<Integer, String> hospitalNameMap=new HashMap<>();
@@ -53,11 +52,11 @@ public class ReviewBoardListController {
         for (ReviewDto dto : list) {
             var user_no = dto.getUser_no();
             var employee_no=dto.getEmployee_no();
-            userEntity userDto = reviewService.getUserInfoByNum(user_no);
+            userEntity userDto = reviewAndReceiptService.getUserInfoByNum(user_no);
             userMap.put(user_no, userDto);
 
-            var info_no=reviewService.getHospitalNo(employee_no);
-            var info_name=reviewService.getHospitalName(info_no);
+            var info_no= reviewAndReceiptService.getHospitalNo(employee_no);
+            var info_name= reviewAndReceiptService.getHospitalName(info_no);
             hospitalNameMap.put(user_no,info_name);
         }
 

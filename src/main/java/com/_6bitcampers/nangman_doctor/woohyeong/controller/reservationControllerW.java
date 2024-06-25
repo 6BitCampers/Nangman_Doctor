@@ -30,17 +30,17 @@ public class reservationControllerW {
     //의사가 수정 불가능
     //의사가 승인 누르면 employee_no 추가하는 업데이트
     //취소 누르면 해당 예약 신청 거절(삭제)
-    @GetMapping("/reservation/updatesurvey")
-    public String updateSurvey(int user_no){
-        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String id = customOAuth2User.getEmail();
-        int employee_no = reservationService.getEmployeeNo(id);
-        Map<String, Object> map = new HashMap<>();
-        map.put("employee_no", employee_no);
-        map.put("user_no", user_no);
-        reservationService.updateSurvey(map);
-        return "";
-    }
+//    @GetMapping("/reservation/updatesurvey")
+//    public String updateSurvey(int user_no){
+//        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String id = customOAuth2User.getEmail();
+//        int employee_no = reservationService.getEmployeeNo(id);
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("employee_no", employee_no);
+//        map.put("user_no", user_no);
+//        reservationService.updateSurvey(map);
+//        return "";
+//    }
 
     @GetMapping("/reservation/deletesurvey")
     public String deleteSurvey(int reservation_no){
