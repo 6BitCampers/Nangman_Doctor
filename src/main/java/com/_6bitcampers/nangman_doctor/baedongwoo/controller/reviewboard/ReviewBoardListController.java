@@ -73,8 +73,8 @@ public class ReviewBoardListController {
     @PostMapping("/reviewboard/write")
     public String writeReview(
             @RequestParam int user_no,
-                              @RequestParam int receipt_no,
-                              Model model){
+            @RequestParam int receipt_no,
+            Model model){
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId=customOAuth2User.getEmail();
         String user_name=customOAuth2User.getRealName();
