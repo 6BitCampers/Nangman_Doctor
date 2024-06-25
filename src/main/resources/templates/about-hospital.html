@@ -66,139 +66,45 @@
 			margin: 20px 0;
 		}
 	</style>
-	<div class="hero overlay">
-		<div class="img-bg rellax">
-			<img src="/images/hero_2.jpg" alt="Image" class="img-fluid">
-		</div>
-		<div class="container">
-			<div class="row align-items-center justify-content-start">
-				<div class="col-lg-6 mx-auto text-center">
-					<h1 class="war" th:text="${hospital.info_name}"><b>&nbsp;&nbsp;&nbsp;Hospital Name</b></h1>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<div class="section">
-		<div class="container">
-			<div class="description">
-				<div class="col-lg-6 mx-auto text-center">
-					<h1 style="text-align: center; font-size: 2em; background-color: whitesmoke; color: darkorange;">
-						<b>상세 설명</b></h1>
-					<br>
-					<br>
-					<p style="color: darkorange; font-size:1em;">
-						<b>설명: </b>
-						<span th:text="${hospital.info_description}" style="font-weight: bold;">설명</span>
-					</p>
-					<br>
-					<p style="color: darkorange; font-size:1em;">
-						<b>주소: </b>
-						<span th:text="${hospital.info_addr}" style="font-weight: bold;">주소</span>
-					</p>
-					<br>
-					<p style="color: darkorange; font-size:1em;">
-						<b>연락처: </b>
-						<span th:text="${hospital.info_hp}" style="font-weight: bold;">N/A</span>
-					</p>
-					<br>
-					<p style="color: darkorange; font-size:1em;">
-						<b>추가설명: </b>
-						<span th:text="${hospital.info_plus}" style="font-weight: bold;">N/A</span>
-					</p>
-				</div>
-
-				<br>
-
-				&nbsp;
-				&nbsp;
-				&nbsp;
-				<br>
-				<br>
-				<br>
-				<table class="table table-striped">
-					<div class="col-lg-6 mx-auto text-center">
-						<h1 style="text-align: center; font-size: 2em; background-color: whitesmoke; color: darkorange;">
-							<b>운영 시간</b></h1>
+		<div class="flex flex-col gap-8 py-12 md:py-16 lg:py-24">
+			<div class="container px-4 md:px-6">
+				<div class="grid gap-6 md:grid-cols-2 md:gap-12">
+					<div class="space-y-4">
+						<h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl" th:text="${hospital.info_name}">Acme General Hospital</h1>
+						<p class="text-muted-foreground md:text-xl/relaxed" th:text="${hospital.info_description}" style="white-space: pre-wrap; word-wrap: break-word;">
+							Acme General Hospital is a leading healthcare provider, offering a wide range of medical services to the
+							community. With a team of highly skilled and experienced professionals, we are committed to delivering
+							exceptional patient care and promoting overall well-being.
+						</p>
+						<p class="text-muted-foreground md:text-xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word;"><strong>Address: </strong><span th:text="${hospital.info_addr}">123 Hospital St, City, Country</span></p>
+						<p class="text-muted-foreground md:text-xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word;"><strong>Contact: </strong><span th:text="${hospital.info_hp}">+1 (123) 456-7890</span></p>
+						<p class="text-muted-foreground md:text-xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word;"><strong>Additional Info: </strong><span th:text="${hospital.info_plus}">Additional information about the hospital.</span></p>
 					</div>
-					<thead>
-					<tr>
-						<th style="background-color: darkorange;">시간</th>
-						<th style="background-color: darkorange;">월</th>
-						<th style="background-color: darkorange;">화</th>
-						<th style="background-color: darkorange;">수</th>
-						<th style="background-color: darkorange;">목</th>
-						<th style="background-color: darkorange;">금</th>
-						<th style="background-color: darkorange;">토</th>
-						<th style="background-color: darkorange;">일</th>
-						<th style="background-color: darkorange;">공</th>
-
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td>요 일</td>
-						<td th:text="${hospital.Monday}">N/A</td>
-						<td th:text="${hospital.Tuesday}">N/A</td>
-						<td th:text="${hospital.Wednesday}">N/A</td>
-						<td th:text="${hospital.Thursday}">N/A</td>
-						<td th:text="${hospital.Friday}">N/A</td>
-						<td th:text="${hospital.Saturday}">N/A</td>
-						<td th:text="${hospital.Sunday}">N/A</td>
-						<td th:text="${hospital.Holiday}">N/A</td>
-					</tr>
-					</tbody>
-				</table>
-
-				<!-- Map container placed below the table -->
-				<div class="map-container">
-					<br>
-					<div class="col-lg-6 mx-auto text-center">
-						<h1 style="text-align: center; font-size: 2em; background-color: whitesmoke; color: darkorange;">
-							<b>오시는 길</b></h1>
+					<div class="rounded-lg border">
+						<div id="map" style="height: 400px;"></div>
 					</div>
-					<div id="map" style="width:100%;height:350px;margin-bottom: 50px;"></div>
 				</div>
 			</div>
-
-			<!--의사 테이블-->
-			<div class="section bg-light" style="min-width: 1500px;">
-
-				<h2 style="color:darkorange" class="heading mb-5 text-center">의료진</h2>
-
-				<div class="text-center mb-5">
-					<div id="prevnext-testimonial">
-                        <span class="prev me-3" data-controls="prev">
-                            <span class="icon-chevron-left"></span>
-                        </span>
-						<span class="next" data-controls="next">
-                            <span class="icon-chevron-right"></span>
-                        </span>
-					</div>
-				</div>
-
-				<div class="wide-slider-testimonial-wrap">
-					<div class="wide-slider-testimonial">
-						<div th:each="employee : ${employees}" class="item">
-							<blockquote class="block-testimonial">
-								<div class="author">
-									<img src="/images/person_1.jpg" alt="Free template by TemplateUX">
-									<h3 th:text="${employee.employee_name}">Employee Name</h3>
-									<p class="position mb-5" th:text="${employee.employee_likecount}">Employee Role</p>
-								</div>
-								<p>
-									<span style="color:#fd7e14" th:text="'주진료:'+${employee.employee_field}">Employee Field</span>
-								</p>
-							</blockquote>
+			<div class="container px-4 md:px-6">
+				<div class="space-y-6">
+					<h2 class="text-2xl font-bold tracking-tighter sm:text-3xl">Our Doctors</h2>
+					<div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+						<div th:each="employee : ${employees}" class="flex flex-col items-center gap-4 rounded-lg border p-6 text-center">
+							<img src="/images/placeholder-user.jpg" alt="Doctor Photo" width="120" height="120" class="h-30 w-30 rounded-full object-cover" style="aspect-ratio: 120 / 120; object-fit: cover;" />
+							<div class="space-y-1">
+								<h3 class="text-lg font-medium" th:text="${employee.employee_name}">Dr. John Doe</h3>
+								<p class="text-muted-foreground" th:text="${employee.employee_field}">Cardiologist</p>
+								<p class="text-muted-foreground" th:text="${employee.employee_likecount}+'점'">Cardiologist</p>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div> <!-- /.untree_co-section -->
+			</div>
 		</div>
 	</div>
 
-	<script type="text/javascript"
-			src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e8446e9bb190af20372cac3728f820e3"></script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e8446e9bb190af20372cac3728f820e3"></script>
 	<script th:inline="javascript">
 		var hospital = /*[[${hospital}]]*/ {};
 		var info_x = hospital.info_x;
@@ -210,7 +116,7 @@
 					level: 3 // 지도의 확대 레벨
 				};
 
-		// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+		// 지도를 표시할 div와 지도 옵션으로 지도를 생성합니다
 		var map = new kakao.maps.Map(mapContainer, mapOption);
 		// 지도를 클릭한 위치에 표출할 마커입니다
 		var marker = new kakao.maps.Marker({
@@ -227,7 +133,7 @@
 		// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
 		map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
-		// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+		// 지도 확대 축소를 제어할 수 있는 줌 컨트롤을 생성합니다
 		var zoomControl = new kakao.maps.ZoomControl();
 		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	</script>

@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 public class SearchController {
@@ -25,11 +29,31 @@ public class SearchController {
     }
 
     @GetMapping("/results")
-    public String showResultsPage(@RequestParam("keyword") String keyword, Model model) {
-        List<HospitalDto> hospitals = hospitalService.searchHospitals(keyword);
-        List<HospitalDto> topRatedHospitals = hospitalService.searchTopRatedHospitals(keyword);
+    public String showResultsPage(
+            @RequestParam("keyword") String keyword,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            Model model) {
+
+        List<HospitalDto> hospitals = hospitalService.searchHospitals(keyword, page, size);
+        List<HospitalDto> topRatedHospitals = hospitalService.searchTopRatedHospitals(keyword, 1, 10); // Assuming top rated is only the top 10
+
+        long totalHospitals = hospitalService.countHospitals(keyword); // Count the total hospitals matching the keyword
+        int totalPages = (int) Math.ceil((double) totalHospitals / size);
+
+        // Calculate the page range to display
+        int startPage = Math.max(1, page - 5);
+        int endPage = Math.min(totalPages, page + 4);
+        List<Integer> pageNumbers = IntStream.rangeClosed(startPage, endPage).boxed().collect(Collectors.toList());
+
         model.addAttribute("hospitals", hospitals);
         model.addAttribute("topRatedHospitals", topRatedHospitals);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("size", size);
+        model.addAttribute("pageNumbers", pageNumbers);
+
         return "results";
     }
 
@@ -47,7 +71,9 @@ public class SearchController {
             naEmployee.setEmployee_hp("N/A");
             employees.add(naEmployee);
         }
-
+        List<String> images = Arrays.asList("person_1.jpg", "person_2.jpg", "person_3.jpg", "person_4.jpg");
+        model.addAttribute("images", images);
+        model.addAttribute("random", new Random());
         model.addAttribute("employees", employees);
         model.addAttribute("hospital", hospital);
         System.out.println(hospitalId);
