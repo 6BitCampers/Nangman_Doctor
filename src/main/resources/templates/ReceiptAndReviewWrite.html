@@ -79,7 +79,7 @@
         <td colspan="5" style="text-align: center;font-size: 40px;font-weight: bold" >처&nbsp;&nbsp;&nbsp;방&nbsp;&nbsp;&nbsp;전</td>
     </tr>
     <tr>
-        <td colspan="5"><br>&#8251; 국비진료대상자 (전액 국비부담) 보증번호 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${pcDto.getPc_warranty_num()}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+        <td colspan="5"><br>&#8251; 국비진료대상자 (전액 국비부담) 보증번호 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${pcDto.pc_warranty_num}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
             <span class="boxed">&#x2713;</span> 의료보험  <span class="boxed">2</span> 의료보호  <span class="boxed">3</span> 산재보험
             <span class="boxed">4</span> 자동차보험  <span class="boxed">5</span> 기타 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
     </tr>
@@ -90,24 +90,24 @@
         <td style="width: 30%" th:text="${#dates.format(receiptDto.receipt_date, 'yyyy.MM.dd')}"></td>
         <th rowspan="3" class="receiptTdName" style="width: 5%">의료기관</th>
         <th style="width: 10%" class="receiptTdName">명&nbsp;칭</th>
-        <td th:text="${empDto.getInfo_name()}"></td>
+        <td th:text="${empDto.info_name}"></td>
     </tr>
     <tr>
         <th rowspan="2" class="receiptTdName" style="width: 5%">환 자</th>
         <th class="receiptTdName">성명</th>
-        <td th:text="${userEntity.getUser_name()}"></td>
+        <td th:text="${userEntity.user_name}"></td>
         <th class="receiptTdName">전화번호</th>
-        <td th:text="${empDto.getInfo_hp()}"></td>
+        <td th:text="${empDto.info_hp}"></td>
     </tr>
     <tr>
         <th class="receiptTdName">주민등록번호</th>
-        <td><span th:text="${pcDto.getPc_regi_num()}"></span></td>
+        <td><span th:text="${pcDto.pc_regi_num}"></span></td>
         <th class="receiptTdName">주소</th>
-        <td th:text="${empDto.getInfo_addr}"></td>
+        <td th:text="${empDto.info_addr}"></td>
     </tr>
     <tr>
         <th class="receiptTdName" rowspan="2">질병 분류 기호 </th>
-        <td>&nbsp;<span th:text="${pcDto.getPc_disease_num1()}"></span></td>
+        <td>&nbsp;<span th:text="${pcDto.pc_disease_num1}"></span></td>
         <th class="receiptTdName" rowspan="2" colspan="2" style="text-align: center">처방 의료인의 성명</th>
         <td colspan="3" rowspan="2" style="text-align: right; position: relative;">
             <span id="printOnlySpan">&nbsp;&nbsp;&nbsp;(인쇄 시에만 출력)</span>
@@ -115,7 +115,7 @@
         </td>
     </tr>
     <tr>
-        <td>&nbsp;<sapn th:text="${pcDto.getPc_disease_num2()}"></sapn></td>
+        <td>&nbsp;<sapn th:text="${pcDto.pc_disease_num2}"></sapn></td>
 
     </tr>
     <tr>
@@ -133,8 +133,8 @@
     <th class="receiptTdName">용법</th>
 </tr>
     <tr>
-        <td style="height: 300px;vertical-align: top;" colspan="2"><span th:text="${soyumDto.getPill_code()}"></span>&nbsp;<span th:text="${soyumDto.getPill_name()}"></span>
-        <br><span th:text="${jintonDto.getPill_code()}"></span>&nbsp;<span th:text="${jintonDto.getPill_name()}"></span></td>
+        <td style="height: 300px;vertical-align: top;" colspan="2"><span th:text="${soyumDto.pill_code}"></span>&nbsp;<span th:text="${soyumDto.pill_name}"></span>
+        <br><span th:text="${jintongDto.pill_code}"></span>&nbsp;<span th:text="${jintongDto.pill_name}"></span></td>
         <td style="vertical-align: top; text-align: center">2알<br>1알</td>
         <td style="vertical-align: top; text-align: center">3회<br>3회</td>
         <td style="vertical-align: top; text-align: center">9회<br>9회</td>

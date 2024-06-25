@@ -49,8 +49,8 @@ public class ReceiptPageController {
 
         try {
             PcDto pcDto = reviewAndReceiptService.getPcContents(receipt_no);
-            PillDto soyumDto=reviewAndReceiptService.getPillContent(pcDto.getPc_pill_1_no());
-            PillDto jintongDto=reviewAndReceiptService.getPillContent(pcDto.getPc_pill_2_no());
+            PillDto soyumDto=reviewAndReceiptService.getPillContent(pcDto.getPc_pill_1());
+            PillDto jintongDto=reviewAndReceiptService.getPillContent(pcDto.getPc_pill_2());
 
             model.addAttribute("pcDto", pcDto);
             model.addAttribute("soyumDto", soyumDto);
@@ -78,10 +78,12 @@ public class ReceiptPageController {
                     .pc_disease_num1(randomDiseaseWord)
                     .pc_disease_num2(randomDiseaseWord2)
                     .pc_regi_num(randomRegiNum)
-                    .pc_pill_1_no(soyumDto.getPill_no())
-                    .pc_pill_2_no(jintongDto.getPill_no())
+                    .pc_pill_1(soyumDto.getPill_no())
+                    .pc_pill_2(jintongDto.getPill_no())
                     .receipt_no(receipt_no)
                     .build();
+
+            reviewAndReceiptService.insertPcContent(pcDto);
 
             model.addAttribute("pcDto", pcDto);
             model.addAttribute("soyumDto", soyumDto);

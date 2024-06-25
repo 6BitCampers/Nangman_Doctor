@@ -42,4 +42,6 @@ public interface ReviewAndReceiptInter {
     public PcDto getPcContents(int receipt_no);
     @Select("select * from pill_names where pill_no=#{pill_no}")
     public PillDto getPillContent(int pill_no);
+    @Insert("insert into prescription_content (pc_warranty_num, pc_regi_num, pc_disease_num1, pc_disease_num2, pc_pill_1, pc_pill_2, receipt_no) values (#{pc_warranty_num},#{pc_regi_num},#{pc_disease_num1}, #{pc_disease_num2}, #{pc_pill_1}, #{pc_pill_2}, #{receipt_no})")
+    public void insertPcContent(PcDto pcDto);
 }
