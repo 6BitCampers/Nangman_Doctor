@@ -69,4 +69,5 @@ public class EmpService {
         empMapper.updateNameByEmail(email, hname);
     }
 
+
 }

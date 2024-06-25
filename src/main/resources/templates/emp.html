@@ -3,10 +3,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <div layout:fragment="content">
-
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
         /* Add the CSS styles here */
         table {
@@ -81,7 +80,6 @@
                         <p class="text-sm text-muted-foreground">Please register and identify the hospital you belong to and your role.</p>
                     </div>
                     <div class="p-6" >
-                        <form action="/registerRole" method="post">
                             <div class="grid gap-2" style="margin: 10px;">
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                     Name
@@ -94,6 +92,7 @@
                                 />
 
                             </div>
+
                             <div class="grid gap-2" style="margin: 10px;">
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">
                                     Email
@@ -106,7 +105,7 @@
                                         type="email"
                                 />
                             </div>
-
+                        <form action="/registerRole" method="post">
                             <div class="grid gap-2" style="margin: 10px;">
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                         >
@@ -343,6 +342,30 @@
                                 </form>
                             </div>
                         </div>
+                        <script>
+                            function findAddr(){
+                                new daum.Postcode({
+                                    oncomplete: function(data) {
+
+                                        console.log(data);
+
+                                        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+                                        // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                                        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                                        var roadAddr = data.roadAddress; // 도로명 주소 변수
+                                        var jibunAddr = data.jibunAddress; // 지번 주소 변수
+                                        // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                                        document.getElementById('member_post').value = data.zonecode;
+                                        if(roadAddr !== ''){
+                                            document.getElementById("member_addr").value = roadAddr;
+                                        }
+                                        else if(jibunAddr !== ''){
+                                            document.getElementById("member_addr").value = jibunAddr;
+                                        }
+                                    }
+                                }).open();
+                            }
+                        </script>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="space-y-2">
                                 <form action="/registerAddress" th:each="info:${employees}" method="post">
@@ -355,11 +378,11 @@
                                 <div class="flex items-center gap-2"  style="width: 600px;">
                                 <input
                                     class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                    id="address" name="address" th:value="${info.info_addr}"
+                                    id="member_addr"  type="text"  th:value="${info.info_addr}"
                                         style="width: 100%;"
                                     />
                                     <button type="button" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600"
-                                            onclick="">
+                                            onclick="findAddr()">
                                         주소찾기
                                     </button>
                                     <th:block sec:authorize="hasAuthority('manager')">

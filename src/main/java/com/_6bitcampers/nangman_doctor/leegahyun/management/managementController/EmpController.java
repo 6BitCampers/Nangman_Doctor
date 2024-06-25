@@ -93,6 +93,8 @@ public class EmpController {
         model.addAttribute("list", list);
         Map<Integer, userEntity> userMap = new HashMap<>();
 
+
+
         for (ReviewDto dto : list) {
             var user_no = dto.getUser_no();
             userEntity userDto = reviewAndReceiptService.getUserInfoByNum(user_no);
@@ -129,18 +131,6 @@ public class EmpController {
 
         return "redirect:/emp";
     }
-
-    @PostMapping("/registerRole")
-    public String registerRole(@RequestParam("role") String role, Model model) {
-
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerRole(email, role);
-
-        return "redirect:/emp";
-    }
-
-
-
 
     @PostMapping("/registerDescription")
     public String registerDescription(@RequestParam("desciption") String description, Model model) {
