@@ -102,6 +102,10 @@ public class ReservationService {
         return reservationMapper.getHosdto(infoNo);
     }
 
+    public String getUserNameByNo(int infoNo){
+        return reservationMapper.getUserNameByNo(infoNo);
+    }
+
 
 
 

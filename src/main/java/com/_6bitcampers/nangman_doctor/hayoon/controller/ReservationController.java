@@ -4,6 +4,7 @@ import com._6bitcampers.nangman_doctor.hayoon.Dto.HosInfoDto;
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
 import com._6bitcampers.nangman_doctor.search.HospitalDto;
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -27,11 +28,18 @@ public class ReservationController {
         int employeeNo = reservationService.getEmployeeNoByInfoNo(infoNo);
         HosInfoDto hosInfoDto = reservationService.getHosdto(infoNo);
 
+        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId= customOAuth2User.getEmail();
+
+        String name=reservationService.getUserNameByNo(reservationService.getUserNo(userId));
+
+
+        model.addAttribute("name",name);
         model.addAttribute("HosInfoDto", hosInfoDto);
         model.addAttribute("info_no", infoNo);
         model.addAttribute("employeeNo", employeeNo);
 
-        return "reservation";  // 원하는 HTML 페이지로 이동합니다.
+        return "reservation";
     }
 
     @PostMapping("/reserveProc")
@@ -47,6 +55,8 @@ public class ReservationController {
                               Model model) {
 
         // Get the userNo from the SecurityContext
+
+
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         int userNo = reservationService.getUserNo(userEmail);
         System.out.println(userNo);

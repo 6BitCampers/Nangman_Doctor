@@ -83,14 +83,12 @@ public class StatusController {
     }
 
     @PostMapping("/delete")
-    public void deleteReservation(@RequestParam int reservationNo,Model model){
-        model.addAttribute("reservationNo", reservationNo);
+    @ResponseBody
+    public String deleteReservation(@RequestParam int reservationNo) {
         statusService.deleteByReservationNo(reservationNo);
-
-
-
-
+        return "success";
     }
+
 
 
 
