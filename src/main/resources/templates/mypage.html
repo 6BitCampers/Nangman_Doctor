@@ -438,15 +438,15 @@
                                 $('#paymentStatus').text('결제 완료');
                                 console.log('paymentStatus:', receipt.receipt_payment_key);
                             }
-                            $('#receiptNo').text(receipt.receipt_no);  // receipt_no에 해당하는 키 사용
-                            $('#userNo').text(receipt.user_no);  // user_no에 해당하는 키 사용
+                            $('#receiptNo').val(receipt.receipt_no);  // receipt_no에 해당하는 키 사용
+                            $('#userNo').val(receipt.user_no);  // user_no에 해당하는 키 사용
 
                             // 각 값이 올바르게 설정되었는지 확인
                             console.log('receiptName:', receipt.receipt_name);
                             console.log('visitedHospitalName:', receipt.info_name);
                             console.log('receiptDate:', receipt.receipt_date);
                             console.log('receiptAmount:', receipt.receipt_amount);
-                            console.log(typeof receipt.receipt_payment_key);
+                            console.log(typeof receipt.receipt_no);
                             console.log('receiptNo:', receipt.receipt_no);
                             console.log('userNo:', receipt.user_no);
                         } else {

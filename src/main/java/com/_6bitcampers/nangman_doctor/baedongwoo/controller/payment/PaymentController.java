@@ -4,7 +4,7 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PaymentDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.AESUtil;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.PaymentService;
-import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
+import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewAndReceiptService;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
@@ -23,7 +23,7 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
     @Autowired
-    private ReviewService reviewService;
+    private ReviewAndReceiptService reviewAndReceiptService;
 
     @PostMapping("")
     public String payment(
@@ -36,7 +36,7 @@ public class PaymentController {
         String user_type=customOAuth2User.getType();
 
 
-        userEntity userDto= reviewService.getUserInfo(userId, user_type);
+        userEntity userDto= reviewAndReceiptService.getUserInfo(userId, user_type);
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
 
         model.addAttribute("userDto", userDto);
@@ -63,7 +63,7 @@ public class PaymentController {
         int hospital_no=receiptDto.getInfo_no();
         String user_noS=orderId.substring(5);
         int user_no=Integer.parseInt(user_noS);
-        userEntity userEntity=reviewService.getUserInfoByNum(user_no);
+        userEntity userEntity= reviewAndReceiptService.getUserInfoByNum(user_no);
 
         //현재 접속한 유저 아이디가 receipt의 user와 다르면 error페이지로
         if(userEntity.getUser_email().equals(userId)&&userEntity.getUser_type().equals(user_type)){
@@ -107,7 +107,7 @@ public class PaymentController {
         int payment_no=receiptDto.getPayment_no();
         PaymentDto paymentDto=paymentService.getPayment(payment_no);
         int user_no=paymentDto.getUser_no();
-        userEntity userEntity=reviewService.getUserInfoByNum(user_no);
+        userEntity userEntity= reviewAndReceiptService.getUserInfoByNum(user_no);
 
         if(userEntity.getUser_email().equals(userId)&&userEntity.getUser_type().equals(user_type)){
             model.addAttribute("receipt_no", receipt_no);
@@ -134,7 +134,7 @@ public class PaymentController {
         String method=paymentDto.getPayment_method();
 
         int hospital_no=receiptDto.getInfo_no();
-        userEntity userEntity=reviewService.getUserInfo(userId, user_type);
+        userEntity userEntity= reviewAndReceiptService.getUserInfo(userId, user_type);
         EmpDto empDto= paymentService.gethospitalInfo(hospital_no);
 
         Map<String,Object> response=new HashMap<>();

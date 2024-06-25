@@ -1,18 +1,13 @@
 package com._6bitcampers.nangman_doctor.leegahyun.management.managementController;
 
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
-import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
+import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewAndReceiptService;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementService.EmpService;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
-import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
-import com._6bitcampers.nangman_doctor.leegahyun.management.managementService.EmpService;
-
-import org.apache.ibatis.annotations.Param;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +25,7 @@ import java.util.Map;
 public class EmpController {
 
     @Autowired
-    private ReviewService reviewService;
+    private ReviewAndReceiptService reviewAndReceiptService;
     @Autowired
     private EmpService EmpService;
 
@@ -51,20 +46,20 @@ public class EmpController {
         int perPage=10;
         int startnum=(1-1)*perPage;
 
-        List<ReviewDto> list= reviewService.getPagenationedReviews(startnum, perPage);
+        List<ReviewDto> list= reviewAndReceiptService.getPagenationedReviews(startnum, perPage);
 
         model.addAttribute("list", list);
         Map<Integer, userEntity> userMap = new HashMap<>();
 
         for (ReviewDto dto : list) {
             var user_no = dto.getUser_no();
-            userEntity userDto = reviewService.getUserInfoByNum(user_no);
+            userEntity userDto = reviewAndReceiptService.getUserInfoByNum(user_no);
             userMap.put(user_no, userDto);
         }
 
         model.addAttribute("userMap", userMap);
 
-        int totalNum=reviewService.getAllReviewsCount();
+        int totalNum= reviewAndReceiptService.getAllReviewsCount();
         model.addAttribute("totalNum", totalNum);
         model.addAttribute("currentpage", 1);
 
