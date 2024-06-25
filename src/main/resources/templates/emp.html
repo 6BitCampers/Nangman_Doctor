@@ -75,12 +75,12 @@
                 </div>
             </header>
             <div class="grid gap-8" style="display: flex; margin: 10px;">
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 400px;">
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 400px; height: 100%;">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Register Hospital & Role</h3>
                         <p class="text-sm text-muted-foreground">Please register and identify the hospital you belong to and your role.</p>
                     </div>
-                    <div class="p-6">
+                    <div class="p-6" >
                         <form action="/registerRole" method="post">
                             <div class="grid gap-2" style="margin: 10px;">
                                 <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -172,8 +172,8 @@
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">User List</h3>
                     </div>
-                    <div class="p-6">
-                        <div class="relative w-full overflow-auto">
+                    <div class="p-6" style="height: 100%;">
+                        <div class=" w-full overflow-auto">
                             <table class="w-full caption-bottom text-sm">
                                 <thead class="[&amp;_tr]:border-b">
                                 <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
@@ -416,7 +416,7 @@
                             </form>
                         </div>
                         <div class="space-y-2">
-                            <form action="/registerPhoto" th:each="info:${employees}" method="post">
+                            <form action="/registerPhoto" th:each="info:${employees}" method="post" enctype="multipart/form-data">
                             <label
                                     class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     for="photo"
@@ -435,7 +435,12 @@
                                     </button>
                                 </th:block>
                             </div>
+                                <div >
+                                    <img th:src="|https://miniodb.midichi.kro.kr/nangmandoctor/Hospital_Info/${info.info_photo}|" alt="Uploaded Photo"
+                                    style="width: 100%;"/>
+                                </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
