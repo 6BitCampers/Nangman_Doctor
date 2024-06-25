@@ -1,7 +1,7 @@
 package com._6bitcampers.nangman_doctor.baedongwoo.controller.reviewboard;
 
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
-import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
+import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewAndReceiptService;
 import com._6bitcampers.nangman_doctor.minio.service.storageService;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 public class ReviewDetailController {
 
     @Autowired
-    private ReviewService reviewService;
+    private ReviewAndReceiptService reviewAndReceiptService;
     @Autowired
     private storageService storageService;
 
@@ -47,16 +47,16 @@ public class ReviewDetailController {
 
         if (isVisited == null) {
             session.setAttribute(identifier+review_no, "visited");
-            reviewService.updateViewcount(review_no);
+            reviewAndReceiptService.updateViewcount(review_no);
         }
-        ReviewDto dto = reviewService.getReviewBySeq(review_no);
+        ReviewDto dto = reviewAndReceiptService.getReviewBySeq(review_no);
         int user_no=dto.getUser_no();
         int employee_no=dto.getEmployee_no();
 
-        userEntity userDto = reviewService.getUserInfoByNum(user_no);
+        userEntity userDto = reviewAndReceiptService.getUserInfoByNum(user_no);
         String user_name=userDto.getUser_name();
-        int hospital_no=reviewService.getHospitalNo(employee_no);
-        String hospital_name=reviewService.getHospitalName(hospital_no);
+        int hospital_no= reviewAndReceiptService.getHospitalNo(employee_no);
+        String hospital_name= reviewAndReceiptService.getHospitalName(hospital_no);
 
 
         model.addAttribute("dto", dto);
@@ -93,7 +93,7 @@ public class ReviewDetailController {
         map.put("review_no",review_no);
         map.put("review_content",updatedReview_content);
         map.put("review_likecount",review_likecount);
-        reviewService.updateReview(map);
+        reviewAndReceiptService.updateReview(map);
 
        model.addAttribute("review_no",review_no);
        model.addAttribute("userId",userId);
@@ -113,8 +113,8 @@ public class ReviewDetailController {
         String userId= customOAuth2User.getEmail();
         String user_name=customOAuth2User.getRealName();
 
-        ReviewDto dto=reviewService.getReviewBySeq(review_no);
-        userEntity userDto=reviewService.getUserInfoByNum(user_no);
+        ReviewDto dto= reviewAndReceiptService.getReviewBySeq(review_no);
+        userEntity userDto= reviewAndReceiptService.getUserInfoByNum(user_no);
 
         model.addAttribute("dto",dto);
         model.addAttribute("user_no",user_no);
@@ -144,7 +144,7 @@ public class ReviewDetailController {
     public String deleteReview(
             @RequestParam int review_no
     ){
-        ReviewDto dto=reviewService.getReviewBySeq(review_no);
+        ReviewDto dto= reviewAndReceiptService.getReviewBySeq(review_no);
         String review_content=dto.getReview_content();
         List<String> deletedUrls=extractImageUrlsFromDeleting(review_content);
 
@@ -152,7 +152,7 @@ public class ReviewDetailController {
             storageService.deleteFile("nangmandoctor","/reviewBoard/"+deletedUrl);
         }
 
-        reviewService.deleteReview(review_no);
+        reviewAndReceiptService.deleteReview(review_no);
         return "{}";
     }
 
@@ -177,7 +177,7 @@ public class ReviewDetailController {
                 review_likecount(review_likecount).
                 build();
 
-        reviewService.insertReview(reviewDto);
+        reviewAndReceiptService.insertReview(reviewDto);
 
         return "redirect:/reviewboard";
     }
