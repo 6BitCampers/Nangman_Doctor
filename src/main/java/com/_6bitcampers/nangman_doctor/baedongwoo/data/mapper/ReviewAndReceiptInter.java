@@ -43,5 +43,8 @@ public interface ReviewAndReceiptInter {
     @Select("select * from pill_names where pill_no=#{pill_no}")
     public PillDto getPillContent(int pill_no);
     @Insert("insert into prescription_content (pc_warranty_num, pc_regi_num, pc_disease_num1, pc_disease_num2, pc_pill_1, pc_pill_2, receipt_no) values (#{pc_warranty_num},#{pc_regi_num},#{pc_disease_num1}, #{pc_disease_num2}, #{pc_pill_1}, #{pc_pill_2}, #{receipt_no})")
+    @Options(useGeneratedKeys = true, keyColumn = "pc_no", keyProperty = "pc_no")
     public void insertPcContent(PcDto pcDto);
+    @Update("UPDATE hospital_receipt SET prescription_no = #{prescription_no} WHERE receipt_no=#{receipt_no}")
+    public void updateReceiptPc(int prescription_no,int receipt_no);
 }
