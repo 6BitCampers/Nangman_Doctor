@@ -435,14 +435,34 @@
                             $('#receiptAmount').text(receipt.receipt_amount);  // receipt_amount에 해당하는 키 사용
                             if (typeof receipt.receipt_payment_key === 'undefined') {
                                 $('#paymentStatus').text('미결제 상태');
-                                console.log('paymentStatus:', receipt.receipt_payment_key);
+                                $('#myPageButtonGroups').html(`
+                                <form id="paymentForm" action="/payment" method="post" style="display: inline;">
+                                    <input type="hidden" name="receipt_no" class="receiptNo">
+                                    <input type="hidden" name="user_no" class="userNo">
+                                    <button type="submit" class="btn btn-primary mt-3">결제 하러 가기</button>
+                                </form>
+                                `);
                             } else {
                                 $('#paymentStatus').text('결제 완료');
-                                console.log('paymentStatus:', receipt.receipt_payment_key);
+                                $('#myPageButtonGroups').html(`
+                                 <form action="/reviewboard/write" method="post">
+                                <input type="hidden" name="user_no" class="userNo">
+                                <input type="hidden" name="receipt_no" class="receiptNo">
+                            <button style="color: white" type="submit"
+                                    class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3">
+                                리뷰 쓰러가기
+                            </button></form>
+                            <form action="/receiptView" method="post" id="popupForm" target="popupWindow">
+                            <input type="hidden" name="receipt_no" class="receiptNo">
+                            <button style="color: white" type="button" onclick="openPopup()"
+                                    class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 rounded-md px-3">
+                                처방전 열람 및 인쇄
+                            </button>
+                        </form>
+                                `);
                             }
-                            $('#receiptNo').val(receipt.receipt_no);  // receipt_no에 해당하는 키 사용
-                            $('#userNo').val(receipt.user_no);  // user_no에 해당하는 키 사용
-                            $('')
+                            $('.receiptNo').val(receipt.receipt_no);  // receipt_no에 해당하는 키 사용
+                            $('.userNo').val(receipt.user_no);  // user_no에 해당하는 키 사용
                         } else {
                             console.log('No data found or data is empty array');
                         }
@@ -452,8 +472,6 @@
                     }
                 });
             }
-
-
 
             function navigateMonth(offset) {
                 currentMonth += offset;
@@ -516,12 +534,9 @@
                             <td id="paymentStatus"></td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="text-align: center;">
-                                <form id="paymentForm" action="/payment" method="post" style="display: inline;">
-                                    <input type="hidden" name="receipt_no" id="receiptNo">
-                                    <input type="hidden" name="user_no" id="userNo">
-                                    <button type="submit" class="btn btn-primary mt-3">결제 하러 가기</button>
-                                </form>
+                            <td colspan="2">
+                                <div class="grid gap-4" style="display: flex; justify-content: center;" id="myPageButtonGroups">
+                                </div>
                             </td>
                         </tr>
                     </table>
