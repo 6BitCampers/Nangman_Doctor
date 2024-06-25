@@ -70,7 +70,7 @@ public class ReservationService {
         variables.put("reservation", reservationDto);
        // System.out.println("ww" + variables);
 
-        sendEmail(to, "예약 요청", "emailTemplates/firstuseremail", variables);
+//        sendEmail(to, "예약 요청", "emailTemplates/firstuseremail", variables);
         sendEmail(to,"예약 요청 확인","emailTemplates/firsthosemail",variables);
     }
 
