@@ -26,23 +26,24 @@ public class CustomUserDetailService implements UserDetailsService {
         }
         else {
             employeeEntity employeeuser = userEntityMapper.findEmployeeUserByEmail(email);
-            user = new userEntity().builder()
-                    .user_name(employeeuser.getEmployee_name())
-                    .user_email(employeeuser.getEmployee_email())
-                    .user_role(employeeuser.getEmployee_role())
-                    .user_type(employeeuser.getEmployee_type())
-                    .user_password(employeeuser.getEmployee_pw())
-                    .user_gender(employeeuser.getEmployee_gender())
-                    .user_addr(employeeuser.getEmployee_addr())
-                    .user_hp(employeeuser.getEmployee_hp())
-                    .user_age(employeeuser.getEmployee_age())
-                    .user_nickname(employeeuser.getEmployee_nickname())
-                    .user_interest(employeeuser.getEmployee_interest())
-                    .build();
-            if(user != null)
+            if(employeeuser != null) {
+                user = new userEntity().builder()
+                        .user_name(employeeuser.getEmployee_name())
+                        .user_email(employeeuser.getEmployee_email())
+                        .user_role(employeeuser.getEmployee_role())
+                        .user_type(employeeuser.getEmployee_type())
+                        .user_password(employeeuser.getEmployee_pw())
+                        .user_gender(employeeuser.getEmployee_gender())
+                        .user_addr(employeeuser.getEmployee_addr())
+                        .user_hp(employeeuser.getEmployee_hp())
+                        .user_age(employeeuser.getEmployee_age())
+                        .user_nickname(employeeuser.getEmployee_nickname())
+                        .user_interest(employeeuser.getEmployee_interest())
+                        .build();
                 return new CustomUserDetails(user,employeeuser.getEmployee_role());
+            }
             else
-                return new CustomUserDetails();
+                throw new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email);
         }
     }
 }
