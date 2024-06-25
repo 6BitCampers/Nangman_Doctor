@@ -29,15 +29,15 @@
             <div data-orientation="horizontal" role="none" class="shrink-0 bg-border h-[1px] w-full my-4"></div>
             <div class="grid gap-2">
                 <div class="flex items-center justify-between">
-                    <span class="text-muted-foreground">Address: </span>
+                    <span class="text-muted-foreground">주소: </span>
                     <span class="font-medium" th:text="${udto.user_addr1}"></span>
                 </div>
                 <div class="flex items-center justify-between">
-                    <span class="text-muted-foreground">Age Range:</span>
+                    <span class="text-muted-foreground">나이대:</span>
                     <span class="font-medium" th:text="${udto.getUser_age()}"></span>
                 </div>
                 <div class="flex items-center justify-between">
-                    <span class="text-muted-foreground">Total Reservations:</span>
+                    <span class="text-muted-foreground">총 예약:</span>
                     <span class="font-medium" th:text="${reservationList==null?0:reservationList.size()}"></span>
                 </div>
             </div>
@@ -100,33 +100,33 @@
         </div>
 
         <div class="bg-background rounded-lg shadow-lg p-6">
-            <h2 class="text-xl font-semibold mb-4">Reservation Status</h2>
+            <h2 class="text-xl font-semibold mb-4">예약 현황</h2>
             <div class="grid gap-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                        <span>Completed</span>
+                        <span>완료</span>
                     </div>
                     <span class="font-medium" th:text="${completed==null?0:completed}"></span>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-                        <span>Reserved</span>
+                        <span>예약</span>
                     </div>
                     <span class="font-medium" th:text="${reserved==null?0:reserved}"></span>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
                         <div class="w-2 h-2 rounded-full bg-pink-300"></div>
-                        <span>Pending</span>
+                        <span>보류</span>
                     </div>
                     <span class="font-medium" th:text="${pending==null?0:pending}"></span>
                 </div>
             </div>
             <div data-orientation="horizontal" role="none" class="shrink-0 bg-border h-[1px] w-full my-4"></div>
             <div class="grid gap-4">
-                <h3 class="text-lg font-semibold">Recent Reservations</h3>
+                <h3 class="text-lg font-semibold">최근 예약</h3>
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between" th:if="${reservationList==null}">
                         <h4 class="font-medium">No Reservation On load</h4>
@@ -438,15 +438,15 @@
                                 $('#paymentStatus').text('결제 완료');
                                 console.log('paymentStatus:', receipt.receipt_payment_key);
                             }
-                            $('#receiptNo').text(receipt.receipt_no);  // receipt_no에 해당하는 키 사용
-                            $('#userNo').text(receipt.user_no);  // user_no에 해당하는 키 사용
+                            $('#receiptNo').val(receipt.receipt_no);  // receipt_no에 해당하는 키 사용
+                            $('#userNo').val(receipt.user_no);  // user_no에 해당하는 키 사용
 
                             // 각 값이 올바르게 설정되었는지 확인
                             console.log('receiptName:', receipt.receipt_name);
                             console.log('visitedHospitalName:', receipt.info_name);
                             console.log('receiptDate:', receipt.receipt_date);
                             console.log('receiptAmount:', receipt.receipt_amount);
-                            console.log(typeof receipt.receipt_payment_key);
+                            console.log(typeof receipt.receipt_no);
                             console.log('receiptNo:', receipt.receipt_no);
                             console.log('userNo:', receipt.user_no);
                         } else {

@@ -1,9 +1,10 @@
 package com._6bitcampers.nangman_doctor.baedongwoo.controller.receiptPage;
 
+import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PcDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.PillDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.PaymentService;
-import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewService;
+import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewAndReceiptService;
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
@@ -20,7 +21,7 @@ import java.util.Random;
 @Controller
 public class ReceiptPageController {
     @Autowired
-    private ReviewService reviewService;
+    private ReviewAndReceiptService reviewAndReceiptService;
     @Autowired
     private PaymentService paymentService;
 
@@ -28,48 +29,86 @@ public class ReceiptPageController {
     public String recieptPage(@RequestParam int receipt_no,
                               Model model) {
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userId= customOAuth2User.getEmail();
-        String user_type=customOAuth2User.getType();
+        String userId = customOAuth2User.getEmail();
+        String user_type = customOAuth2User.getType();
 
-        userEntity userEntity= reviewService.getUserInfo(userId, user_type);
-        ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
+        userEntity userEntity = reviewAndReceiptService.getUserInfo(userId, user_type);
+        ReceiptDto receiptDto = paymentService.getReceiptBySeq(receipt_no);
         int infoNo = receiptDto.getInfo_no();
-        int reservation_no=receiptDto.getReservation_no();
-        ReservationDto reservationDto =paymentService.getReservation(reservation_no);
-        int employee_no=reservationDto.getEmployee_no();
-        String empName= reviewService.getEmployeeName(employee_no);
+        int reservation_no = receiptDto.getReservation_no();
+        ReservationDto reservationDto = paymentService.getReservation(reservation_no);
+        int employee_no = reservationDto.getEmployee_no();
+        String empName = reviewAndReceiptService.getEmployeeName(employee_no);
 
-        EmpDto empDto=paymentService.gethospitalInfo(infoNo);
+        EmpDto empDto = paymentService.gethospitalInfo(infoNo);
 
-        PillDto soyumDto =reviewService.getPillInfo("소염제");
-        PillDto jintongDto=reviewService.getPillInfo("진통제");
-
-        model.addAttribute("soyumDto",soyumDto);
-        model.addAttribute("jintonDto",jintongDto);
-        model.addAttribute("empName",empName);
-        model.addAttribute("empDto",empDto);
+        model.addAttribute("empName", empName);
+        model.addAttribute("empDto", empDto);
         model.addAttribute("receiptDto", receiptDto);
         model.addAttribute("userEntity", userEntity);
 
-        //출력할 랜덤한 숫자들 넣어주기
-        int randomNum= (int) (Math.random() * 9000 + 1000);
-        model.addAttribute("randomNum",randomNum);
+        try {
+            PcDto pcDto = reviewAndReceiptService.getPcContents(receipt_no);
+            PillDto soyumDto=reviewAndReceiptService.getPillContent(pcDto.getPc_pill_1_no());
+            PillDto jintongDto=reviewAndReceiptService.getPillContent(pcDto.getPc_pill_2_no());
 
-        char randomUpperCaseLetter = (char)('A' + (int)(Math.random() * 26));
-        int randomDiseaseNum=(int)(Math.random() * 9000 + 1000);
-        String randomDiseaseWord = String.valueOf(randomUpperCaseLetter) + " " + randomDiseaseNum;
-        model.addAttribute("randomDiseaseWord",randomDiseaseWord);
+            model.addAttribute("pcDto", pcDto);
+            model.addAttribute("soyumDto", soyumDto);
+            model.addAttribute("jintongDto", jintongDto);
+        } catch (Exception e) {
+            // 랜덤한 숫자 및 문자열 생성
+            int randomNum = generateRandomNumber(1000, 9999);
+            String randomDiseaseWord = generateRandomDiseaseWord();
+            String randomDiseaseWord2 = generateRandomDiseaseWord();
 
-        char randomUpperCaseLetter2 = (char)('A' + (int)(Math.random() * 26));
-        int randomDiseaseNum2=(int)(Math.random() * 9000 + 1000);
-        String randomDiseaseWord2 = String.valueOf(randomUpperCaseLetter2) +" " + randomDiseaseNum2;
-        model.addAttribute("randomDiseaseWord2",randomDiseaseWord2);
-        model.addAttribute("shouldBeVisible",true);
+            // 사용자 정보에서 나이와 성별 가져오기
+            int userAge = getUserAge(userEntity);
+            String userGender = getUserGender(userEntity);
 
-        //age 갖고와서 주민등록번호 랜덤 생성하기 (null이면 여성, 20대로 설정)
-        int userAge = userEntity.getUser_age() == null ? 2 : Integer.parseInt(userEntity.getUser_age().substring(0, 1));
-        String userGender = userEntity.getUser_gender() == null ? "F" : userEntity.getUser_gender();
+            // 주민등록번호 생성
+            String randomRegiNum = generateRandomRegiNum(userAge, userGender);
+            
+            //약 정보 랜덤으로 갖고오기
+            PillDto soyumDto = reviewAndReceiptService.getRandomPillInfo("소염제");
+            PillDto jintongDto = reviewAndReceiptService.getRandomPillInfo("진통제");
 
+            // PcDto 생성 및 모델에 추가
+            PcDto pcDto = PcDto.builder()
+                    .pc_warranty_num(randomNum)
+                    .pc_disease_num1(randomDiseaseWord)
+                    .pc_disease_num2(randomDiseaseWord2)
+                    .pc_regi_num(randomRegiNum)
+                    .pc_pill_1_no(soyumDto.getPill_no())
+                    .pc_pill_2_no(jintongDto.getPill_no())
+                    .receipt_no(receipt_no)
+                    .build();
+
+            model.addAttribute("pcDto", pcDto);
+            model.addAttribute("soyumDto", soyumDto);
+            model.addAttribute("jintongDto", jintongDto);
+        }
+        return "ReceiptAndReviewWrite";
+    }
+
+    private int generateRandomNumber(int min, int max) {
+        return (int) (Math.random() * (max - min + 1)) + min;
+    }
+
+    private String generateRandomDiseaseWord() {
+        char randomUpperCaseLetter = (char) ('A' + (int) (Math.random() * 26));
+        int randomDiseaseNum = generateRandomNumber(1000, 9999);
+        return randomUpperCaseLetter + " " + randomDiseaseNum;
+    }
+
+    private int getUserAge(userEntity userEntity) {
+        return userEntity.getUser_age() == null ? 2 : Integer.parseInt(userEntity.getUser_age().substring(0, 1));
+    }
+
+    private String getUserGender(userEntity userEntity) {
+        return userEntity.getUser_gender() == null ? "F" : userEntity.getUser_gender();
+    }
+
+    private String generateRandomRegiNum(int userAge, String userGender) {
         int firstRegiNum = switch (userAge) {
             case 1 -> 0;
             case 2 -> 9;
@@ -82,15 +121,15 @@ public class ReceiptPageController {
 
         Random random = new Random();
         int randomDigit = random.nextInt(10);
-        int randomMonth = random.nextInt(12) + 1; // 1부터 12까지의 난수 생성
-        int randomDay = random.nextInt(31) + 1; // 1부터 31까지의 난수 생성
+        int randomMonth = random.nextInt(12) + 1;
+        int randomDay = random.nextInt(31) + 1;
 
         String frontRegiNum = String.format("%d%d%02d%02d", firstRegiNum, randomDigit, randomMonth, randomDay);
 
         int secondRegiNum;
-        if (userGender.equals("F") && ( userAge == 1)) {
+        if (userGender.equals("F") && userAge == 1) {
             secondRegiNum = 4;
-        } else if (userGender.equals("M") && ( userAge == 1)) {
+        } else if (userGender.equals("M") && userAge == 1) {
             secondRegiNum = 3;
         } else if (userGender.equals("F")) {
             secondRegiNum = 2;
@@ -99,23 +138,20 @@ public class ReceiptPageController {
         }
 
         int randomFourDigits = random.nextInt(10000);
-        int secondLastDigit=random.nextInt(5);
-        String lastRegiNumSix = String.format("%d%04d%d", secondRegiNum, randomFourDigits,secondLastDigit);
+        int secondLastDigit = random.nextInt(5);
+        String lastRegiNumSix = String.format("%d%04d%d", secondRegiNum, randomFourDigits, secondLastDigit);
 
         int[] frontDigits = new int[6];
         int[] lastDigits = new int[6];
 
-        // A~F까지의 숫자를 frontDigits 배열에 대입
         for (int i = 0; i < 6; i++) {
             frontDigits[i] = Character.getNumericValue(frontRegiNum.charAt(i));
         }
 
-        // G~L까지의 숫자를 lastDigits 배열에 대입
         for (int i = 0; i < 6; i++) {
             lastDigits[i] = Character.getNumericValue(lastRegiNumSix.charAt(i));
         }
 
-        // 공식에 따라 계산
         int sum = 0;
         for (int i = 0; i < 6; i++) {
             sum += (i + 2) * frontDigits[i];
@@ -126,11 +162,6 @@ public class ReceiptPageController {
 
         int lastDigit = (11 - (sum % 11)) % 10;
 
-        String lastRegiNum=lastRegiNumSix+lastDigit;
-
-        model.addAttribute("frontRegiNum", frontRegiNum);
-        model.addAttribute("lastRegiNum", lastRegiNum);
-
-        return "ReceiptAndReviewWrite";
+        return frontRegiNum + "-" + lastRegiNumSix + lastDigit;
     }
 }

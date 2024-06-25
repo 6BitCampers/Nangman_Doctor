@@ -20,9 +20,9 @@ public interface reservationMapperW {
     void updateSurvey(Map<String, Object> map);
 
     @Select("""
-    select employee_no from hospital_employee where employee_email = #{employee_email}
+    select employee_no from hospital_employee where employee_email = #{employee_email} and employee_type=#{employee_type}
 """)
-    int getEmployeeNo(String employee_email);
+    int getEmployeeNo(String employee_email, String employee_type);
 
     @Delete("""
     delete from hospital_reservation where reservation_no = #{reservation_no}

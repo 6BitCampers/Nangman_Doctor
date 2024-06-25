@@ -79,7 +79,7 @@
         <td colspan="5" style="text-align: center;font-size: 40px;font-weight: bold" >처&nbsp;&nbsp;&nbsp;방&nbsp;&nbsp;&nbsp;전</td>
     </tr>
     <tr>
-        <td colspan="5"><br>&#8251; 국비진료대상자 (전액 국비부담) 보증번호 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${randomNum}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
+        <td colspan="5"><br>&#8251; 국비진료대상자 (전액 국비부담) 보증번호 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${pcDto.getPc_warranty_num()}"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br>
             <span class="boxed">&#x2713;</span> 의료보험  <span class="boxed">2</span> 의료보호  <span class="boxed">3</span> 산재보험
             <span class="boxed">4</span> 자동차보험  <span class="boxed">5</span> 기타 (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
     </tr>
@@ -101,13 +101,13 @@
     </tr>
     <tr>
         <th class="receiptTdName">주민등록번호</th>
-        <td><span th:text="${frontRegiNum}"></span>-<span th:text="${lastRegiNum}"></span></td>
+        <td><span th:text="${pcDto.getPc_regi_num()}"></span></td>
         <th class="receiptTdName">주소</th>
         <td th:text="${empDto.getInfo_addr}"></td>
     </tr>
     <tr>
         <th class="receiptTdName" rowspan="2">질병 분류 기호 </th>
-        <td>&nbsp;<span th:text="${randomDiseaseWord}"></span></td>
+        <td>&nbsp;<span th:text="${pcDto.getPc_disease_num1()}"></span></td>
         <th class="receiptTdName" rowspan="2" colspan="2" style="text-align: center">처방 의료인의 성명</th>
         <td colspan="3" rowspan="2" style="text-align: right; position: relative;">
             <span id="printOnlySpan">&nbsp;&nbsp;&nbsp;(인쇄 시에만 출력)</span>
@@ -115,7 +115,7 @@
         </td>
     </tr>
     <tr>
-        <td>&nbsp;<sapn th:text="${randomDiseaseWord2}"></sapn></td>
+        <td>&nbsp;<sapn th:text="${pcDto.getPc_disease_num2()}"></sapn></td>
 
     </tr>
     <tr>

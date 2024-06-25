@@ -39,8 +39,10 @@ public class conferenceController {
 
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String id = customOAuth2User.getEmail();
+        String type = customOAuth2User.getType();
 
         System.out.println(reservation_no);
+        System.out.println(type);
 
         mypageService.updateReservation(reservation_no);
 
@@ -53,7 +55,7 @@ public class conferenceController {
 //        startNodeServer();
 
         try {
-            int employee_no = reservationService.getEmployeeNo(id);
+            int employee_no = reservationService.getEmployeeNo(id, type);
             employeeNoSuccess = true;
         } catch (Exception e) {
         }
