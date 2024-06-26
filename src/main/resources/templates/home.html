@@ -325,6 +325,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {
 			const imageSources = [
@@ -341,7 +342,6 @@
 			}
 
 			let items = document.querySelectorAll('.wide-slider-testimonial .author');
-			console.log('Number of authors found:', items.length); // Log the number of .author elements found
 			items.forEach(item => {
 				let img = item.querySelector('img');
 				if (img) {
@@ -357,8 +357,6 @@
 				let roadviewContainer = destination.querySelector('.roadview-container');
 				let info_x = destination.getAttribute('data-info-x');
 				let info_y = destination.getAttribute('data-info-y');
-				console.log('x=', info_x); // Log each image update
-				console.log('y=', info_y); // Log each image update
 				let position = new kakao.maps.LatLng(info_y, info_x);
 				let roadview = new kakao.maps.Roadview(roadviewContainer);
 				let roadviewClient = new kakao.maps.RoadviewClient();
