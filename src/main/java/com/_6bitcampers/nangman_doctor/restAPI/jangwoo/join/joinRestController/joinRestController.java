@@ -44,7 +44,7 @@ public class joinRestController {
             return ResponseEntity.ok().build();
         }
         else {
-            return ResponseEntity.status(201).build();
+            return ResponseEntity.status(406).build();
         }
     }
 }

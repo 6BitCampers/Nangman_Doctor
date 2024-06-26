@@ -5,6 +5,7 @@ import com._6bitcampers.nangman_doctor.hayoon.Mapper.ReservationMapper;
 import com._6bitcampers.nangman_doctor.hayoon.Mapper.StatusMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -39,7 +40,7 @@ public class StatusService {
     public int getStatus(int reservationNo) {
         return statusMapper.getStatus(reservationNo);
     }
-
+    @Async
     public void sendReservationRequestEmail(String to, ReservationDto reservationDto) {
         Map<String, Object> variables = new HashMap<>();
         variables.put("url", "http://deploysemi.midichi.kro.kr/");
