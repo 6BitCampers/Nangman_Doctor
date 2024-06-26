@@ -25,6 +25,7 @@ public class homeController {
     private final roleService roleService;
     private final EmployeeService employeeService;
     private final NaverSearchService naverSearchService;
+    private final HospitalService hospitalService;
 
     @GetMapping("/")
     public String home(Model model) throws JsonProcessingException {
@@ -55,12 +56,13 @@ public class homeController {
         String query="성형";
         int page=1;
         List<NaverSearchItem> items = naverSearchService.search(query,page);
+        List<HospitalDto> top= hospitalService.findTop();
         model.addAttribute("items", items);
         model.addAttribute("currentPage", page);
         model.addAttribute("query", query);
         model.addAttribute("hospitalNames", hospitalNames);
         model.addAttribute("topEmployees", top10EmployeesByLikeCount);
-
+        model.addAttribute("top",top);
         return roleService.checkRole(role);
     }
 }

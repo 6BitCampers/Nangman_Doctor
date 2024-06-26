@@ -28,4 +28,8 @@ public class HospitalService {
     public HospitalDto findHospitalById(Long hospitalId) {
         return hospitalMapper.findById(hospitalId);
     }
+
+    public List<HospitalDto> findTop(){
+        return hospitalMapper.findTop();
+    }
 }
