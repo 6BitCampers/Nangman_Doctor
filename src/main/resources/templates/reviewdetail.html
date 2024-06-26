@@ -70,8 +70,8 @@
                                     th:text="${user_name.substring(0,1)}"></span> *</span>
                             <span th:if="${nameLength > 2}">
                                     <span th:text="${user_name.substring(0,1)}"></span>
-                                    <span th:each="i : ${#numbers.sequence(1, nameLength-2)}">*</span>
-                                    <span th:text="${user_name.substring(nameLength-1)}"></span>
+                                    <span th:each="i : ${#numbers.sequence(1, nameLength -2)}">*</span>
+                                    <span th:text="${user_name.substring(nameLength -1)}"></span>
                                     </span>
                         </span>
             </div>
