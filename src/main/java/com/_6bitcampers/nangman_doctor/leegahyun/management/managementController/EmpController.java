@@ -4,21 +4,13 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReviewDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewAndReceiptService;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementService.EmpService;
-import com._6bitcampers.nangman_doctor.minio.service.storageService;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
 
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
 
-import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
-import com._6bitcampers.nangman_doctor.leegahyun.management.managementService.EmpService;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,11 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Controller
 @RequiredArgsConstructor
@@ -164,6 +152,13 @@ public class EmpController {
         return "emp";
     }
 
+    @PostMapping("/registerRole")
+    public String registerRole(@RequestParam("role") String role,String email,Model model) {
+
+        EmpService.registerRole(email, role);
+
+        return "redirect:/emp";
+    }
 
 
     @PostMapping("/registerName")
