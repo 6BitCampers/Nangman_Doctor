@@ -234,19 +234,18 @@
 }
 
 .btn_info_wrap button:hover {
-    background-color: #c95a09;
+    background-color: #f8c05d;
 }
 
 .chatForm {
     padding-top: 10px;
-    border-radius: 5px;
     width: 390px;
 }
 
 .send_btn {
     padding: 10px;
     margin-left: 3px;
-    background-color: #d7813f;
+    background-color: #43bfe5;
     color: white;
     border: none;
     border-radius: 5px;
@@ -255,6 +254,6 @@
 }
 
 .send_btn:hover {
-    background-color: #e06a0d;
+    background-color: #b7def1;
 }
 
