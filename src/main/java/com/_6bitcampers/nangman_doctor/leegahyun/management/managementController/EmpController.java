@@ -66,6 +66,9 @@ public class EmpController {
         String userType= customOAuth2User.getType();
         String role= customOAuth2User.getRole();
 
+        List<EmpDto> emp_hos = EmpService.getEmployeeLikeCounts(userId);
+        model.addAttribute("emp_hos",emp_hos);
+
         //병원장이면 emp 전체 no 받아서 review 갖고오기
         if(role.equals("ROLE_MANAGER")){
             List<EmpDto> employees = EmpService.getEmployeeLikeCounts(userId);
@@ -148,6 +151,7 @@ public class EmpController {
 
         List<EmpDto> hospital_list=EmpService.getAllHospitalNames();
         model.addAttribute("hospital_list", hospital_list);
+
 
         return "emp";
     }
