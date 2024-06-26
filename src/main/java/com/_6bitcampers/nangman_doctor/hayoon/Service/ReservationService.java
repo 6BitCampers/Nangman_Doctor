@@ -67,6 +67,7 @@ public class ReservationService {
         Map<String, Object> variables = new HashMap<>();
         variables.put("userName", reservationMapper.getUserNameByNo(reservationDto.getUser_no()));
         variables.put("reservation", reservationDto);
+        variables.put("url", "http://deploysemi.midichi.kro.kr/");
        // System.out.println("ww" + variables);
 
 //        sendEmail(to, "예약 요청", "emailTemplates/firstuseremail", variables);

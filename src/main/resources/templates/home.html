@@ -70,7 +70,7 @@
 		</div>
 	</div>
 
-	<div class="section service-section-1">
+	<div class="section service-section-1" id="target">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3 mb-5 mb-lg-0">
@@ -159,7 +159,7 @@
 				<div th:each="hospital : ${top}" class="destination"
 					 th:data-info-x="${hospital.info_x}" th:data-info-y="${hospital.info_y}">
 					<div class="thumb">
-						<div th:id="'roadview_' + ${hospital.info_no}" class="roadview-container" style="height:100px; width:500px;"></div>
+						<div th:id="'roadview_' + ${hospital.info_no}" class="roadview-container" style="height:300px; width:500px;"></div>
 					</div>
 					<div class="mt-4">
 						<h3><a th:href="@{'/about-hospital/' + ${hospital.info_no}}" th:text="${hospital.info_name}">Paradise Beach, Palawan Island</a></h3>
@@ -208,7 +208,7 @@
 		</div>
 	</div>
 
-	<div class="section" id="target">
+	<div class="section">
 		<div class="container">
 			<div class="row justify-content-between align-items-center">
 				<div class="col-lg-5 mb-4 mb-lg-0">
@@ -378,5 +378,5 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e8446e9bb190af20372cac3728f820e3"></script>
 
 
-
+</div>
 </html>
