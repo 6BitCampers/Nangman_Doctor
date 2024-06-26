@@ -367,6 +367,14 @@
 			});
 		});
 	</script>
+	<script>
+		document.getElementById('aboutDoctor').addEventListener('click', function(event) {
+			event.preventDefault();
+			const targetElement = document.getElementById('target');
+			targetElement.focus();
+			targetElement.scrollIntoView({ behavior: 'smooth' });
+		});
+	</script>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e8446e9bb190af20372cac3728f820e3"></script>
 
 

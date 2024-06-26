@@ -6,6 +6,8 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <div layout:fragment="content">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
         /* Add the CSS styles here */
@@ -41,11 +43,96 @@
             border-bottom: 2px solid #009879;
         }
 
+        .accept-button, .reject-button {
+            padding: 5px 10px;
+            margin: 2px;
+            color: white;
+            background-color: green;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .submit-button{
+            padding: 5px 10px;
+            margin: 2px;
+            color: white;
+            background-color: green;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .reject-button {
+            background-color: red;
+        }
+
+        .accept-button:hover, .reject-button:hover {
+            opacity: 0.8;
+        }
+        .calendar-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .calendar-header button:hover {
+            background-color: #0056b3;
+        }
+
+        .calendar-table {
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse;
+        }
+
+        .calendar-table th, .calendar-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .calendar-table th {
+            background-color: #f4f4f4;
+        }
+
+        .calendar-table td:hover {
+            background-color: #f1f1f1;
+        }
+
+        .video-call-button {
+            padding: 5px 10px;
+            margin-top: 5px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .video-call-button:hover {
+            background-color: #218838;
+        }
     </style>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <div class="flex w-full">
         <div class="flex-1 bg-gray-100 p-8">
             <header class="flex items-center justify-between mb-8">
@@ -74,9 +161,9 @@
                     </span>
                 </div>
             </header>
-            <div class="grid gap-8" style="display: flex; margin: 10px;">
+            <div class="grid grid-cols-[300px_1fr_300px] gap-8 mx-auto py-10 px-4" style="display: flex; margin: 10px;">
                 <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 400px; height: 100%;">
+                <div class="bg-background rounded-lg shadow-lg p-6" data-v0-t="card" style="width: 400px; height: 100%;">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Register Hospital & Role</h3>
                         <p class="text-sm text-muted-foreground">Please register and identify the hospital you belong to and your role.</p>
@@ -171,7 +258,7 @@
                     </div>
                 </div>
             </th:block>
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+                <div class="bg-background rounded-lg shadow-lg p-6" data-v0-t="card">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">User List</h3>
                     </div>
@@ -238,7 +325,7 @@
                 </div>
             </div>
             <div class="grid gap-8" style="display: flex; margin: 10px;">
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 650px;">
+                <div class="bg-background rounded-lg shadow-lg p-6" data-v0-t="card" style="width: 650px;">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Reviews</h3>
                     </div>
@@ -302,7 +389,7 @@
                 </div>
 
 
-                <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card" style="width: 650px;">
+                <div class="bg-background rounded-lg shadow-lg p-6" data-v0-t="card" style="width: 650px;">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">
                             Update Hospital Information
@@ -311,7 +398,7 @@
                     </div>
                     <div class="p-6 grid gap-4">
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="space-y-2" th:each="info:${employees}">
+                            <div class="space-y-2" th:each="info:${emp_hos}">
                                 <label
                                         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                 >
@@ -325,7 +412,7 @@
                                 </form>
                             </div>
                             <div class="space-y-2">
-                                <form action="/registerHp" th:each="info:${employees}" method="post">
+                                <form action="/registerHp" th:each="info:${emp_hos}" method="post">
                                 <label
                                         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                         for="hp"
@@ -349,7 +436,7 @@
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="space-y-2">
-                                <form action="/registerAddress" th:each="info:${employees}" method="post">
+                                <form action="/registerAddress" th:each="info:${emp_hos}" method="post">
                                 <label
                                         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                         for="address"
@@ -377,7 +464,7 @@
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="space-y-2">
-                                <form action="/registerPlus" th:each="info:${employees}" method="post">
+                                <form action="/registerPlus" th:each="info:${emp_hos}" method="post">
                                 <label
                                         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                         for="plus"
@@ -399,7 +486,7 @@
                             </div>
                         </div>
                         <div class="space-y-2">
-                            <form action="/registerDescription" th:each="info:${employees}" method="post">
+                            <form action="/registerDescription" th:each="info:${emp_hos}" method="post">
                             <label
                                     class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     for="description"
@@ -420,7 +507,7 @@
                             </form>
                         </div>
                         <div class="space-y-2">
-                            <form action="/registerPhoto" th:each="info:${employees}" method="post" enctype="multipart/form-data">
+                            <form action="/registerPhoto" th:each="info:${emp_hos}" method="post" enctype="multipart/form-data">
                             <label
                                     class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     for="photo"
@@ -449,42 +536,43 @@
                     </div>
                 </div>
 
-                <div class="grid gap-8" style="display: flex; margin: 10px;">
-                    <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-                        <div class="flex flex-col space-y-1.5 p-6">
-                            <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Reservations</h3>
-                        </div>
-                        <div class="p-6">
-                            <div class="relative w-full overflow-auto">
-                                <table class="w-full caption-bottom text-sm">
-                                    <thead class="[&amp;_tr]:border-b">
-                                    <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                            Customer
-                                        </th>
-                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                            Date
-                                        </th>
-                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                            Time
-                                        </th>
-                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                            Status
-                                        </th>
-                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                            Reason
-                                        </th>
-                                        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                            Content
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="[&amp;_tr:last-child]:border-0">
-                                    <tr th:each="res: ${reservations}" th:if="${res.reservation_status} != 2" class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                        <td th:text="${res.reservation_no}" class="p-4 align-middle reservation-no [&amp;:has([role=checkbox])]:pr-0"></td>
-                                        <td th:text="${res.reservation_date}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
-                                        <td th:text="${res.reservation_time}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
-                                        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                </div>
+            <div class="grid gap-8" style="display: flex; margin: 10px;">
+                <div class="bg-background rounded-lg shadow-lg p-6" data-v0-t="card">
+                    <div class="flex flex-col space-y-1.5 p-6">
+                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Reservations</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="relative w-full overflow-auto">
+                            <table class="w-full caption-bottom text-sm">
+                                <thead class="[&amp;_tr]:border-b">
+                                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                        Customer
+                                    </th>
+                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                        Date
+                                    </th>
+                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                        Time
+                                    </th>
+                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                        Status
+                                    </th>
+                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                        Reason
+                                    </th>
+                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                        Content
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="[&amp;_tr:last-child]:border-0">
+                                <tr th:each="res: ${reservations}" th:if="${res.reservation_status} != 2" class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                    <td th:text="${res.reservation_no}" class="p-4 align-middle reservation-no [&amp;:has([role=checkbox])]:pr-0"></td>
+                                    <td th:text="${res.reservation_date}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+                                    <td th:text="${res.reservation_time}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
                                       <span th:if="${res.reservation_status} == 1">
                                             <div>
                                                     <button type="button" class="btn btn-success"
@@ -501,275 +589,189 @@
                                             </div>
                                         </span>
 
-                                            <!--<span th:if="${res.reservation_status} == 2">응답대기중</span>-->
-                                        </td>
-                                        <td th:text="${res.reservation_reason}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-reason"></td>
-                                        <td th:text="${res.reservation_content}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-content"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="calendar-container">
-                            <div class="calendar-header">
-                                <button onclick="navigateMonth(-1)">Previous</button>
-                                <h2 id="currentMonthYear"></h2>
-                                <button onclick="navigateMonth(1)">Next</button>
-                            </div>
-                            <table class="calendar-table">
-                                <thead>
-                                <tr>
-                                    <th>Su</th>
-                                    <th>Mo</th>
-                                    <th>Tu</th>
-                                    <th>We</th>
-                                    <th>Th</th>
-                                    <th>Fr</th>
-                                    <th>Sa</th>
+                                        <!--<span th:if="${res.reservation_status} == 2">응답대기중</span>-->
+                                    </td>
+                                    <td th:text="${res.reservation_reason}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-reason"></td>
+                                    <td th:text="${res.reservation_content}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-content"></td>
                                 </tr>
-                                </thead>
-                                <tbody id="calendarBody">
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
 
-                        <script th:inline="javascript">
-                            let reservations = /*[[${reservations}]]*/ [];
-                            let currentMonth = new Date().getMonth();
-                            let currentYear = new Date().getFullYear();
+                <div class="bg-background rounded-lg shadow-lg p-6" data-v0-t="card">
+                    <div class="flex flex-col space-y-1.5 p-6">
+                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Calendar</h3>
+                    </div>
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <button onclick="navigateMonth(-1)">Previous</button>
+                            <h2 id="currentMonthYear"></h2>
+                            <button onclick="navigateMonth(1)">Next</button>
+                        </div>
+                        <table class="calendar-table">
+                            <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                            </thead>
+                            <tbody id="calendarBody">
+                            </tbody>
+                        </table>
+                    </div>
 
-                            function renderCalendar(month, year) {
-                                const monthNames = ["January", "February", "March", "April", "May", "June",
-                                    "July", "August", "September", "October", "November", "December"];
-                                const firstDay = new Date(year, month).getDay();
-                                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                    <script th:inline="javascript">
+                        let reservations = /*[[${reservations}]]*/ [];
+                        let currentMonth = new Date().getMonth();
+                        let currentYear = new Date().getFullYear();
 
-                                const calendarBody = document.getElementById("calendarBody");
-                                const currentMonthYear = document.getElementById("currentMonthYear");
-                                calendarBody.innerHTML = "";
-                                currentMonthYear.innerText = `${monthNames[month]} ${year}`;
+                        function renderCalendar(month, year) {
+                            const monthNames = ["January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December"];
+                            const firstDay = new Date(year, month).getDay();
+                            const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-                                let date = 1;
-                                for (let i = 0; i < 6; i++) {
-                                    const row = document.createElement("tr");
-                                    for (let j = 0; j < 7; j++) {
-                                        const cell = document.createElement("td");
-                                        const cellContent = document.createElement("div");
-                                        cellContent.style.display = "flex";
-                                        cellContent.style.flexDirection = "column";
-                                        cellContent.style.alignItems = "center";
+                            const calendarBody = document.getElementById("calendarBody");
+                            const currentMonthYear = document.getElementById("currentMonthYear");
+                            calendarBody.innerHTML = "";
+                            currentMonthYear.innerText = `${monthNames[month]} ${year}`;
 
-                                        if (i === 0 && j < firstDay) {
-                                            cell.innerText = "";
-                                        } else if (date > daysInMonth) {
-                                            break;
-                                        } else {
-                                            const dateDiv = document.createElement("div");
-                                            dateDiv.innerText = date;
-                                            cellContent.appendChild(dateDiv);
+                            let date = 1;
+                            for (let i = 0; i < 6; i++) {
+                                const row = document.createElement("tr");
+                                for (let j = 0; j < 7; j++) {
+                                    const cell = document.createElement("td");
+                                    const cellContent = document.createElement("div");
+                                    cellContent.style.display = "flex";
+                                    cellContent.style.flexDirection = "column";
+                                    cellContent.style.alignItems = "center";
 
-                                            // Check for reservations on this date
-                                            const reservation = reservations.find(res => {
-                                                const resDate = new Date(res.reservation_date);
-                                                return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && res.reservation_status === 2;
-                                            });
+                                    if (i === 0 && j < firstDay) {
+                                        cell.innerText = "";
+                                    } else if (date > daysInMonth) {
+                                        break;
+                                    } else {
+                                        const dateDiv = document.createElement("div");
+                                        dateDiv.innerText = date;
+                                        cellContent.appendChild(dateDiv);
 
-                                            if (reservation) {
-                                                if (reservation.reservation_face === 2) {
-                                                    const button = document.createElement("button");
-                                                    button.classList.add("video-call-button");
-                                                    button.innerText = "화상채팅";
-                                                    button.addEventListener("click", function() {
-                                                        window.open('https://webchat.midichi.kro.kr/');
-                                                        window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
-                                                    });
-                                                    cellContent.appendChild(button);
-                                                } else if (reservation.reservation_face === 1) {
-                                                    const text = document.createElement("span");
-                                                    text.classList.add("in-person-appointment");
-                                                    text.innerText = "대면 진료";
-                                                    text.style.backgroundColor = "yellow";
-                                                    text.style.padding = "0 5px";
-                                                    text.style.borderRadius = "3px";
-                                                    text.style.fontWeight = "bold";
-                                                    cellContent.appendChild(text);
-                                                }
+                                        // Check for reservations on this date
+                                        const reservation = reservations.find(res => {
+                                            const resDate = new Date(res.reservation_date);
+                                            return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && res.reservation_status === 2;
+                                        });
+
+                                        if (reservation) {
+                                            if (reservation.reservation_face === 2) {
+                                                const button = document.createElement("button");
+                                                button.classList.add("video-call-button");
+                                                button.innerText = "화상채팅";
+                                                button.addEventListener("click", function() {
+                                                    window.open('https://webchat.midichi.kro.kr/');
+                                                    window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
+                                                });
+                                                cellContent.appendChild(button);
+                                            } else if (reservation.reservation_face === 1) {
+                                                const text = document.createElement("span");
+                                                text.classList.add("in-person-appointment");
+                                                text.innerText = "대면 진료";
+                                                text.style.backgroundColor = "yellow";
+                                                text.style.padding = "0 5px";
+                                                text.style.borderRadius = "3px";
+                                                text.style.fontWeight = "bold";
+                                                cellContent.appendChild(text);
                                             }
-
-
-                                            date++;
                                         }
-                                        cell.appendChild(cellContent);
-                                        row.appendChild(cell);
+
+
+                                        date++;
                                     }
-                                    calendarBody.appendChild(row);
+                                    cell.appendChild(cellContent);
+                                    row.appendChild(cell);
                                 }
+                                calendarBody.appendChild(row);
                             }
+                        }
 
-                            function navigateMonth(offset) {
-                                currentMonth += offset;
-                                if (currentMonth < 0) {
-                                    currentMonth = 11;
-                                    currentYear--;
-                                } else if (currentMonth > 11) {
-                                    currentMonth = 0;
-                                    currentYear++;
+                        function navigateMonth(offset) {
+                            currentMonth += offset;
+                            if (currentMonth < 0) {
+                                currentMonth = 11;
+                                currentYear--;
+                            } else if (currentMonth > 11) {
+                                currentMonth = 0;
+                                currentYear++;
+                            }
+                            renderCalendar(currentMonth, currentYear);
+                        }
+
+                        document.addEventListener("DOMContentLoaded", () => {
+                            renderCalendar(currentMonth, currentYear);
+                        });
+                        function SendStatus(reservationNo, isAccepted) {
+                            $.ajax({
+                                url: '/SendStatus',
+                                type: 'POST',
+                                dataType: 'json',
+                                data: {
+                                    reservationNo: reservationNo,
+                                    isAccepted: isAccepted
+                                },
+                                success: function(response) {
+                                    if (response.status === "error") {
+                                        console.error("Server Error: ", response.message);
+                                        alert('Error handling reservation: ' + response.message);
+                                    } else {
+
+                                        // Update the reservation status in the table without refreshing the page
+                                        let statusCell = $(`td:contains('${response.reservationNo}')`).siblings()[3]; // Assuming status is the 4th cell
+                                        if (response.isAccepted === "true") {
+                                            $(statusCell).text('Accepted');
+                                            alert('예약이 수락되었습니다. 이메일이 발송될거에요!')
+                                        } else {
+                                            $(statusCell).text('Rejected');
+                                            alert('예약이 거절되었습니다.')
+                                        }
+
+                                        // Optionally, you can remove the buttons after updating the status
+                                        $(statusCell).find('button').remove();
+
+                                        // Alternatively, you can refresh the page
+                                        location.reload();
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error("AJAX Error: ", status, error);
+                                    console.error("Response Text: ", xhr.responseText);
+                                    alert('Error handling reservation');
                                 }
-                                renderCalendar(currentMonth, currentYear);
-                            }
-
-                            document.addEventListener("DOMContentLoaded", () => {
-                                renderCalendar(currentMonth, currentYear);
                             });
-                            function SendStatus(reservationNo, isAccepted) {
-                                $.ajax({
-                                    url: '/SendStatus',
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    data: {
-                                        reservationNo: reservationNo,
-                                        isAccepted: isAccepted
-                                    },
-                                    success: function(response) {
-                                        if (response.status === "error") {
-                                            console.error("Server Error: ", response.message);
-                                            alert('Error handling reservation: ' + response.message);
-                                        } else {
-
-                                            // Update the reservation status in the table without refreshing the page
-                                            let statusCell = $(`td:contains('${response.reservationNo}')`).siblings()[3]; // Assuming status is the 4th cell
-                                            if (response.isAccepted === "true") {
-                                                $(statusCell).text('Accepted');
-                                                alert('예약이 수락되었습니다. 이메일이 발송될거에요!')
-                                            } else {
-                                                $(statusCell).text('Rejected');
-                                                alert('예약이 거절되었습니다.')
-                                            }
-
-                                            // Optionally, you can remove the buttons after updating the status
-                                            $(statusCell).find('button').remove();
-
-                                            // Alternatively, you can refresh the page
-                                            location.reload();
-                                        }
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.error("AJAX Error: ", status, error);
-                                        console.error("Response Text: ", xhr.responseText);
-                                        alert('Error handling reservation');
-                                    }
-                                });
-                            }
+                        }
 
 
 
-                        </script>
+                    </script>
 
-                    </div>
-
-                    </div>
                 </div>
 
-                <style>
-                            .accept-button, .reject-button {
-                                padding: 5px 10px;
-                                margin: 2px;
-                                color: white;
-                                background-color: green;
-                                border: none;
-                                border-radius: 4px;
-                                cursor: pointer;
-                            }
-                            .submit-button{
-                                padding: 5px 10px;
-                                margin: 2px;
-                                color: white;
-                                background-color: green;
-                                border: none;
-                                border-radius: 4px;
-                                cursor: pointer;
-                            }
-
-                            .reject-button {
-                                background-color: red;
-                            }
-
-                            .accept-button:hover, .reject-button:hover {
-                                opacity: 0.8;
-                            }
-                            .calendar-container {
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                flex-direction: column;
-                                padding: 20px;
-                            }
-
-                            .calendar-header {
-                                display: flex;
-                                justify-content: space-between;
-                                align-items: center;
-                                width: 100%;
-                                max-width: 600px;
-                                margin-bottom: 20px;
-                            }
-
-                            .calendar-header button {
-                                padding: 5px 10px;
-                                background-color: #007bff;
-                                color: white;
-                                border: none;
-                                border-radius: 4px;
-                                cursor: pointer;
-                            }
-
-                            .calendar-header button:hover {
-                                background-color: #0056b3;
-                            }
-
-                            .calendar-table {
-                                width: 100%;
-                                max-width: 600px;
-                                border-collapse: collapse;
-                            }
-
-                            .calendar-table th, .calendar-table td {
-                                border: 1px solid #ddd;
-                                padding: 10px;
-                                text-align: center;
-                            }
-
-                            .calendar-table th {
-                                background-color: #f4f4f4;
-                            }
-
-                            .calendar-table td:hover {
-                                background-color: #f1f1f1;
-                            }
-
-                            .video-call-button {
-                                padding: 5px 10px;
-                                margin-top: 5px;
-                                background-color: #28a745;
-                                color: white;
-                                border: none;
-                                border-radius: 4px;
-                                cursor: pointer;
-                            }
-
-                            .video-call-button:hover {
-                                background-color: #218838;
-                            }
-                        </style>
-                    </div>
-                </div>
-
-
-
-
+            </div>
         </div>
+
+
+                    </div>
+                </div>
+
     </div>
 </div>
 
 </div>
+
+
 </html>
