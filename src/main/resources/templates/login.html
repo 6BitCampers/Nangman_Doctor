@@ -88,42 +88,43 @@
 			e.preventDefault();
 			(async () => {
 				const { value: formValues } = await Swal.fire({
-					title: '삭제하기',
+					title: '비밀번호 초기화',
 					html:
 							'<label for="swal-input1">이름</label><input id="swal-input1" class="swal2-input"><br>' +
 							'<label for="swal-input2">이메일</label><input id="swal-input2" class="swal2-input">',
-					focusConfirm: false,
-					preConfirm: () => {
-						return [
-							document.getElementById('swal-input1').value,
-							document.getElementById('swal-input2').value
-						]
-					}
+					focusConfirm: true,
+					showCancelButton: true,
+					showLoaderOnConfirm: true,
+					preConfirm: () => { // 확인 버튼 누르면 실행되는 콜백함수
+						let name = document.getElementById('swal-input1').value
+						let email = document.getElementById('swal-input2').value
+						return fetch(`api/v1/searchPW?name=${name}&email=${email}`)
+								.then(response => {
+									if (!response.ok) {
+										Swal.fire({
+											icon: 'error',
+											title: '찾기 실패',
+											text: '맞는 계정이 없습니다!',
+										});
+									}
+									else {
+										Swal.fire({
+											icon: 'success',
+											title: '찾기 성공!',
+											text: "이메일 전송완료했습니다.",
+										});
+									}
+								})
+								.catch(error => {
+									Swal.fire({
+										icon: 'error',
+										title: '찾기 실패',
+										text: '맞는 계정이 없습니다!',
+									});
+								})
+					},
+					allowOutsideClick: () => !Swal.isLoading()
 				})
-
-				if (formValues) {
-					$.ajax({
-						url:"api/v1/searchPW",
-						data:{"name":formValues[0],"email":formValues[1]},
-						type:"get",
-						async:false,
-						complete: function(e, xhr, settings){
-							if(e.status === 200){
-								Swal.fire({
-									icon: 'success',
-									title: '찾기 성공!',
-									text: formValues[0]+'님, '+formValues[1]+'로 전송을 완료 했습니다.',
-								});
-							}else{
-								Swal.fire({
-									icon: 'error',
-									title: '찾기 실패',
-									text: '맞는 계정이 없습니다!',
-								});
-							}
-						}
-					})
-				}
 			})()
 		}
 	</script>
