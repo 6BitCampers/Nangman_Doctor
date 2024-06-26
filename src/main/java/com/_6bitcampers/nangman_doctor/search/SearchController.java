@@ -1,6 +1,9 @@
 package com._6bitcampers.nangman_doctor.search;
 
+import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +38,18 @@ public class SearchController {
             @RequestParam(value = "size", defaultValue = "10") int size,
             Model model) {
 
+        boolean isLoggedIn = false;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof CustomUserDetails) {
+                CustomUserDetails userDetails = (CustomUserDetails) principal;
+                isLoggedIn = true;
+            }
+        }
+
+
         List<HospitalDto> hospitals = hospitalService.searchHospitals(keyword, page, size);
         List<HospitalDto> topRatedHospitals = hospitalService.searchTopRatedHospitals(keyword, 1, 10); // Assuming top rated is only the top 10
 
@@ -45,7 +60,7 @@ public class SearchController {
         int startPage = Math.max(1, page - 5);
         int endPage = Math.min(totalPages, page + 4);
         List<Integer> pageNumbers = IntStream.rangeClosed(startPage, endPage).boxed().collect(Collectors.toList());
-
+        model.addAttribute("isLoggedIn", isLoggedIn);
         model.addAttribute("hospitals", hospitals);
         model.addAttribute("topRatedHospitals", topRatedHospitals);
         model.addAttribute("currentPage", page);

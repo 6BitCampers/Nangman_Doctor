@@ -15,10 +15,7 @@ import org.thymeleaf.context.Context;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ReservationService {
@@ -106,6 +103,23 @@ public class ReservationService {
         return reservationMapper.getUserNameByNo(infoNo);
     }
 
+    public List<ReservationDto> getResbyempno(int employeeNo){
+        return reservationMapper.getResbyempno(employeeNo);
+    }
+    public Map<String, List<String>> getTakenTimeSlotsByDate(int employeeNo) {
+        List<ReservationDto> reservations = reservationMapper.getResbyempno(employeeNo);
+        Map<String, List<String>> takenTimeSlotsByDate = new HashMap<>();
+        for (ReservationDto reservation : reservations) {
+            if (reservation.getReservation_status() == 2) {
+                String date = reservation.getReservation_date().toString();
+                String timeSlot = reservation.getReservation_time();
+                takenTimeSlotsByDate
+                        .computeIfAbsent(date, k -> new ArrayList<>())
+                        .add(timeSlot);
+            }
+        }
+        return takenTimeSlotsByDate;
+    }
 
 
 

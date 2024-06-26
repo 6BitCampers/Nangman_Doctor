@@ -21,7 +21,6 @@
         </div>
     </div>
 
-
     <nav class="site-nav mt-3">
         <div class="container">
             <div class="section">
@@ -35,7 +34,7 @@
                                 <div class="address mt-4">
                                     <i class="icon-room"></i>
                                     <h4 class="mb-2">Location:</h4>
-                                    <p th:text="${HosInfoDto.getInfo_addr()}"></p>
+                                    <p th:text="${HosInfoDto.info_addr}"></p>
                                 </div>
                                 <div class="open-hours mt-4">
                                     <i class="icon-clock-o"></i>
@@ -48,7 +47,7 @@
                                 <div class="phone mt-4">
                                     <i class="icon-phone"></i>
                                     <h4 class="mb-2">Call:</h4>
-                                    <p th:text="${HosInfoDto.getInfo_hp()}"></p>
+                                    <p th:text="${HosInfoDto.info_hp}"></p>
                                 </div>
                             </div>
                         </div>
@@ -56,8 +55,8 @@
 
                     <div class="reserv-info justify-content-center">
                         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-                            <form class="space-y-4"  th:action="@{/reserveProc}" method="post" id="reservationForm" onsubmit="return handleSubmit(event)" style="max-width: 800px; width: 200%; margin: 0 auto;">
-                                <div class="row mb-4">
+                            <form class="space-y-4" th:action="@{/reserveProc}" method="post" id="reservationForm" onsubmit="return handleSubmit(event)" style="max-width: 800px; width: 100%; margin: 0 auto;">
+                                <div class="row mb-4"  style="width: 200%;">
                                     <div class="col-6">
                                         <input type="text" class="form-control" placeholder="이름" id="reservation_name" name="name" th:value="${name}" required="">
                                     </div>
@@ -65,19 +64,15 @@
                                         <input type="date" class="form-control" id="reservation_date" name="reservation_date" required="">
                                     </div>
                                 </div>
-                                <div class="row mb-4">
-                                    <div class="col-12">
-                                        <select class="form-control" id="reservation_time" name="reservation_time" required="">
-                                            <option value="" disabled selected>예약 시간</option>
-                                        </select>
-                                    </div>
+                                <div id="time-slots" class="row mb-4" style="width: 200%;">
+                                    <!-- 예약 가능한 시간대가 여기에 표시됩니다. -->
                                 </div>
-                                <div class="row mb-4">
+                                <div class="row mb-4" style="width: 200%;">
                                     <div class="col-12">
                                         <input type="text" class="form-control" placeholder="진료명" id="reservation_reason" name="reservation_reason" required="">
                                     </div>
                                 </div>
-                                <div class="row mb-4">
+                                <div class="row mb-4" style="width: 200%;">
                                     <div class="col-6">
                                         <select class="form-control" id="reservation_role" name="reservation_role" required="">
                                             <option value="1">상담</option>
@@ -91,16 +86,17 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="row mb-4">
+                                <div class="row mb-4" style="width: 200%;">
                                     <div class="col-12">
                                         <textarea name="reservation_content" id="reservation_content" cols="30" rows="10" class="form-control" placeholder="Message"></textarea>
                                     </div>
                                 </div>
                                 <input type="hidden" id="employee_no" name="employee_no" th:value="${employeeNo}"/>
                                 <input type="hidden" id="info_no" name="info_no" th:value="${info_no}"/>
+                                <input type="hidden" id="reservation_time" name="reservation_time" required=""/>
                                 <div class="row">
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary w-100" style="height: 60px; font-size: 1.5rem; background-color: darkorange;">등록</button>
+                                        <button type="submit" class="btn btn-primary" style="width: 190%; height: 60px; font-size: 1.5rem; background-color: darkorange;">등록</button>
                                     </div>
                                 </div>
                             </form>
@@ -110,20 +106,66 @@
                 </div>
             </div>
 
-
-            <script>
+            <script th:inline="javascript">
                 document.addEventListener('DOMContentLoaded', function() {
                     var today = new Date().toISOString().split('T')[0];
                     document.getElementById('reservation_date').setAttribute('min', today);
 
-                    var timeTable = document.getElementById('reservation_time');
-                    for (var i = 6; i < 24; i++) {
-                        var startTime = i < 10 ? '0' + i + ':00' : i + ':00';
-                        var endTime = (i + 1) < 10 ? '0' + (i + 1) + ':00' : (i + 1) + ':00';
-                        var option = document.createElement('option');
-                        option.value = startTime + ' - ' + endTime;
-                        option.textContent = startTime + ' - ' + endTime;
-                        timeTable.appendChild(option);
+                    var reservationDateInput = document.getElementById('reservation_date');
+                    var timeSlotsContainer = document.getElementById('time-slots');
+
+                    // 서버에서 전달된 hosResDto 데이터를 JavaScript 변수로 설정
+                    var hosResDto = /*[[${HosResDto}]]*/ [];
+                    console.log(hosResDto); // hosResDto 데이터가 제대로 로드되는지 확인
+
+                    reservationDateInput.addEventListener('change', function() {
+                        var selectedDate = reservationDateInput.value;
+                        renderTimeSlots(selectedDate);
+                    });
+
+                    function renderTimeSlots(date) {
+                        timeSlotsContainer.innerHTML = '';
+                        var times = generateTimeSlots();
+                        var reservedTimes = hosResDto
+                            .filter(reservation => reservation.reservation_date === date)
+                            .map(reservation => reservation.reservation_time);
+
+                        times.forEach(time => {
+                            var isBooked = reservedTimes.includes(time);
+                            var button = document.createElement('button');
+                            button.type = 'button';
+                            button.classList.add('time-slot', 'btn', 'mb-2');
+                            button.textContent = time;
+                            button.disabled = isBooked;
+
+                            if (!isBooked) {
+                                button.classList.add('available');
+                                button.addEventListener('click', function() {
+                                    document.getElementById('reservation_time').value = time;
+                                    var previouslySelected = timeSlotsContainer.querySelector('.btn-primary');
+                                    if (previouslySelected) {
+                                        previouslySelected.classList.remove('btn-primary');
+                                        previouslySelected.classList.add('available');
+                                    }
+                                    button.classList.remove('available');
+                                    button.classList.add('btn-primary');
+                                });
+                            } else {
+                                button.classList.add('booked');
+                            }
+
+                            timeSlotsContainer.appendChild(button);
+                        });
+                    }
+
+                    function generateTimeSlots() {
+                        var times = [];
+                        for (var i = 6; i < 24; i++) {
+                            var startTime = i < 10 ? '0' + i + ':00' : i + ':00';
+                            var endTime = (i + 1) < 10 ? '0' + (i + 1) + ':00' : (i + 1) + ':00';
+                            times.push(startTime + ' - ' + endTime);
+                        }
+                        return times;
                     }
                 });
 
@@ -149,6 +191,7 @@
                     margin: 10px;
                 }
 
+
                 .form-group {
                     margin-bottom: 10px;
                 }
@@ -159,7 +202,7 @@
                 }
 
                 input, select, textarea, button {
-                    width: 200%;
+                    width: 100%;
                     margin: 5px 0;
                     box-sizing: border-box;
                     font-size: 1.2rem;
@@ -170,7 +213,7 @@
                 }
 
                 form {
-                    max-width: 100px;
+                    max-width: 100%;
                     width: 100%;
                     padding: 10px;
                     box-sizing: border-box;
@@ -180,14 +223,44 @@
                     display: block;
                     width: 100%;
                     padding: 0.75rem 1rem;
-                    font-size: 1.2rem;
-                    line-height: 1.5;
+                    font-size: 1.0rem;
+                    line-height: 1.6;
                     color: #495057;
                     background-color: #fff;
                     background-clip: padding-box;
                     border: 1px solid #ced4da;
                     border-radius: 0.25rem;
                     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+                }
+
+                .time-slot {
+                    width: 90px;
+                    height: 60px;
+                    margin: 5px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    border: 1px solid orange;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 14px; /* 폰트 크기 조정 */
+                }
+
+                .time-slot.available {
+                    background-color: #fff;
+                    color: #000;
+                }
+
+                .time-slot.booked {
+                    background-color: #ccc;
+                    color: #999;
+                    cursor: not-allowed;
+                }
+
+                .time-slot.btn-primary {
+                    background-color: darkorange;
+                    color: #fff;
                 }
 
                 button {
@@ -207,6 +280,7 @@
                     background-color: #0056b3;
                     border-color: #004085;
                 }
+
             </style>
         </div>
     </nav>

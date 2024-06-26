@@ -634,16 +634,15 @@
                                             console.error("Server Error: ", response.message);
                                             alert('Error handling reservation: ' + response.message);
                                         } else {
-                                            console.log("Reservation No:", response.reservationNo);
-                                            console.log("Is Accepted:", response.isAccepted);
-                                            alert('예약이 확정되었습니다.');
 
                                             // Update the reservation status in the table without refreshing the page
                                             let statusCell = $(`td:contains('${response.reservationNo}')`).siblings()[3]; // Assuming status is the 4th cell
                                             if (response.isAccepted === "true") {
                                                 $(statusCell).text('Accepted');
+                                                alert('예약이 수락되었습니다. 이메일이 발송될거에요!')
                                             } else {
                                                 $(statusCell).text('Rejected');
+                                                alert('예약이 거절되었습니다.')
                                             }
 
                                             // Optionally, you can remove the buttons after updating the status
