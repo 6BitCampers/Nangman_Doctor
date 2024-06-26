@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -96,6 +97,7 @@ public class mypageController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        model.addAttribute("type",type);
         //리뷰 작성시 필요한 값 보내기
         model.addAttribute("userNo",userNo);
 
@@ -172,15 +174,23 @@ public class mypageController {
 //    }
 
     @GetMapping("/mypage/update")
-    public String update(Model model, String user_name, String user_email, String user_nickname, String user_hp, int user_no) {
+    public String update(@RequestParam String user_email,
+                         @RequestParam String user_nickname,
+                         @RequestParam String user_hp,
+                         @RequestParam String user_interest,
+                         @RequestParam String user_addr,
+                         @RequestParam int user_no) {
         Map<String, Object> map = new HashMap<>();
-        map.put("user_name", user_name);
+
         map.put("user_email", user_email);
         map.put("user_nickname", user_nickname);
+        map.put("user_addr1",user_addr);
         map.put("user_hp", user_hp);
+        map.put("user_interest",user_interest);
         map.put("user_no", user_no);
         mypageService.updateUser(map);
-        return "redirect:/login";
+
+        return "redirect:/mypage";
     }
 
     @GetMapping("/register")
