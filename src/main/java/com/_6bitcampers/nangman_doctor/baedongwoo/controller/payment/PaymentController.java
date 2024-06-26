@@ -5,14 +5,21 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.AESUtil;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.PaymentService;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewAndReceiptService;
+import com._6bitcampers.nangman_doctor.hayoon.Mapper.ReservationMapper;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -140,6 +147,8 @@ public class PaymentController {
 
         Map<String,Object> response=new HashMap<>();
 
+        String infoName=empDto.getInfo_name();
+
         response.put("receiptDto", receiptDto);
         response.put("paymentDto", paymentDto);
         response.put("empDto", empDto);
@@ -149,10 +158,9 @@ public class PaymentController {
         response.put("amount", amount);
         response.put("user_no", user_no);
 
+        paymentService.sendEmail(userId, infoName+" 결제 메일", "emailTemplates/paymentConfirm",response);
+
         return response;
     }
-
-
-
 
 }
