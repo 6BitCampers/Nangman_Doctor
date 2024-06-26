@@ -10,23 +10,9 @@
     <meta name="description" content="" />
     <meta name="keywords" content="bootstrap, bootstrap5" />
 
-    <link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
-    <link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
-    <link th:href="@{https://fonts.googleapis.com/css2(family='Brygada+1918:ital,wght@0,400;0,600;0,700;1,400',family='Inter:wght@400;700&display=swap')}" rel="stylesheet">
-
-    <link rel="stylesheet" th:href="@{fonts/icomoon/style.css}">
-    <link rel="stylesheet" th:href="@{fonts/flaticon/font/flaticon.css}">
-
-    <link rel="stylesheet" th:href="@{css/tiny-slider.css}">
-    <link rel="stylesheet" th:href="@{css/aos.css}">
-    <link rel="stylesheet" th:href="@{css/flatpickr.min.css}">
-    <link rel="stylesheet" th:href="@{css/glightbox.min.css}">
-    <link rel="stylesheet" th:href="@{css/style.css}">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
-
     <title>결제 확인 메일</title>
-
     <style>
+        /* 기본 스타일 설정 */
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f4e5;
@@ -56,94 +42,92 @@
             font-size: 12px;
             color: #999999;
         }
-        div{
-            background-color: white;
-        }
     </style>
 </head>
 <body>
-
-<div class="grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-2"
-     style="margin-left: 23%;padding: 20px">
-    <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-        <div class="flex flex-col space-y-1.5 p-6">
-            <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">결제 요약</h3>
+<h2 style="color: gray"><span th:text="${empDto.info_name}"></span><br></h2>
+    <h1><span th:text="${userEntity.user_name}"></span>님 결제 영수증</h1>
+<br>
+<div style="display: grid;grid-template-columns: repeat(2, 1fr); width: 1200px; max-width: 64rem; gap: 1.5rem; padding: 20px;">
+    <div style="width:450px;border-radius: 0.5rem; border: 1px solid #e5e7eb; background-color: #ffffff; color: #3b3b3b; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
+        <div style="display: flex; flex-direction: column; gap: 20px; padding: 1.5rem;">
+            <h3 style="white-space: nowrap; font-size: 1.5rem; font-weight: 600; line-height: 2rem; letter-spacing: -0.025em;">결제 요약</h3>
         </div>
-        <div class="p-6">
-            <div class="grid gap-4">
-                <div class="flex items-center justify-between">
+        <div style="padding: 1.5rem;">
+            <div style="gap: 1rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
                     <p>결제 번호</p>
-                    <p class="font-medium">#<span id="orderId" th:value="${response.paymentDto.payment_no}"></span></p>
+                    <p style="font-weight: 500;">#<span th:text="${paymentDto.payment_no}"></span></p>
                 </div>
-                <div class="flex items-center justify-between">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
                     <p>결제 일자</p>
-                    <p class="font-medium" id="receiptDate" th:text="${#dates.format(response.receiptDto.receipt_date, 'yyy년 MM월 dd일 HH시 mm분')}"></p>
+                    <p style="font-weight: 500;" th:text="${#dates.format(receiptDto.receipt_date, 'yyyy년 MM월 dd일 HH시 mm분')}"></p>
                 </div>
-                <div class="flex items-center justify-between">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
                     <p>결제 방식</p>
-                    <p class="font-medium" id="paymentMethod" th:text="${response.method}"></p>
+                    <p style="font-weight: 500;" th:text="${method}"></p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-        <div class="flex flex-col space-y-1.5 p-6">
-            <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">결제 내역</h3>
+    <div style="width:450px;border-radius: 0.5rem; border: 1px solid #e5e7eb; background-color: #ffffff; color: #3b3b3b; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1.5rem;">
+            <h3 style="white-space: nowrap; font-size: 1.5rem; font-weight: 600; line-height: 2rem; letter-spacing: -0.025em;">결제 내역</h3>
         </div>
-        <div class="p-6">
-            <div class="grid gap-4">
-                <div class="flex items-center justify-between">
-                    <p class="font-weight-bold text-medium">총 결제 금액</p>
-                    <p class="font-weight-bold text-medium" id="totalAmount">&#8361; <span th:text="${response.amount * 5/2}"></span></p>
+        <div style="padding: 1.5rem;">
+            <div style="gap: 1rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <p style="font-weight: 700; font-size: 1rem;">총 결제 금액</p>
+                    <p style="font-weight: 700; font-size: 1.125rem;" th:text="${'₩ ' + (amount * 5/2)}"></p>
                 </div>
-                <div class="flex items-center justify-between">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
                     <p>공단부담비</p>
-                    <p class="font-medium" id="govSupport">&#8361; <span th:text="${response.amount * 3/2}"></span></p>
+                    <p style="font-weight: 500;" th:text="${'₩ ' + (amount * 3/2)}"></p>
                 </div>
-                <div data-orientation="horizontal" role="none" class="shrink-0 bg-border h-[1px] w-full"></div>
-                <div class="flex items-center justify-between font-bold">
-                    <p class="font-weight-bold text-lg">본인부담비</p>
-                    <p class="font-medium font-weight-bold text-lg" id="personalPay">&#8361; <span th:text="${response.amount}"></span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-        <div class="flex flex-col space-y-1.5 p-6">
-            <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">환자 정보</h3>
-        </div>
-        <div class="p-6">
-            <div class="grid gap-4">
-                <div>
-                    <p class="font-medium" id="userName" th:text="${response.userEntity.user_name}"></p>
-                    <p class="text-muted-foreground" id="userAddress" th:text="${response.userEntity.user_addr}"></p>
-                </div>
-                <div>
-                    <p class="font-medium text-lg font-weight-bold" id="userPhone" th:text="${response.userEntity.user_hp}"></p>
-                    <p class="text-muted-foreground" id="userEmail" th:text="${response.userEntity.user_email}"></p>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-        <div class="flex flex-col space-y-1.5 p-6">
-            <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">병원 정보</h3>
-        </div>
-        <div class="p-6">
-            <div class="grid gap-4">
-                <div>
-                    <p class="font-medium" id="infoName" th:text="${response.empDto.info_name}"></p>
-                    <p class="text-muted-foreground" id="infoAddress" th:text="${response.empDto.info_addr}"></p>
-                </div>
-                <div>
-                    <p class="font-medium text-lg font-weight-bold" id="infoPhone" th:text="${response.empDto.info_hp}"></p>
-                    <p class="text-muted-foreground" id="infoEmail" th:text="${response.empDto.employee_email}"></p>
+                <div style="height: 1px; width: 100%; background-color: #e5e7eb;"></div><br>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <p style="font-weight: 700; font-size: 1.125rem;">본인부담비</p>
+                    <p style="font-weight: 700; font-size: 1.125rem;" th:text="${'₩ ' + amount}"></p>
                 </div>
             </div>
         </div>
     </div>
-    <p style="font-size: 12px; color: #999999;">&copy; 2024 낭만닥터. All Rights Reserved.</p>
+    <div style="width:450px;border-radius: 0.5rem; border: 1px solid #e5e7eb; background-color: #ffffff; color: #3b3b3b; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1.5rem;">
+            <h3 style="white-space: nowrap; font-size: 1.5rem; font-weight: 600; line-height: 2rem; letter-spacing: -0.025em;">환자 정보</h3>
+        </div>
+        <div style="padding: 1.5rem;">
+            <div style="gap: 1rem;">
+                <div>
+                    <p style="font-weight: 500;" th:text="${userEntity.user_name}"></p>
+                    <p style="color: #999999;" th:text="${userEntity.user_addr}"></p>
+                </div>
+                <div>
+                    <p style="font-weight: 700; font-size: 1.125rem;" th:text="${userEntity.user_hp}"></p>
+                    <p style="color: #999999;" th:text="${userEntity.user_email}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width:450px;border-radius: 0.5rem; border: 1px solid #e5e7eb; background-color: #ffffff; color: #3b3b3b; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
+        <div style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1.5rem;">
+            <h3 style="white-space: nowrap; font-size: 1.5rem; font-weight: 600; line-height: 2rem; letter-spacing: -0.025em;">병원 정보</h3>
+        </div>
+        <div style="padding: 1.5rem;">
+            <div style="gap: 1rem;">
+                <div>
+                    <p style="font-weight: 500;" th:text="${empDto.info_name}"></p>
+                    <p style="color: #999999;" th:text="${empDto.info_addr}"></p>
+                </div>
+                <div>
+                    <p style="font-weight: 700; font-size: 1.125rem;" th:text="${empDto.info_hp}"></p>
+                    <p style="color: #999999;" th:text="${empDto.employee_email}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<p style="width:1000px;font-size: 12px; color: #999999; text-align: center;">&copy; 2024 낭만닥터. All Rights Reserved.</p>
+
 </body>
 </html>

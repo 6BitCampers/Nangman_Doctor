@@ -144,6 +144,7 @@ public class PaymentController {
         int hospital_no=receiptDto.getInfo_no();
         userEntity userEntity= reviewAndReceiptService.getUserInfo(userId, user_type);
         EmpDto empDto= paymentService.gethospitalInfo(hospital_no);
+        String user_email=userEntity.getUser_email();
 
         Map<String,Object> response=new HashMap<>();
 
@@ -158,7 +159,7 @@ public class PaymentController {
         response.put("amount", amount);
         response.put("user_no", user_no);
 
-        paymentService.sendEmail(userId, infoName+" 결제 메일", "emailTemplates/paymentConfirm",response);
+        paymentService.sendEmail(user_email, infoName+" 결제 메일", "emailTemplates/paymentConfirm",response);
 
         return response;
     }

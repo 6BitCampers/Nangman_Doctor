@@ -24,10 +24,15 @@ import java.util.Map;
 public class PaymentService {
     @Autowired
     private PaymentInter paymentInter;
-    private ReservationMapper reservationMapper;
     private JavaMailSender mailSender;
     private TemplateEngine templateEngine;
 
+    @Autowired
+    public PaymentService(JavaMailSender mailSender, PaymentInter paymentInter, TemplateEngine templateEngine) {
+        this.mailSender = mailSender;
+        this.templateEngine = templateEngine;
+        this.paymentInter = paymentInter;
+    }
 
     public ReceiptDto getReceiptBySeq(int receipt_no){
         return paymentInter.getReceiptBySeq(receipt_no);
@@ -49,7 +54,7 @@ public class PaymentService {
     }
 
     @Async
-    public void sendEmail(String to, String subject, String templateName, Map<String, Object> variables) {
+    public void sendEmail(String to, String subject, String templateName, Map<String, Object> response) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -57,7 +62,7 @@ public class PaymentService {
             helper.setSubject(subject);
 
             Context context = new Context();
-            context.setVariables(variables);
+            context.setVariables(response);
 
             // Load HTML template using TemplateEngine
             String htmlContent = templateEngine.process(templateName, context);
