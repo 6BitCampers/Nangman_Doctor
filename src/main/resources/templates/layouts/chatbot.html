@@ -12,23 +12,21 @@
                 <button type="button" id="close_chat_btn" class="close_btn">X</button>
             </div>
             <div id="divbox" class="chat_content">
-                <div class="chat_inner" style="max-height: 1265px;">
+                <img src="/icon/chatIcon.png" style="width:40px; height:40px;float: left;">
+                <div class="chat_inner" style="max-width:270px;max-height: 1265px; " >
                     <pre>반갑습니다 ! ^-^
 낭만닥터 도우미 6B(육비)입니다.
 6(명의) B(itcampers)라는 뜻을
 가지고 있어요!
-궁금한 점을 아래의 단축버튼으로 누르거나
-직접 질문해주세요.
+궁금한 점을 아래의 단축버튼으로
+누르거나 직접 질문해주세요.
                     </pre>
                     <div class="btn_info_wrap">
-                        <button type="button" th:onclick="" class="btn-link welcome1" onclick="onButtonClick('{&quot;type&quot;:&quot;TEXT&quot;,&quot;displayText&quot;:&quot;진료예약 및 변경&quot;,&quot;postback&quot;:&quot;진료예약 및 변경&quot;,&quot;link&quot;:null,&quot;phoneNumber&quot;:null,&quot;suggestion&quot;:{&quot;suggestionType&quot;:&quot;INTENT&quot;,&quot;source&quot;:&quot;진료예약 및 변경&quot;,&quot;target&quot;:&quot;352&quot;},&quot;addclass&quot;:&quot;welcome1&quot;}', 'pUP0NF8lNWDEFS7hFydz')">
-                            <span>예약하기</span>
+                        <button style="text-decoration:  none;" type="button" onclick="location.href='/results?keyword=성형'" class="btn-link welcome1" >
+                            <span >예약하기</span>
                         </button>
-                        <button type="button" class="btn-link welcome5" onclick="onButtonClick('{&quot;type&quot;:&quot;TEXT&quot;,&quot;displayText&quot;:&quot;병원안내&quot;,&quot;postback&quot;:&quot;병원안내&quot;,&quot;link&quot;:null,&quot;phoneNumber&quot;:null,&quot;suggestion&quot;:{&quot;suggestionType&quot;:&quot;INTENT&quot;,&quot;source&quot;:&quot;병원안내&quot;,&quot;target&quot;:&quot;71&quot;},&quot;addclass&quot;:&quot;welcome5&quot;}', 'pUP0NF8lNWDEFS7hFydz')">
+                        <button style="text-decoration:  none;" type="button" class="btn-link welcome5" onclick="location.href='/search'">
                             <span>병원검색</span>
-                        </button>
-                        <button type="button" class="btn-link home" onclick="location.reload()">
-                            <span>처음으로</span>
                         </button>
                     </div>
                 </div>
@@ -39,8 +37,7 @@
             </form>
         </div>
     </div>
-    <img src="/icon/chatbotimg.png" onclick="toggleSlide()" alt="Chatbot Image" id="chatbotimg" style="z-index: 100; width:50px;height:50px;position:fixed;bottom:10px;right:10px;cursor:pointer;">
-
+    <img src="/icon/chatbotimg.png" onclick="toggleSlide()" alt="Chatbot Image" id="chatbotimg" style="z-index: 100; width:60px;height:60px;position:fixed;bottom:20px;right:30px;cursor:pointer;">
     <script>
         function toggleSlide() {
             const content = document.getElementById('chatbotModal');
@@ -54,7 +51,6 @@
         // 챗봇 이미지 클릭 시 모달 표시
         document.getElementById('chatbotimg').onclick = function () {
             document.getElementById('chatbotModal').style.display = 'block';
-
 
             $('#btn_submit').click(function () {
                 send();
@@ -77,6 +73,7 @@
                     data: {inputText: $('#input1').val()},
                     success: function (data) {
                         console.log("success");
+                        $('#divbox').append('<img src="/icon/chatIcon.png" style="width:40px; height:40px;margin-top:50px;float: left;">');
                         $('#divbox').append('<div class="msg_box receive"><span>' + data + '<span></div>');
                         $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
                     }
@@ -108,7 +105,6 @@
                 modal.classList.remove('slide-out');
             }, 500); // 애니메이션 시간과 동일하게 설정
 
-
         }
 
         // 모달 외부를 클릭했을 때 모달 닫기
@@ -124,8 +120,6 @@
                 }, 500); // 애니메이션 시간과 동일하게 설정
             }
         }
-
-
     </script>
 </div>
 </div>
