@@ -32,7 +32,7 @@ public interface mypageMapper {
     List<ReceiptDTO> getReceipt(Map<String, Object> map);
 
     @Update("""
-    update normal_user set user_name=#{user_name}, user_email=#{user_email}, user_hp = #{user_hp}, user_nickname=#{user_nickname}
+    update normal_user set user_email=#{user_email}, user_hp = #{user_hp}, user_nickname=#{user_nickname}, user_interest=#{user_interest}, user_addr1=#{user_addr1}
     where user_no = #{user_no}
 """)
     void updateUser(Map<String, Object> map);
