@@ -131,7 +131,8 @@
                     <div class="flex items-center justify-between" th:if="${reservationList==null}">
                         <h4 class="font-medium">No Reservation On load</h4>
                     </div>
-                    <div class="flex items-center justify-between bg-background rounded-medium shadow-sm p-2" th:each="reservation,iterStat: ${reservationList}" th:id="'reservation-' + ${iterStat.index}">
+                    <div class="flex items-center justify-between bg-background rounded-medium shadow-sm p-2" th:each="reservation,iterStat: ${reservationList}" th:id="'reservation-' + ${iterStat.index}" th:if="${reservation.get('reservation_status') != 2}">
+
                         <div>
                             <h4 class="font-medium" th:text="${reservation.get('reservation_reason')}"></h4><br>
                             <p class="text-muted-foreground text-sm"><span th:text="${reservation.get('reservation_date')}"></span> <span th:text="${reservation.get('reservation_time')}"></span></p>
