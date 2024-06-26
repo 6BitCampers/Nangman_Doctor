@@ -47,4 +47,6 @@ public interface ReviewAndReceiptInter {
     public void insertPcContent(PcDto pcDto);
     @Update("UPDATE hospital_receipt SET prescription_no = #{prescription_no} WHERE receipt_no=#{receipt_no}")
     public void updateReceiptPc(int prescription_no,int receipt_no);
+    @Select("select * from hospital_review where employee_no=#{employee_no}")
+    public List<ReviewDto> getReviewByEmployeeNo(int employee_no);
 }

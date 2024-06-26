@@ -41,4 +41,6 @@ public interface empMapper {
     @Update("UPDATE hospital_employee he SET he.info_no = ( SELECT hi.info_no FROM hospital_info hi WHERE hi.info_name = #{hname} LIMIT 1) WHERE he.employee_email = #{email}")
     void updateNameByEmail(@Param("email") String email,@Param("hname") String hname);
 
+    @Select("select * from hospital_employee where employee_email=#{employee_email} and employee_type=#{employee_type}")
+    EmpDto getEmployeeByEmail(@Param("employee_email") String employee_email,@Param("employee_type") String employee_type);
 }
