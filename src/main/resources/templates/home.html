@@ -156,10 +156,10 @@
 
 		<div class="destination-slider-wrap">
 			<div class="destination-slider">
-				<div th:each="hospital : ${top}" class="destination">
+				<div th:each="hospital : ${top}" class="destination"
+					 th:data-info-x="${hospital.info_x}" th:data-info-y="${hospital.info_y}">
 					<div class="thumb">
-						<img th:if="${hospital.info_photo != null}" th:src="@{https://miniodb.midichi.kro.kr/nangmandoctor/Hospital_info/{param1}(param1=${hospital.info_photo})}" alt="Hospital Photo" class="img-fluid" width="500" height="100">
-						<img th:unless="${hospital.info_photo != null}" src="/images/img_3.jpg" alt="Default Photo" class="img-fluid" width="500" height="500">
+						<div th:id="'roadview_' + ${hospital.info_no}" class="roadview-container" style="height:100px; width:500px;"></div>
 					</div>
 					<div class="mt-4">
 						<h3><a th:href="@{'/about-hospital/' + ${hospital.info_no}}" th:text="${hospital.info_name}">Paradise Beach, Palawan Island</a></h3>
@@ -325,35 +325,52 @@
 			</div>
 		</div>
 	</div>
-<script>
-	document.addEventListener("DOMContentLoaded", function() {
-		const imageSources = [
-			'/images/person_1.jpg',
-			'/images/person_2.jpg',
-			'/images/person_3.jpg',
-			'/images/person_sq_1.jpg',
-			'/images/person_sq_2.jpg'
-		];
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const imageSources = [
+				'/images/person_1.jpg',
+				'/images/person_2.jpg',
+				'/images/person_3.jpg',
+				'/images/person_sq_1.jpg',
+				'/images/person_sq_2.jpg'
+			];
 
-		function getRandomImage() {
-			const randomIndex = Math.floor(Math.random() * imageSources.length);
-			return imageSources[randomIndex];
-		}
-
-		let items = document.querySelectorAll('.wide-slider-testimonial .author');
-		console.log('Number of authors found:', items.length); // Log the number of .author elements found
-		items.forEach(item => {
-			let img = item.querySelector('img');
-			if (img) {
-				let newSrc = getRandomImage();
-				console.log('Updating image:', img, 'New src:', newSrc); // Log each image update
-				img.src = newSrc;
-			} else {
-				console.log('No image found in:', item); // Log if no img is found in an .author element
+			function getRandomImage() {
+				const randomIndex = Math.floor(Math.random() * imageSources.length);
+				return imageSources[randomIndex];
 			}
+
+			let items = document.querySelectorAll('.wide-slider-testimonial .author');
+			console.log('Number of authors found:', items.length); // Log the number of .author elements found
+			items.forEach(item => {
+				let img = item.querySelector('img');
+				if (img) {
+					let newSrc = getRandomImage();
+
+					img.src = newSrc;
+				} else {
+					console.log('No image found in:', item); // Log if no img is found in an .author element
+				}
+			});
+
+			document.querySelectorAll('.destination').forEach(destination => {
+				let roadviewContainer = destination.querySelector('.roadview-container');
+				let info_x = destination.getAttribute('data-info-x');
+				let info_y = destination.getAttribute('data-info-y');
+				console.log('x=', info_x); // Log each image update
+				console.log('y=', info_y); // Log each image update
+				let position = new kakao.maps.LatLng(info_y, info_x);
+				let roadview = new kakao.maps.Roadview(roadviewContainer);
+				let roadviewClient = new kakao.maps.RoadviewClient();
+
+				roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+					roadview.setPanoId(panoId, position);
+				});
+			});
 		});
-	});
-</script>
+	</script>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e8446e9bb190af20372cac3728f820e3"></script>
+
 
 
 </html>

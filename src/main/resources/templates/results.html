@@ -89,7 +89,7 @@
                             <a class="page-link" th:href="@{'/results?keyword=' + ${keyword} + '&page=' + ${i} + '&size=' + ${size}}" th:text="${i}">1</a>
                         </li>
                         <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                            <a class="page-link" th:href="@{'/results?keyword=' + ${keyword} + '&page=' + (${currentPage} + 1) + '&size=' + ${size}}" aria-label="Next">
+                            <a class="page-link" th:href="@{'/results?keyword=' + ${keyword} + '&page=' + (${currentPage+1}) + '&size=' + ${size}}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
