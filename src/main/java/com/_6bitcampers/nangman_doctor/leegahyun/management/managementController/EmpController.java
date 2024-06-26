@@ -75,45 +75,88 @@ public class EmpController {
 
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId= customOAuth2User.getEmail();
-        String user_type=customOAuth2User.getType();
+        String userType= customOAuth2User.getType();
+        String role= customOAuth2User.getRole();
 
-        List<EmpDto> employees = EmpService.getEmployeeLikeCounts(userId);
-        model.addAttribute("employees", employees);
+        //병원장이면 emp 전체 no 받아서 review 갖고오기
+        if(role.equals("ROLE_MANAGER")){
+            List<EmpDto> employees = EmpService.getEmployeeLikeCounts(userId);
+            model.addAttribute("employees", employees);
 
-        List<EmpDto> emplist = EmpService.getEmpList(SecurityContextHolder.getContext().getAuthentication().getName());
-        model.addAttribute("emplist", emplist);
+            List<EmpDto> emplist = EmpService.getEmpList(SecurityContextHolder.getContext().getAuthentication().getName());
+            model.addAttribute("emplist", emplist);
 
+            //해당 병원에 작성된 리뷰보드 연결
+            List<Integer> empNos= new ArrayList<>();
+            for(EmpDto empDto : emplist){
+                empNos.add(empDto.getEmployee_no());
+            }
 
-        //리뷰보드 연결
-        int perPage=10;
-        int startnum=(1-1)*perPage;
+            Map<Integer, List<ReviewDto>> employeeReviews = new HashMap<>();
+            for (int empNo : empNos) {
+                List<ReviewDto> reviewList = reviewAndReceiptService.getReviewByEmployeeNo(empNo);
+                employeeReviews.put(empNo, reviewList);
+            }
 
-        List<ReviewDto> list= reviewAndReceiptService.getPagenationedReviews(startnum, perPage);
+            List<ReviewDto> list=new ArrayList<>();
+            for (List<ReviewDto> reviewList : employeeReviews.values()) {
+                list.addAll(reviewList);
+            }
 
-        model.addAttribute("list", list);
-        Map<Integer, userEntity> userMap = new HashMap<>();
+            Map<Integer, userEntity> userMap = new HashMap<>();
 
+            for (ReviewDto dto : list) {
+                var user_no = dto.getUser_no();
+                userEntity userDto = reviewAndReceiptService.getUserInfoByNum(user_no);
+                userMap.put(user_no, userDto);
 
+                //리뷰에 출력할 의사 이름 넣어주기
+                var employee_name=reviewAndReceiptService.getEmployeeName(dto.getEmployee_no());
+                dto.setEmployee_name(employee_name);
+            }
 
-        for (ReviewDto dto : list) {
-            var user_no = dto.getUser_no();
-            userEntity userDto = reviewAndReceiptService.getUserInfoByNum(user_no);
-            userMap.put(user_no, userDto);
+            model.addAttribute("list", list);
+            model.addAttribute("userMap", userMap);
+
+            int totalNum= reviewAndReceiptService.getAllReviewsCount();
+            model.addAttribute("totalNum", totalNum);
+            model.addAttribute("currentpage", 1);
+        }//일반 유저는 직원페이지 자체를 못들어오니까 그냥 else로 할게요
+        else {
+            //한개만 보내기
+            EmpDto empDto=EmpService.getEmployeeByEmail(userId,userType);
+            List<EmpDto> employees=new ArrayList<>();
+            List<EmpDto> emplist = EmpService.getEmpList(SecurityContextHolder.getContext().getAuthentication().getName());
+            model.addAttribute("emplist", emplist);
+            employees.add(empDto);
+
+            model.addAttribute("employees", employees);
+            model.addAttribute("emplist", emplist);
+
+            int empNo=empDto.getEmployee_no();
+
+            List<ReviewDto> list = reviewAndReceiptService.getReviewByEmployeeNo(empNo);
+            Map<Integer, userEntity> userMap = new HashMap<>();
+
+            for (ReviewDto dto : list) {
+                var user_no = dto.getUser_no();
+                userEntity userDto = reviewAndReceiptService.getUserInfoByNum(user_no);
+                userMap.put(user_no, userDto);
+
+                //리뷰에 출력할 의사 이름 넣어주기
+                var employee_name=reviewAndReceiptService.getEmployeeName(dto.getEmployee_no());
+                dto.setEmployee_name(employee_name);
+            }
+            model.addAttribute("list", list);
+            model.addAttribute("userMap", userMap);
+
+            int totalNum= reviewAndReceiptService.getAllReviewsCount();
+            model.addAttribute("totalNum", totalNum);
+            model.addAttribute("currentpage", 1);
         }
-
-        model.addAttribute("userMap", userMap);
-
-        int totalNum= reviewAndReceiptService.getAllReviewsCount();
-        model.addAttribute("totalNum", totalNum);
-        model.addAttribute("currentpage", 1);
-
 
         List<ReservationDto> reservations = reservationService.getReservationsByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("reservations", reservations);
-
-
-
-        System.out.println(reservations);
 
         List<EmpDto> hospital_list=EmpService.getAllHospitalNames();
         model.addAttribute("hospital_list", hospital_list);

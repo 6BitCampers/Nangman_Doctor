@@ -75,4 +75,7 @@ public class ReviewAndReceiptService {
     public void updateReceiptPc(int prescription_no, int receipt_no){
         reviewAndReceiptInter.updateReceiptPc(prescription_no,receipt_no);
     }
+    public List<ReviewDto> getReviewByEmployeeNo(int employee_no){
+        return reviewAndReceiptInter.getReviewByEmployeeNo(employee_no);
+    }
 }

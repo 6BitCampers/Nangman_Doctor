@@ -70,8 +70,8 @@
                                     th:text="${user_name.substring(0,1)}"></span> *</span>
                             <span th:if="${nameLength > 2}">
                                     <span th:text="${user_name.substring(0,1)}"></span>
-                                    <span th:each="i : ${#numbers.sequence(1, nameLength-2)}">*</span>
-                                    <span th:text="${user_name.substring(nameLength-1)}"></span>
+                                    <span th:each="i : ${#numbers.sequence(1, nameLength -2)}">*</span>
+                                    <span th:text="${user_name.substring(nameLength -1)}"></span>
                                     </span>
                         </span>
             </div>
@@ -111,8 +111,8 @@
                             class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
                         Visit Hospital
                     </button>
-                </a><br>
-                <div th:if="${#authentication.name.contains('@')?#authentication.name==userDto.getUser_email():#authentication.name==user_name}">
+                </a>
+                <div style="display: flex" th:if="${#authentication.name.contains('@')?#authentication.name==userDto.getUser_email():#authentication.name==user_name}">
                     <form th:action="@{/reviewboard/reviewUpdateForm}" method="post">
                         <input type="hidden" name="user_no" th:value="${user_no}">
                         <input type="hidden" name="review_no" th:value="${review_no}">
@@ -121,7 +121,7 @@
                         type="submit"
                         class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                     Edit
-                </button>
+                </button>&nbsp;
                     </form>
                 <button type="button" id="reviewDeleteBtn"
                         class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:text-accent-foreground h-10 px-4 py-2 text-red-500 hover:bg-red-100">

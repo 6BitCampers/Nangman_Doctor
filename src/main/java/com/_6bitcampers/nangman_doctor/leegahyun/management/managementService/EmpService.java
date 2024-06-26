@@ -69,5 +69,8 @@ public class EmpService {
         empMapper.updateNameByEmail(email, hname);
     }
 
+    public EmpDto getEmployeeByEmail(String employee_email, String employee_type){
+        return empMapper.getEmployeeByEmail(employee_email, employee_type);
+    }
 
 }

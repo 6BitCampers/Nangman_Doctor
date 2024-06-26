@@ -46,6 +46,7 @@
                     />
                 </div>
                 <div class="flex items-center space-x-2" style="display: flex">
+                    <span class="text-2xl">평점</span>
                     <div id="star-rating">
                         <span class="star" data-value="1">&#9733;</span>
                         <span class="star" data-value="2">&#9733;</span>
@@ -53,15 +54,9 @@
                         <span class="star" data-value="4">&#9733;</span>
                         <span class="star" data-value="5">&#9733;</span>
                     </div>
-                    <span class="text-2xl">평점</span>
                     <input type="hidden" name="user_no" th:value="${user_no}">
                     <input type="hidden" name="employee_no" th:value="${employeeNo}">
                     <input type="hidden" name="review_likecount" id="ratingsInput" value="5">
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-
-                        });
-                    </script>
                 </div>
                 <div class="text-xl text-gray-500">미설정 시 5점이 부여됩니다!</div>
                 <div class="flex justify-between text-2xl text-gray-500">

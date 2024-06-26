@@ -258,7 +258,7 @@
                                         <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                                             Likecount</th>
                                         <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                                            Writer</th>
+                                            Doctor Name</th>
                                         <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                                             Writeday</th>
                                         <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
@@ -273,6 +273,7 @@
                                             <form th:action="@{/reviewboard/detail}" method="post">
                                                 <input type="hidden" name="review_no" th:value="${item.review_no}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"/>
                                                 <input type="hidden" name="userId" th:value="${#authentication.name}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"/>
+                                                <input type="hidden" name="currentPage" th:value="${currentpage}">
                                                 <button type="submit" th:text="${item.review_title}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></button>
                                             </form>
                                         </td>
@@ -289,7 +290,7 @@
                                                 }
                                                 $(".reviewStarsBoard").html(s);
                                             </script></td>
-                                        <td th:text="${userMap[item.user_no].user_name}"></td>
+                                        <td th:text="${item.employee_name}"></td>
                                         <td th:text="${item.getFormattedWriteday()}"></td>
                                         <td th:text="${item.review_viewcount}"></td>
                                     </tr>

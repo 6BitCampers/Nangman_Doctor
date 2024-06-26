@@ -26,6 +26,7 @@ public class ReviewDto {
     private int user_no;
     private int employee_no;
     private int review_likecount;
+    private String employee_name;
 
 
     public String getFormattedWriteday(){
