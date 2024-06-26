@@ -1,4 +1,4 @@
-<!doctype html>
+!<doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{layouts/layout}">
@@ -106,7 +106,7 @@
 					</li>
 					<li class="page-item" th:if="${currentPage > 2}">
 						<a class="page-link" th:href="@{/naversearch(query=${query}, page=${currentPage - 1})}"
-						th:text="${currentPage - 1}"></a>
+						   th:text="${currentPage - 1}"></a>
 					</li>
 					<li class="page-item active" th:if="${currentPage > 1}">
 						<span class="page-link" th:text="${currentPage}">1</span>

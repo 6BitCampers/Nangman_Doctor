@@ -21,4 +21,9 @@ public interface HospitalMapper {
 
     @Select("SELECT info_name FROM hospital_info WHERE info_no = #{info_no}")
     HospitalDto findName(Long info_no);
+
+    @Select("SELECT * FROM hospital_info " +
+            "ORDER BY info_likecount DESC " +
+            "LIMIT 10")
+    List<HospitalDto> findTop();
 }
