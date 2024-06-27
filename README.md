@@ -1,16 +1,16 @@
-<div align="center">
- <img src="/images/team_logo.PNG" alt="gjgs-logo">
-</div>
-
-<div align="center">
- <img src="/images/team_intro.PNG" alt="team_intro">
-</div>
+<img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/2c29fdd9-7493-4c20-9866-af0f4a72410f" width="70">
+<hr>
+<br>
+<b>낭만닥터!</b><br>
+기존 불편했던 기능은 개선하고, <br>
+필요한 기능은 추가하고!
 
 ## 📃 Detail Role <a name = "role"></a>
-<div align="center">
- <img src="/images/role.PNG" alt="role">
-</div>
-<Br>
+이름|담당 기능|Github
+---|---|---
+김우형|입/퇴실, 휴가, MAP, 디자인 총괄|[whkim98](https://github.com/whkim98)
+강하윤|시험, 캘린더|[hayooniiiiii](https://github.com/hayooniiiiii)
+<br/>
 
 
  <br>
