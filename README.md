@@ -1,4 +1,5 @@
-<img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/2c29fdd9-7493-4c20-9866-af0f4a72410f" width="70">
+<img src="https://github.com/6BitCampers/Nangman_Doctor/raw/assets/86636344/d9492785-5ab0-43da-8a22-2ad2d29b2951" alt="image" width="70">
+
 <hr>
 <br>
 <b>낭만닥터!</b><br>
