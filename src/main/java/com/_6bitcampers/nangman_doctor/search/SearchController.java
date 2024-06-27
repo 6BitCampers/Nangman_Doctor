@@ -78,6 +78,17 @@ public class SearchController {
         String holidayBuisenessHour=hospitalService.convertTimeFormat(hospital.getHoliday());
         model.addAttribute("holidayBuisenessHour", holidayBuisenessHour);
 
+        boolean isLoggedIn = false;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof CustomUserDetails) {
+                CustomUserDetails userDetails = (CustomUserDetails) principal;
+                isLoggedIn = true;
+            }
+        }
+
         if (employeeService == null) {
             EmployeeDto naEmployee = new EmployeeDto();
             naEmployee.setEmployee_name("N/A");
@@ -90,6 +101,7 @@ public class SearchController {
         List<String> images = Arrays.asList("person_1.jpg", "person_2.jpg", "person_3.jpg", "person_4.jpg");
         List<String> businessTimeList=hospitalService.getReorderedList(hospitalId);
 
+        model.addAttribute("isLoggedIn", isLoggedIn);
         model.addAttribute("businessTimeList", businessTimeList);
         model.addAttribute("images", images);
         model.addAttribute("random", new Random());

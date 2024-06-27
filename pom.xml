@@ -16,6 +16,7 @@
     <description>Nangman Doctor</description>
     <properties>
         <java.version>17</java.version>
+        <snippetsDir>${project.build.directory}/generated-snippets</snippetsDir>
     </properties>
     <dependencies>
         <dependency>
@@ -156,7 +157,6 @@
             <artifactId>jsoup</artifactId>
             <version>1.17.2</version>
         </dependency>
-
     </dependencies>
 
     <build>

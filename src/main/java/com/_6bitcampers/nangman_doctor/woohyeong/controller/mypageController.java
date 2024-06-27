@@ -38,7 +38,7 @@ public class mypageController {
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String id = customOAuth2User.getEmail();
         String type = customOAuth2User.getType();
-        int userNo= reservationService.getUserNo(id);
+        int userNo= reservationService.getUserNo(id,type);
         int status = reservationServiceW.getReservationStatus(userNo);
         try {
             UserDTO udto = mypageService.getUser(id, type);
@@ -111,9 +111,9 @@ public class mypageController {
         // 현재 인증된 사용자 정보 가져오기
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String id = customOAuth2User.getEmail();
-
+        String type = customOAuth2User.getType();
         // 사용자 번호 가져오기
-        int userNo = reservationService.getUserNo(id);
+        int userNo = reservationService.getUserNo(id,type);
 
         // 예약 번호와 사용자 번호를 맵에 저장
         Map<String, Object> map = new HashMap<>();

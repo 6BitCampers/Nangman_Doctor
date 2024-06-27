@@ -1,6 +1,8 @@
 package com._6bitcampers.nangman_doctor.baedongwoo.data.service;
 
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -10,7 +12,8 @@ import java.util.Base64;
 
 public class AESUtil {
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
-    private static final String KEY = "aesEncryptionKey"; // 16 bytes key
+    @Value("${AESUtil.key}")
+    private static String KEY; // 16 bytes key
     private static final String INIT_VECTOR = "encryptionIntVec"; // 16 bytes IV
 
     public static String encrypt(String value) {

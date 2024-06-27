@@ -81,6 +81,11 @@
 			font-size: 20px;
 			font-weight: bold;
 		}
+		#reserveBtn:hover{
+			color: red;
+			font-weight: bold;
+			transition: 0.3s ease-in-out;
+		}
 	</style>
 	<div class="section">
 		<div class="flex flex-col gap-8 py-12 md:py-16 lg:py-24" style="background-color:rgba(0,0,0,0.05);">
@@ -101,10 +106,10 @@
 							<li>&nbsp;</li>
 							<li><span style="color: red;font-weight: bold">공휴일 </span>: <span th:text="${holidayBuisenessHour}"></span></li>
 						</ul>
-						<br><br><br>
+						<br><a th:if="${isLoggedIn}" th:href="@{/reservation(info_no=${hospital.info_no})}" id="reserveBtn">예약하러가기</a><br>
 					</div>
-					<div class="rounded-lg border">
-						<br><br><br>
+					<div class="bg-orange-50 rounded-lg border" style="margin-top: 30px">
+						<br><p class="text-muted-foreground md:text-2xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word; text-align: center"><strong>오시는길</strong></p><br>
 						<div id="map" style="height: 400px;"></div>
 					</div>
 				</div>

@@ -40,8 +40,8 @@ public interface ReservationMapper {
     List<ReservationDto> getReservationsByEmail(String email);
 
 
-    @Select(("SELECT user_no FROM normal_user WHERE user_email=#{id}"))
-    int getUserNo(String id);
+    @Select(("SELECT user_no FROM normal_user WHERE user_email=#{id} and user_type=#{type}"))
+    int getUserNo(String id,String type);
 
     @Select("SELECT employee_no FROM hospital_employee WHERE info_no = #{infoNo} LIMIT 1")
     Integer getEmployeeNoByInfoNo(int infoNo);
