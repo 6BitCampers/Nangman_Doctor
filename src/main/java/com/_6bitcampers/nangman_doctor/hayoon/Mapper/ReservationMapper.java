@@ -23,6 +23,7 @@ public interface ReservationMapper {
     @Select("SELECT employee_email FROM hospital_employee WHERE employee_no = #{employeeNo}")
     String getEmployeemailByNo(int employeeNo);
 
+
     @Select("SELECT user_email FROM normal_user WHERE user_no = #{userNo}")
     String getUsermailByNo(int userNo);
 
@@ -59,6 +60,7 @@ public interface ReservationMapper {
 
     @Select("SELECT * FROM hospital_reservation WHERE employee_no = #{employeeNo} and reservation_status=2")
     List<ReservationDto> getResbyempno(int employeeNo);
+
 
 
 
