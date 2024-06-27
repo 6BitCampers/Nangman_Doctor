@@ -56,8 +56,8 @@
                             <span th:if="${nameLength == 2}"><span th:text="${userMap[item.user_no].user_name.substring(0,1)}"></span> *</span>
                             <span th:if="${nameLength > 2}">
                                     <span th:text="${userMap[item.user_no].user_name.substring(0,1)}"></span>
-                                    <span th:each="i : ${#numbers.sequence(1, nameLength-2)}">*</span>
-                                    <span th:text="${userMap[item.user_no].user_name.substring(nameLength-1)}"></span>
+                                    <span th:each="i : ${#numbers.sequence(1, nameLength -2)}">*</span>
+                                    <span th:text="${userMap[item.user_no].user_name.substring(nameLength -1)}"></span>
                                     </span>
                         </span>
                         <span class="ml-2" th:text="${item.getFormattedWriteday()}"></span><br>
@@ -72,7 +72,7 @@
             <ul class="flex flex-row items-center gap-1">
                 <li>
                     <a class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
-                       th:href="@{/reviewboard(page=${currentpage-1})}"
+                       th:href="@{/reviewboard(page=${currentpage -1})}"
                        th:if="${currentpage > 1}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
