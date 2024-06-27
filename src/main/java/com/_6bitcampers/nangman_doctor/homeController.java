@@ -9,9 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -35,6 +33,7 @@ public class homeController {
         //String useremail = userDetails.getUsername();
         //로그인 유저의 로그인 타입 출력
         //String type = userDetails.getType();
+
 
         //권한 읽어오기(ex. ROLE_EMP)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
