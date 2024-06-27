@@ -8,8 +8,12 @@
 ## 📃 Detail Role <a name = "role"></a>
 이름|담당 기능|Github
 ---|---|---
-김우형|입/퇴실, 휴가, MAP, 디자인 총괄|[whkim98](https://github.com/whkim98)
-강하윤|시험, 캘린더|[hayooniiiiii](https://github.com/hayooniiiiii)
+김우형|화상진료, 수술예약, Git 관리|[whkim98](https://github.com/whkim98)
+배동우|처방전, 리뷰게시판, 결제|[dongwoobae](https://github.com/dongwoobae)
+이장우|로그인, 회원가입, QnA|[8282qwe](https://github.com/8282qwe)
+이가현|홍보배너, 챗봇, 디자인 총괄|[LeeGaHyun12](https://github.com/LeeGaHyun12)
+최시현|검색, 병원 소개|[andychoi0819](https://github.com/andychoi0819)
+강하윤|예약, SMTP|[hayooniiiiii](https://github.com/hayooniiiiii)
 <br/>
 
 
