@@ -5,15 +5,12 @@
 기존 불편했던 기능은 개선하고, <br>
 필요한 기능은 추가하고!
 
-<div align="center">
- <img src="/images/team_intro.PNG" alt="team_intro">
-</div>
-
 ## 📃 Detail Role <a name = "role"></a>
-<div align="center">
- <img src="/images/role.PNG" alt="role">
-</div>
-<Br>
+이름|담당 기능|Github
+---|---|---
+김우형|입/퇴실, 휴가, MAP, 디자인 총괄|[whkim98](https://github.com/whkim98)
+강하윤|시험, 캘린더|[hayooniiiiii](https://github.com/hayooniiiiii)
+<br/>
 
 
  <br>
