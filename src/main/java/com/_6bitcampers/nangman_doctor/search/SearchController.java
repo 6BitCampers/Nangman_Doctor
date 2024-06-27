@@ -49,7 +49,6 @@ public class SearchController {
             }
         }
 
-
         List<HospitalDto> hospitals = hospitalService.searchHospitals(keyword, page, size);
         List<HospitalDto> topRatedHospitals = hospitalService.searchTopRatedHospitals(keyword, 1, 10); // Assuming top rated is only the top 10
 
@@ -76,6 +75,8 @@ public class SearchController {
     public String showAboutHospitalPage(@PathVariable("hospitalId") Long hospitalId, Model model) {
         HospitalDto hospital = hospitalService.findHospitalById(hospitalId);
         List<EmployeeDto> employees = (employeeService != null) ? employeeService.getEmployeesByInfoNo(hospitalId) : Collections.emptyList();
+        String holidayBuisenessHour=hospitalService.convertTimeFormat(hospital.getHoliday());
+        model.addAttribute("holidayBuisenessHour", holidayBuisenessHour);
 
         if (employeeService == null) {
             EmployeeDto naEmployee = new EmployeeDto();
@@ -87,11 +88,14 @@ public class SearchController {
             employees.add(naEmployee);
         }
         List<String> images = Arrays.asList("person_1.jpg", "person_2.jpg", "person_3.jpg", "person_4.jpg");
+        List<String> businessTimeList=hospitalService.getReorderedList(hospitalId);
+
+        model.addAttribute("businessTimeList", businessTimeList);
         model.addAttribute("images", images);
         model.addAttribute("random", new Random());
         model.addAttribute("employees", employees);
         model.addAttribute("hospital", hospital);
-        System.out.println(hospitalId);
+
         return "about-hospital";
     }
 }
