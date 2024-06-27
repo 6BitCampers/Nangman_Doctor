@@ -69,6 +69,10 @@
 								<li class="cta-button"><a th:href="@{/logout}" style="color: white">로그아웃</a></li>
 							</th:block>
 
+							<!-- loginonly인 경우에 보여지도록 설정-->
+							<th:block sec:authorize="hasAuthority('ROLE_LOGINONLY')">
+								<li class="cta-button"><a th:href="@{/logout}" style="color: white">로그아웃</a></li>
+							</th:block>
 						</ul>
 					</div>
 				</div>
