@@ -28,6 +28,7 @@
 
 ### BackEnd
 <div>
+  [![Node.js Badge](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
   <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white"> 
   <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=spring boot&logoColor=white">
   <img src="https://img.shields.io/badge/mybatis-000000?style=for-the-badge&logo=java&logoColor=white">
@@ -48,10 +49,6 @@
 </div>
 
   <br>
-
-   <div align="center">
- <img src="/images/system.PNG" alt="system.PNG">
-</div>
 
 ---
 
