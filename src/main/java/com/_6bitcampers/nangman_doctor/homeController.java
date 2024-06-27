@@ -62,6 +62,7 @@ public class homeController {
         model.addAttribute("hospitalNames", hospitalNames);
         model.addAttribute("topEmployees", top10EmployeesByLikeCount);
         model.addAttribute("top",top);
+        model.addAttribute("home","home");
         return roleService.checkRole(role);
     }
 }
