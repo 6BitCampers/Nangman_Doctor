@@ -167,45 +167,6 @@
 
 <br>
 
-# 📋 요구사항 정의서  <a name = "definition"></a>
-
-<details>
-   <summary> 본문 확인 (👈 Click)</summary>
-<br />
-
-<div align="center">
- <img src="/images/definition_1.PNG" alt="definition_1">
-</div>
-
-<div align="center">
- <img src="/images/definition_2.PNG" alt="definition_2">
-</div>
-
-<div align="center">
- <img src="/images/definition_3.PNG" alt="definition_3">
-</div>
-
-<div align="center">
- <img src="/images/definition_4.PNG" alt="definition_4">
-</div>
-
-</details>
-
-<br>
-
-# 📊 WBS  <a name = "wbs"></a>
-
-<details>
-   <summary> 본문 확인 (👈 Click)</summary>
-<br />
-
-<div align="center">
- <img src="/images/wbs.png" alt="wbs">
-</div>
-</details>
-
-<br>
-
 # 🙌🏻 협업 방식 - Loop <a name = "Loop"></a>
 
 <details>
@@ -214,11 +175,11 @@
 
 
 <div align="center">
- <img src="/images/loop_1.PNG" alt="loop_1">
+ <img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/a8fd24c8-ba38-46d2-b0f9-00545a62d61f" width="200">
 </div>
 
 <div align="center">
- <img src="/images/loop_2.PNG" alt="loop_2">
+ <img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/8c72b9fd-22f1-44f0-8213-5981b997c713" width="200">
 </div>
 
 <div align="center">
