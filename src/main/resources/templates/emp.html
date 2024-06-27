@@ -437,7 +437,7 @@
                                             id="hp" name="hp" th:value="${info.info_hp}"
                                             type="tel"
                                     />
-                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGRER')">
+                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                         <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                             Edit
                                         </button>
@@ -465,7 +465,7 @@
                                             onclick="">
                                         주소찾기
                                     </button>
-                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGRER')">
+                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                         <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                             Edit
                                         </button>
@@ -488,7 +488,7 @@
                                             class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                             id="plus" name="plus" th:value="${info.info_plus}"
                                     />
-                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGRER')">
+                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                         <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                             Edit
                                         </button>
@@ -510,7 +510,7 @@
                 class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]"
                 id="description" name="description" th:value="${info.info_description}"
         />
-                                <th:block sec:authorize="hasAuthority('ROLE_MANAGRER')">
+                                <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                     <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                         Edit
                                     </button>
@@ -532,7 +532,7 @@
                                         id="photo" name="photo" th:value="${info.info_photo}"
                                         type="file"
                                 />
-                                <th:block sec:authorize="hasAuthority('ROLE_MANAGRER')">
+                                <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                     <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                         Edit
                                     </button>

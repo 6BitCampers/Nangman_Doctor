@@ -26,6 +26,4 @@ public class EmpDto {
     private String info_plus;
     private String info_hp;
 
-
-
 }
