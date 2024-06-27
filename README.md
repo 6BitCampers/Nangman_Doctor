@@ -5,6 +5,7 @@
 <b>낭만닥터!</b><br>
 기존 불편했던 기능은 개선하고, <br>
 필요한 기능은 추가하고!
+배포주소: http://deploysemi.midichi.kro.kr/
 
 ## 📃 Detail Role <a name = "role"></a>
 이름|담당 기능|Github
