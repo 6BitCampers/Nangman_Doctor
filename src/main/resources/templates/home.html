@@ -70,7 +70,7 @@
 		</div>
 	</div>
 
-	<div class="section service-section-1">
+	<div class="section service-section-1" id="target">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3 mb-5 mb-lg-0">
@@ -208,7 +208,7 @@
 		</div>
 	</div>
 
-	<div class="section" id="target">
+	<div class="section">
 		<div class="container">
 			<div class="row justify-content-between align-items-center">
 				<div class="col-lg-5 mb-4 mb-lg-0">
@@ -325,6 +325,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {
 			const imageSources = [
@@ -341,7 +342,6 @@
 			}
 
 			let items = document.querySelectorAll('.wide-slider-testimonial .author');
-			console.log('Number of authors found:', items.length); // Log the number of .author elements found
 			items.forEach(item => {
 				let img = item.querySelector('img');
 				if (img) {
