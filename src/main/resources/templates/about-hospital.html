@@ -65,21 +65,40 @@
 		.map-container {
 			margin: 20px 0;
 		}
+		li.businessTimeLi {
+			font-size: 14px;
+			width: 300px;
+			transition: font-size 0.6s ease;
+		}
+
+		li.businessTimeLi:first-child {
+			font-size: 20px;
+			width: 100%;
+			font-weight: bold;
+		}
+
+		li.businessTimeLi:hover {
+			font-size: 20px;
+			font-weight: bold;
+		}
 	</style>
 	<div class="section">
 		<div class="flex flex-col gap-8 py-12 md:py-16 lg:py-24">
 			<div class="container px-4 md:px-6">
 				<div class="grid gap-6 md:grid-cols-2 md:gap-12">
 					<div class="space-y-4">
-						<h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl" th:text="${hospital.info_name}">Acme General Hospital</h1>
-						<p class="text-muted-foreground md:text-xl/relaxed" th:text="${hospital.info_description}" style="white-space: pre-wrap; word-wrap: break-word;">
-							Acme General Hospital is a leading healthcare provider, offering a wide range of medical services to the
-							community. With a team of highly skilled and experienced professionals, we are committed to delivering
-							exceptional patient care and promoting overall well-being.
+						<h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl" th:text="${hospital.info_name}"></h1>
+						<p class="text-muted-foreground md:text-xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word;"><strong>Address: </strong><span th:text="${hospital.info_addr}"></span></p>
+						<p class="text-muted-foreground md:text-xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word;"><strong>Contact: </strong><span th:text="${hospital.info_hp}"></span></p>
+						<p class="text-muted-foreground md:text-xl/relaxed">
+							<strong>Info: </strong><span th:text="${hospital.info_description}"></span><br>
+							<span th:unless="${hospital.info_plus.contains('점심시간') and hospital.info_description.contains('점심')}" th:text="${hospital.info_plus}"></span>
 						</p>
-						<p class="text-muted-foreground md:text-xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word;"><strong>Address: </strong><span th:text="${hospital.info_addr}">123 Hospital St, City, Country</span></p>
-						<p class="text-muted-foreground md:text-xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word;"><strong>Contact: </strong><span th:text="${hospital.info_hp}">+1 (123) 456-7890</span></p>
-						<p class="text-muted-foreground md:text-xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word;"><strong>Additional Info: </strong><span th:text="${hospital.info_plus}">Additional information about the hospital.</span></p>
+						<ul>
+							<li class="businessTimeLi" th:each="time : ${businessTimeList}" th:text="${time}"></li>
+							<li>&nbsp;</li>
+							<li><span style="color: red;font-weight: bold">공휴일 </span>: <span th:text="${holidayBuisenessHour}"></span></li>
+						</ul>
 					</div>
 					<div class="rounded-lg border">
 						<div id="map" style="height: 400px;"></div>
@@ -93,9 +112,9 @@
 						<div th:each="employee : ${employees}" class="flex flex-col items-center gap-4 rounded-lg border p-6 text-center">
 							<img src="/images/placeholder-user.jpg" alt="Doctor Photo" width="120" height="120" class="h-30 w-30 rounded-full object-cover" style="aspect-ratio: 120 / 120; object-fit: cover;" />
 							<div class="space-y-1">
-								<h3 class="text-lg font-medium" th:text="${employee.employee_name}">Dr. John Doe</h3>
-								<p class="text-muted-foreground" th:text="${employee.employee_field}">Cardiologist</p>
-								<p class="text-muted-foreground" th:text="${employee.employee_likecount}+'점'">Cardiologist</p>
+								<h3 class="text-lg font-medium" th:text="${employee.employee_name}"></h3>
+								<p class="text-muted-foreground" th:text="${employee.employee_field}"></p>
+								<p class="text-muted-foreground" th:text="${employee.employee_likecount}+'점'"></p>
 							</div>
 						</div>
 					</div>
@@ -137,75 +156,6 @@
 		var zoomControl = new kakao.maps.ZoomControl();
 		map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	</script>
-</div>
-
-<div class="site-footer">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-4">
-				<div class="widget">
-					<h3>About Sterial<span class="text-primary">.</span></h3>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-				</div>
-				<div class="widget">
-					<h3>Connect</h3>
-					<ul class="list-unstyled social">
-						<li><a href="#"><span class="icon-instagram"></span></a></li>
-						<li><a href="#"><span class="icon-twitter"></span></a></li>
-						<li><a href="#"><span class="icon-facebook"></span></a></li>
-						<li><a href="#"><span class="icon-linkedin"></span></a></li>
-						<li><a href="#"><span class="icon-pinterest"></span></a></li>
-						<li><a href="#"><span class="icon-dribbble"></span></a></li>
-					</ul>
-				</div>
-			</div>
-
-			<div class="col-lg-2 ml-auto">
-				<div class="widget">
-					<h3>Links</h3>
-					<ul class="list-unstyled float-left links">
-						<li><a href="about.html">About us</a></li>
-						<li><a href="services.html">Services</a></li>
-						<li><a href="news.html">News</a></li>
-						<li><a href="careers.html">Careers</a></li>
-						<li><a href="contact.html">Contact</a></li>
-					</ul>
-				</div>
-			</div>
-
-			<div class="col-lg-2">
-				<div class="widget">
-					<h3>Company</h3>
-					<ul class="list-unstyled float-left links">
-						<li><a href="about.html">About us</a></li>
-						<li><a href="services.html">Services</a></li>
-						<li><a href="news.html">News</a></li>
-						<li><a href="careers.html">Careers</a></li>
-						<li><a href="contact.html">Contact</a></li>
-					</ul>
-				</div>
-			</div>
-
-			<div class="col-lg-3">
-				<div class="widget">
-					<h3>Contact</h3>
-					<address>43 Raymouth Rd. Baltemoer, London 3910</address>
-					<ul class="list-unstyled links mb-4">
-						<li><a href="tel://11234567890">+1(123)-456-7890</a></li>
-						<li><a href="tel://11234567890">+1(123)-456-7890</a></li>
-						<li><a href="mailto:info@mydomain.com">info@mydomain.com</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class="row mt-5">
-			<div class="col-12 text-center">
-				<p class="mb-0">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> <!-- License information: https://untree.co/license/ -->
-				</p>
-			</div>
-		</div>
-	</div>
 </div>
 
 <!-- Preloader -->
