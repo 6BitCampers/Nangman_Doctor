@@ -21,7 +21,11 @@
 					</div>
 					<div class="col-6 col-lg-5 col-sm-5 d-none d-lg-block">
 						<ul class="js-clone-nav site-menu text-center m-0 p-0">
-							<li><a href="#" id="aboutDoctor">낭만닥터 소개</a></li>
+							<li>  <!-- 현재 페이지가 홈 페이지인 경우에만 링크(a 태그)를 보여줍니다 -->
+								<a th:if="${home!=null}" href="#" id="aboutDoctor">낭만닥터 소개</a>
+								<a th:if="${home==null}" th:onclick="|location.href='@{/#target}'|" href="#"
+								>낭만닥터 소개</a>
+								</li>
 							<li><a th:href="@{/search}">병원검색</a></li>
 							<li><a th:href="@{/naversearch}">뉴스</a></li>
 							<li class="has-children">
