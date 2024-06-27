@@ -1,44 +1,56 @@
-<div align="center">
- <img src="/images/team_logo.PNG" alt="gjgs-logo">
-</div>
+<img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/2c29fdd9-7493-4c20-9866-af0f4a72410f" width="100">
 
-<div align="center">
- <img src="/images/team_intro.PNG" alt="team_intro">
-</div>
+<hr>
+<br>
+<b>낭만닥터!</b><br>
+기존 불편했던 기능은 개선하고, <br>
+필요한 기능은 추가하고!
 
 ## 📃 Detail Role <a name = "role"></a>
-<div align="center">
- <img src="/images/role.PNG" alt="role">
+이름|담당 기능|Github
+---|---|---
+김우형|화상진료, 수술예약, Git 관리|[whkim98](https://github.com/whkim98)
+배동우|처방전, 리뷰게시판, 결제|[dongwoobae](https://github.com/dongwoobae)
+이장우|로그인, 회원가입, QnA|[8282qwe](https://github.com/8282qwe)
+이가현|홍보배너, 챗봇, 디자인 총괄|[LeeGaHyun12](https://github.com/LeeGaHyun12)
+최시현|검색, 병원 소개|[andychoi0819](https://github.com/andychoi0819)
+강하윤|상담예약, SMTP|[hayooniiiiii](https://github.com/hayooniiiiii)
+<br/>
+
+
+<br>
+
+## 개발환경
+### FrontEnd
+<div>
+  <img src="https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
+  <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=white">
+  <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white" alt="Thymeleaf Badge">
+  <img src="https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white" alt="HTML Badge">
 </div>
-<Br>
 
+### BackEnd
+<div>
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js Badge">
+  <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white"> 
+  <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=spring boot&logoColor=white">
+  <img src="https://img.shields.io/badge/mybatis-000000?style=for-the-badge&logo=java&logoColor=white">
+  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+  <img src="https://img.shields.io/badge/apache tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=black">
+  <img src="https://img.shields.io/badge/naver cloud platform-03C75A?style=for-the-badge&logo=naver&logoColor=white">
+</div>
 
- <br>
-
-<div style="text-align: left;">
-    <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🛠️ Tech Stacks </h2> <br> 
-    <div  align= "center"> <img src="https://img.shields.io/badge/Apache Tomcat-F8DC75?style=for-the-badge&logo=Apache Tomcat&logoColor=white">
-          <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white">
-          <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=Bootstrap&logoColor=white">
-          <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
-          <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=Firebase&logoColor=white">
-          <br/><img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
-          <img src="https://img.shields.io/badge/Github-181717?style=for-the-badge&logo=Github&logoColor=white">
-          <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
-          <img src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jQuery&logoColor=white">
-          <img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=Java&logoColor=white">
-          <br/><img src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white">
-          <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
-          <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=Slack&logoColor=white">
-          <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
-          </div>
-    </div>
+### Tools
+<div>
+  <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white">
+  <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">
+  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
+  <img src="https://img.shields.io/badge/intellij idea-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
+  <img src="https://img.shields.io/badge/vscode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
+</div>
 
   <br>
-
-   <div align="center">
- <img src="/images/system.PNG" alt="system.PNG">
-</div>
 
 ---
 
@@ -66,11 +78,9 @@
    <summary> 본문 확인 (👈 Click)</summary>
 <br />
 
-<h3>MZ세대 투자정보 공유 커뮤니티 "돈벌레? 친구들!"</h3>
+<h3>성형외과 전문 통합 시스템 "낭만닥터" !!!</h3>
 
-돈벌레 친구들은 거지방 기반 커뮤니티 플랫폼입니다. 거지방이란 치솟는 물가에 생활비를 절약하자는 취지로 만들어진 카카오톡 오픈채팅방입니다.
-채팅방에 참여한 사람끼리 절약Tip을 공유하거나 자신의 하루 지출 내용을 공유하고 서로 평가하는 방입니다.
-청년층의 경제적 상황은 체감 물가상승률 5.2%, 20대 자산 대비 부채비율 29.2%로 연령대 중 가장 높은 수준의 청년층의 경제적 상황입니다. 뉴워커 설문조사에 따르면 '거지방'에 대해 74.3%의 응답자가 '지출을 줄이는 데에 효과가 있다.'고 답변했습니다. 저희는 자산과 관련해 MZ세대의 관심에 대해 충분하다는 것을 파악하였고, 거지방의 커뮤니티성과 지출관리를 위한 가계부 기능을 결합해 사용자의 소비 관리와 저축의 흥미를 유도하여 지속가능하고 경제적 안전을 돕는 공간을 서비스하고자 합니다. 
+낭만닥터는 자신의 외모를 가꾸어 나가는 성형의 시대에 맞추어 필요한 정보를 제공하고, 강남에 위치한 모든 성형외과의 정보와 상담 예약까지 제공합니다. 비대면 진료까지 가능한 낭만 닥터의 서비스를 즐겨보세요!
 
 
 </details>
