@@ -183,31 +183,14 @@
 </div>
 
 <div align="center">
- <img src="/images/loop_3.PNG" alt="loop_3">
+ <img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/f8001790-86d6-45b9-8e90-57dcdf614f3c" width="350">
 </div>
 
-<div align="center">
- <img src="/images/loop_4.PNG" alt="loop_4">
-</div>
-
-<div align="center">
- <img src="/images/loop_5.PNG" alt="loop_5">
-</div>
-
-<div align="center">
- <img src="/images/loop_6.PNG" alt="loop_6">
-</div>
-
-저희 팀은 협업 방식으로 Loop를 사용했습니다.  
+저희 팀은 협업 방식으로 Notion, Trello, Google Sheets를 사용했습니다.  
 
 아이디어를 공유하고 해당 아이디어 대해 자신의 생각과 추가적인 아이디어를 작성하여 아이디어 보완을 했습니다.
 
 프로젝트 선정 후 목표 우선순위 진행률과 구현할 기능을 선정하고  역할 분담을 하고 각자 맡은 기능들에 대해 백로그를 작성하면서 팀원들과 진행사항을 공유했습니다.
-
-백로그를 통해 개발해야할 모든 기능들, 이번주에 개발해야할 기능, 개발 진행중, 개발 완료된 칸으로 옮기면서 한눈에 볼 수 있도록 진행했습니다. 
-
-멀티캠퍼스에서 진행하는 현업자분들과  멘토링 시간을 가지고 나면, 피드백을 정리하고 이에 대한 회고하고 프로젝트에 반영했습니다.
-
 
 </details>
 
