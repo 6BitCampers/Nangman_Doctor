@@ -37,7 +37,7 @@
                 <div th:each="hospital : ${topRatedHospitals}" class="bg-white rounded-lg shadow-md p-6">
                     <div class="flex justify-between items-start mb-4">
                         <div class="flex items-center">
-                            <img th:if="${hospital.info_photo != null}" th:src="@{https://miniodb.midichi.kro.kr/nangmandoctor/Hospital_info/{param1}(param1=${hospital.info_photo})}" alt="Hospital Photo" class="img-fluid" width="100" height="100">
+                            <img th:if="${hospital.info_photo != null}" th:src="@{https://miniodb.midichi.kro.kr/nangmandoctor/Hospital_info/{param1}(param1=${hospital.info_photo})}" alt="Hospital Photo" class="img-fluid" width="120" height="150">
                             <img th:unless="${hospital.info_photo != null}" src="/images/gal_4.jpg" alt="Default Photo" class="img-fluid" width="100" height="100">
                             <div class="ml-4">
                                 <h2 class="text-lg font-semibold" th:text="${hospital.info_name}">Hospital Name</h2>
