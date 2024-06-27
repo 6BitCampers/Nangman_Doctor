@@ -8,11 +8,11 @@ import java.util.List;
 @Mapper
 public interface EmployeeMapper {
 
-    @Select("SELECT * FROM hospital_employee WHERE info_no = #{infoNo}")
+    @Select("SELECT * FROM hospital_employee WHERE info_no = #{infoNo} and employee_role = 'ROLE_DOCTOR'")
     List<EmployeeDto> findByInfoNo(Long infoNo);
 
     @Select("SELECT * FROM hospital_employee " +
-            "WHERE employee_role = 'ROLE_EMP' " +
+            "WHERE employee_role = 'ROLE_DOCTOR' " +
             "ORDER BY employee_likecount DESC " +
             "LIMIT 10")
     List<EmployeeDto> findTop10ByRoleAndLikeCount();
