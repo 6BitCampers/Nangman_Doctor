@@ -101,10 +101,11 @@
 							<li>&nbsp;</li>
 							<li><span style="color: red;font-weight: bold">공휴일 </span>: <span th:text="${holidayBuisenessHour}"></span></li>
 						</ul>
-						<br><br><br>
+
+						<br><a th:if="${#authentication.name!=anonymousUser or #authentication.name!=null}" th:href="@{/reservation(info_no=${hospital.info_no})}">예약하러가기</a><br>
 					</div>
-					<div class="rounded-lg border">
-						<br><br><br>
+					<div class="bg-orange-50 rounded-lg border" style="margin-top: 30px">
+						<br><p class="text-muted-foreground md:text-2xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word; text-align: center"><strong>오시는길</strong></p><br>
 						<div id="map" style="height: 400px;"></div>
 					</div>
 				</div>

@@ -34,9 +34,10 @@ public class ReservationController {
 
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId = customOAuth2User.getEmail();
+        String type= customOAuth2User.getType();
 
         // Get the user's name using the userId
-        String name = reservationService.getUserNameByNo(reservationService.getUserNo(userId));
+        String name = reservationService.getUserNameByNo(reservationService.getUserNo(userId,type));
 
 
 
@@ -70,9 +71,10 @@ public class ReservationController {
 
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId= customOAuth2User.getEmail();
+        String type=customOAuth2User.getType();
 
 
-        int userNo = reservationService.getUserNo(userId);
+        int userNo = reservationService.getUserNo(userId,type);
         System.out.println(userNo);
         System.out.println(reservationName);
 

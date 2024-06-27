@@ -50,8 +50,8 @@ public class ReservationService {
         sendReservationRequestEmail(employeeEmail, reservationDto);
     }
 
-    public int getUserNo(String id) {
-        return reservationMapper.getUserNo(id);
+    public int getUserNo(String id,String type) {
+        return reservationMapper.getUserNo(id,type);
     }
 
     public List<Map<String, Object>> getUserReservations(int userNo) {
