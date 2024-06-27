@@ -297,6 +297,7 @@
         $("#printOnlySpan").text(empName);//empName 넣어주기
 
         window.onafterprint = function () {
+            console.log("인쇄 온 애프터");
             // 기존의 body 내용을 복원
             document.body.innerHTML = originalContent;
         }

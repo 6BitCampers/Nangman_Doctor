@@ -2,17 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
-<div layout:fragment="content" class="section section-1" style="min-height: 600px;margin-left: 50px">
+<div layout:fragment="content" class="section section-1" style="min-height: 600px;background-color: rgba(0,0,0,0.03)">
     <!--
 // v0 by Vercel.
 // https://v0.dev/t/MsbVKJ1RpYM
 -->
-    <div class="w-full max-w-4xl mx-auto px-4 py-8">
+    <div class="w-full max-w-4xl mx-auto px-4 py-8 shadow-md rounded-lg" style="background-color: white">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Reviews</h1>
         </div>
         <div class="space-y-6">
-            <div class="bg-white rounded-lg shadow-md p-6" th:each="item,itemStat:${list}">
+            <div class="rounded-lg shadow-md p-6 hover:bg-gray-100 transition duration-150 ease-in-out" th:each="item,itemStat:${list}">
                 <div class="flex justify-between items-start mb-4">
                     <div>
                         <span th:text="${hospitalDtoMap[item.user_no]}" style="font-weight: bold"></span>

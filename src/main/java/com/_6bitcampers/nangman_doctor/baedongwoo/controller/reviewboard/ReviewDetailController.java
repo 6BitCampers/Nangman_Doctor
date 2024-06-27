@@ -138,24 +138,7 @@ public class ReviewDetailController {
         model.addAttribute("user_name",user_name);
         return "reviewWriteForm";
     }
-
-    @ResponseBody
-    @GetMapping("/delete")
-    public String deleteReview(
-            @RequestParam int review_no
-    ){
-        ReviewDto dto= reviewAndReceiptService.getReviewBySeq(review_no);
-        String review_content=dto.getReview_content();
-        List<String> deletedUrls=extractImageUrlsFromDeleting(review_content);
-
-        for(String deletedUrl:deletedUrls){
-            storageService.deleteFile("nangmandoctor","/reviewBoard/"+deletedUrl);
-        }
-
-        reviewAndReceiptService.deleteReview(review_no);
-        return "{}";
-    }
-
+    
     @PostMapping("/insert")
     public String insertReview(
             @RequestParam String review_title,
@@ -180,6 +163,25 @@ public class ReviewDetailController {
         reviewAndReceiptService.insertReview(reviewDto);
 
         return "redirect:/reviewboard";
+    }
+
+    @ResponseBody
+    @GetMapping("/delete")
+    public String deleteReview(
+            @RequestParam int review_no
+    ){
+        ReviewDto dto= reviewAndReceiptService.getReviewBySeq(review_no);
+        String review_content=dto.getReview_content();
+        //삭제시킬 이미지 UUID 갖고오기
+        List<String> deletedUrls=extractImageUrlsFromDeleting(review_content);
+        
+        //갖고온 UUID 하나하나 delete 하기
+        for(String deletedUrl:deletedUrls){
+            storageService.deleteFile("nangmandoctor","/reviewBoard/"+deletedUrl);
+        }
+
+        reviewAndReceiptService.deleteReview(review_no);
+        return "{'status':'success'}";
     }
 
     //AJAX로 업로드 되는 이미지 바로바로 저장하기
