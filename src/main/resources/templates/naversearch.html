@@ -69,8 +69,8 @@
 						<h1 class="war" data-aos="fade-up" style="font-size: 50px; white-space: nowrap; color:white; text-align: center;"><b>관련 뉴스를 </b></h1>
 						<h1 class="war" data-aos="fade-up" style="font-size: 50px; white-space: nowrap; color:white; text-align: right;"><b>찾아보세요!</b></h1>
 						<div style="text-align: center;">
-							<form method="get" action="/naversearch" style="width:300px;">
-								<input type="text" name="query" placeholder="Search..." th:value="${query}" required style="padding-left: 20px; border: 2px solid black;">
+							<form method="get" action="/naversearch" class="d-flex align-items-center">
+								<input class="form-control me-2 input-large" type="text" name="query" placeholder="Search..." th:value="${query}" style="width:1000px; ">
 								<button type="submit" class="btn btn-primary" style="background-color:darkorange">Search</button>
 							</form>
 						</div>
