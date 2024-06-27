@@ -160,62 +160,7 @@
 
 <h3>로그인 시퀀스 다이어그램</h3>
 <div align="center">
- <img src="/images/login_seq.PNG" alt="login_seq">
-</div>
-
-<br>
-<h3>오픈API 시퀀스 다이어그램</h3>
-</br>
-
-<div align="center">
- <img src="/images/openAPI_seq.PNG" alt="openAPI_seq">
-</div>
-
-<br>
-<h3>영수증OCR 시퀀스 다이어그램</h3>
-</br>
-
-<div align="center">
- <img src="/images/OCR_seq.PNG" alt="OCR_seq">
-</div>
-
-<br>
-<h3>가계부Chart 시퀀스 다이어그램</h3>
-</br>
-
-<div align="center">
- <img src="/images/chart_seq.PNG" alt="chart_seq">
-</div>
-
-<br>
-<h3>가계부 시퀀스 다이어그램</h3>
-</br>
-<div align="center">
- <img src="/images/report_seq.PNG" alt="report_seq">
-</div>
-
-<br>
-<h3>태그 게시판 시퀀스 다이어그램</h3>
-</br>
-
-<div align="center">
- <img src="/images/community_seq.PNG" alt="community_seq">
-</div>
-
-<br>
-<h3>살까말까 게시판 시퀀스 다이어그램</h3>
-</br>
-
-<div align="center">
- <img src="/images/vote_seq.PNG" alt="vote_seq">
-</div>
-
-<br>
-<h3>굿즈SHOP 시퀀스 다이어그램</h3>
-</br>
-
-<div align="center">
- <img src="/images/shop_seq.PNG" alt="shop_seq">
+ <img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/01b725d9-fad3-465b-a031-52b6709f58f4">
 </div>
 
 </details>
