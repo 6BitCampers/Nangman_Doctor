@@ -175,11 +175,11 @@
 
 
 <div align="center">
- <img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/a8fd24c8-ba38-46d2-b0f9-00545a62d61f" width="200">
+ <img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/a8fd24c8-ba38-46d2-b0f9-00545a62d61f" width="350">
 </div>
 
 <div align="center">
- <img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/8c72b9fd-22f1-44f0-8213-5981b997c713" width="200">
+ <img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/8c72b9fd-22f1-44f0-8213-5981b997c713" width="350">
 </div>
 
 <div align="center">
