@@ -15,7 +15,6 @@ public class joinService {
     public void joinService(joinRequestDto dto) {
         String row_pw = dto.getPassword();
         dto.setPassword(passwordEncoder.encode(row_pw));
-
         if (dto.getType().equals("general")) {
             mapper.insertNormalUserDefault(dto);
         } else {
