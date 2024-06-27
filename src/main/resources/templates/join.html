@@ -355,6 +355,16 @@
 				return;
 			}
 
+			if ($("input[name='interest']:checked").length === 0){
+				let text = $("label[for='interest']").text().split(" ")[0];
+				Swal.fire({
+					icon: 'error',
+					title: `${text}를 입력해 주세요`,
+					text: `${text}를 다시 확인해 주세요!`,
+				});
+				return;
+			}
+
 			$.ajax({
 				url:"/api/v1/emailcheck",
 				type:"get",
