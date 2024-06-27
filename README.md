@@ -61,11 +61,8 @@
 - [개요](#outline)
 - [프로젝트 구성](#Configuration)
 - [다이어그램](#Diagram)
-- [요구사항정의서](#definition)
-- [WBS](#wbs)
 - [협업 방식 - Loop](#Loop)
 - [팀의 개발 문화](#culture)
-- [ERD](#erd)
 - [결과물](#outputs)
 - [성과 및 회고](#retrospection)
 - [프로젝트 종료 이후 혼자서 진행한 리팩토링](#update)
@@ -237,22 +234,6 @@ dev 브랜치로 merge된 이후에는 변경된 기능을 확인하고, main �
 
 후반에 중요한 파일만 부분적으로 올리는 이유는, 복잡해서 코드리뷰 하기 힘든 상황을 방지하기 위함입니다.
 
-
-</details>
-
-<br>
-
-
-# 📈 ERD <a name = "erd"></a>
-
-<details>
-   <summary> 본문 확인 (👈 Click)</summary>
-<br />
-
-
-<div align="center">
- <img src="/images/erd.PNG" alt="erd">
-</div>
 
 </details>
 
