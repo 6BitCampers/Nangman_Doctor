@@ -1,4 +1,4 @@
-![image](https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/d508712d-ed25-44b2-b32c-22d88e102ff5)
+<img src="https://github.com/6BitCampers/Nangman_Doctor/raw/assets/86636344/d508712d-ed25-44b2-b32c-22d88e102ff5" alt="image" width="70">
 
 <hr>
 <br>
