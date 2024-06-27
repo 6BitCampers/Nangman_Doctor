@@ -1,6 +1,6 @@
-<div align="center">
- <img src="/images/team_logo.PNG" alt="gjgs-logo">
-</div>
+<img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/d0632c63-392d-4603-b26a-506ea34cb118" alt="image" width="30">
+<b>낭만닥터!</b>
+기존 불편했던 기능은 개선하고, 필요한 기능은 추가하고!
 
 <div align="center">
  <img src="/images/team_intro.PNG" alt="team_intro">
