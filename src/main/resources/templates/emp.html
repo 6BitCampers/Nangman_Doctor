@@ -161,103 +161,9 @@
                     </span>
                 </div>
             </header>
+
             <div class="grid grid-cols-[300px_1fr_300px] gap-8 mx-auto py-10 px-4" style="display: flex; margin: 10px;">
-                <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
-                <div class="bg-background rounded-lg shadow-lg p-6" data-v0-t="card" style="width: 400px; height: 100%;">
-                    <div class="flex flex-col space-y-1.5 p-6">
-                        <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Register Hospital & Role</h3>
-                        <p class="text-sm text-muted-foreground">Please register and identify the hospital you belong to and your role.</p>
-                    </div>
 
-                    <div class="p-6" >
-                        <form action="/registerRole" method="post">
-
-                            <div class="grid gap-2" style="margin: 10px;">
-                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    Name
-                                </label>
-
-                                <input
-                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                        placeholder="이름을 입력하세요"
-                                        type="text"
-                                />
-
-                            </div>
-                            <div class="grid gap-2" style="margin: 10px;">
-                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">
-                                    Email
-                                </label>
-
-                                <input
-                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                        id="email"
-                                        placeholder="nangman@examle.com"
-                                        type="email" name="email"
-                                />
-                            </div>
-
-                            <div class="grid gap-2" style="margin: 10px;">
-                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                        >
-
-                                    Role
-                                </label>
-                                <div class="flex items-center gap-2" style="width: 100%;">
-                                <select id="role" name="role" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
-                                    <option value="user">
-                                        User
-                                    </option>
-                                    <option value="ROLE_DOCTOR" >Doctor</option>
-                                    <option value="ROLE_NURSE" >Nurse</option>
-                                    <option value="ROLE_MANAGER">Manager</option>
-
-                                    <span style="pointer-events: none;">User</span>
-
-                                </select>
-                                    <button
-                                            class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600"
-                                            type="submit"
-                                    >
-                                        Register
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                        <form action="/registerName" method="post">
-                            <div class="grid gap-2" style="margin: 10px;">
-                                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    Hospital Name
-                                </label>
-                                <div class="flex items-center gap-2" style="width: 100%;">
-                                    <input
-                                            id="hospitalSearchInput"
-                                            class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                            placeholder="병원 이름 입력"
-                                            type="text"
-                                            onclick="openMappedUrl()"
-                                    />
-
-                                    <script>
-                                        const mappedUrl = "/register"; // 여기에 매핑 주소를 입력하세요
-
-                                        function openMappedUrl() {
-                                            // 새 창 열기
-                                            window.open(mappedUrl, '_blank');
-                                        }
-                                    </script>
-
-
-                                    <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600">
-                                        Register
-                                    </button>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-            </th:block>
                 <div class="bg-background rounded-lg shadow-lg p-6" data-v0-t="card">
                     <div class="flex flex-col space-y-1.5 p-6">
                         <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">User List</h3>
@@ -270,14 +176,21 @@
                                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                                         No
                                     </th>
-                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0"
+                                    style="width: 100px;">
                                         Name
                                     </th>
                                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                                         Email
                                     </th>
                                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                        HP
+                                    </th>
+                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                                         Role
+                                    </th>
+                                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                                        Field
                                     </th>
                                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                                         NickName
@@ -285,9 +198,11 @@
                                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                                         LikeCount
                                     </th>
+                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                                         Actions
                                     </th>
+                                    </th:block>
                                 </tr>
                                 </thead>
                                 <tbody class="[&amp;_tr:last-child]:border-0">
@@ -295,11 +210,15 @@
                                     <td th:text="${employeelist.employee_no}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td th:text="${employeelist.employee_name}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td th:text="${employeelist.employee_email}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+                                    <td th:text="${employeelist.employee_hp}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td th:text="${employeelist.employee_role}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+                                    <td th:text="${employeelist.employee_field}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td th:text="${employeelist.employee_nickname}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td th:text="${employeelist.employee_likecount}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+
+                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                     <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 flex items-center gap-2">
-                                        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
+                                        <button data-bs-toggle="modal" data-bs-target="#myPageUpdateModal"  class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
 
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                                                 <path d="M12 22h6a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v10"></path>
@@ -307,20 +226,113 @@
                                                 <path d="M10.4 12.6a2 2 0 1 1 3 3L8 21l-4 1 1-4Z"></path>
                                             </svg>
                                             <span class="sr-only">Edit</span>
-                                        </button>
-                                        <button class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                                <path d="M3 6h18"></path>
-                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                                            </svg>
-                                            <span class="sr-only">Delete</span>
+
                                         </button>
                                     </td>
+                                    </th:block>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="myPageUpdateModal" tabindex="-1" aria-labelledby="myPageUpdateModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                            <div class="flex flex-col space-y-1.5 p-6">
+                                <h3 class="whitespace-nowrap text-2xl font-semibold leading-none tracking-tight">Register Hospital & Role</h3>
+                                <p class="text-sm text-muted-foreground">Please register and identify the hospital you belong to and your role.</p>
+                            </div>
+
+                            <div class="p-6" >
+                                <form action="/registerRole" method="post">
+
+                                    <div class="grid gap-2" style="margin: 10px;">
+                                        <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                            Name
+                                        </label>
+
+                                        <input
+                                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                                placeholder="이름을 입력하세요"
+                                                type="text"
+                                        />
+
+                                    </div>
+                                    <div class="grid gap-2" style="margin: 10px;">
+                                        <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" for="email">
+                                            Email
+                                        </label>
+
+                                        <input
+                                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                                id="email"
+                                                placeholder="nangman@examle.com"
+                                                type="email" name="email"
+                                        />
+                                    </div>
+
+                                    <div class="grid gap-2" style="margin: 10px;">
+                                        <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        >
+
+                                            Role
+                                        </label>
+                                        <div class="flex items-center gap-2" style="width: 100%;">
+                                            <select id="role" name="role" class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                                                <option value="user">
+                                                    User
+                                                </option>
+                                                <option value="ROLE_DOCTOR" >Doctor</option>
+                                                <option value="ROLE_NURSE" >Nurse</option>
+                                                <option value="ROLE_MANAGER">Manager</option>
+
+                                                <span style="pointer-events: none;">User</span>
+
+                                            </select>
+                                            <button
+                                                    class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600"
+                                                    type="submit"
+                                            >
+                                                Register
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form action="/registerName" method="post">
+                                    <div class="grid gap-2" style="margin: 10px;">
+                                        <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                            Hospital Name
+                                        </label>
+                                        <div class="flex items-center gap-2" style="width: 100%;">
+                                            <input
+                                                    id="hospitalSearchInput"
+                                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                                    placeholder="병원 이름 입력"
+                                                    type="text"
+                                                    onclick="openMappedUrl()"
+                                            />
+
+                                            <script>
+                                                const mappedUrl = "/register"; // 여기에 매핑 주소를 입력하세요
+
+                                                function openMappedUrl() {
+                                                    // 새 창 열기
+                                                    window.open(mappedUrl, '_blank');
+                                                }
+                                            </script>
+
+
+                                            <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 ml-2 bg-orange-600">
+                                                Register
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -425,7 +437,7 @@
                                             id="hp" name="hp" th:value="${info.info_hp}"
                                             type="tel"
                                     />
-                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGRER')">
+                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                         <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                             Edit
                                         </button>
@@ -453,7 +465,7 @@
                                             onclick="">
                                         주소찾기
                                     </button>
-                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGRER')">
+                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                         <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                             Edit
                                         </button>
@@ -476,7 +488,7 @@
                                             class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                             id="plus" name="plus" th:value="${info.info_plus}"
                                     />
-                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGRER')">
+                                    <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                         <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                             Edit
                                         </button>
@@ -498,7 +510,7 @@
                 class="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[100px]"
                 id="description" name="description" th:value="${info.info_description}"
         />
-                                <th:block sec:authorize="hasAuthority('ROLE_MANAGRER')">
+                                <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                     <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                         Edit
                                     </button>
@@ -520,7 +532,7 @@
                                         id="photo" name="photo" th:value="${info.info_photo}"
                                         type="file"
                                 />
-                                <th:block sec:authorize="hasAuthority('ROLE_MANAGRER')">
+                                <th:block sec:authorize="hasAuthority('ROLE_MANAGER')">
                                     <button type="submit" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
                                         Edit
                                     </button>

@@ -17,6 +17,7 @@ public class EmpDto {
     private String employee_email;
     private String employee_addr1;
     private String employee_hp;
+    private String employee_field;
     private String employee_nickname;
     private String employee_likecount;
     private String info_photo;
@@ -24,7 +25,5 @@ public class EmpDto {
     private String info_addr;
     private String info_plus;
     private String info_hp;
-
-
 
 }
