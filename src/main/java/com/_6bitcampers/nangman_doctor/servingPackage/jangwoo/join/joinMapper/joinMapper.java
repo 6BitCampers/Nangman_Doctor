@@ -10,7 +10,7 @@ public interface joinMapper {
     @Insert("insert into normal_user (user_name, user_email, user_password, user_gender, user_addr1, user_hp, user_age, user_nickname, user_interest, user_role, user_type) values (#{name},#{email},#{password},#{gender},#{addr},#{hp},#{age},#{nickname},#{interest},'ROLE_USER','local')")
     void insertNormalUserDefault(joinRequestDto dto);
 
-    @Insert("insert into hospital_employee (employee_name, employee_email, employee_pw, employee_gender, employee_addr1, employee_hp, employee_age, employee_nickname, employee_role, employee_type) values (#{name},#{email},#{password},#{gender},#{addr},#{hp},#{age},#{nickname},'ROLE_EMP','local')")
+    @Insert("insert into hospital_employee (employee_name, employee_email, employee_pw, employee_gender, employee_addr1, employee_hp, employee_age, employee_nickname, employee_role, employee_type,employee_field) values (#{name},#{email},#{password},#{gender},#{addr},#{hp},#{age},#{nickname},'ROLE_EMP','local',#{interest})")
     void insertEmployeeUserDefault(joinRequestDto dto);
 
     @Select("select * from normal_user where user_type=#{type} and user_email=#{email}")
