@@ -38,11 +38,40 @@
                                 </div>
                                 <div class="open-hours mt-4">
                                     <i class="icon-clock-o"></i>
-                                    <h4 class="mb-2">Open Hours:</h4>
-                                    <p>
-                                        Sunday-Friday:<br>
-                                        11:00 AM - 2300 PM
-                                    </p>
+                                    <h4 class="mb-2">Open Hours</h4>
+                                    <br>
+                                    <div class="day-container">
+                                        <span class="day">Monday</span>
+                                        <span class="time" id="monday-time" th:text="${HosInfoDto.Monday}"></span>
+                                    </div>
+                                    <div class="day-container">
+                                        <span class="day">Tuesday</span>
+                                        <span class="time" id="tuesday-time" th:text="${HosInfoDto.Tuesday}"></span>
+                                    </div>
+                                    <div class="day-container">
+                                        <span class="day">Wednesday</span>
+                                        <span class="time" id="wednesday-time" th:text="${HosInfoDto.Wednesday}"></span>
+                                    </div>
+                                    <div class="day-container">
+                                        <span class="day">Thursday</span>
+                                        <span class="time" id="thursday-time" th:text="${HosInfoDto.Thursday}"></span>
+                                    </div>
+                                    <div class="day-container">
+                                        <span class="day">Friday</span>
+                                        <span class="time" id="friday-time" th:text="${HosInfoDto.Friday}"></span>
+                                    </div>
+                                    <div class="day-container">
+                                        <span class="day">Saturday</span>
+                                        <span class="time" id="saturday-time" th:text="${HosInfoDto.Saturday}"></span>
+                                    </div>
+                                    <div class="day-container">
+                                        <span class="day">Sunday</span>
+                                        <span class="time" id="sunday-time" th:text="${HosInfoDto.Sunday}"></span>
+                                    </div>
+                                    <div class="day-container">
+                                        <span class="day">Holiday</span>
+                                        <span class="time" id="holiday-time" th:text="${HosInfoDto.Holiday}"></span>
+                                    </div>
                                 </div>
                                 <div class="phone mt-4">
                                     <i class="icon-phone"></i>
@@ -56,7 +85,7 @@
                     <div class="reserv-info justify-content-center">
                         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
                             <form class="space-y-4" th:action="@{/reserveProc}" method="post" id="reservationForm" onsubmit="return handleSubmit(event)" style="max-width: 800px; width: 100%; margin: 0 auto;">
-                                <div class="row mb-4"  style="width: 200%;">
+                                <div class="row mb-4" style="width: 200%;">
                                     <div class="col-6">
                                         <input type="text" class="form-control" placeholder="이름" id="reservation_name" name="name" th:value="${name}" required="">
                                     </div>
@@ -108,15 +137,42 @@
 
             <script th:inline="javascript">
                 document.addEventListener('DOMContentLoaded', function() {
+
+                    function convertTimeFormat(timeString) {
+                        let [start, end] = timeString.split(':');
+
+                        let startHour = Math.floor(start / 100);
+                        let startMinute = start % 100;
+                        let formattedStart = `${startHour.toString().padStart(2, '0')}:${startMinute.toString().padStart(2, '0')}`;
+
+                        let endHour = Math.floor(end / 100);
+                        let endMinute = end % 100;
+                        let formattedEnd = `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`;
+
+                        return `${formattedStart}-${formattedEnd}`;
+                    }
+
+                    function updateOpenHours() {
+                        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Holiday'];
+                        days.forEach(day => {
+                            const timeElement = document.getElementById(`${day.toLowerCase()}-time`);
+                            if (timeElement) {
+                                const timeText = timeElement.textContent;
+                                timeElement.textContent = convertTimeFormat(timeText);
+                            }
+                        });
+                    }
+
+                    updateOpenHours();
+
                     var today = new Date().toISOString().split('T')[0];
                     document.getElementById('reservation_date').setAttribute('min', today);
 
                     var reservationDateInput = document.getElementById('reservation_date');
                     var timeSlotsContainer = document.getElementById('time-slots');
 
-                    // 서버에서 전달된 hosResDto 데이터를 JavaScript 변수로 설정
                     var hosResDto = /*[[${HosResDto}]]*/ [];
-                    console.log(hosResDto); // hosResDto 데이터가 제대로 로드되는지 확인
+                    console.log(hosResDto);
 
                     reservationDateInput.addEventListener('change', function() {
                         var selectedDate = reservationDateInput.value;
@@ -125,7 +181,11 @@
 
                     function renderTimeSlots(date) {
                         timeSlotsContainer.innerHTML = '';
-                        var times = generateTimeSlots();
+                        var selectedDay = new Date(date).getDay();
+                        var dayMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                        var dayName = dayMap[selectedDay].toLowerCase();
+                        var openHours = document.getElementById(`${dayName}-time`).textContent.split('-');
+                        var times = generateTimeSlots(openHours[0], openHours[1]);
                         var reservedTimes = hosResDto
                             .filter(reservation => reservation.reservation_date === date)
                             .map(reservation => reservation.reservation_time);
@@ -158,9 +218,11 @@
                         });
                     }
 
-                    function generateTimeSlots() {
+                    function generateTimeSlots(start, end) {
                         var times = [];
-                        for (var i = 6; i < 24; i++) {
+                        var startHour = parseInt(start.split(':')[0]);
+                        var endHour = parseInt(end.split(':')[0]);
+                        for (var i = startHour; i < endHour; i++) {
                             var startTime = i < 10 ? '0' + i + ':00' : i + ':00';
                             var endTime = (i + 1) < 10 ? '0' + (i + 1) + ':00' : (i + 1) + ':00';
                             times.push(startTime + ' - ' + endTime);
@@ -190,7 +252,6 @@
                     font-family: Arial, sans-serif;
                     margin: 10px;
                 }
-
 
                 .form-group {
                     margin-bottom: 10px;
@@ -244,7 +305,7 @@
                     border: 1px solid orange;
                     border-radius: 5px;
                     cursor: pointer;
-                    font-size: 14px; /* 폰트 크기 조정 */
+                    font-size: 14px;
                 }
 
                 .time-slot.available {
@@ -281,6 +342,40 @@
                     border-color: #004085;
                 }
 
+                .open-hours {
+                    font-family: Arial, sans-serif;
+                    margin-right: 50px;
+                }
+
+                .open-hours i {
+                    font-size: 24px;
+                }
+
+                .open-hours h4 {
+                    margin-bottom: 20px;
+                    font-size: 24px;
+                    text-align: left;
+                }
+
+                .open-hours .day-container {
+                    display: flex;
+                    justify-content: space-between;
+                    border-bottom: 1px solid #e0e0e0;
+                }
+
+                .open-hours .day-container:last-child {
+                    border-bottom: none;
+                }
+
+                .day {
+                    font-size: 18px;
+                    color: #333;
+                }
+
+                .time {
+                    font-size: 18px;
+                    color: #333;
+                }
             </style>
         </div>
     </nav>

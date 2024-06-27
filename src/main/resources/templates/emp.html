@@ -585,24 +585,22 @@
                                     <td th:text="${res.reservation_date}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td th:text="${res.reservation_time}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                                      <span th:if="${res.reservation_status} == 1">
-                                            <div>
-                                                    <button type="button" class="btn btn-success"
-                                                            th:data-id="${res.reservation_no}"
-                                                            th:onclick="'SendStatus(' + ${res.reservation_no} + ', true)'">
-                                                        수락
-                                                    </button>
-                                                    <button type="button" class="btn btn-danger"
-                                                            th:data-id="${res.reservation_no}"
-                                                            th:onclick="'SendStatus(' + ${res.reservation_no} + ', false)'">
-                                                        거절
-                                                    </button>
-
-                                            </div>
-                                        </span>
-
-                                        <!--<span th:if="${res.reservation_status} == 2">응답대기중</span>-->
+                                    <span th:if="${res.reservation_status} == 1">
+                                        <div sec:authorize="hasAuthority('ROLE_MANAGER')">
+                                            <button type="button" class="btn btn-success"
+                                                    th:data-id="${res.reservation_no}"
+                                                    th:onclick="'SendStatus(' + ${res.reservation_no} + ', true)'">
+                                                수락
+                                            </button>
+                                            <button type="button" class="btn btn-danger"
+                                                    th:data-id="${res.reservation_no}"
+                                                    th:onclick="'SendStatus(' + ${res.reservation_no} + ', false)'">
+                                                거절
+                                            </button>
+                                        </div>
+                                    </span>
                                     </td>
+
                                     <td th:text="${res.reservation_reason}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-reason"></td>
                                     <td th:text="${res.reservation_content}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 reservation-content"></td>
                                 </tr>
