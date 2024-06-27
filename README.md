@@ -13,7 +13,7 @@
 이장우|로그인, 회원가입, QnA|[8282qwe](https://github.com/8282qwe)
 이가현|홍보배너, 챗봇, 디자인 총괄|[LeeGaHyun12](https://github.com/LeeGaHyun12)
 최시현|검색, 병원 소개|[andychoi0819](https://github.com/andychoi0819)
-강하윤|예약, SMTP|[hayooniiiiii](https://github.com/hayooniiiiii)
+강하윤|상담예약, SMTP|[hayooniiiiii](https://github.com/hayooniiiiii)
 <br/>
 
 
