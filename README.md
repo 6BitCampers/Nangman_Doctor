@@ -158,9 +158,9 @@
    <summary> 본문 확인 (👈 Click)</summary>
 <br/>
 
-<h3>로그인 시퀀스 다이어그램</h3>
+<h3>ER다이어그램</h3>
 <div align="center">
- <img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/01b725d9-fad3-465b-a031-52b6709f58f4" width="300">
+ <img src="https://github.com/6BitCampers/Nangman_Doctor/assets/86636344/01b725d9-fad3-465b-a031-52b6709f58f4" width="450">
 </div>
 
 </details>
