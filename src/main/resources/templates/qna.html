@@ -65,7 +65,7 @@
 							</div>
 							<!--답글 달기 병원 관계자만 작성가능-->
 							<th:block
-									sec:authorize="hasAnyAuthority('ROLE_EMP','ROLE_NURSE','ROLE_DOCTOR','ROLE_CHIEF')">
+									sec:authorize="hasAnyAuthority('ROLE_EMP','ROLE_MANAGER','ROLE_DOCTOR','ROLE_MANAGER','ROLE_NURSE')">
 								<div class="bg-gray-100 rounded-lg p-4 space-y-4">
 									<div class="flex items-center space-x-2">
               <span class="relative flex shrink-0 overflow-hidden rounded-full w-8 h-8">

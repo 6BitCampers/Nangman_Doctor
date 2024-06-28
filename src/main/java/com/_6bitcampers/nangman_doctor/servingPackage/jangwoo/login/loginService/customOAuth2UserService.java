@@ -46,7 +46,6 @@ public class customOAuth2UserService extends DefaultOAuth2UserService {
             userEntity = new userEntity().builder()
                     .user_email(oAuth2Response.getEmail())
                     .user_name(((googleResponse) oAuth2Response).getFamilyName()+((googleResponse) oAuth2Response).getGivenName())
-                    .user_nickname(oAuth2User.getName())
                     .user_role(role)
                     .user_type(registrantionId)
                     .build();
