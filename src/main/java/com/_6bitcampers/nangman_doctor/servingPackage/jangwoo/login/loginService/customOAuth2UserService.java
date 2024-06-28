@@ -47,6 +47,7 @@ public class customOAuth2UserService extends DefaultOAuth2UserService {
                     .user_email(oAuth2Response.getEmail())
                     .user_name(((googleResponse) oAuth2Response).getFamilyName()+((googleResponse) oAuth2Response).getGivenName())
                     .user_role(role)
+                    .user_nickname(oAuth2Response.getName())
                     .user_type(registrantionId)
                     .build();
         } else if (registrantionId.equals("kakao")) {
