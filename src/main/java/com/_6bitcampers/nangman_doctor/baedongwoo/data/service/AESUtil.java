@@ -2,6 +2,7 @@ package com._6bitcampers.nangman_doctor.baedongwoo.data.service;
 
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -10,6 +11,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
+@Component
 public class AESUtil {
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
     @Value("${AESUtil.key}")
