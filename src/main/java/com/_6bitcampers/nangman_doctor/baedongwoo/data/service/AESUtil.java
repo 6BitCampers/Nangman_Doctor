@@ -13,8 +13,8 @@ import java.util.Base64;
 public class AESUtil {
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
     @Value("${AESUtil.key}")
-    private static String KEY; // 16 bytes key
-    private static final String INIT_VECTOR = "encryptionIntVec"; // 16 bytes IV
+    private static String KEY;
+    private static final String INIT_VECTOR = "encryptionIntVec";
 
     public static String encrypt(String value) {
         try {
