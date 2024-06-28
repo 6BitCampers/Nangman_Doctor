@@ -65,7 +65,7 @@
                 </div>
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                     <p>결제 방식</p>
-                    <p style="font-weight: 500;" th:text="${method}"></p>
+                    <p style="font-weight: 500;" th:text="${method?:'카드'}"></p>
                 </div>
             </div>
         </div>
