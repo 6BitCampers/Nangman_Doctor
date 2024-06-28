@@ -65,8 +65,6 @@
 - [협업 방식 - Loop](#Loop)
 - [팀의 개발 문화](#culture)
 - [결과물](#outputs)
-- [성과 및 회고](#retrospection)
-- [프로젝트 종료 이후 혼자서 진행한 리팩토링](#update)
 
 <br>
 
