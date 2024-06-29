@@ -65,6 +65,7 @@
 		.map-container {
 			margin: 20px 0;
 		}
+
 		li.businessTimeLi {
 			font-size: 14px;
 			width: 300px;
@@ -81,7 +82,8 @@
 			font-size: 20px;
 			font-weight: bold;
 		}
-		#reserveBtn:hover{
+
+		#reserveBtn:hover {
 			color: red;
 			font-weight: bold;
 			transition: 0.3s ease-in-out;
@@ -89,37 +91,55 @@
 	</style>
 	<div class="section">
 		<div class="flex flex-col gap-8 py-12 md:py-16 lg:py-24" style="background-color:rgba(0,0,0,0.05);">
-			<h1  style=" color: black; align-self: center" class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl" th:text="${hospital.info_name}"></h1>
-			<div class="container px-4 md:px-6"  style="background-color: white; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+			<h1 style="color: black; align-self: center" class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
+				th:text="${hospital.info_name}"></h1>
+			<div class="container px-4 md:px-6"
+				 style="background-color: white; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
 
 				<div class="grid gap-6 md:grid-cols-2 md:gap-12">
 					<div class="space-y-4">
 						<br><br><br>
-						<p class="text-muted-foreground md:text-xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word;"><strong>Address: </strong><span th:text="${hospital.info_addr}"></span></p>
-						<p class="text-muted-foreground md:text-xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word;"><strong>Contact: </strong><span th:text="${hospital.info_hp}"></span></p>
+						<p class="text-muted-foreground md:text-xl/relaxed"
+						   style="white-space: pre-wrap; word-wrap: break-word;"><strong>Address: </strong><span
+								th:text="${hospital.info_addr}"></span></p>
+						<p class="text-muted-foreground md:text-xl/relaxed"
+						   style="white-space: pre-wrap; word-wrap: break-word;"><strong>Contact: </strong><span
+								th:text="${hospital.info_hp}"></span></p>
 						<p class="text-muted-foreground md:text-xl/relaxed">
 							<strong>Info: </strong><span th:text="${hospital.info_description}"></span><br>
-							<span th:unless="${hospital.info_plus.contains('점심시간') and hospital.info_description.contains('점심')}" th:text="${hospital.info_plus}"></span>
+							<span th:unless="${hospital.info_plus.contains('점심시간') and hospital.info_description.contains('점심')}"
+								  th:text="${hospital.info_plus}"></span>
 						</p>
 						<ul>
 							<li class="businessTimeLi" th:each="time : ${businessTimeList}" th:text="${time}"></li>
 							<li>&nbsp;</li>
-							<li><span style="color: red;font-weight: bold">공휴일 </span>: <span th:text="${holidayBuisenessHour}"></span></li>
+							<li><span style="color: red;font-weight: bold">공휴일 </span>: <span
+									th:text="${holidayBuisenessHour}"></span></li>
 						</ul>
-						<br><a th:if="${isLoggedIn}" th:href="@{/reservation(info_no=${hospital.info_no})}" id="reserveBtn">예약하러가기</a><br>
+						<br>
+						<a th:if="${isLoggedIn}" th:href="@{/reservation(info_no=${hospital.info_no})}" id="reserveBtn">예약하러가기</a><br>
+						<a th:href="@{/hospital-url(hospitalName=${hospital.info_name})}" target="_blank" id="visitBtn">병원 홈페이지로 이동</a>
 					</div>
 					<div class="bg-orange-50 rounded-lg border" style="margin-top: 30px">
-						<br><p class="text-muted-foreground md:text-2xl/relaxed" style="white-space: pre-wrap; word-wrap: break-word; text-align: center"><strong>오시는길</strong></p><br>
+						<br>
+						<p class="text-muted-foreground md:text-2xl/relaxed"
+						   style="white-space: pre-wrap; word-wrap: break-word; text-align: center"><strong>오시는길</strong></p><br>
 						<div id="map" style="height: 400px;"></div>
 					</div>
 				</div>
-				<div class="container px-4 md:px-6" >
+				<div class="container px-4 md:px-6">
 					<div class="space-y-6">
 						<br><br><br><br>
-						<h2 style="text-align: center" class="text-2xl font-bold tracking-tighter sm:text-3xl">Our Doctors</h2>
-						<div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5" style="width: 1000px; margin: 30px">
-							<div style="background-color: white; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" th:each="employee : ${employees}" class="flex flex-col items-center gap-4 rounded-lg border p-6 text-center">
-								<img src="/images/doc_100.jpg" alt="Doctor Photo" width="120" height="120" class="h-30 w-30 rounded-full object-cover" style="aspect-ratio: 120 / 120; object-fit: cover;" />
+						<h2 style="text-align: center" class="text-2xl font-bold tracking-tighter sm:text-3xl">Our
+							Doctors</h2>
+						<div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+							 style="width: 1000px; margin: 30px">
+							<div style="background-color: white; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"
+								 th:each="employee : ${employees}"
+								 class="flex flex-col items-center gap-4 rounded-lg border p-6 text-center">
+								<img src="/images/doc_100.jpg" alt="Doctor Photo" width="120" height="120"
+									 class="h-30 w-30 rounded-full object-cover"
+									 style="aspect-ratio: 120 / 120; object-fit: cover;"/>
 								<div class="space-y-1">
 									<h3 class="text-lg font-medium" style="font-weight:bold;" th:text="${employee.employee_name}"></h3>
 									<p class="text-muted-foreground" th:text="${employee.employee_field}"></p>
