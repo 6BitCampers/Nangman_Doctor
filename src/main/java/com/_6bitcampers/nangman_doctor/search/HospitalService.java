@@ -71,4 +71,12 @@ public class HospitalService {
         }
         return reorderedHoursList;
     }
+    public String getHospitalNameById(Long hospitalId) {
+        // Example: Fetch hospital name from database or other source
+        if (hospitalId == 1L) {
+            return "Sample Hospital";
+        }
+        // Add more logic as needed
+        return "Unknown Hospital";
+    }
 }
