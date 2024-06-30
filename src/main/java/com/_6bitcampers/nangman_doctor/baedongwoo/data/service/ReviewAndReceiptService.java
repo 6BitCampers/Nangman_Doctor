@@ -28,16 +28,6 @@ public class ReviewAndReceiptService {
         return reviewAndReceiptInter.getPagenationedReviews(pagination);
     }
 
-    public List<ReviewDto> getOrederedReviews(int startnum, int perPage, String orderBy){
-        Map<String,Object> pagination = new HashMap<>();
-
-        pagination.put("startnum", startnum);
-        pagination.put("perPage", perPage);
-        pagination.put("orderBy",orderBy);
-
-        return reviewAndReceiptInter.getOrederedReviews(pagination);
-    }
-
     public int getAllReviewsCount(){
         return reviewAndReceiptInter.getAllReviewsCount();
     }
