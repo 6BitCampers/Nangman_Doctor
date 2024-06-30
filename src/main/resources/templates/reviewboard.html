@@ -3,6 +3,17 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
 <div layout:fragment="content" class="section section-1" style="min-height: 600px;background-color: rgba(0,0,0,0.03)">
+    <style>
+        .select-wrapper {
+            position: relative;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .select-wrapper.active {
+            max-height: 100px; /* 적절한 높이로 설정하세요 */
+        }
+    </style>
     <!--
 // v0 by Vercel.
 // https://v0.dev/t/MsbVKJ1RpYM
@@ -10,6 +21,14 @@
     <div class="w-full max-w-4xl mx-auto px-4 py-8 shadow-md rounded-lg" style="background-color: white">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold">Reviews</h1>
+            <form action="/reviewboard" method="get">
+                <select name="orderBy" class="form-select-sm" onchange="this.form.submit()" style="border: 1px solid black">
+                    <option value="newest" th:selected="${orderBy == 'newest'}">최신 순</option>
+                    <option value="oldest" th:selected="${orderBy == 'oldest'}">오래된 순</option>
+                    <option value="manyView" th:selected="${orderBy == 'manyView'}">조회수 많은 순</option>
+                    <option value="leastView" th:selected="${orderBy == 'leastView'}">조회수 적은 순</option>
+                </select>
+            </form>
         </div>
         <div class="space-y-6">
             <div class="rounded-lg shadow-md p-6 hover:bg-gray-100 transition duration-150 ease-in-out" th:each="item,itemStat:${list}">
@@ -72,7 +91,7 @@
             <ul class="flex flex-row items-center gap-1">
                 <li>
                     <a class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
-                       th:href="@{/reviewboard(page=${currentpage -1})}"
+                       th:href="@{/reviewboard(page=${currentpage - 1}, orderBy=${orderBy})}"
                        th:if="${currentpage > 1}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -83,18 +102,21 @@
                     </a>
                 </li>
                 <li th:each="num : ${#numbers.sequence(1, (totalNum / perPage) + 1)}">
-                    <a th:if="${num == currentpage}"
-                       class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10"
-                       style="pointer-events: none; cursor: default; color: orange;" th:text="${num}"></a>
+                    <!-- 현재 페이지일 때는 비활성화 클래스를 적용 -->
+                    <span th:if="${num == currentpage}">
+                <a class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10"
+                   style="pointer-events: none; cursor: default; color: orange;" th:text="${num}"></a>
+            </span>
+                    <!-- 현재 페이지가 아닐 때는 활성화된 링크를 생성 -->
                     <span th:if="${num != currentpage}">
                 <a class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-10 w-10"
-                   th:href="@{/reviewboard(page=${num})}" th:text="${num}"></a>
+                   th:href="@{/reviewboard(page=${num}, orderBy=${orderBy})}" th:text="${num}"></a>
             </span>
                 </li>
                 <li>
                     <a th:if="${currentpage < (totalNum / perPage + 1)}"
                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-accent hover:text-accent-foreground h-10 px-1 py-2 gap-1 pl-2.5"
-                       th:href="@{/reviewboard(page=${currentpage+1})}">
+                       th:href="@{/reviewboard(page=${currentpage + 1}, orderBy=${orderBy})}">
                         <span>Next</span>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -105,7 +127,6 @@
                 </li>
             </ul>
         </nav>
-
     </div>
-
 </div>
+</html>

@@ -30,6 +30,7 @@ public class ReviewBoardListController {
     @GetMapping("/reviewboard")
     public String reviewBoard(
             @RequestParam(value = "page", defaultValue = "1", required = false) int page,
+            @RequestParam(required = false, value = "orderBy", defaultValue = "num") String orderBy,
             Model model) {
         int totalNum= reviewAndReceiptService.getAllReviewsCount();
         int perPage=5;
@@ -42,8 +43,22 @@ public class ReviewBoardListController {
 
         int startnum=(page-1)*perPage;
 
+        List<ReviewDto> list;
 
-        List<ReviewDto> list= reviewAndReceiptService.getPagenationedReviews(startnum, perPage);
+        switch (orderBy) {
+            case "oldest" -> {
+                list = reviewAndReceiptService.getPagenationedReviews(startnum, perPage, "asc");
+            }
+            case "manyView" -> {
+                list = reviewAndReceiptService.getOrederedReviews(startnum, perPage, "asc");
+            }
+            case "leastView" -> {
+                list = reviewAndReceiptService.getOrederedReviews(startnum, perPage, "desc");
+            }
+            default -> {
+                list = reviewAndReceiptService.getPagenationedReviews(startnum, perPage, "desc");
+            }
+        }
 
         model.addAttribute("list", list);
         Map<Integer, String> hospitalNameMap=new HashMap<>();
@@ -60,6 +75,7 @@ public class ReviewBoardListController {
             hospitalNameMap.put(user_no,info_name);
         }
 
+        model.addAttribute("orderBy",orderBy);
         model.addAttribute("hospitalDtoMap", hospitalNameMap);
         model.addAttribute("userMap", userMap);
         model.addAttribute("perPage", perPage);

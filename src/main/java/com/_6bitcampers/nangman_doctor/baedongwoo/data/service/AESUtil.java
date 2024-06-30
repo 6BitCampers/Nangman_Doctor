@@ -1,29 +1,34 @@
 package com._6bitcampers.nangman_doctor.baedongwoo.data.service;
 
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
 @Component
 public class AESUtil {
-    private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
-    private static final String KEY="aesEncryptionKey";
-    private static final String INIT_VECTOR = "encryptionIntVec";
+    private final String algorithm = "AES/CBC/PKCS5Padding";
+    private final String key;
+    private final String initVector;
 
-    public static String encrypt(String value) {
+    public AESUtil(
+            @Value("${aes.encryption.key}") String key,
+            @Value("${aes.init.vector}") String initVector
+    ) {
+        this.key = key;
+        this.initVector = initVector;
+    }
+
+    public String encrypt(String value) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes("UTF-8"));
-            SecretKeySpec skeySpec = new SecretKeySpec(KEY.getBytes("UTF-8"), "AES");
+            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
+            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
 
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            Cipher cipher = Cipher.getInstance(algorithm);
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
 
             byte[] encrypted = cipher.doFinal(value.getBytes());
@@ -33,12 +38,12 @@ public class AESUtil {
         }
     }
 
-    public static String decrypt(String encrypted) {
+    public String decrypt(String encrypted) {
         try {
-            IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes("UTF-8"));
-            SecretKeySpec skeySpec = new SecretKeySpec(KEY.getBytes("UTF-8"), "AES");
+            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
+            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
 
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            Cipher cipher = Cipher.getInstance(algorithm);
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
 
             byte[] original = cipher.doFinal(Base64.getDecoder().decode(encrypted));

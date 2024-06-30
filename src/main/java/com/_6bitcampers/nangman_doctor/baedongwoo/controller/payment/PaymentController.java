@@ -5,21 +5,14 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.dto.ReceiptDto;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.AESUtil;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.PaymentService;
 import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewAndReceiptService;
-import com._6bitcampers.nangman_doctor.hayoon.Mapper.ReservationMapper;
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +24,13 @@ public class PaymentController {
     private PaymentService paymentService;
     @Autowired
     private ReviewAndReceiptService reviewAndReceiptService;
+
+    private final AESUtil aesUtil;
+
+    @Autowired
+    public PaymentController(AESUtil aesUtil) {
+        this.aesUtil = aesUtil;
+    }
 
     @PostMapping("")
     public String payment(
@@ -94,7 +94,7 @@ public class PaymentController {
 
             paymentService.updateReceipt(receiptMap);
 
-            String encryptedReceiptNo = AESUtil.encrypt(String.valueOf(receipt_no).trim());
+            String encryptedReceiptNo = aesUtil.encrypt(String.valueOf(receipt_no).trim());
 
             return "redirect:/payment/paymentSuccess?receipt_noEn="+encryptedReceiptNo;
         } else{
@@ -108,7 +108,7 @@ public class PaymentController {
         String userId= customOAuth2User.getEmail();
         String user_type=customOAuth2User.getType();
 
-        int receipt_no=Integer.parseInt(AESUtil.decrypt(receipt_noEn));
+        int receipt_no=Integer.parseInt(aesUtil.decrypt(receipt_noEn));
 
         ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
         int amount=receiptDto.getReceipt_amount();
