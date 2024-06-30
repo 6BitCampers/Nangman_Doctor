@@ -41,7 +41,7 @@ public class qnaService {
             }
         }
 
-        mapper.insertBoard(title,comment,username,passwordEncoder.encode(password),filename);
+        mapper.insertBoard(title,comment, username, passwordEncoder.encode(password),filename);
     }
 
     public boolean deleteComment(String username, String password,int qna_no) {
