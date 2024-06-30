@@ -73,12 +73,13 @@ public class ReviewBoardListController {
         for (ReviewDto dto : list) {
             var user_no = dto.getUser_no();
             var employee_no=dto.getEmployee_no();
+            var review_no=dto.getReview_no();
             userEntity userDto = reviewAndReceiptService.getUserInfoByNum(user_no);
-            userMap.put(user_no, userDto);
+            userMap.put(review_no, userDto);
 
             var info_no= reviewAndReceiptService.getHospitalNo(employee_no);
             var info_name= reviewAndReceiptService.getHospitalName(info_no);
-            hospitalNameMap.put(user_no,info_name);
+            hospitalNameMap.put(review_no,info_name);
         }
 
         model.addAttribute("orderBy",orderBy);
