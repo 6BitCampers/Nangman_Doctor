@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta name="author" content="Untree.co">
+	<link rel="shortcut icon" th:href="@{icon/favicon.png}">
+
+	<meta name="description" content="" />
+	<meta name="keywords" content="bootstrap, bootstrap5" />
+
+	<link rel="preconnect" th:href="@{https://fonts.googleapis.com}">
+	<link rel="preconnect" th:href="@{https://fonts.gstatic.com}" crossorigin>
+	<link th:href="@{https://fonts.googleapis.com/css2(family='Brygada+1918:ital,wght@0,400;0,600;0,700;1,400',family='Inter:wght@400;700&display=swap')}" rel="stylesheet">
+
+	<link rel="stylesheet" th:href="@{fonts/icomoon/style.css}">
+	<link rel="stylesheet" th:href="@{fonts/flaticon/font/flaticon.css}">
+
+	<link rel="stylesheet" th:href="@{css/tiny-slider.css}">
+	<link rel="stylesheet" th:href="@{css/aos.css}">
+	<link rel="stylesheet" th:href="@{css/flatpickr.min.css}">
+	<link rel="stylesheet" th:href="@{css/glightbox.min.css}">
+	<link rel="stylesheet" th:href="@{css/style.css}">
+
+	<title>낭만 닥터 계정인증 이메일</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f8f4e5;
+			margin: 20px;
+		}
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+			background-color: #ffffff;
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+		h1 {
+			color: #3b3b3b;
+			text-align: center;
+		}
+		p {
+			color: #3b3b3b;
+			line-height: 1.5;
+		}
+		.footer {
+			text-align: center;
+			margin-top: 20px;
+		}
+		.footer p {
+			font-size: 12px;
+			color: #999999;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<h1>계정인증 이메일 안내드립니다.</h1>
+	<p>안녕하세요, <strong th:text="${userName}"></strong>님.</p>
+	<p>다음 링크로 접속하셔서 인증완료를 해주시면 됩니다.</p>
+	<p>
+		<strong>인증 주소</strong><br>
+		<h4 th:text="${url}"></h4>
+		<br>
+	</p>
+	<p>감사합니다.</p>
+	<div class="footer">
+		<p>&copy; 2024 낭만닥터. All Rights Reserved.</p>
+	</div>
+</div>
+</body>
+</html>
