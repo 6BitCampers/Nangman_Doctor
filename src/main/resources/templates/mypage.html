@@ -222,13 +222,13 @@
                             cellContent.appendChild(dateDiv);
 
                             // Check for reservations on this date
-                            const reservation = reservationList.find(reservation => {
+                            const reservationsForDate = reservationList.filter(reservation => {
                                 const resDate = new Date(reservation.reservation_date);
                                 return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && (reservation.reservation_status === 2 || reservation.reservation_status === 3 || reservation.reservation_status === 1);
                             });
 
-                            if (reservation) {
-                                console.log('gd', reservation.reservation_face);
+                            // 여러 예약을 처리
+                            reservationsForDate.forEach(reservation => {
                                 if (reservation.reservation_face === 1 && reservation.reservation_status === 2) {
                                     const span = document.createElement("span");
                                     span.className = "in-person-appointment";
@@ -236,37 +236,29 @@
                                     span.style.padding = "0px 5px";
                                     span.style.borderRadius = "3px";
                                     span.style.fontWeight = "bold";
-                                    span.innerText = "대면 진료";
-
-                                    // 원하는 위치에 추가 (예: body 태그에 추가)
+                                    span.innerHTML = `대면 진료<br>${reservation.reservation_time}`;
                                     cellContent.appendChild(span);
-
-
-                                }else if (reservation.reservation_status === 3 && reservation.reservation_face === 2) {
+                                } else if (reservation.reservation_status === 3 && reservation.reservation_face === 2) {
                                     const button = document.createElement("button");
                                     button.setAttribute("type", "button");
-                                    button.classList.add("btn", "btn-primary"); // Bootstrap 버튼 스타일 클래스 추가
-                                    button.setAttribute("data-bs-toggle", "modal"); // Bootstrap 모달 토글 속성 추가
-                                    button.setAttribute("data-bs-target", "#exampleModal"); // Bootstrap 모달 타겟 속성 추가
-                                    button.innerText = "상세";
-
-
+                                    button.classList.add("btn", "btn-primary");
+                                    button.setAttribute("data-bs-toggle", "modal");
+                                    button.setAttribute("data-bs-target", "#exampleModal");
+                                    button.innerHTML =  `상세<br>${reservation.reservation_time}`;
                                     button.onclick = function() {
-                                        fetchPaymentInfo(reservation.reservation_no); // 결제 정보를 가져오는 함수 호출
+                                        fetchPaymentInfo(reservation.reservation_no);
                                     };
-
                                     cellContent.appendChild(button);
-
                                 } else if (reservation.reservation_face === 2 && reservation.reservation_status === 2) {
                                     const button = document.createElement("button");
                                     button.classList.add("video-call-button");
-                                    button.innerText = "화상진료";
+                                    button.innerHTML = `화상채팅<br>${reservation.reservation_time}`;
                                     button.addEventListener("click", function() {
                                         window.open('https://webchat.midichi.kro.kr/');
                                         window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
                                     });
                                     cellContent.appendChild(button);
-                                } else if (reservation.reservation_face === 1 && reservation.reservation_status === 2) {
+                                } /*else if (reservation.reservation_face === 1 && reservation.reservation_status === 2) {
                                     const text = document.createElement("span");
                                     text.classList.add("in-person-appointment");
                                     text.innerText = "대면 진료";
@@ -275,13 +267,14 @@
                                     text.style.borderRadius = "3px";
                                     text.style.fontWeight = "bold";
                                     cellContent.appendChild(text);
-                                }
-                            }
+                                }*/
+                            });
 
                             date++;
                         }
                         cell.appendChild(cellContent);
                         row.appendChild(cell);
+
                     }
                     calendarBody.appendChild(row);
                 }

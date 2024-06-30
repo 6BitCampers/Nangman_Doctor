@@ -679,16 +679,16 @@
                                         cellContent.appendChild(dateDiv);
 
                                         // Check for reservations on this date
-                                        const reservation = reservations.find(res => {
+                                        const reservationsForDate = reservations.filter(res => {
                                             const resDate = new Date(res.reservation_date);
                                             return resDate.getDate() === date && resDate.getMonth() === month && resDate.getFullYear() === year && res.reservation_status === 2;
                                         });
 
-                                        if (reservation) {
+                                        reservationsForDate.forEach(reservation => {
                                             if (reservation.reservation_face === 2) {
                                                 const button = document.createElement("button");
                                                 button.classList.add("video-call-button");
-                                                button.innerText = "화상채팅";
+                                                button.innerHTML = `화상채팅<br>${reservation.reservation_time}`;
                                                 button.addEventListener("click", function() {
                                                     window.open('https://webchat.midichi.kro.kr/');
                                                     window.location.href = `/test?reservation_no=${reservation.reservation_no}`;
@@ -697,15 +697,14 @@
                                             } else if (reservation.reservation_face === 1) {
                                                 const text = document.createElement("span");
                                                 text.classList.add("in-person-appointment");
-                                                text.innerText = "대면 진료";
+                                                text.innerHTML = `대면 진료<br>${reservation.reservation_time}`;
                                                 text.style.backgroundColor = "yellow";
                                                 text.style.padding = "0 5px";
                                                 text.style.borderRadius = "3px";
                                                 text.style.fontWeight = "bold";
                                                 cellContent.appendChild(text);
                                             }
-                                        }
-
+                                        });
 
                                         date++;
                                     }
@@ -731,6 +730,7 @@
                         document.addEventListener("DOMContentLoaded", () => {
                             renderCalendar(currentMonth, currentYear);
                         });
+
                         function SendStatus(reservationNo, isAccepted) {
                             $.ajax({
                                 url: '/SendStatus',
@@ -745,7 +745,6 @@
                                         console.error("Server Error: ", response.message);
                                         alert('Error handling reservation: ' + response.message);
                                     } else {
-
                                         // Update the reservation status in the table without refreshing the page
                                         let statusCell = $(`td:contains('${response.reservationNo}')`).siblings()[3]; // Assuming status is the 4th cell
                                         if (response.isAccepted === "true") {
@@ -770,10 +769,8 @@
                                 }
                             });
                         }
-
-
-
                     </script>
+
 
                 </div>
 
