@@ -1,7 +1,8 @@
 <!doctype html>
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <link rel="stylesheet" href="/css/chatbot.css">
 <div th:fragment="chatbotFragment">
 
@@ -13,8 +14,8 @@
             </div>
             <div id="divbox" class="chat_content">
                 <img src="/icon/chatIcon.png" style="width:40px; height:40px;float: left;">
-                <div class="chat_inner" style="max-width:270px;max-height: 1265px; " >
-                    <pre>반갑습니다 ! ^-^
+                <div class="chat_inner" style="max-width:270px;max-height: 500px; " >
+                    <pre style="height: 100%;">반갑습니다 😀😀
 낭만닥터 도우미 6B(육비)입니다.
 6(명의) B(itcampers)라는 뜻을
 가지고 있어요!
@@ -22,11 +23,22 @@
 누르거나 직접 질문해주세요.
                     </pre>
                     <div class="btn_info_wrap">
+                        <th:block sec:authorize="hasAuthority('ROLE_USER')">
                         <button style="text-decoration:  none;" type="button" onclick="location.href='/results?keyword=성형'" class="btn-link welcome1" >
                             <span >예약하기</span>
                         </button>
-                        <button style="text-decoration:  none;" type="button" class="btn-link welcome5" onclick="location.href='/search'">
+                        </th:block>
+                        <button style="text-decoration:  none;" type="button" onclick="noresurv()" class="btn-link welcome1" >
+                            <span>예약하기</span>
+                        </button>
+                        <button style="text-decoration:  none;" type="button" class="btn-link welcome5" onclick="searchbtn()">
                             <span>병원검색</span>
+                        </button>
+                        <button style="text-decoration:  none;" type="button" class="btn-link welcome5" onclick="location.href='/'">
+                            <span>메인으로</span>
+                        </button>
+                        <button style="text-decoration:  none;" type="button" class="btn-link welcome5" onclick="reviewbtn()">
+                            <span>리뷰보기</span>
                         </button>
                     </div>
                 </div>
@@ -46,7 +58,20 @@
             } else {
                 content.style.display = 'none';
             }
-
+        }
+        function noresurv(){
+            $('#divbox').append('<div class="msg_box receive"><span>로그인 후 이용할 수 있습니다 😂<span></div>');
+            $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
+        }
+        function searchbtn(){
+            $('#divbox').append('<div class="msg_box receive"><span>병원을 검색하실 수 있게 도와드릴게요 😇<span></div>');
+            $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
+            location.href='/search';
+        }
+        function reviewbtn(){
+            $('#divbox').append('<div class="msg_box receive"><span>다양한 후기로 선택에 도움을 드릴게요 😋<span></div>');
+            $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
+            location.href='/reviewboard';
         }
         // 챗봇 이미지 클릭 시 모달 표시
         document.getElementById('chatbotimg').onclick = function () {
@@ -66,6 +91,7 @@
             function send() {
                 $('#divbox').append('<div class="msg_box send"><span>' + $('#input1').val() + '<span></div>');
                 $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
+
                 $.ajax({
                     url: '/chatbot/chatbotSend', //챗봇 api url
                     type: 'post',
@@ -76,23 +102,12 @@
                         $('#divbox').append('<img src="/icon/chatIcon.png" style="width:40px; height:40px;margin-top:50px;float: left;">');
                         $('#divbox').append('<div class="msg_box receive"><span>' + data + '<span></div>');
                         $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
+
                     }
                 });
                 $('#input1').val('');
             }
 
-            $(document).ready(function () {
-                // 폼 제출 이벤트 처리
-                $('#chatForm').on('submit', function (event) {
-                    event.preventDefault();
-                    if ($('#inputText').val() === "") {
-                        alert("질문을 입력하세요");
-                        return false;
-                    }
-                    callAjax();
-                    $('#inputText').val(''); // 입력란 비우기
-                });
-            });
         }
 
         // 닫기 버튼을 클릭했을 때 모달 닫기
