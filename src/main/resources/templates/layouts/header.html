@@ -2,6 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <header th:fragment="headerFragment">
+	<th:block sec:authorize="hasAuthority('ROLE_NOTVAILD')">
+		<script>
+			$(function (){
+				alert("인증이 완료되지 않은 계정입니다. 인증을 완료해주세요.");
+				location.href="/logout"
+			})
+		</script>
+	</th:block>
 	<div class="site-mobile-menu site-navbar-target">
 		<div class="site-mobile-menu-header">
 			<div class="site-mobile-menu-close">
