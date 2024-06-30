@@ -28,9 +28,11 @@
                             <span >예약하기</span>
                         </button>
                         </th:block>
+                        <th:block sec:authorize="isAnonymous()">
                         <button style="text-decoration:  none;" type="button" onclick="noresurv()" class="btn-link welcome1" >
                             <span>예약하기</span>
                         </button>
+                        </th:block>
                         <button style="text-decoration:  none;" type="button" class="btn-link welcome5" onclick="searchbtn()">
                             <span>병원검색</span>
                         </button>
