@@ -11,8 +11,8 @@ import java.util.Map;
 
 @Mapper
 public interface ReviewAndReceiptInter {
-    @Select("select * from hospital_review order by review_no desc limit #{startnum},#{perPage}")
-    public List<ReviewDto> getPagenationedReviews(Map<String,Integer> pagination);
+    @Select("select * from hospital_review order by ${orderBy} limit #{startnum},#{perPage}")
+    public List<ReviewDto> getPagenationedReviews(Map<String,Object> pagination);
     @Select("select count(*) from hospital_review")
     public int getAllReviewsCount();
     @Select("select * from hospital_review where review_no=#{review_no}")
@@ -49,4 +49,5 @@ public interface ReviewAndReceiptInter {
     public void updateReceiptPc(int prescription_no,int receipt_no);
     @Select("select * from hospital_review where employee_no=#{employee_no}")
     public List<ReviewDto> getReviewByEmployeeNo(int employee_no);
+
 }
