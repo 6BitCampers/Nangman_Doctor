@@ -38,6 +38,7 @@ public class ReviewDetailController {
             @RequestParam("review_no") int review_no,
             @RequestParam(required = false) String userId,
             @RequestParam int currentPage,
+            @RequestParam String orderBy,
             Model model) {
         //회원일 경우에는 이름으로 식별, 비회원일 경우에는 sessionId로 식별
         String identifier = (userId != null && !userId.equals("anonymousUser")) ? userId : request.getSession().getId();
@@ -68,6 +69,7 @@ public class ReviewDetailController {
         model.addAttribute("review_no",review_no);
         model.addAttribute("userId",userId);
         model.addAttribute("currentPage",currentPage);
+        model.addAttribute("orderBy",orderBy);
 
         return "reviewdetail";
     }

@@ -18,11 +18,12 @@ public class ReviewAndReceiptService {
     @Autowired
     private ReviewAndReceiptInter reviewAndReceiptInter;
 
-    public List<ReviewDto> getPagenationedReviews(int startnum, int perPage) {
-        Map<String,Integer> pagination = new HashMap<>();
+    public List<ReviewDto> getPagenationedReviews(int startnum, int perPage, String orderBy) {
+        Map<String,Object> pagination = new HashMap<>();
 
         pagination.put("startnum", startnum);
         pagination.put("perPage", perPage);
+        pagination.put("orderBy", orderBy);
 
         return reviewAndReceiptInter.getPagenationedReviews(pagination);
     }
