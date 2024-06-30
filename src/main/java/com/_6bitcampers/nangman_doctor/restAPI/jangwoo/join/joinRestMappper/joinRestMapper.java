@@ -5,13 +5,13 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface joinRestMapper {
 
-    @Select("select count(*) from hospital_employee where employee_email=#{email}")
+    @Select("select count(*) from hospital_employee where employee_email=#{email} and employee_type='local'")
     int findByEmailEmployee(String email);
 
     @Select("select count(*) from hospital_employee where employee_nickname=#{nickname}")
     int findByNicknameEmployee(String nickname);
 
-    @Select("select count(*) from normal_user where user_email=#{email}")
+    @Select("select count(*) from normal_user where user_email=#{email} and user_type='local'")
     int findByEmailUser(String email);
 
     @Select("select count(*) from normal_user where user_nickname=#{nickname}")
