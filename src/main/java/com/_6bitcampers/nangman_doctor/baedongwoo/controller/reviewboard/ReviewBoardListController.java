@@ -50,10 +50,10 @@ public class ReviewBoardListController {
                 list = reviewAndReceiptService.getPagenationedReviews(startnum, perPage, "asc");
             }
             case "manyView" -> {
-                list = reviewAndReceiptService.getOrederedReviews(startnum, perPage, "asc");
+                list = reviewAndReceiptService.getOrederedReviews(startnum, perPage, "desc" );
             }
             case "leastView" -> {
-                list = reviewAndReceiptService.getOrederedReviews(startnum, perPage, "desc");
+                list = reviewAndReceiptService.getOrederedReviews(startnum, perPage, "asc");
             }
             default -> {
                 list = reviewAndReceiptService.getPagenationedReviews(startnum, perPage, "desc");
