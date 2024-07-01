@@ -147,42 +147,4 @@ public class PaymentController {
         }
     }
 
-    @ResponseBody
-    @PostMapping("/success")
-    public Map<String,Object> paySuccess(
-            @RequestParam int receipt_no
-    ){
-        CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userId= customOAuth2User.getEmail();
-        String user_type=customOAuth2User.getType();
-
-        ReceiptDto receiptDto=paymentService.getReceiptBySeq(receipt_no);
-        int amount=receiptDto.getReceipt_amount();
-        int payment_no=receiptDto.getPayment_no();
-
-        PaymentDto paymentDto=paymentService.getPayment(payment_no);
-        String method=paymentDto.getPayment_method();
-        int user_no=paymentDto.getUser_no();
-
-        int hospital_no=receiptDto.getInfo_no();
-        userEntity userEntity= reviewAndReceiptService.getUserInfo(userId, user_type);
-        EmpDto empDto= paymentService.gethospitalInfo(hospital_no);
-        String user_email=userEntity.getUser_email();
-
-        Map<String,Object> response=new HashMap<>();
-
-        String infoName=empDto.getInfo_name();
-
-        response.put("receiptDto", receiptDto);
-        response.put("paymentDto", paymentDto);
-        response.put("empDto", empDto);
-        response.put("userEntity", userEntity);
-        response.put("method", method);
-        response.put("receipt_no", receipt_no);
-        response.put("amount", amount);
-        response.put("user_no", user_no);
-
-        return response;
-    }
-
 }

@@ -5,7 +5,6 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewAndReceiptS
 import com._6bitcampers.nangman_doctor.minio.service.storageService;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
-import com.google.gson.JsonObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -165,48 +161,6 @@ public class ReviewDetailController {
         reviewAndReceiptService.insertReview(reviewDto);
 
         return "redirect:/reviewboard";
-    }
-
-    @ResponseBody
-    @GetMapping("/delete")
-    public String deleteReview(
-            @RequestParam int review_no
-    ){
-        ReviewDto dto= reviewAndReceiptService.getReviewBySeq(review_no);
-        String review_content=dto.getReview_content();
-        //삭제시킬 이미지 UUID 갖고오기
-        List<String> deletedUrls=extractImageUrlsFromDeleting(review_content);
-        
-        //갖고온 UUID 하나하나 delete 하기
-        for(String deletedUrl:deletedUrls){
-            storageService.deleteFile("nangmandoctor","/reviewBoard/"+deletedUrl);
-        }
-
-        reviewAndReceiptService.deleteReview(review_no);
-        return "{'status':'success'}";
-    }
-
-    //AJAX로 업로드 되는 이미지 바로바로 저장하기
-    @PostMapping(value="/uploadSummernoteImageFile", produces = "application/json")
-    @ResponseBody
-    public JsonObject uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
-
-        JsonObject jsonObject = new JsonObject();
-
-        String filename = UUID.randomUUID()+"";
-
-        try {
-            storageService.uploadFile("nangmandoctor", "/temp/" + filename, multipartFile.getInputStream(), multipartFile.getContentType());
-            jsonObject.addProperty("url", filepath+"/temp/"+filename);
-            jsonObject.addProperty("filename", filename);
-            jsonObject.addProperty("responseCode", "success");
-        } catch (IOException e) {
-            storageService.deleteFile("nangmandoctor", "/temp/"+filename);
-            jsonObject.addProperty("responseCode", "error");
-            throw new RuntimeException(e);
-        }
-
-        return jsonObject;
     }
 
     //삭제하는 리뷰에 저장된 이미지 이름 가져오기
