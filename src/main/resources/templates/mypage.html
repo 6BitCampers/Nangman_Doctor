@@ -145,12 +145,9 @@
                         </div>
 
                         <div th:if="${reservation.get('reservation_status') == 1}">
-                            <button type="button" class="btn btn-primary btn-sm"
-                                    th:data-id="${reservation.get('reservation_no')}"
-                                    th:onclick="'editReservation(' + ${reservation.get('reservation_no')} + ')'">수정</button>
-                            <button type="button" class="btn btn-danger btn-sm"
-                                    th:data-id="${reservation.get('reservation_no')}"
-                                    th:onclick="'deleteReservation(' + ${reservation.get('reservation_no')} + ')'">삭제</button>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="edit(reservationNo)">수정</button>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="deleteReservation(reservationNo)">삭제</button>
+
                         </div>
 
                         <div
@@ -425,7 +422,7 @@
             </div>
             <script th:inline="javascript">
 
-                function editReservation(reservationNo) {
+                function edit(reservationNo) {
                     if (confirm("현재 예약이 삭제되며 예약 페이지로 이동합니다")) {
                         window.location.href = "/edit?reservationNo=" + reservationNo;
                     }
