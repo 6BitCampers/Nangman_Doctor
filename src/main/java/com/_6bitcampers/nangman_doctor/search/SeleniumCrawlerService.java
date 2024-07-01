@@ -14,6 +14,9 @@ public class SeleniumCrawlerService {
         // Use Selenium Manager to automatically manage the WebDriver binaries
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless"); // Run in headless mode if needed
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
         WebDriver driver = new ChromeDriver(options);
         String hospitalUrl = "";
 
