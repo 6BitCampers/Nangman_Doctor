@@ -1,5 +1,6 @@
 package com._6bitcampers.nangman_doctor.baedongwoo.data.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Alias("ReceiptDto")
+@Schema(description = "Receipt Data Transfer Object")
 public class ReceiptDto {
     private int receipt_no;
     private String receipt_name;

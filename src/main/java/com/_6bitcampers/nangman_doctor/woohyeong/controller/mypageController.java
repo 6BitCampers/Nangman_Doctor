@@ -198,13 +198,4 @@ public class mypageController {
         return "register";
     }
 
-    @ResponseBody
-    @GetMapping("/getHospitalName")
-    public Map<String,String> getHospitalName(@RequestParam int info_no) {
-        Map<String,String> map=new HashMap<>();
-        String info_name=mypageService.getInfoName(info_no);
-        map.put("info_name", info_name);
-        return map;
-    }
-
 }
