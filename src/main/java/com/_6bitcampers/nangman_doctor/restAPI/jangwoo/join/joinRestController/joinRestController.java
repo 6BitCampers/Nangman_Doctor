@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-@Tag(name = "Join API Controller", description = "회원가입을 위한 Rest API 컨트롤러 입니다.")
+@Tag(name = "회원가입 API Controller", description = "회원가입을 위한 Rest API 컨트롤러 입니다.")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
