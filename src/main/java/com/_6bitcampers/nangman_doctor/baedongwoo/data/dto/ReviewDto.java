@@ -1,6 +1,7 @@
 package com._6bitcampers.nangman_doctor.baedongwoo.data.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,14 +19,23 @@ import java.util.List;
 @NoArgsConstructor
 @Alias("ReviewDto")
 public class ReviewDto {
+    @Schema(description = "리뷰 시퀀스")
     private int review_no;
+    @Schema(description = "리뷰 제목")
     private String review_title;
+    @Schema(description = "리뷰 내용")
     private String review_content;
+    @Schema(description = "리뷰 작성일")
     private Timestamp review_writeday;
+    @Schema(description = "리뷰 조회수")
     private int review_viewcount;
+    @Schema(description = "리뷰 쓴 사람 시퀀스")
     private int user_no;
+    @Schema(description = "리뷰가 달린 직원 시퀀스")
     private int employee_no;
+    @Schema(description = "리뷰 평점")
     private int review_likecount;
+    @Schema(description = "리뷰가 달린 직원 이름")
     private String employee_name;
 
 

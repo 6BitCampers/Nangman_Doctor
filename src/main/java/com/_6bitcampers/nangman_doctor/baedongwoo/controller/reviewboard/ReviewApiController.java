@@ -5,6 +5,7 @@ import com._6bitcampers.nangman_doctor.baedongwoo.data.service.ReviewAndReceiptS
 import com._6bitcampers.nangman_doctor.minio.service.storageService;
 import com.google.gson.JsonObject;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperties;
@@ -13,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,14 +48,16 @@ public class ReviewApiController {
             ),
             @ApiResponse(
                     responseCode = "500",
-                    description = "해당하는 리뷰 없음"
+                    description = "해당하는 리뷰 없음",
+                    content = @Content(
+                            schema = @Schema(implementation = Void.class)
+                    )
             )
     })
     @GetMapping("/reviewboard/delete")
-    public Map<String,String> deleteReview(
-            @RequestParam int review_no
+    public ResponseEntity<String> deleteReview(
+            @RequestParam("review_no")@Parameter(name = "영수증 시퀀스",example = "1") int review_no
     ){
-        Map<String,String> map=new HashMap<>();
         ReviewDto dto= reviewAndReceiptService.getReviewBySeq(review_no);
         String review_content=dto.getReview_content();
         //삭제시킬 이미지 UUID 갖고오기
@@ -65,20 +70,20 @@ public class ReviewApiController {
 
         reviewAndReceiptService.deleteReview(review_no);
 
-        map.put("status","success");
-
-        return map;
+        return ResponseEntity.status(200).build();
     }
 
     @Operation(operationId = "ReviewUploadImage",summary = "이미지 업로드 시키는 api",description = "이미지를 db에 업로드 시킨다",
     responses = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "업로드 완료"
+                    description = "업로드 완료",
+                    content = @Content(
+                            schema = @Schema(implementation = Void.class))
             )
     })
     @PostMapping(value="/reviewboard/uploadSummernoteImageFile", produces = "application/json")
-    public JsonObject uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
+    public JsonObject uploadSummernoteImageFile(@RequestParam("file") @Parameter(name = "file",description = "올리는 파일",example = "kakaotalk_202406291103.jpg") MultipartFile multipartFile) {
 
         JsonObject jsonObject = new JsonObject();
 

@@ -48,7 +48,8 @@ public class PaymentApiController {
                                     @SchemaProperty(name = "user_no", schema = @Schema(type = "string", description = "리뷰 쓰기 버튼에 mapping 해줄 유저정보"))
                             }
                     )
-            ),@ApiResponse(responseCode = "400",description = "잘못된 요청 형식")
+            ),@ApiResponse(responseCode = "400",description = "잘못된 요청 형식",
+            content = @Content(schema = @Schema(implementation = Void.class)))
     })
     @PostMapping("/payment/success")
     public Map<String,Object> paySuccess(
