@@ -590,17 +590,17 @@
                                     <td th:text="${res.reservation_no}" class="p-4 align-middle reservation-no [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td th:text="${res.reservation_date}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                                     <td th:text="${res.reservation_time}" class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
-                                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
                                     <span th:if="${res.reservation_status} == 1">
                                         <span sec:authorize="hasAuthority('ROLE_MANAGER')">
                                             <button type="button" class="btn btn-success"
                                                     th:data-id="${res.reservation_no}"
-                                                    onclick="SendStatus(${res.reservation_no}, true)">
+                                                    th:attr="onclick='SendStatus(' + ${res.reservation_no} + ', true)'">
                                                 수락
                                             </button>
                                             <button type="button" class="btn btn-danger"
                                                     th:data-id="${res.reservation_no}"
-                                                    onclick="SendStatus(${res.reservation_no}, false)">
+                                                    th:attr="onclick='SendStatus(' + ${res.reservation_no} + ', false)'">
                                                 거절
                                             </button>
                                         </span>
