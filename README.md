@@ -4,7 +4,7 @@
 <br>
 <b>낭만닥터!</b><br>
 기존 불편했던 기능은 개선하고, <br>
-필요한 기능은 추가하고!
+필요한 기능은 추가하고!<br>
 배포주소: http://deploysemi.midichi.kro.kr/
 
 ## 📃 Detail Role <a name = "role"></a>
@@ -65,6 +65,7 @@
 - [협업 방식 - Loop](#Loop)
 - [팀의 개발 문화](#culture)
 - [결과물](#outputs)
+- [API 명세서](#API)
 
 <br>
 
@@ -238,5 +239,14 @@ Main 브랜치로 merge된 이후에는 변경된 기능을 확인하고 오류 
 </details>
 
 <br>
+
+# 📃 API 명세서 <a name = "API"></a>
+
+<details>
+  <summary> 본문 확인 (👈 Click)</summary>
+  <br />
+
+  스웨거 주소: http://deploysemi.midichi.kro.kr/
+</details>
 
 
