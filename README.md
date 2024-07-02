@@ -246,7 +246,7 @@ Main 브랜치로 merge된 이후에는 변경된 기능을 확인하고 오류 
   <summary> 본문 확인 (👈 Click)</summary>
   <br />
 
-  스웨거 주소: http://deploysemi.midichi.kro.kr/
+  스웨거 주소: http://deploysemi.midichi.kro.kr/swagger-ui
 </details>
 
 
