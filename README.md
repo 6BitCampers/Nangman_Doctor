@@ -6,6 +6,7 @@
 기존 불편했던 기능은 개선하고, <br>
 필요한 기능은 추가하고!<br>
 배포주소: http://deploysemi.midichi.kro.kr/
+발표자료 : [낭만닥터_발표자료.pdf](https://github.com/user-attachments/files/16098868/_.pdf)
 
 ## 📃 Detail Role <a name = "role"></a>
 이름|담당 기능|Github
