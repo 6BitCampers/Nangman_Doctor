@@ -94,6 +94,7 @@
                 $('#divbox').append('<div class="msg_box send"><span>' + $('#input1').val() + '<span></div>');
                 $("#divbox").scrollTop($("#divbox")[0].scrollHeight);
 
+
                 $.ajax({
                     url: '/chatbot/chatbotSend', //챗봇 api url
                     type: 'post',
@@ -109,6 +110,8 @@
                 });
                 $('#input1').val('');
             }
+
+
 
         }
 

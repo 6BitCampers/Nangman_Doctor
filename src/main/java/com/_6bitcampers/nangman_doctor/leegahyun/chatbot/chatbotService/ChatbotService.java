@@ -21,6 +21,7 @@ public class ChatbotService {
         String secretKey = "UndSRmtyUWNNSmhZWVJLWUlMTk12ZWtJVHdaYXJGaXQ=";
         String apiURL = "https://pcdcyduooa.apigw.ntruss.com/custom/v1/14778/2168537033f3d158e119ed88dd9cf1f4aa956e7053df8b8e071ab95c42937a5e";
 
+
         String chatbotMessage = ""; // 응답 메세지
         try {
             //String apiURL = "https://ex9av8bv0e.apigw.ntruss.com/custom_chatbot/prod/";
