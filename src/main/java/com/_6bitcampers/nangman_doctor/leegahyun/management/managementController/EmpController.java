@@ -6,25 +6,28 @@ import com._6bitcampers.nangman_doctor.leegahyun.management.managementDto.EmpDto
 import com._6bitcampers.nangman_doctor.leegahyun.management.managementService.EmpService;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginDto.CustomUserDetails;
 import com._6bitcampers.nangman_doctor.servingPackage.jangwoo.login.loginEntity.userEntity;
-
 import com._6bitcampers.nangman_doctor.hayoon.Dto.ReservationDto;
 import com._6bitcampers.nangman_doctor.hayoon.Service.ReservationService;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.*;
 
+@Tag(name = "Emp API Controller", description = "직원 관리 기능을 구현하기 위한 API 컨트롤러입니다.")
 @Controller
 @RequiredArgsConstructor
 public class EmpController {
@@ -32,54 +35,54 @@ public class EmpController {
     @Autowired
     private ReviewAndReceiptService reviewAndReceiptService;
     @Autowired
-    private EmpService EmpService;
-
+    private EmpService empService;
     @Autowired
     private ReservationService reservationService;
 
+    @Operation(operationId = "UploadPhoto", summary = "사진 업로드", description = "병원 사진을 업로드합니다.")
     @PostMapping("/uploadPhoto")
-    public ResponseEntity<String> uploadPhoto(@RequestParam("email") String email, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadPhoto(@RequestParam("email") @Parameter(name = "email", description = "직원 이메일", example = "example@example.com") String email,
+                                              @RequestParam("file") @Parameter(name = "file", description = "업로드할 파일") MultipartFile file) {
         try {
-            EmpService.registerPhoto(email, file);
+            empService.registerPhoto(email, file);
             return ResponseEntity.ok("Photo uploaded successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload photo");
         }
     }
 
+    @Operation(operationId = "RegisterPhoto", summary = "사진 등록", description = "로그인된 사용자의 사진을 등록합니다.")
     @PostMapping("/registerPhoto")
-    public String registerPhoto(@RequestParam("photo") MultipartFile photo, Model model) {
+    public String registerPhoto(@RequestParam("photo") @Parameter(name = "photo", description = "등록할 사진 파일") MultipartFile photo, Model model) {
         try {
             String email = SecurityContextHolder.getContext().getAuthentication().getName();
-            EmpService.registerPhoto(email, photo);
+            empService.registerPhoto(email, photo);
         } catch (Exception e) {
             e.printStackTrace();
-            // 에러 처리 로직 추가
         }
         return "redirect:/emp";
     }
+
+    @Operation(operationId = "GetEmployees", summary = "직원 정보 조회", description = "직원 정보를 조회하고 필요한 데이터를 모델에 추가합니다.")
     @GetMapping("/emp")
     public String getEmployees(Model model) {
-
         CustomUserDetails customOAuth2User = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String userId= customOAuth2User.getEmail();
-        String userType= customOAuth2User.getType();
-        String role= customOAuth2User.getRole();
+        String userId = customOAuth2User.getEmail();
+        String userType = customOAuth2User.getType();
+        String role = customOAuth2User.getRole();
 
-        List<EmpDto> emp_hos = EmpService.getEmployeeLikeCounts(userId);
-        model.addAttribute("emp_hos",emp_hos);
+        List<EmpDto> empHos = empService.getEmployeeLikeCounts(userId);
+        model.addAttribute("emp_hos", empHos);
 
-        //병원장이면 emp 전체 no 받아서 review 갖고오기
-        if(role.equals("ROLE_MANAGER")){
-            List<EmpDto> employees = EmpService.getEmployeeLikeCounts(userId);
+        if (role.equals("ROLE_MANAGER")) {
+            List<EmpDto> employees = empService.getEmployeeLikeCounts(userId);
             model.addAttribute("employees", employees);
 
-            List<EmpDto> emplist = EmpService.getEmpList(SecurityContextHolder.getContext().getAuthentication().getName());
-            model.addAttribute("emplist", emplist);
+            List<EmpDto> empList = empService.getEmpList(userId);
+            model.addAttribute("emplist", empList);
 
-            //해당 병원에 작성된 리뷰보드 연결
-            List<Integer> empNos= new ArrayList<>();
-            for(EmpDto empDto : emplist){
+            List<Integer> empNos = new ArrayList<>();
+            for (EmpDto empDto : empList) {
                 empNos.add(empDto.getEmployee_no());
             }
 
@@ -89,122 +92,116 @@ public class EmpController {
                 employeeReviews.put(empNo, reviewList);
             }
 
-            List<ReviewDto> list=new ArrayList<>();
-            for (List<ReviewDto> reviewList : employeeReviews.values()) {
-                list.addAll(reviewList);
+            List<ReviewDto> reviewList = new ArrayList<>();
+            for (List<ReviewDto> reviews : employeeReviews.values()) {
+                reviewList.addAll(reviews);
             }
 
             Map<Integer, userEntity> userMap = new HashMap<>();
+            for (ReviewDto dto : reviewList) {
+                var userNo = dto.getUser_no();
+                userEntity userDto = reviewAndReceiptService.getUserInfoByNum(userNo);
+                userMap.put(userNo, userDto);
 
-            for (ReviewDto dto : list) {
-                var user_no = dto.getUser_no();
-                userEntity userDto = reviewAndReceiptService.getUserInfoByNum(user_no);
-                userMap.put(user_no, userDto);
-
-                //리뷰에 출력할 의사 이름 넣어주기
-                var employee_name=reviewAndReceiptService.getEmployeeName(dto.getEmployee_no());
-                dto.setEmployee_name(employee_name);
+                var employeeName = reviewAndReceiptService.getEmployeeName(dto.getEmployee_no());
+                dto.setEmployee_name(employeeName);
             }
 
-            model.addAttribute("list", list);
+            model.addAttribute("list", reviewList);
             model.addAttribute("userMap", userMap);
 
-            int totalNum= reviewAndReceiptService.getAllReviewsCount();
+            int totalNum = reviewAndReceiptService.getAllReviewsCount();
             model.addAttribute("totalNum", totalNum);
             model.addAttribute("currentpage", 1);
-        }//일반 유저는 직원페이지 자체를 못들어오니까 그냥 else로 할게요
-        else {
-            //한개만 보내기
-            EmpDto empDto=EmpService.getEmployeeByEmail(userId,userType);
-            List<EmpDto> employees=new ArrayList<>();
-            List<EmpDto> emplist = EmpService.getEmpList(SecurityContextHolder.getContext().getAuthentication().getName());
-            model.addAttribute("emplist", emplist);
-            employees.add(empDto);
+        } else {
+            EmpDto empDto = empService.getEmployeeByEmail(userId, userType);
+            List<EmpDto> employees = Collections.singletonList(empDto);
+            List<EmpDto> empList = empService.getEmpList(userId);
+            model.addAttribute("emplist", empList);
 
             model.addAttribute("employees", employees);
-            model.addAttribute("emplist", emplist);
 
-            int empNo=empDto.getEmployee_no();
+            int empNo = empDto.getEmployee_no();
 
-            List<ReviewDto> list = reviewAndReceiptService.getReviewByEmployeeNo(empNo);
+            List<ReviewDto> reviewList = reviewAndReceiptService.getReviewByEmployeeNo(empNo);
             Map<Integer, userEntity> userMap = new HashMap<>();
 
-            for (ReviewDto dto : list) {
-                var user_no = dto.getUser_no();
-                userEntity userDto = reviewAndReceiptService.getUserInfoByNum(user_no);
-                userMap.put(user_no, userDto);
+            for (ReviewDto dto : reviewList) {
+                var userNo = dto.getUser_no();
+                userEntity userDto = reviewAndReceiptService.getUserInfoByNum(userNo);
+                userMap.put(userNo, userDto);
 
-                //리뷰에 출력할 의사 이름 넣어주기
-                var employee_name=reviewAndReceiptService.getEmployeeName(dto.getEmployee_no());
-                dto.setEmployee_name(employee_name);
+                var employeeName = reviewAndReceiptService.getEmployeeName(dto.getEmployee_no());
+                dto.setEmployee_name(employeeName);
             }
-            model.addAttribute("list", list);
+            model.addAttribute("list", reviewList);
             model.addAttribute("userMap", userMap);
 
-            int totalNum= reviewAndReceiptService.getAllReviewsCount();
+            int totalNum = reviewAndReceiptService.getAllReviewsCount();
             model.addAttribute("totalNum", totalNum);
             model.addAttribute("currentpage", 1);
         }
 
-        List<ReservationDto> reservations = reservationService.getReservationsByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        List<ReservationDto> reservations = reservationService.getReservationsByEmail(userId);
         model.addAttribute("reservations", reservations);
 
-        List<EmpDto> hospital_list=EmpService.getAllHospitalNames();
-        model.addAttribute("hospital_list", hospital_list);
-
+        List<EmpDto> hospitalList = empService.getAllHospitalNames();
+        model.addAttribute("hospital_list", hospitalList);
 
         return "emp";
     }
 
+    @Operation(operationId = "RegisterRole", summary = "역할 등록", description = "직원의 역할을 등록합니다.")
     @PostMapping("/registerRole")
-    public String registerRole(@RequestParam("role") String role,String email,Model model) {
-
-        EmpService.registerRole(email, role);
-
+    public String registerRole(@RequestParam("role") @Parameter(name = "role", description = "등록할 역할", example = "ROLE_MANAGER") String role,
+                               @RequestParam("email") @Parameter(name = "email", description = "직원 이메일", example = "example@example.com") String email,
+                               Model model) {
+        empService.registerRole(email, role);
         return "redirect:/emp";
     }
 
-
+    @Operation(operationId = "RegisterName", summary = "이름 등록", description = "직원의 이름을 등록합니다.")
     @PostMapping("/registerName")
-    public String registerName(@RequestParam("hname") String hname, Model model) {
-
+    public String registerName(@RequestParam("hname") @Parameter(name = "hname", description = "등록할 이름", example = "홍길동") String hname,
+                               Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerName(email, hname);
-
+        empService.registerName(email, hname);
         return "redirect:/emp";
     }
 
+    @Operation(operationId = "RegisterDescription", summary = "설명 등록", description = "직원의 설명을 등록합니다.")
     @PostMapping("/registerDescription")
-    public String registerDescription(@RequestParam("desciption") String description, Model model) {
+    public String registerDescription(@RequestParam("description") @Parameter(name = "description", description = "등록할 설명", example = "성실한 직원입니다.") String description,
+                                      Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerDescription(email, description);
-
+        empService.registerDescription(email, description);
         return "redirect:/emp";
     }
 
+    @Operation(operationId = "RegisterAddress", summary = "주소 등록", description = "직원의 주소를 등록합니다.")
     @PostMapping("/registerAddress")
-    public String registerAddress(@RequestParam("address") String address, Model model) {
+    public String registerAddress(@RequestParam("address") @Parameter(name = "address", description = "등록할 주소", example = "서울시 강남구") String address,
+                                  Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerAddress(email, address);
-
+        empService.registerAddress(email, address);
         return "redirect:/emp";
     }
+
+    @Operation(operationId = "RegisterPlus", summary = "추가 정보 등록", description = "직원의 추가 정보를 등록합니다.")
     @PostMapping("/registerPlus")
-    public String registerPlus(@RequestParam("plus") String plus, Model model) {
+    public String registerPlus(@RequestParam("plus") @Parameter(name = "plus", description = "등록할 추가 정보", example = "추가 정보입니다.") String plus,
+                               Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerPlus(email, plus);
-
+        empService.registerPlus(email, plus);
         return "redirect:/emp";
     }
+
+    @Operation(operationId = "RegisterHp", summary = "전화번호 등록", description = "직원의 전화번호를 등록합니다.")
     @PostMapping("/registerHp")
-    public String registerHp(@RequestParam("hp") String hp, Model model) {
+    public String registerHp(@RequestParam("hp") @Parameter(name = "hp", description = "등록할 전화번호", example = "010-1234-5678") String hp,
+                             Model model) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        EmpService.registerHp(email, hp);
-
+        empService.registerHp(email, hp);
         return "redirect:/emp";
     }
-
-
-
-
 }
